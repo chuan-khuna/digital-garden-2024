@@ -1,0 +1,16 @@
+version: '3.9'
+name: astro-resume
+
+services:
+  astro-resume:
+    container_name: astro-resume
+    build:
+      context: .
+    stdin_open: true
+    tty: true
+    ports:
+      - '4321:4321'
+    volumes:
+      - /app/node_modules/
+      - .:/app
+    command: "npm run dev"

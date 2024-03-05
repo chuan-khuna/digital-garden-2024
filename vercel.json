@@ -1,0 +1,8 @@
+{
+  "installCommand": "npm install",
+  "buildCommand": "astro build",
+  "outputDirectory": "dist",
+  "github": {
+    "silent": true
+  }
+}
