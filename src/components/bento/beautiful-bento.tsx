@@ -1,4 +1,4 @@
-import { cn } from '@/utils/cn'
+import { cn } from '@/lib/cn'
 import React from 'react'
 import { motion } from "framer-motion";
 import { BentoGrid, BentoGridItem } from '@/components/aceternity/bento-grid'
