@@ -3,5 +3,8 @@
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "tailwindCSS.experimental.configFile": "tailwind.config.ts"
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  }
 }

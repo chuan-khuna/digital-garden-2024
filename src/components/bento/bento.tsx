@@ -48,7 +48,7 @@ const SkeletonGradient = () => {
         repeat: Infinity,
         repeatType: 'reverse',
       }}
-      className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 rounded-lg"
+      className="flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 rounded-lg bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
       style={{
         background:
           'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
@@ -62,7 +62,7 @@ const SkeletonGradient = () => {
 
 // bento card highlight
 const SkeletonDot = () => (
-  <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full   flex-1 rounded-xl border  border-transparent bg-neutral-100 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black"></div>
+  <div className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl   border border-transparent bg-neutral-100  bg-dot-black/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black dark:bg-dot-white/[0.2]"></div>
 )
 
 const items = [
