@@ -61,7 +61,7 @@ const SkeletonGradient = () => {
 }
 
 // bento card highlight
-const Skeleton = () => (
+const SkeletonDot = () => (
   <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full   flex-1 rounded-xl border  border-transparent bg-neutral-100 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black"></div>
 )
 
@@ -75,13 +75,13 @@ const items = [
   {
     title: 'The Digital Revolution',
     description: 'Dive into the transformative power of technology.',
-    header: <Skeleton />,
+    header: <SkeletonDot />,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: 'The Art of Design',
     description: 'Discover the beauty of thoughtful and functional design.',
-    header: <Skeleton />,
+    header: <SkeletonDot />,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
   {
@@ -94,13 +94,13 @@ const items = [
   {
     title: 'The Pursuit of Knowledge',
     description: 'Join the quest for understanding and enlightenment.',
-    header: <Skeleton />,
+    header: <SkeletonDot />,
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: 'The Joy of Creation',
     description: 'Experience the thrill of bringing ideas to life.',
-    header: <Skeleton />,
+    header: <SkeletonDot />,
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
   },
   {
