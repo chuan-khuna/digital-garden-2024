@@ -1,6 +1,6 @@
 import { cn } from '@/lib/cn'
 import React from 'react'
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 import { BentoGrid, BentoGridItem } from '@/components/aceternity/bento-grid'
 import {
   IconArrowWaveRightUp,
@@ -62,7 +62,7 @@ const SkeletonGradient = () => {
 
 // bento card highlight
 const Skeleton = () => (
-  <div className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800"></div>
+  <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full   flex-1 rounded-xl border  border-transparent bg-neutral-100 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black"></div>
 )
 
 const items = [
