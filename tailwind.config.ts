@@ -61,7 +61,9 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Inter', ...fontFamily.sans],
+        sans: ['Lato', ...fontFamily.sans],
+        serif: ['DM Serif Text', 'DM Serif Display', ...fontFamily.serif],
+        mono: ['Inconsolata', ...fontFamily.mono],
       },
       keyframes: {
         'accordion-down': {
