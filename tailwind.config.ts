@@ -115,7 +115,7 @@ const config = {
         DEFAULT: {
           css: {
             a: {
-              "@apply cactus-link no-underline": "",
+              "@apply cactus-a-link no-underline": "",
             },
             strong: {
               fontWeight: "700",
@@ -188,7 +188,7 @@ function addVariablesForColors({ addBase, theme }: any) {
 
 function cactusThemeFunc({ addComponents }) {
   addComponents({
-    ".cactus-link": {
+    ".cactus-a-link": {
       "@apply bg-[size:100%_6px] bg-bottom bg-repeat-x": {},
       backgroundImage:
         "linear-gradient(transparent,transparent 5px,hsl(var(--theme-text)) 5px,hsl(var(--theme-text)))",
