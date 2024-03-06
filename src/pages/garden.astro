@@ -1,7 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getCollection } from "astro:content";
+const allPosts = await getCollection("posts");
+console.log(allPosts);
 ---
 
 <BaseLayout title="ALTR" description="">
   <p>garden</p>
+  <ul>
+    {
+      allPosts.map((post) => (
+        <li><a href={`/posts/${post.slug}/`} class="underline">{post.data.title}</a></li>
+      ))
+    }
+  </ul>
 </BaseLayout>
