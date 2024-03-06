@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { BentoDemo } from '@/components/bento/bento'
+---
+
+<BaseLayout title="ALTR's Resume" description="">
+  <!-- content container -->
+  <section class="container grid items-center gap-6 pb-8 pt-6 md:py-10">
+    <div class="container max-w-[100ch]">
+      <blockquote style="font-size: 14pt;">
+        <code>
+          "I have an avid interest in data science and data visualisation"
+        </code>
+      </blockquote>
+      <p>
+        I have a year of experience as a Data Scientist and Machine Learning
+        Engineer. Most of my tasks are about providing analyses to support a
+        strategy team. I gained experience in the field of spatiotemporal data
+        and time series analysis whilst working on my senior project.
+      </p>
+      <p>
+        I am keen on learning to create good data visualisation. I admire John
+        Burn-Murdoch and David Spiegelhalter for their works. I have a goal to
+        create high-quality analysis and visualisation that are comprehensible
+        for non-chart people. In my free time, I enjoy watching videos from the
+        Royal Institution to expanding my knowledge and practising English.
+      </p>
+    </div>
+    <BentoDemo client:load />
+  </section>
+</BaseLayout>
