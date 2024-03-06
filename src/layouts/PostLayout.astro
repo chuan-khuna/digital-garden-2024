@@ -3,12 +3,23 @@ import BaseLayout from './BaseLayout.astro'
 const { frontmatter } = Astro.props
 ---
 
+
+<!-- <div
+class="prose prose-sm prose-cactus mt-12 prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+>
+</div> -->
+
 <BaseLayout title={frontmatter.title}>
-  <div
+  <!-- <div
   class="prose dark:prose-invert
   prose-h1:font-bold prose-h1:text-xl
   prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl
   prose-headings:underline">
     <slot />
-  </div>
+  </div> -->
+  <div
+class="prose prose-sm prose-cactus mt-12 prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+>
+<slot />
+</div>
 </BaseLayout>
