@@ -90,7 +90,7 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), addVariablesForColors, bgDotGrid],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography'), addVariablesForColors, bgDotGrid],
 } satisfies Config
 
 function addVariablesForColors({ addBase, theme }: any) {
