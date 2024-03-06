@@ -14,6 +14,7 @@
     "start": "astro dev"
   },
   "dependencies": {
+    "@astrojs/mdx": "^2.1.1",
     "@astrojs/react": "^3.0.10",
     "@astrojs/tailwind": "^5.1.0",
     "@radix-ui/react-slot": "^1.0.2",
