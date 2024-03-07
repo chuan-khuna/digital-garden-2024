@@ -6,6 +6,8 @@ import mdx from "@astrojs/mdx";
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
+import wikiLinkPlugin from "remark-wiki-link";
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.CI ? 'https://github.com/chuan-khuna' : 'http://localhost:4321',
@@ -14,6 +16,9 @@ export default defineConfig({
     gfm: true,
     remarkPlugins: [
       remarkMath,
+      [wikiLinkPlugin, {
+        hrefTemplate: (permalink) => `/posts/${permalink}`
+      }]
     ],
     rehypePlugins: [
       [rehypeKatex, {
