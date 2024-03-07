@@ -4,16 +4,12 @@ const { frontmatter } = Astro.props
 ---
 
 <BaseLayout title={frontmatter.title}>
-  <!-- <div
-  class="prose dark:prose-invert
-  prose-h1:font-bold prose-h1:text-xl
-  prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl
-  prose-headings:underline">
-    <slot />
-  </div> -->
-  <div
-    class="prose prose-sm prose-cactus mt-12 prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
-  >
-    <slot />
+  <!-- content container -->
+  <div class="container max-w-[100ch]">
+    <div
+      class="prose prose-sm prose-cactus mt-12 prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+    >
+      <slot />
+    </div>
   </div>
 </BaseLayout>

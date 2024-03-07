@@ -38,9 +38,9 @@
     --theme-bg: 0deg 0% 98%;
     --theme-link: 172deg 18% 41%;
     --theme-text: 203deg 11% 15%;
-    /* 202f66 and ff7048 */
-    --theme-accent: 227.2deg 52.2% 26.3%;
-    --theme-accent-2: 13.1deg 100% 14.1%;
+    /* adapted from 202f66 and ff7048 */
+    --theme-accent: 13 100% 69.2%;
+    --theme-accent-2: 227.1 52.2% 26.3%;
     --theme-quote: 253.1deg 80% 64.1%;
   }
 

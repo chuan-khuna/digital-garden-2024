@@ -56,7 +56,7 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        quote: '#ff7048',
+        // quote: '#ff7048',
         // cactus colours
         'cactus-bg': "hsl(var(--theme-bg) / <alpha-value>)",
         'cactus-text': "hsl(var(--theme-text) / <alpha-value>)",
