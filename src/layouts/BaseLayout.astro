@@ -2,6 +2,7 @@
 import HeadSEO from '@/components/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
+import Nav from '@/components/Nav.astro'
 
 interface Props {
   title?: string | undefined
@@ -25,7 +26,8 @@ const { title, description, ogImage } = Astro.props
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
-      <Header />
+      <!-- <Header /> -->
+      <Nav />
       <main class="flex-auto">
         <!-- global container -->
         <section class="container grid items-center gap-6 pb-8 pt-6 md:py-10">

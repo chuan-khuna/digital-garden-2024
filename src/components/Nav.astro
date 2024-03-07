@@ -1,0 +1,50 @@
+---
+import { buttonVariants } from '@/components/ui/button'
+import ThemeToggle from '@/components/ThemeToggle.astro'
+
+const navItems = [
+  {
+    label: 'Home',
+    link: '/',
+  },
+  {
+    label: 'Garden',
+    link: '/garden',
+  },
+  {
+    label: 'Uses',
+    link: '/uses',
+  },
+  {
+    label: 'About',
+    link: '/about',
+  },
+]
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+>
+  <div
+    class="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0"
+  >
+    <nav
+      class="fixed inset-x-0 top-2 z-[5000] mx-auto flex max-w-fit items-center justify-center space-x-4 rounded-full border border-transparent bg-white py-1    pl-8 pr-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:border-white/[0.2] dark:bg-black"
+    >
+      {
+        navItems.map((item, idx) => (
+          <div id={`link=${idx}`}>
+            <a
+              href={item.link}
+              class={buttonVariants({ variant: 'ghost' })}
+            //   class="relative flex items-center space-x-1 text-neutral-600 hover:text-neutral-500 dark:text-neutral-50 dark:hover:text-neutral-400"
+            >
+              {item.label}
+            </a>
+          </div>
+        ))
+      }
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
