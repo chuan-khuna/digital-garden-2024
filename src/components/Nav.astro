@@ -60,12 +60,12 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
   <!-- TODO: expand mobile buttons to 100% width, optional nav menu expands to 100% height -->
   <div
     id="mobile-nav-container"
-    class="hidden"
+    class="absolute hidden h-screen w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90"
   >
-    <div class="flex flex-col max-w-fit items-center justify-center md:hidden">
+    <div class="flex flex-col md:hidden">
       {
         navItems.map((item, idx) => (
-          <a href={item.link} class="max-w-fit mx-auto py-2">
+          <a href={item.link} class="mx-auto py-2">
             {item.label}
           </a>
         ))
