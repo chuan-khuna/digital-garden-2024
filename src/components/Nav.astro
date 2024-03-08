@@ -23,43 +23,31 @@ const navItems = [
 
 const blurryFullNav =
   'sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+const navItemClass = buttonVariants({ variant: 'ghost' })
 ---
 
-<header class=`${blurryFullNav}`>
-  <!-- div for filling the blurry area -->
+<header class={`${blurryFullNav}`}>
   <div
     class="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0"
   >
-    <!-- rounded nav, inspired by reflect note taking app -->
     <nav
-      class="fixed inset-x-0 top-2 z-[5000] mx-auto flex max-w-fit items-center justify-center space-x-4 rounded-full border border-transparent bg-transparent py-1 pl-2 pr-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]  supports-[backdrop-filter]:bg-background/10 dark:border-white/[0.1]"
+      class="fixed inset-x-0 top-2 z-[5000] mx-auto flex max-w-fit items-center justify-center space-x-4 rounded-full border border-transparent bg-transparent py-1 pl-2 pr-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] supports-[backdrop-filter]:bg-background/10 dark:border-white/[0.1]"
     >
+      <!-- desktop size nav -->
       <div class="hidden md:flex">
         {
           navItems.map((item, idx) => (
-            <a
-              href={item.link}
-              class={buttonVariants({ variant: 'ghost' })}
-              // class="relative hidden items-center space-x-1 text-neutral-600 hover:text-neutral-500 dark:text-neutral-50 dark:hover:text-neutral-400 md:flex"
-            >
+            <a href={item.link} class={`${navItemClass}`}>
               {item.label}
             </a>
           ))
         }
       </div>
+      <!-- mobile nav -->
       <div class="md:hidden">
-        {
-          navItems.map((item, idx) => (
-            <a
-              href={item.link}
-              // class={buttonVariants({ variant: 'ghost' })}
-              // class="relative hidden items-center space-x-1 text-neutral-600 hover:text-neutral-500 dark:text-neutral-50 dark:hover:text-neutral-400 md:flex"
-            >
-              {idx}
-            </a>
-          ))
-        }
+        <a href="/" class={`${navItemClass}`}> Home </a>
       </div>
+      {'|'}
       <ThemeToggle />
     </nav>
   </div>
