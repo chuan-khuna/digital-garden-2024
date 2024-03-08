@@ -17,10 +17,18 @@ export function getOutgoingNotes(node) {
   })
 
   return outgoingNotes
+}
 
+
+export async function getNoteFromTitle(title) {
+  const allPosts = await getCollection('posts', (data) => {
+    data.title === title || data.aliases?.includes(title)
+  })
+  return allPosts
 }
 
 export async function getIncomingNotes(node) {
+  // node: astro getCollection entry
   const keywords = [node.slug, node.data.title, ...node.data.aliases]
   const allPosts = await getCollection('posts')
 
@@ -30,7 +38,7 @@ export async function getIncomingNotes(node) {
 
     for (const keyword of keywords) {
       if (outgoingNotes.includes(keyword)) {
-        incomingNotes.push(post.slug)
+        incomingNotes.push({ slug: post.slug, data: post.data })
       }
     }
   }
