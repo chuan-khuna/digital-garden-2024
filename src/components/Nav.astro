@@ -45,15 +45,13 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
           ))
         }
       </div>
+      <ThemeToggle />
       <!-- mobile nav -->
       <div class="flex md:hidden">
-        <a href="/" class={`${navItemClass}`}> Home </a>
         <Button variant="ghost" size="icon">
           <Menu className="h-[1.5rem] w-[1.3rem]" />
         </Button>
       </div>
-      {'|'}
-      <ThemeToggle />
     </nav>
   </div>
 </header>
