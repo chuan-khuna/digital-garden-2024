@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro'
 import { BackReferenceSection } from '@/components/back_ref/backref'
 
-const { frontmatter, incomingNotes } = Astro.props
+const { frontmatter, incomingNotes, rootURL } = Astro.props
 ---
 
 <BaseLayout title={frontmatter.title}>
@@ -13,6 +13,9 @@ const { frontmatter, incomingNotes } = Astro.props
     >
       <slot />
     </div>
-    <BackReferenceSection incomingReferences={incomingNotes} />
+    <BackReferenceSection
+      incomingReferences={incomingNotes}
+      rootURL={rootURL}
+    />
   </div>
 </BaseLayout>

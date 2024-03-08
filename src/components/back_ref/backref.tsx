@@ -1,10 +1,7 @@
 import React from 'react'
-import {
-  CardImageGradient,
-  CardImageDot,
-} from '@/components/placeholder/card-image'
+import { CardImageDot } from '@/components/placeholder/card-image'
 
-const BackReferenceCard = ({ title, description, date }) => {
+const BackReferenceCard = ({ title, description }) => {
   return (
     <div className="group/bento row-span-1 flex flex-col justify-between space-y-4 rounded-xl border bg-white p-4 shadow-input transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none">
       <CardImageDot />
@@ -20,13 +17,17 @@ const BackReferenceCard = ({ title, description, date }) => {
   )
 }
 
-export const BackReferenceSection = ({ incomingReferences }) => {
-  console.log(incomingReferences)
+export const BackReferenceSection = ({ incomingReferences, rootURL }) => {
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl mt-12">
       Referenced in:
       {incomingReferences.map((item, idx) => (
-        <BackReferenceCard title={item.data.title} description={item.slug} />
+        <a href={`/${rootURL}/${item.slug}`}>
+          <BackReferenceCard
+            title={item.data.title}
+            description={item.data.description}
+          />
+        </a>
       ))}
     </div>
   )

@@ -22,6 +22,10 @@ const outgoingNotes = getOutgoingNotes(entry)
 const incomingNotes = await getIncomingNotes(entry)
 ---
 
-<PostLayout frontmatter={entry.data} incomingNotes={incomingNotes}>
+<PostLayout
+  frontmatter={entry.data}
+  incomingNotes={incomingNotes}
+  rootURL="posts"
+>
   <Content />
 </PostLayout>
