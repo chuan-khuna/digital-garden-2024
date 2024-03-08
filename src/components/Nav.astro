@@ -1,6 +1,8 @@
 ---
 import { buttonVariants } from '@/components/ui/button'
 import ThemeToggle from '@/components/ThemeToggle.astro'
+import { Button } from '@/components/ui/button'
+import { Menu } from 'lucide-react'
 
 const navItems = [
   {
@@ -44,8 +46,11 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
         }
       </div>
       <!-- mobile nav -->
-      <div class="md:hidden">
+      <div class="flex md:hidden">
         <a href="/" class={`${navItemClass}`}> Home </a>
+        <Button variant="ghost" size="icon">
+          <Menu className="h-[1.5rem] w-[1.3rem]" />
+        </Button>
       </div>
       {'|'}
       <ThemeToggle />
