@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro'
+import { BackReferenceSection } from '@/components/back_ref/backref'
+
 const { frontmatter, incomingNotes } = Astro.props
 ---
 
@@ -11,21 +13,6 @@ const { frontmatter, incomingNotes } = Astro.props
     >
       <slot />
     </div>
-    {
-      incomingNotes.length > 0 && (
-        <div class="mt-12">
-          <h2 class="text-2xl font-semibold">Incoming Notes</h2>
-          <ul class="mt-4">
-            {incomingNotes.map((note) => (
-              <li class="mb-4">
-                <a href={`/posts/${note.slug}`} class="text-cactus-accent hover:underline">
-                  {note.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
+    <BackReferenceSection incomingReferences={incomingNotes} />
   </div>
 </BaseLayout>
