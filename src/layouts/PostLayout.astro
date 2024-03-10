@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro'
-import { BackReferenceSection } from '@/components/back-reference/backref.tsx'
+import { BackReferenceSection } from '@/components/post/back-reference.tsx'
 
 const { frontmatter, incomingNotes, rootURL } = Astro.props
 ---
@@ -9,7 +9,7 @@ const { frontmatter, incomingNotes, rootURL } = Astro.props
   <!-- content container -->
   <div class="container max-w-[100ch]">
     <div
-      class="prose prose-sm prose-cactus mt-12 prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+      class="prose prose-sm max-w-[80ch] prose-cactus mt-12 prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
     >
       <slot />
     </div>
