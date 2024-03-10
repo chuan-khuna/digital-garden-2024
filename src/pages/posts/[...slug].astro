@@ -20,12 +20,15 @@ const { Content } = await entry.render()
 
 const outgoingNotes = getOutgoingNotes(entry)
 const incomingNotes = await getIncomingNotes(entry)
+
+// /posts/<slug>
+const collectionRoot = 'posts'
 ---
 
 <PostLayout
   frontmatter={entry.data}
   incomingNotes={incomingNotes}
-  rootURL="posts"
+  rootURL={collectionRoot}
 >
   <Content />
 </PostLayout>
