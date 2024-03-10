@@ -1,7 +1,22 @@
 import React from 'react'
 import { PostCard } from '@/components/post/post-card'
 
-export const BackReferenceSection = ({ incomingReferences, rootURL }) => {
+type BackReferenceProps = {
+  incomingReferences: {
+    slug: string
+    data: {
+      title: string
+      description: string
+      date: string
+    }
+  }[]
+  rootURL: string
+}
+
+export const BackReferenceSection: React.FC<BackReferenceProps> = ({
+  incomingReferences,
+  rootURL,
+}) => {
   return (
     <div className="mt-12">
       Referenced in:
