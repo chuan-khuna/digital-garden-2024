@@ -1,16 +1,25 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import { getCollection } from "astro:content";
-const allPosts = await getCollection("posts");
+import { getCollection } from 'astro:content'
+import { PostCard } from '@/components/post/post-card'
+const allPosts = await getCollection('posts')
 ---
 
 <BaseLayout title="ALTR" description="">
   <p>garden</p>
-  <ul>
+  <div
+    class="container mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-4 md:auto-rows-[18rem] md:grid-cols-3"
+  >
     {
       allPosts.map((post) => (
-        <li><a href={`/posts/${post.slug}/`} class="underline">{post.data.title}</a></li>
+        <PostCard
+          rootURL={'posts'}
+          slug={post.slug}
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+        />
       ))
     }
-  </ul>
+  </div>
 </BaseLayout>

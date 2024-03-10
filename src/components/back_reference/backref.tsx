@@ -1,5 +1,6 @@
 import React from 'react'
 import { CardImageDot } from '@/components/placeholder/card-image'
+import { PostCard } from '@/components/post/post-card'
 
 const BackReferenceCard = ({ title, description }) => {
   return (
@@ -23,12 +24,13 @@ export const BackReferenceSection = ({ incomingReferences, rootURL }) => {
       Referenced in:
       <div className="mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-4 md:auto-rows-[18rem] md:grid-cols-3">
         {incomingReferences.map((item, idx) => (
-          <a href={`/${rootURL}/${item.slug}`}>
-            <BackReferenceCard
-              title={item.data.title}
-              description={item.data.description}
-            />
-          </a>
+          <PostCard
+            rootURL={rootURL}
+            slug={item.slug}
+            title={item.data.title}
+            description={item.data.description}
+            date={item.data.date}
+          />
         ))}
       </div>
     </div>
