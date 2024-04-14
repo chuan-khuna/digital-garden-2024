@@ -3,56 +3,59 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 import { BentoDemo } from '@/components/bento/bento'
 
 const detailClasses = 'prose prose-cactus relative border p-4 md:block'
+const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 ---
 
 <BaseLayout title="ALTR's Resume" description="">
   <div class="">
     <!-- resume layout -->
     <div
-      class="max-w-container mx-auto grid grid-cols-1 gap-2 p-4 md:grid-cols-2"
+      class="mx-auto grid max-w-[120ch] grid-cols-1 gap-2 p-4 md:grid-cols-2"
     >
       <!-- header: name and summary -->
-      <div class="border p-4 md:col-span-2" name="header-summary">
-        <div class="md:flex">
-          <div>
-            <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
-            <p class="text-xl">Data Scientist</p>
+      <div class="md:col-span-2" name="header-summary">
+        <div class="relative border p-4">
+          <div class="md:flex">
+            <div>
+              <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
+              <p class=`${textGrayClasses} text-xl`>Data Scientist</p>
+            </div>
           </div>
-        </div>
-        <div class="mt-4 md:flex">
-          <div name="summary">
-            <p>
-              I have a year of experience as a Data Scientist and Machine
-              Learning Engineer. Most of my tasks are about providing analyses
-              to support a strategy team. I gained experience in the field of
-              spatiotemporal data and time series analysis whilst working on my
-              senior project.
-            </p>
-            <!-- <p>
-              I am keen on learning to create good data visualisation. I admire
-              John Burn-Murdoch and David Spiegelhalter for their works. I have
-              a goal to create high-quality analysis and visualisation that are
-              comprehensible for non-chart people. In my free time, I enjoy
-              watching videos from the Royal Institution to expanding my
-              knowledge and practising English.
-            </p> -->
-          </div>
-          <div
-            class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
-            name="contact-info"
-          >
-            <p>
-              Github:
-              <a
-                href="https://github.com/chuan-khuna"
-                target="_blank"
-                rel="noreferrer"
-                class="font-medium underline"
-              >
-                chuan-khuna
-              </a>
-            </p>
-            <p>Email: k.phattharanat@gmail.com</p>
+          <div class="mt-4 md:flex">
+            <div name="summary">
+              <p>
+                I have a year of experience as a Data Scientist and Machine
+                Learning Engineer. Most of my tasks are about providing analyses
+                to support a strategy team. I gained experience in the field of
+                spatiotemporal data and time series analysis whilst working on
+                my senior project.
+              </p>
+              <!-- <p>
+                I am keen on learning to create good data visualisation. I admire
+                John Burn-Murdoch and David Spiegelhalter for their works. I have
+                a goal to create high-quality analysis and visualisation that are
+                comprehensible for non-chart people. In my free time, I enjoy
+                watching videos from the Royal Institution to expanding my
+                knowledge and practising English.
+              </p> -->
+            </div>
+            <div
+              class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
+              name="contact-info"
+            >
+              <p>
+                Github:
+                <a
+                  href="https://github.com/chuan-khuna"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-medium underline"
+                >
+                  chuan-khuna
+                </a>
+              </p>
+              <p>Email: k.phattharanat@gmail.com</p>
+            </div>
           </div>
         </div>
       </div>
@@ -115,7 +118,7 @@ const detailClasses = 'prose prose-cactus relative border p-4 md:block'
       </div>
       <div class="space-y-2 md:block" name="detail-right">
         <div class={detailClasses} name="skills">
-          <h1 class="text-xl">Experience</h1>
+          <h1 class="text-xl">Skills</h1>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
@@ -134,7 +137,7 @@ const detailClasses = 'prose prose-cactus relative border p-4 md:block'
           </p>
         </div>
         <div class={detailClasses} name="education">
-          <h1 class="text-xl">Project</h1>
+          <h1 class="text-xl">Education</h1>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
