@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro'
+import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 import { BentoDemo } from '@/components/bento/bento'
 
 import Item from '@/components/resume/Item.astro'
@@ -18,7 +18,7 @@ import Now from '@/components/resume/sections/Now.astro'
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 ---
 
-<BaseLayout title="ALTR's Resume" description="">
+<BaseLayoutPrint title="ALTR's Resume" description="">
   <div class="">
     <!-- resume layout -->
     <div
@@ -77,4 +77,4 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
       </div>
     </div>
   </div>
-</BaseLayout>
+</BaseLayoutPrint>

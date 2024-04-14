@@ -1,0 +1,42 @@
+---
+import HeadSEO from '@/components/HeadSEO.astro'
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import Nav from '@/components/Nav.astro'
+
+interface Props {
+  title?: string | undefined
+  description?: string | undefined
+  ogImage?: URL | undefined
+}
+
+const { title, description, ogImage } = Astro.props
+---
+
+<html lang="en">
+  <head>
+    <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <!-- katex style sheet -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+      integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="min-h-screen bg-background font-sans antialiased">
+    <div class="relative flex min-h-screen flex-col">
+      <!-- <Header /> -->
+      <div class="print:hidden"><Nav /></div>
+      <main class="flex-auto">
+        <!-- global container -->
+        <section
+          class="container grid items-center gap-6 px-2 pb-8 pt-6 md:py-10"
+        >
+          <slot />
+        </section>
+      </main>
+      <div class="print:hidden"><Footer /></div>
+    </div>
+  </body>
+</html>
