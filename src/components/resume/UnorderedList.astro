@@ -9,6 +9,8 @@ interface Props {
 const { ulClass, items } = Astro.props
 ---
 
-<ul class={`${ulClass}`}>
-  {items.map((item, index) => <ListItem>{item}</ListItem>)}
-</ul>
+<div class="">
+  <ul class={`${ulClass}`}>
+    {items.map((item, index) => <ListItem>{item}</ListItem>)}
+  </ul>
+</div>

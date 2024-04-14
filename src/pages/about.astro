@@ -14,7 +14,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
   <div class="">
     <!-- resume layout -->
     <div
-      class="mx-auto grid max-w-[120ch] grid-cols-1 gap-2 p-2 md:grid-cols-2"
+      class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2"
     >
       <!-- header: name and summary -->
       <div class="md:col-span-2" name="header-summary">
@@ -64,7 +64,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
         </div>
       </div>
       <!-- detail -->
-      <div class="space-y-2 md:block" name="detail-left">
+      <div class="space-y-2 block" name="detail-left">
         <SectionBlock title="Experience">
           <div>
             <Item
@@ -94,8 +94,23 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
             posuere lorem ipsum dolor sit amet consectetur.
           </p>
         </SectionBlock>
+        <SectionBlock title="Activity">
+          <Item
+            title='An internal meetup talk "What not to Plot and Data Visualisation in History"'
+            timeDescription=""
+            description="Sep 2023"
+          />
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Provided a retrospective analysis of a chart and proposed improvements',
+              'Highlighted some great data visualisations in history',
+            ]}
+            <p
+          />
+        </SectionBlock>
       </div>
-      <div class="space-y-2 md:block" name="detail-right">
+      <div class="space-y-2 block" name="detail-right">
         <SectionBlock title="Skills">
           <div>
             <h2 class="text-lg">Programming Languages and Tools</h2>
@@ -140,6 +155,20 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
             Senior Project: Bias Correction of Multi-Dimensional Climate Data
             and Visualisation
           </p>
+        </SectionBlock>
+        <SectionBlock title="Interests">
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Data visualisation',
+              'Table Tennis',
+              'Listening to music (Sawano Hiroyuki)',
+              'People I admire: John Burn-Murdoch, David Spiegelhalter, Grant Sanderson (3B1B), Matt Parker',
+              'British English accents (RP, Cockney)',
+              'Functional Programming, Haskell, Elixir',
+              'Personal Knowledge Management, Zettelkasten, Evergreen Notes',
+            ]}
+          />
         </SectionBlock>
       </div>
     </div>
