@@ -1,0 +1,14 @@
+---
+import ListItem from './ListItem.astro'
+
+interface Props {
+  ulClass: string
+  items: string[]
+}
+
+const { ulClass, items } = Astro.props
+---
+
+<ul class={`${ulClass}`}>
+  {items.map((item, index) => <ListItem>{item}</ListItem>)}
+</ul>
