@@ -26,6 +26,14 @@ $$
 
 [[lorem:lorem-alias]]
 
+To use the wiki links, use `[[]]`.
+
+```md
+[[slug:alias]]
+```
+
+The back-link script (`src/utils/bidirectional-link.ts`) will look for the aliases in markdown files and the frontmatter `aliases` field to create the backlinks.
+
 
 ## Horizontal Rules
 
@@ -146,4 +154,6 @@ Image in the aliased assets folder: `src/assets/avatars-4.png`
 ## Links
 
 [Content from markdown-it](https://markdown-it.github.io/)
+
+import { Script } from "vm"
 
