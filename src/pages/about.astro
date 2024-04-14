@@ -5,111 +5,53 @@ import { BentoDemo } from '@/components/bento/bento'
 
 <BaseLayout title="ALTR's Resume" description="">
   <div class="container font-mono">
-    <div
-      class="max-w-8xl mx-auto grid grid-cols-1 gap-16 md:auto-rows-[18rem] md:grid-cols-3"
-    >
-      <!-- about me -->
+    <!-- resume layout -->
+    <div class="max-w-8xl mx-auto grid grid-cols-1 gap-8 p-4 md:grid-cols-2">
+      <!-- header: name and summary -->
       <div class="md:col-span-2">
-        <h1 class="text-4xl font-bold text-black/[0.75]">
-          Phattharanat Khunakornophat
-        </h1>
-        <p class="text-xl text-black/[0.5]">Data Scientist</p>
-
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I am keen on learning to create good data visualisation. I admire John
-          Burn-Murdoch and David Spiegelhalter for their works. I have a goal to
-          create high-quality analysis and visualisation that are comprehensible
-          for non-chart people. In my free time, I enjoy watching videos from
-          the Royal Institution to expanding my knowledge and practising
-          English.
-        </p>
-      </div>
-
-      <div class="col">
-        <p>
-          Github:
-          <a
-            href="https://github.com/chuan-khuna"
-            target="_blank"
-            rel="noreferrer"
-            class="font-medium underline"
+        <div class="md:flex">
+          <div>
+            <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
+            <p class="text-xl">Data Scientist</p>
+          </div>
+        </div>
+        <div class="mt-4 md:flex">
+          <div name="summary">
+            <p>
+              I have a year of experience as a Data Scientist and Machine
+              Learning Engineer. Most of my tasks are about providing analyses
+              to support a strategy team. I gained experience in the field of
+              spatiotemporal data and time series analysis whilst working on my
+              senior project.
+            </p>
+            <p>
+              I am keen on learning to create good data visualisation. I admire
+              John Burn-Murdoch and David Spiegelhalter for their works. I have
+              a goal to create high-quality analysis and visualisation that are
+              comprehensible for non-chart people. In my free time, I enjoy
+              watching videos from the Royal Institution to expanding my
+              knowledge and practising English.
+            </p>
+          </div>
+          <div
+            class="mt-4 w-full max-w-[480px] md:mt-0 md:pl-8 md:text-right"
+            name="contact-info"
           >
-            chuan-khuna
-          </a>
-        </p>
-        <p>email: k.phattharanat@gmail.com</p>
+            <p>
+              Github:
+              <a
+                href="https://github.com/chuan-khuna"
+                target="_blank"
+                rel="noreferrer"
+                class="font-medium underline"
+              >
+                chuan-khuna
+              </a>
+            </p>
+            <p>email: k.phattharanat@gmail.com</p>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- content -->
-    <div
-      class="max-w-8xl mx-auto grid grid-cols-1 gap-16 md:auto-rows-[18rem] md:grid-cols-2"
-    >
-      <div>
-        <h1 class="text-2xl font-bold text-black/[0.75]">Experience</h1>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-      </div>
-      <div>
-        <h1 class="text-2xl font-bold text-black/[0.75]">Projects</h1>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-      </div>
-    </div>
-
-    <!-- <code>
-      "I have an avid interest in data science and data visualisation"
-    </code> -->
-
-    <!-- <div class="grid">
-      <BentoDemo client:load />
-      <BentoDemo client:load />
-    </div> -->
-
-    <!-- </div> -->
   </div>
 </BaseLayout>
