@@ -1,14 +1,18 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { BentoDemo } from '@/components/bento/bento'
+
+const detailClasses = 'prose prose-cactus relative border p-4 md:block'
 ---
 
 <BaseLayout title="ALTR's Resume" description="">
   <div class="">
     <!-- resume layout -->
-    <div class="max-w-8xl mx-auto grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
+    <div
+      class="max-w-container mx-auto grid grid-cols-1 gap-2 p-4 md:grid-cols-2"
+    >
       <!-- header: name and summary -->
-      <div class="md:col-span-2" name="header-summary">
+      <div class="border p-4 md:col-span-2" name="header-summary">
         <div class="md:flex">
           <div>
             <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
@@ -24,17 +28,17 @@ import { BentoDemo } from '@/components/bento/bento'
               spatiotemporal data and time series analysis whilst working on my
               senior project.
             </p>
-            <p>
+            <!-- <p>
               I am keen on learning to create good data visualisation. I admire
               John Burn-Murdoch and David Spiegelhalter for their works. I have
               a goal to create high-quality analysis and visualisation that are
               comprehensible for non-chart people. In my free time, I enjoy
               watching videos from the Royal Institution to expanding my
               knowledge and practising English.
-            </p>
+            </p> -->
           </div>
           <div
-            class="mt-4 w-full max-w-[480px] md:mt-0 md:pl-8 md:text-right"
+            class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
             name="contact-info"
           >
             <p>
@@ -48,48 +52,106 @@ import { BentoDemo } from '@/components/bento/bento'
                 chuan-khuna
               </a>
             </p>
-            <p>email: k.phattharanat@gmail.com</p>
+            <p>Email: k.phattharanat@gmail.com</p>
           </div>
         </div>
       </div>
       <!-- detail -->
-      <div class="prose prose-cactus border p-2 md:block" name="experience">
-        <h1 class="text-xl">Experience</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
-          posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
-          neque gravida in fermentum et sollicitudin. Amet nisl purus in mollis
-          nunc sed. Dis parturient montes nascetur ridiculus mus mauris vitae.
-          Dapibus ultrices in iaculis nunc. Et malesuada fames ac turpis egestas
-          maecenas pharetra convallis posuere. Nam libero justo laoreet sit.
-          Aenean sed adipiscing diam donec adipiscing tristique risus nec
-          feugiat. Ac tincidunt vitae semper quis lectus nulla at volutpat diam.
-          Dolor sit amet consectetur adipiscing elit ut aliquam purus sit.
-          Interdum varius sit amet mattis vulputate. Commodo nulla facilisi
-          nullam vehicula. Pharetra et ultrices neque ornare aenean euismod
-          elementum nisi. Vitae tempus quam pellentesque nec nam aliquam sem et
-          tortor.
-        </p>
+      <div class="space-y-2 md:block" name="detail-left">
+        <div class={detailClasses} name="experience">
+          <h1 class="text-xl">Experience</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+            posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+            neque gravida in fermentum et sollicitudin. Amet nisl purus in
+            mollis nunc sed. Dis parturient montes nascetur ridiculus mus mauris
+            vitae. Dapibus ultrices in iaculis nunc. Et malesuada fames ac
+            turpis egestas maecenas pharetra convallis posuere. Nam libero justo
+            laoreet sit. Aenean sed adipiscing diam donec adipiscing tristique
+            risus nec feugiat. Ac tincidunt vitae semper quis lectus nulla at
+            volutpat diam. Dolor sit amet consectetur adipiscing elit ut aliquam
+            purus sit. Interdum varius sit amet mattis vulputate. Commodo nulla
+            facilisi nullam vehicula. Pharetra et ultrices neque ornare aenean
+            euismod elementum nisi. Vitae tempus quam pellentesque nec nam
+            aliquam sem et tortor.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+            posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+            neque gravida in fermentum et sollicitudin. Amet nisl purus in
+            mollis nunc sed. Dis parturient montes nascetur ridiculus mus mauris
+            vitae. Dapibus ultrices in iaculis nunc. Et malesuada fames ac
+            turpis egestas maecenas pharetra convallis posuere. Nam libero justo
+            laoreet sit. Aenean sed adipiscing diam donec adipiscing tristique
+            risus nec feugiat. Ac tincidunt vitae semper quis lectus nulla at
+            volutpat diam. Dolor sit amet consectetur adipiscing elit ut aliquam
+            purus sit. Interdum varius sit amet mattis vulputate. Commodo nulla
+            facilisi nullam vehicula. Pharetra et ultrices neque ornare aenean
+            euismod elementum nisi. Vitae tempus quam pellentesque nec nam
+            aliquam sem et tortor.
+          </p>
+        </div>
+        <div class={detailClasses} name="projects">
+          <h1 class="text-xl">Project</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+            posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+            neque gravida in fermentum et sollicitudin. Amet nisl purus in
+            mollis nunc sed. Dis parturient montes nascetur ridiculus mus mauris
+            vitae. Dapibus ultrices in iaculis nunc. Et malesuada fames ac
+            turpis egestas maecenas pharetra convallis posuere. Nam libero justo
+            laoreet sit. Aenean sed adipiscing diam donec adipiscing tristique
+            risus nec feugiat. Ac tincidunt vitae semper quis lectus nulla at
+            volutpat diam. Dolor sit amet consectetur adipiscing elit ut aliquam
+            purus sit. Interdum varius sit amet mattis vulputate. Commodo nulla
+            facilisi nullam vehicula. Pharetra et ultrices neque ornare aenean
+            euismod elementum nisi. Vitae tempus quam pellentesque nec nam
+            aliquam sem et tortor.
+          </p>
+        </div>
       </div>
-      <div class="prose prose-cactus border p-2 md:block" name="projects">
-        <h1 class="text-xl">Project</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
-          posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
-          neque gravida in fermentum et sollicitudin. Amet nisl purus in mollis
-          nunc sed. Dis parturient montes nascetur ridiculus mus mauris vitae.
-          Dapibus ultrices in iaculis nunc. Et malesuada fames ac turpis egestas
-          maecenas pharetra convallis posuere. Nam libero justo laoreet sit.
-          Aenean sed adipiscing diam donec adipiscing tristique risus nec
-          feugiat. Ac tincidunt vitae semper quis lectus nulla at volutpat diam.
-          Dolor sit amet consectetur adipiscing elit ut aliquam purus sit.
-          Interdum varius sit amet mattis vulputate. Commodo nulla facilisi
-          nullam vehicula. Pharetra et ultrices neque ornare aenean euismod
-          elementum nisi. Vitae tempus quam pellentesque nec nam aliquam sem et
-          tortor.
-        </p>
+      <div class="space-y-2 md:block" name="detail-right">
+        <div class={detailClasses} name="skills">
+          <h1 class="text-xl">Experience</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+            posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+            neque gravida in fermentum et sollicitudin. Amet nisl purus in
+            mollis nunc sed. Dis parturient montes nascetur ridiculus mus mauris
+            vitae. Dapibus ultrices in iaculis nunc. Et malesuada fames ac
+            turpis egestas maecenas pharetra convallis posuere. Nam libero justo
+            laoreet sit. Aenean sed adipiscing diam donec adipiscing tristique
+            risus nec feugiat. Ac tincidunt vitae semper quis lectus nulla at
+            volutpat diam. Dolor sit amet consectetur adipiscing elit ut aliquam
+            purus sit. Interdum varius sit amet mattis vulputate. Commodo nulla
+            facilisi nullam vehicula. Pharetra et ultrices neque ornare aenean
+            euismod elementum nisi. Vitae tempus quam pellentesque nec nam
+            aliquam sem et tortor.
+          </p>
+        </div>
+        <div class={detailClasses} name="education">
+          <h1 class="text-xl">Project</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+            posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+            neque gravida in fermentum et sollicitudin. Amet nisl purus in
+            mollis nunc sed. Dis parturient montes nascetur ridiculus mus mauris
+            vitae. Dapibus ultrices in iaculis nunc. Et malesuada fames ac
+            turpis egestas maecenas pharetra convallis posuere. Nam libero justo
+            laoreet sit. Aenean sed adipiscing diam donec adipiscing tristique
+            risus nec feugiat. Ac tincidunt vitae semper quis lectus nulla at
+            volutpat diam. Dolor sit amet consectetur adipiscing elit ut aliquam
+            purus sit. Interdum varius sit amet mattis vulputate. Commodo nulla
+            facilisi nullam vehicula. Pharetra et ultrices neque ornare aenean
+            euismod elementum nisi. Vitae tempus quam pellentesque nec nam
+            aliquam sem et tortor.
+          </p>
+        </div>
       </div>
     </div>
   </div>
