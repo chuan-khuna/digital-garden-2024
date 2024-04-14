@@ -4,11 +4,11 @@ import { BentoDemo } from '@/components/bento/bento'
 ---
 
 <BaseLayout title="ALTR's Resume" description="">
-  <div class="container font-mono">
+  <div class="">
     <!-- resume layout -->
-    <div class="max-w-8xl mx-auto grid grid-cols-1 gap-8 p-4 md:grid-cols-2">
+    <div class="max-w-8xl mx-auto grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
       <!-- header: name and summary -->
-      <div class="md:col-span-2">
+      <div class="md:col-span-2" name="header-summary">
         <div class="md:flex">
           <div>
             <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
@@ -51,6 +51,45 @@ import { BentoDemo } from '@/components/bento/bento'
             <p>email: k.phattharanat@gmail.com</p>
           </div>
         </div>
+      </div>
+      <!-- detail -->
+      <div class="prose prose-cactus border p-2 md:block" name="experience">
+        <h1 class="text-xl">Experience</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+          posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+          neque gravida in fermentum et sollicitudin. Amet nisl purus in mollis
+          nunc sed. Dis parturient montes nascetur ridiculus mus mauris vitae.
+          Dapibus ultrices in iaculis nunc. Et malesuada fames ac turpis egestas
+          maecenas pharetra convallis posuere. Nam libero justo laoreet sit.
+          Aenean sed adipiscing diam donec adipiscing tristique risus nec
+          feugiat. Ac tincidunt vitae semper quis lectus nulla at volutpat diam.
+          Dolor sit amet consectetur adipiscing elit ut aliquam purus sit.
+          Interdum varius sit amet mattis vulputate. Commodo nulla facilisi
+          nullam vehicula. Pharetra et ultrices neque ornare aenean euismod
+          elementum nisi. Vitae tempus quam pellentesque nec nam aliquam sem et
+          tortor.
+        </p>
+      </div>
+      <div class="prose prose-cactus border p-2 md:block" name="projects">
+        <h1 class="text-xl">Project</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
+          posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
+          neque gravida in fermentum et sollicitudin. Amet nisl purus in mollis
+          nunc sed. Dis parturient montes nascetur ridiculus mus mauris vitae.
+          Dapibus ultrices in iaculis nunc. Et malesuada fames ac turpis egestas
+          maecenas pharetra convallis posuere. Nam libero justo laoreet sit.
+          Aenean sed adipiscing diam donec adipiscing tristique risus nec
+          feugiat. Ac tincidunt vitae semper quis lectus nulla at volutpat diam.
+          Dolor sit amet consectetur adipiscing elit ut aliquam purus sit.
+          Interdum varius sit amet mattis vulputate. Commodo nulla facilisi
+          nullam vehicula. Pharetra et ultrices neque ornare aenean euismod
+          elementum nisi. Vitae tempus quam pellentesque nec nam aliquam sem et
+          tortor.
+        </p>
       </div>
     </div>
   </div>
