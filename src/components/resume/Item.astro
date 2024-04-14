@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string
+  timeDescription: string
+  description: string
+}
+
+const { title, timeDescription, description } = Astro.props
+---
+
+<div>
+  <text class="text-xl">
+    {title}
+  </text>
+  {
+    timeDescription && (
+      <>
+        <br />
+        <t class="*:text-bold text-sm text-gray-700">{timeDescription}</t>
+      </>
+    )
+  }
+  {
+    description && (
+      <>
+        <br />
+        <t class="*:text-bold text-sm text-gray-700">{description}</t>
+      </>
+    )
+  }
+</div>
+    
