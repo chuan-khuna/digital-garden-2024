@@ -1,0 +1,62 @@
+---
+import SectionBlock from '../SectionBlock.astro'
+import UnorderedList from '../UnorderedList.astro'
+import Item from '../Item.astro'
+---
+
+<SectionBlock title="Projects">
+  <Item
+    title="Python utils"
+    timeDescription=""
+    description="Personal project"
+    url="https://github.com/chuan-khuna/my-python-utils"
+  />
+  <p class="mb-4 mt-0 text-sm">
+    A collection of snippets of code for solving problems that I have
+    encountered, eg data scraper, colour palette extractor, RFM analysis, text
+    cleaner
+  </p>
+  <Item
+    title="Wordle game by Haskell"
+    timeDescription="Sep 2023"
+    description="Personal project"
+    url="https://github.com/chuan-khuna/learning-haskell"
+  />
+  <p class="mb-4 mt-0 text-sm">
+    Implement the Wordle puzzle in Haskell language to explore functional
+    programming style
+  </p>
+  <Item
+    title="Wordle But Statistics"
+    timeDescription="Jan 2022"
+    description="Personal project"
+    url="https://github.com/chuan-khuna/wordle-but-statistics"
+  />
+  <p class="mb-4 mt-0 text-sm">
+    Solve the Wordle puzzle optimally by using statistics/information theory
+  </p>
+  <Item
+    title="Bias Correction of Multi-Dimensional Climate Data and Visualisation"
+    timeDescription="2019 - 2020"
+    description="Senior project at KMUTNB"
+  />
+  <UnorderedList
+    ulClass="text-sm"
+    items={[
+      'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
+      'Performed and evaluated performance of climate bias correction methods',
+    ]}
+  />
+  <Item
+    title="Data Mining and AI Course­"
+    timeDescription="2019 - 2020"
+    description="Enrolled University Courses at KMUTNB"
+  />
+  <UnorderedList
+    ulClass="text-sm"
+    items={[
+      'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
+      'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
+    ]}
+  />
+</SectionBlock>

@@ -2,10 +2,18 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { BentoDemo } from '@/components/bento/bento'
 
-import ListItem from '@/components/resume/ListItem.astro'
 import Item from '@/components/resume/Item.astro'
 import SectionBlock from '@/components/resume/SectionBlock.astro'
 import UnorderedList from '@/components/resume/UnorderedList.astro'
+
+// section
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Now from '@/components/resume/sections/Now.astro'
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 ---
@@ -57,169 +65,15 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
       </div>
       <!-- detail -->
       <div class="block space-y-2" name="detail-left">
-        <SectionBlock title="Experience">
-          <div>
-            <Item
-              title="Data Scientist"
-              timeDescription="Jul 2022 - Present"
-              description="The Mather"
-            />
-            <UnorderedList
-              ulClass="text-sm"
-              items={[
-                'Provide data analysis and visualisation for a strategy team',
-                'Implement data scraper for social media platforms including Pantip (Thailand discussion forum), Twitter, YouTube and TikTok',
-                'Analyse point of sale data: RFM analysis, cohort analysis and association rule learning',
-                'Train a Thai Speech Emotion Recognition model using Transformer architecture, achieve 60% validation accuracy with five classes data',
-                'Extract and process data from JSON responses to create PDF reports using Weasyprint',
-                'Conduct research and execute a POC project centred in analysis and visualisation of real-time people detection data including face detection, face recognition, direction flow, utilising technologies such as Kafka, Flask, NextJS, Weaviate, Chroma',
-                'Refactor and set the standard for Django projects to enhance maintainability and reusability',
-                'Implement basic Bitbucket Pipelines to automate the deployment to an internal testing server, eliminating the need of manual tasks',
-              ]}
-            />
-          </div>
-        </SectionBlock>
-        <SectionBlock title="Projects">
-          <Item
-            title="Python utils"
-            timeDescription=""
-            description="Personal project"
-            url="https://github.com/chuan-khuna/my-python-utils"
-          />
-          <p class="mb-4 mt-0 text-sm">
-            A collection of snippets of code for solving problems that I have
-            encountered, eg data scraper, colour palette extractor, RFM
-            analysis, text cleaner
-          </p>
-          <Item
-            title="Wordle game by Haskell"
-            timeDescription="Sep 2023"
-            description="Personal project"
-            url="https://github.com/chuan-khuna/learning-haskell"
-          />
-          <p class="mb-4 mt-0 text-sm">
-            Implement the Wordle puzzle in Haskell language to explore
-            functional programming style
-          </p>
-          <Item
-            title="Wordle But Statistics"
-            timeDescription="Jan 2022"
-            description="Personal project"
-            url="https://github.com/chuan-khuna/wordle-but-statistics"
-          />
-          <p class="mb-4 mt-0 text-sm">
-            Solve the Wordle puzzle optimally by using statistics/information
-            theory
-          </p>
-          <Item
-            title="Bias Correction of Multi-Dimensional Climate Data and Visualisation"
-            timeDescription="2019 - 2020"
-            description="Senior project at KMUTNB"
-          />
-          <UnorderedList
-            ulClass="text-sm"
-            items={[
-              'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
-              'Performed and evaluated performance of climate bias correction methods',
-            ]}
-          />
-          <Item
-            title="Data Mining and AI Course­"
-            timeDescription="2019 - 2020"
-            description="Enrolled University Courses at KMUTNB"
-          />
-          <UnorderedList
-            ulClass="text-sm"
-            items={[
-              'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
-              'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
-            ]}
-          />
-        </SectionBlock>
-        <SectionBlock title="Activity">
-          <Item
-            title='An internal meetup talk "What not to Plot and Data Visualisation in History"'
-            timeDescription="Sep 2023"
-            description="The Mather"
-          />
-          <UnorderedList
-            ulClass="text-sm"
-            items={[
-              'Provided a retrospective analysis of a chart and proposed improvements',
-              'Highlighted some great data visualisations in history',
-            ]}
-            <p
-          />
-        </SectionBlock>
+        <Experiences />
+        <Projects />
+        <Activity />
       </div>
       <div class="block space-y-2" name="detail-right">
-        <SectionBlock title="Skills">
-          <div>
-            <h2 class="text-lg">Programming Languages and Tools</h2>
-            <text class="text-sm"><b>Proficient:{' '}</b> Python</text>
-            <br />
-            <div class="pl-4 text-sm">
-              pandas, numpy, netCDF, matplotlib, seaborn, pyvis, PyThaiNLP,
-              NLTK, gensim, TensorFlow
-            </div>
-            <text class="text-sm"
-              ><b>Intermediate:{' '}</b>R, Ruby, SQL, Git, Google Looker Studio,
-              Docker
-            </text>
-            <br />
-            <text class="text-sm"
-              ><b>Others:{' '}</b>Streamlit, Haskell, React, Astro, NextJS,
-              Nivo, Recharts, Bitbucket Pipelines, Apache Kafka, Websocket,
-              Vector Database (eg Weaviate, Chroma), Stable Diffusion QR code
-            </text>
-          </div>
-          <div>
-            <h2 class="text-lg">Data Science and Machine Learning</h2>
-            <UnorderedList
-              ulClass="text-sm"
-              items={[
-                'Data visualisation using matplotlib, seaborn, Google Looker Studio, Streamlit',
-                'Text network analysis, wordcloud',
-                'Time series analysis, RFM analysis, cohort analysis, association rule learning',
-                'Trained Speech Emotion Recognition model using LSTM and Transformer',
-              ]}
-            />
-          </div>
-        </SectionBlock>
-        <SectionBlock title="Education">
-          <Item
-            title="Bachelor of Engineering, Computer Engineering"
-            timeDescription="Aug 2016 - Apr 2020"
-            description="King Mongkut's University of Technology North Bangkok"
-          />
-          <p>First Class Honour (3.83)</p>
-          <p>
-            Senior Project: Bias Correction of Multi-Dimensional Climate Data
-            and Visualisation
-          </p>
-        </SectionBlock>
-        <SectionBlock title="Interests">
-          <UnorderedList
-            ulClass="text-sm"
-            items={[
-              'Data visualisation',
-              'Table Tennis',
-              'Listening to music (Sawano Hiroyuki)',
-              'People I admire: John Burn-Murdoch, David Spiegelhalter, Grant Sanderson (3B1B), Matt Parker',
-              'British English accents (RP, Cockney)',
-              'Functional Programming, Haskell, Elixir',
-              'Personal Knowledge Management, Zettelkasten, Evergreen Notes',
-            ]}
-          />
-        </SectionBlock>
-        <SectionBlock title="Now">
-          <p class="mt-8 font-mono text-sm text-gray-600">
-            Welcome to my resume! I want to use this section to tell you about
-            what I am doing now. <br />(Last Updated: 2024-04-14)
-          </p>
-          <p>I am currently interested in Functional Programming and Monad. I enjoy drinking Earlgrey tea and specialty cofee.</p>
-          <p>I am also suffering from gastritis, conjunctivitis, de quervain tenosynovitis.</p>
-        </SectionBlock>
+        <Skills />
+        <Education />
+        <Interests />
+        <Now />
       </div>
     </div>
   </div>
