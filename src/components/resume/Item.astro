@@ -8,25 +8,24 @@ interface Props {
 const { title, timeDescription, description } = Astro.props
 ---
 
-<div>
+<div class="">
   <text class="text-xl">
     {title}
   </text>
-  {
-    timeDescription && (
-      <>
-        <br />
-        <t class="*:text-bold text-sm text-gray-700">{timeDescription}</t>
-      </>
-    )
-  }
-  {
-    description && (
-      <>
-        <br />
-        <t class="*:text-bold text-sm text-gray-700">{description}</t>
-      </>
-    )
-  }
+  <div class="mt-1 md:flex">
+    {
+      description && (
+        <div class="w-full md:text-left">
+          <t class="*:text-bold text-sm">{description}</t>
+        </div>
+      )
+    }
+    {
+      timeDescription && (
+        <div class="w-full max-w-[24ch] pr-8 md:text-right">
+          <t class="*:text-bold text-sm">{timeDescription}</t>
+        </div>
+      )
+    }
+  </div>
 </div>
-    
