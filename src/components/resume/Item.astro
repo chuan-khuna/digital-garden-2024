@@ -3,9 +3,10 @@ interface Props {
   title: string
   timeDescription: string
   description: string
+  url: string
 }
 
-const { title, timeDescription, description } = Astro.props
+const { title, timeDescription, description, url } = Astro.props
 ---
 
 <div class="">
@@ -24,4 +25,15 @@ const { title, timeDescription, description } = Astro.props
       )
     }
   </div>
+  {
+    url && (
+      <div class="md:flex">
+        <div class="w-full text-left">
+          <a href={url} class="text-sm hover:underline">
+            {url}
+          </a>
+        </div>
+      </div>
+    )
+  }
 </div>
