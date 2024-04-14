@@ -1,14 +1,23 @@
 ---
 import BaseLayout from './BaseLayout.astro'
-const { frontmatter } = Astro.props
+import { BackReferenceSection } from '@/components/post/back-reference.tsx'
+
+const { frontmatter, incomingNotes, rootURL } = Astro.props
+// incomingNotes: an array of note objects from Astro getCollection()
+// to access frontmatter of a note, use note.data
 ---
 
 <BaseLayout title={frontmatter.title}>
-  <div
-  class="prose dark:prose-invert
-  prose-h1:font-bold prose-h1:text-xl
-  prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl
-  prose-headings:underline">
-    <slot />
+  <!-- content container -->
+  <div class="container max-w-[100ch]">
+    <div
+      class="prose prose-cactus mt-12 max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+    >
+      <slot />
+    </div>
+    <BackReferenceSection
+      incomingReferences={incomingNotes}
+      rootURL={rootURL}
+    />
   </div>
 </BaseLayout>

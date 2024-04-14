@@ -1,0 +1,87 @@
+---
+import { buttonVariants } from '@/components/ui/button'
+import ThemeToggle from '@/components/ThemeToggle.astro'
+import { Button } from '@/components/ui/button'
+import { Menu, X as Close } from 'lucide-react'
+
+const navItems = [
+  {
+    label: 'Home',
+    link: '/',
+  },
+  {
+    label: 'Garden',
+    link: '/garden',
+  },
+  {
+    label: 'Uses',
+    link: '/uses',
+  },
+  {
+    label: 'About',
+    link: '/about',
+  },
+]
+
+const blurryFullNav =
+  'sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+const navItemClass = buttonVariants({ variant: 'ghost' })
+---
+
+<header class={`${blurryFullNav}`}>
+  <div
+    class="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0"
+  >
+    <nav
+      class="fixed inset-x-0 top-2 z-[5000] mx-auto flex max-w-fit items-center justify-center space-x-4 rounded-full border border-transparent bg-transparent py-1 pl-2 pr-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] supports-[backdrop-filter]:bg-background/10 dark:border-white/[0.1]"
+    >
+      <!-- desktop size nav -->
+      <div class="hidden md:flex">
+        {
+          navItems.map((item, idx) => (
+            <a href={item.link} class={`${navItemClass}`}>
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+      <ThemeToggle />
+      <!-- mobile nav button -->
+      <div class="flex md:hidden">
+        <Button variant="ghost" size="icon" id="mobile-nav">
+          <Menu className="h-[1.5rem] w-[1.3rem]" id="nav-hamburger" />
+          <Close className="hidden h-[1.5rem] w-[1.3rem]" id="nav-close" />
+        </Button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- mobile nav -->
+  <!-- TODO: optional nav menu expands to 100% height w/ blur effect -->
+  <div id="mobile-nav-container" class="hidden w-full">
+    <div class="flex flex-col md:hidden">
+      {
+        navItems.map((item, idx) => (
+          <a href={item.link} class="mx-auto py-2">
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</header>
+
+<script>
+  const mobileNavContainer = document.getElementById('mobile-nav-container')
+  const navButton = document.getElementById('mobile-nav')
+  const hamburgerIcon = document.getElementById('nav-hamburger')
+  const closeIcon = document.getElementById('nav-close')
+
+  const handleNavClick = () => {
+    hamburgerIcon.classList.toggle('hidden')
+    closeIcon.classList.toggle('hidden')
+    mobileNavContainer.classList.toggle('hidden')
+  }
+
+  navButton.addEventListener('click', handleNavClick)
+</script>

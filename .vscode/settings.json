@@ -4,7 +4,7 @@
     ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
-  // "[astro]": {
-  //   "editor.defaultFormatter": "astro-build.astro-vscode"
-  // }
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  }
 }

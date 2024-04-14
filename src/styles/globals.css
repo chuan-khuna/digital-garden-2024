@@ -33,6 +33,15 @@
     --ring: 222.2 84% 1%;
 
     --radius: 0.5rem;
+
+    /* cacrus */
+    --theme-bg: 0deg 0% 98%;
+    --theme-link: 172deg 18% 41%;
+    --theme-text: 203deg 11% 15%;
+    /* adapted from 202f66 and ff7048 */
+    --theme-accent: 13 100% 69.2%;
+    --theme-accent-2: 227.1 52.2% 26.3%;
+    --theme-quote: 253.1deg 80% 64.1%;
   }
 
   .dark {
@@ -63,6 +72,14 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    /* cactus */
+    --theme-bg: 210deg 6% 12%;
+    --theme-link: 330deg 49% 67%;
+    --theme-text: 220deg 3% 79%;
+    --theme-accent: 159deg 64% 45%;
+    --theme-accent-2: 0deg 0% 93%;
+    --theme-quote: 102deg 100% 86%;
   }
 }
 
