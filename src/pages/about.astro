@@ -34,14 +34,6 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
                 spatiotemporal data and time series analysis whilst working on
                 my senior project.
               </p>
-              <!-- <p>
-                I am keen on learning to create good data visualisation. I
-                admire John Burn-Murdoch and David Spiegelhalter for their
-                works. I have a goal to create high-quality analysis and
-                visualisation that are comprehensible for non-chart people. In
-                my free time, I enjoy watching videos from the Royal Institution
-                to expanding my knowledge and practising English.
-              </p> -->
             </div>
             <div
               class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
@@ -88,17 +80,64 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
           </div>
         </SectionBlock>
         <SectionBlock title="Projects">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
-            posuere lorem ipsum dolor sit amet consectetur.
+          <Item
+            title="Python utils"
+            timeDescription=""
+            description="Personal project"
+          />
+          <p class="mb-4 mt-0 text-sm">
+            A collection of snippets of code for solving problems that I have
+            encountered, eg data scraper, colour palette extractor, RFM
+            analysis, text cleaner
           </p>
+          <Item
+            title="Wordle game by Haskell"
+            timeDescription="Sep 2023"
+            description="Personal project"
+          />
+          <p class="mb-4 mt-0 text-sm">
+            Implement the Wordle puzzle in Haskell language to explore
+            functional programming style
+          </p>
+          <Item
+            title="Wordle But Statistics"
+            timeDescription="Jan 2022"
+            description="Personal project"
+          />
+          <p class="mb-4 mt-0 text-sm">
+            Solve the Wordle puzzle optimally by using statistics/information
+            theory
+          </p>
+          <Item
+            title="Bias Correction of Multi-Dimensional Climate Data and Visualisation"
+            timeDescription="2019 - 2020"
+            description="Senior project at KMUTNB"
+          />
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
+              'Performed and evaluated performance of climate bias correction methods',
+            ]}
+          />
+          <Item
+            title="Data Mining and AI Course­"
+            timeDescription="2019 - 2020"
+            description="Enrolled University Courses at KMUTNB"
+          />
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
+              'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
+            ]}
+          />
         </SectionBlock>
         <SectionBlock title="Activity">
           <Item
             title='An internal meetup talk "What not to Plot and Data Visualisation in History"'
-            timeDescription=""
-            description="Sep 2023"
+            timeDescription="Sep 2023"
+            description="The Mather"
           />
           <UnorderedList
             ulClass="text-sm"

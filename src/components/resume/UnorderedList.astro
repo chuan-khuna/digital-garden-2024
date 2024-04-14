@@ -10,7 +10,7 @@ const { ulClass, items } = Astro.props
 ---
 
 <div class="">
-  <ul class={`${ulClass}`}>
+  <ul class={`${ulClass} my-2`}>
     {items.map((item, index) => <ListItem>{item}</ListItem>)}
   </ul>
 </div>

@@ -13,13 +13,9 @@ const { title, timeDescription, description } = Astro.props
     {title}
   </text>
   <div class="mt-1 md:flex">
-    {
-      description && (
-        <div class="w-full md:text-left">
-          <t class="text-sm">{description}</t>
-        </div>
-      )
-    }
+    <div class="w-full md:text-left">
+      <t class="text-sm">{description}</t>
+    </div>
     {
       timeDescription && (
         <div class="w-full max-w-[24ch] pr-8 md:text-right">
