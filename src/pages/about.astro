@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { BentoDemo } from '@/components/bento/bento'
+
 import ListItem from '@/components/resume/ListItem.astro'
 import Item from '@/components/resume/Item.astro'
+import SectionBlock from '@/components/resume/SectionBlock.astro'
 
 const detailClasses = 'prose prose-cactus relative border p-4 md:block'
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
@@ -12,7 +14,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
   <div class="">
     <!-- resume layout -->
     <div
-      class="mx-auto grid max-w-[120ch] grid-cols-1 gap-2 p-4 md:grid-cols-2"
+      class="mx-auto grid max-w-[120ch] grid-cols-1 gap-2 p-2 md:grid-cols-2"
     >
       <!-- header: name and summary -->
       <div class="md:col-span-2" name="header-summary">
@@ -63,8 +65,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
       </div>
       <!-- detail -->
       <div class="space-y-2 md:block" name="detail-left">
-        <div class={detailClasses} name="experience">
-          <h1 class="text-2xl">Experience</h1>
+        <SectionBlock title="Experience">
           <div>
             <Item
               title="Data Scientist"
@@ -107,9 +108,8 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
               </ListItem>
             </ul>
           </div>
-        </div>
-        <div class={detailClasses} name="projects">
-          <h1 class="text-xl">Project</h1>
+        </SectionBlock>
+        <SectionBlock title="Projects">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
@@ -126,11 +126,10 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
             euismod elementum nisi. Vitae tempus quam pellentesque nec nam
             aliquam sem et tortor.
           </p>
-        </div>
+        </SectionBlock>
       </div>
       <div class="space-y-2 md:block" name="detail-right">
-        <div class={detailClasses} name="skills">
-          <h1 class="text-xl">Skills</h1>
+        <SectionBlock title="Skills">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
@@ -147,26 +146,28 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
             euismod elementum nisi. Vitae tempus quam pellentesque nec nam
             aliquam sem et tortor.
           </p>
-        </div>
-        <div class={detailClasses} name="education">
-          <h1 class="text-xl">Education</h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Interdum
-            posuere lorem ipsum dolor sit amet consectetur. Augue mauris augue
-            neque gravida in fermentum et sollicitudin. Amet nisl purus in
-            mollis nunc sed. Dis parturient montes nascetur ridiculus mus mauris
-            vitae. Dapibus ultrices in iaculis nunc. Et malesuada fames ac
-            turpis egestas maecenas pharetra convallis posuere. Nam libero justo
-            laoreet sit. Aenean sed adipiscing diam donec adipiscing tristique
-            risus nec feugiat. Ac tincidunt vitae semper quis lectus nulla at
-            volutpat diam. Dolor sit amet consectetur adipiscing elit ut aliquam
-            purus sit. Interdum varius sit amet mattis vulputate. Commodo nulla
-            facilisi nullam vehicula. Pharetra et ultrices neque ornare aenean
-            euismod elementum nisi. Vitae tempus quam pellentesque nec nam
-            aliquam sem et tortor.
-          </p>
-        </div>
+        </SectionBlock>
+        <SectionBlock title="Education">
+          <Item
+            title="Bachelor of Engineering, Computer Engineering"
+            timeDescription="Aug 2016 - Apr 2020"
+            description="King Mongkut's University of Technology North Bangkok"
+          />
+          <ul>
+            <ListItem>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </ListItem>
+            <ListItem>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </ListItem>
+            <ListItem>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </ListItem>
+          </ul>
+        </SectionBlock>
       </div>
     </div>
   </div>
