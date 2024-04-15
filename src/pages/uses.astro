@@ -1,6 +1,87 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
+
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
+import Item from '@/components/resume/Item.astro'
 ---
 
 <BaseLayout title="ALTR" description="">
+  <div class="font-sans">
+    <div
+      class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2"
+    >
+      <div class="block space-y-2" name="detail-left">
+        <SectionBlock title="">
+          PC
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Ryzen 5 1600',
+              'Asus TUF RTX 4070 Super',
+              'G.skill Trident Z RGB 16GB',
+              'NZXT H400i',
+              '21:9 Dell U3421WE',
+            ]}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Peripherals
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Keychron K2 v2 - Brown switch',
+              'ZSA Moonlander - Kailh Box White',
+              'Nuphy Air 75v2 - Wisteria switch',
+              'Steelseries Prime',
+              'Logitech MX Master 3',
+              'Steelseries Arctis Nova Pro',
+              'Steelseries Rival 700 / 710 (retired)',
+            ]}
+          />
+        </SectionBlock>
+      </div>
+      <div class="block space-y-2" name="detail-right">
+        <SectionBlock title="">
+          Laptop
+          <UnorderedList
+            ulClass="text-sm"
+            items={['MacBook Pro 14" 2021 M1 Pro/32GB/1TB']}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Tech
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'iPhone 13 Pro 256GB',
+              'iPad Pro M1 2021 11" 256GB',
+              'Withings Steel HR Sport',
+            ]}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Software
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'IDE: VS Code',
+              'Browser: Arc',
+              'Note-taking apps: Heptabase, Tana (I tried many apps, cannot decide which app for long-term use)',
+            ]}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Table Tennis
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Main: Lin Gaoyuan ALC with Tenergy05 Hard for FH, Dignics05 for BH',
+              'Timo Boll ALC with Dignics05 for FH, Nittaku fastarc G-1 for BH',
+            ]}
+          />
+        </SectionBlock>
+      </div>
+    </div>
+  </div>
 </BaseLayout>
