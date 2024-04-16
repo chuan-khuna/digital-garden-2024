@@ -27,7 +27,7 @@ const { title, description, ogImage } = Astro.props
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
       <!-- <Header /> -->
-      <div class="print:hidden"><Nav /></div>
+      <Nav isPrint={true} />
       <main class="flex-auto">
         <!-- global container -->
         <section
