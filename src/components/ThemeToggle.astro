@@ -1,6 +1,7 @@
 ---
 import { Moon, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+const themes = ['light', 'light-1', 'dark']
 ---
 
 <Button variant="ghost" size="icon" id="themeToggle">
@@ -9,13 +10,9 @@ import { Button } from '@/components/ui/button'
   <span class="sr-only">Toggle theme</span>
 </Button>
 
-<script is:inline>
+<script is:inline define:vars={{ themes }}>
   const theme = (() => {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      console.log(
-        'Localstorage is not undefined > Found theme',
-        localStorage.getItem('theme')
-      )
       return localStorage.getItem('theme')
     }
     return 'light'
@@ -28,10 +25,9 @@ import { Button } from '@/components/ui/button'
   }
 
   window.localStorage.setItem('theme', theme)
-  window.localStorage.setItem('themeIndex', theme === 'light' ? 0 : 1)
+  window.localStorage.setItem('themeIndex', themes.indexOf(theme))
 
   const handleToggleClick = () => {
-    themes = ['light', 'light-1', 'dark']
     currentIndex = themes.indexOf(localStorage.getItem('theme'))
     // console.log('current', currentIndex, themes[currentIndex])
     nextIndex = (currentIndex + 1) % themes.length
