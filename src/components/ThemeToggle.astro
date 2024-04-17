@@ -1,18 +1,15 @@
 ---
-import { Moon, Sun, Leaf } from 'lucide-react'
+import { Moon, Sun, Leaf, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 const themes = ['light', 'eramorp', 'dark']
 
-const generateButtonCSS = (themeName) => {
-  let css = `h-5 w-5 hidden`
-  return css
-}
+const themeButtonCss = `h-5 w-5 hidden`
 ---
 
 <Button variant="ghost" size="icon" id="themeToggle">
-  <Sun className={generateButtonCSS('light')} id="lightButton" />
-  <Leaf className={generateButtonCSS('eramorp')} id="eramorpButton" />
-  <Moon className={generateButtonCSS('dark')} id="darkButton" />
+  <Sun className={themeButtonCss} id="lightButton" />
+  <Flame className={themeButtonCss} id="eramorpButton" />
+  <Moon className={themeButtonCss} id="darkButton" />
   <span class="sr-only">Toggle theme</span>
 </Button>
 
