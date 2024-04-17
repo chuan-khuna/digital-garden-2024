@@ -1,0 +1,38 @@
+---
+import SectionBlock from '../SectionBlock.astro'
+import UnorderedList from '../UnorderedList.astro'
+import Item from '../Item.astro'
+---
+
+<SectionBlock title="Skills">
+  <div>
+    <h2 class="text-lg">Programming Languages and Tools</h2>
+    <text class="text-sm"><b>Proficient:{' '}</b> Python</text>
+    <br />
+    <div class="pl-4 text-sm">
+      pandas, numpy, netCDF, matplotlib, seaborn, pyvis, PyThaiNLP, NLTK,
+      gensim, TensorFlow
+    </div>
+    <text class="text-sm"
+      ><b>Intermediate:{' '}</b>R, Ruby, SQL, Git, Google Looker Studio, Docker
+    </text>
+    <br />
+    <text class="text-sm"
+      ><b>Others:{' '}</b>Streamlit, Haskell, React, Astro, NextJS, Nivo,
+      Recharts, Bitbucket Pipelines, Apache Kafka, Websocket, Vector Database
+      (eg Weaviate, Chroma), Stable Diffusion QR code
+    </text>
+  </div>
+  <div>
+    <h2 class="text-lg">Data Science and Machine Learning</h2>
+    <UnorderedList
+      ulClass="text-sm"
+      items={[
+        'Data visualisation using matplotlib, seaborn, Google Looker Studio, Streamlit',
+        'Text network analysis, wordcloud',
+        'Time series analysis, RFM analysis, cohort analysis, association rule learning',
+        'Trained Speech Emotion Recognition model using LSTM and Transformer',
+      ]}
+    />
+  </div>
+</SectionBlock>

@@ -1,115 +1,81 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro'
+import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 import { BentoDemo } from '@/components/bento/bento'
+
+import Item from '@/components/resume/Item.astro'
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
+
+// section
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Now from '@/components/resume/sections/Now.astro'
+
+const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 ---
 
-<BaseLayout title="ALTR's Resume" description="">
-  <div class="container font-mono">
+<BaseLayoutPrint title="ALTR's Resume" description="">
+  <div class="">
+    <!-- resume layout -->
     <div
-      class="max-w-8xl mx-auto grid grid-cols-1 gap-16 md:auto-rows-[18rem] md:grid-cols-3"
+      class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2"
     >
-      <!-- about me -->
-      <div class="md:col-span-2">
-        <h1 class="text-4xl font-bold text-black/[0.75]">
-          Phattharanat Khunakornophat
-        </h1>
-        <p class="text-xl text-black/[0.5]">Data Scientist</p>
-
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I am keen on learning to create good data visualisation. I admire John
-          Burn-Murdoch and David Spiegelhalter for their works. I have a goal to
-          create high-quality analysis and visualisation that are comprehensible
-          for non-chart people. In my free time, I enjoy watching videos from
-          the Royal Institution to expanding my knowledge and practising
-          English.
-        </p>
+      <!-- header: name and summary -->
+      <div class="md:col-span-2" name="header-summary">
+        <div class="relative border p-4">
+          <div class="md:flex">
+            <div>
+              <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
+              <p class=`${textGrayClasses} text-xl`>Data Scientist</p>
+            </div>
+          </div>
+          <div class="mt-4 md:flex">
+            <div name="summary">
+              <p>
+                I have a year of experience as a Data Scientist and Machine
+                Learning Engineer. Most of my tasks are about providing analyses
+                to support a strategy team. I gained experience in the field of
+                spatiotemporal data and time series analysis whilst working on
+                my senior project.
+              </p>
+            </div>
+            <div
+              class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
+              name="contact-info"
+            >
+              <p>
+                <b>Github</b>:
+                <a
+                  href="https://github.com/chuan-khuna"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-medium underline"
+                >
+                  chuan-khuna
+                </a>
+              </p>
+              <p><b>Email</b>: k.phattharanat@gmail.com</p>
+              <p><b>Address</b>: Chonburi/Bangkok, Thailand</p>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="col">
-        <p>
-          Github:
-          <a
-            href="https://github.com/chuan-khuna"
-            target="_blank"
-            rel="noreferrer"
-            class="font-medium underline"
-          >
-            chuan-khuna
-          </a>
-        </p>
-        <p>email: k.phattharanat@gmail.com</p>
+      <!-- detail -->
+      <div class="block space-y-2" name="detail-left">
+        <Experiences />
+        <Projects />
+        <Activity />
+      </div>
+      <div class="block space-y-2" name="detail-right">
+        <Skills />
+        <Education />
+        <Interests />
+        <Now />
       </div>
     </div>
-
-    <!-- content -->
-    <div
-      class="max-w-8xl mx-auto grid grid-cols-1 gap-16 md:auto-rows-[18rem] md:grid-cols-2"
-    >
-      <div>
-        <h1 class="text-2xl font-bold text-black/[0.75]">Experience</h1>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-      </div>
-      <div>
-        <h1 class="text-2xl font-bold text-black/[0.75]">Projects</h1>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-        <p>
-          I have a year of experience as a Data Scientist and Machine Learning
-          Engineer. Most of my tasks are about providing analyses to support a
-          strategy team. I gained experience in the field of spatiotemporal data
-          and time series analysis whilst working on my senior project.
-        </p>
-      </div>
-    </div>
-
-    <!-- <code>
-      "I have an avid interest in data science and data visualisation"
-    </code> -->
-
-    <!-- <div class="grid">
-      <BentoDemo client:load />
-      <BentoDemo client:load />
-    </div> -->
-
-    <!-- </div> -->
   </div>
-</BaseLayout>
+</BaseLayoutPrint>

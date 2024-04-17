@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string
+  timeDescription: string
+  description: string
+  url: string
+}
+
+const { title, timeDescription, description, url } = Astro.props
+---
+
+<div class="">
+  <text class="text-lg">
+    {title}
+  </text>
+  <div class="mt-1 md:flex">
+    <div class="w-full md:text-left">
+      <t class="text-sm">{description}</t>
+    </div>
+    {
+      timeDescription && (
+        <div class="w-full max-w-[24ch] pr-8 md:text-right">
+          <t class="text-sm">{timeDescription}</t>
+        </div>
+      )
+    }
+  </div>
+  {
+    url && (
+      <div class="md:flex">
+        <div class="w-full text-left">
+          <a href={url} class="text-sm hover:underline">
+            {url}
+          </a>
+        </div>
+      </div>
+    )
+  }
+</div>

@@ -1,0 +1,28 @@
+---
+import SectionBlock from '../SectionBlock.astro'
+import UnorderedList from '../UnorderedList.astro'
+import Item from '../Item.astro'
+---
+
+<SectionBlock title="Experience">
+  <div>
+    <Item
+      title="Data Scientist"
+      timeDescription="Jul 2022 - Present"
+      description="The Mather"
+    />
+    <UnorderedList
+      ulClass="text-sm"
+      items={[
+        'Provide data analysis and visualisation for a strategy team',
+        'Implement data scraper for social media platforms including Pantip (Thailand discussion forum), Twitter, YouTube and TikTok',
+        'Analyse point of sale data: RFM analysis, cohort analysis and association rule learning',
+        'Train a Thai Speech Emotion Recognition model using Transformer architecture, achieve 60% validation accuracy with five classes data',
+        'Extract and process data from JSON responses to create PDF reports using Weasyprint',
+        'Conduct research and execute a POC project centred in analysis and visualisation of real-time people detection data including face detection, face recognition, direction flow, utilising technologies such as Kafka, Flask, NextJS, Weaviate, Chroma',
+        'Refactor and set the standard for Django projects to enhance maintainability and reusability',
+        'Implement basic Bitbucket Pipelines to automate the deployment to an internal testing server, eliminating the need of manual tasks',
+      ]}
+    />
+  </div>
+</SectionBlock>

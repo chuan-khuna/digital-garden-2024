@@ -27,14 +27,16 @@ const { title, description, ogImage } = Astro.props
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
       <!-- <Header /> -->
-      <Nav />
+      <Nav isPrint={true} />
       <main class="flex-auto">
         <!-- global container -->
-        <section class="container grid items-center gap-6 px-2 pb-8 pt-6 md:py-10">
+        <section
+          class="container grid items-center gap-6 px-2 pb-8 pt-6 md:py-10"
+        >
           <slot />
         </section>
       </main>
-      <Footer />
+      <div class="print:hidden"><Footer /></div>
     </div>
   </body>
 </html>

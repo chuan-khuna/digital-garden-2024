@@ -1,6 +1,118 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
+
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
+import Item from '@/components/resume/Item.astro'
 ---
 
 <BaseLayout title="ALTR" description="">
+  <div class="font-sans">
+    <div
+      class="mx-auto grid max-w-[800px] grid-cols-1 gap-2 p-2 md:grid-cols-2"
+    >
+      <div class="block space-y-2" name="detail-left">
+        <SectionBlock title="">
+          PC
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Ryzen 5 1600',
+              'Asus TUF RTX 4070 Super',
+              'G.skill Trident Z RGB 16GB',
+              'NZXT H400i',
+              'Asus TUF 850w Gold',
+              '21:9 Dell U3421WE',
+            ]}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Peripherals
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Keychron K2 v2 - Brown switch',
+              'ZSA Moonlander mk1 - Kailh Box White',
+              'Nuphy Air 75 v2 - Wisteria switch',
+              'Steelseries Prime',
+              'Logitech MX Master 3',
+              'Steelseries Arctis Nova Pro',
+              'Steelseries Rival 700/710 (retired)',
+            ]}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Miscellanous/Favourite
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Tea: Twinings Earl Grey UK blend (eg London Strand, Signature w/ Lavender)',
+              'Coffee: I have not developed a coffee-tasting skill yet. List of blends I usually drink: Graph Coffee Lunch, Sias Ethiopia Gelena Geisha, Roast Lab BKK Whiskey Blend',
+              'Game: Dark Souls III, Sekiro',
+            ]}
+          />
+        </SectionBlock>
+      </div>
+      <div class="block space-y-2" name="detail-right">
+        <SectionBlock title="">
+          Laptop
+          <UnorderedList
+            ulClass="text-sm"
+            items={['MacBook Pro 14" 2021 M1 Pro/32GB/1TB']}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Tech
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'iPhone 13 Pro 256GB',
+              'iPad Pro M1 2021 11" 256GB',
+              'Withings Steel HR Sport',
+            ]}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Software
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'IDE: VS Code',
+              'Browser: Arc',
+              'Note-taking apps: Heptabase, Tana',
+            ]}
+          />
+          <p class="text-sm">
+            I tried many note-taking apps but still cannot decide which app for
+            long-term use.
+          </p>
+        </SectionBlock>
+        <SectionBlock title="">
+          Gadget
+          <UnorderedList
+            ulClass="text-sm"
+            items={['Able Carry Daily Plus', 'NIID R1', 'NIID Cache']}
+          />
+        </SectionBlock>
+        <SectionBlock title="">
+          Table Tennis
+          <UnorderedList
+            ulClass="text-sm"
+            items={[
+              'Main: Lin Gaoyuan ALC with Tenergy05 Hard for FH, Dignics05 for BH',
+              'Secondary: Timo Boll ALC with Dignics05 for FH, Nittaku fastarc G-1 for BH',
+            ]}
+          />
+          <p class="text-sm">
+            My favourite blade combination is ALC + Koto from Butterfly. The
+            hardness of rubbers I prefer is 40-43 degrees on Butterfly scale.
+          </p>
+          <p class="text-sm">
+            The ideal blade for me is made of Kiso Hinoki, but I have never try
+            it.
+          </p>
+        </SectionBlock>
+      </div>
+    </div>
+  </div>
 </BaseLayout>
