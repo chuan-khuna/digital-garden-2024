@@ -82,8 +82,8 @@
     --theme-quote: 102deg 100% 86%;
   }
 
-  .light-1 {
-    --background: 222.2 80% 1%;
+  .eramorp {
+    --background: 218.2 31.4% 6.9%;
     --foreground: 210 40% 98%;
 
     --card: 222.2 84% 1%;
@@ -92,10 +92,10 @@
     --popover: 222.2 84% 1%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 53.1 95% 53.1%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 324.3 58.7 62.9%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
@@ -107,7 +107,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 105 19.6% 66.5%;
+    --border: 53 95.1 68.2%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
@@ -116,7 +116,7 @@
     --theme-link: 330deg 49% 67%;
     --theme-text: 220deg 3% 79%;
     --theme-accent: 159deg 64% 45%;
-    --theme-accent-2: 0deg 0% 93%;
+    --theme-accent-2: 53.1deg 95% 53.1%;
     --theme-quote: 102deg 100% 86%;
   }
 }
