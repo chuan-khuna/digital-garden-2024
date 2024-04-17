@@ -1,12 +1,18 @@
 ---
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, Leaf } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 const themes = ['light', 'eramorp', 'dark']
+
+const generateButtonCSS = (themeName) => {
+  let css = `h-5 w-5 hidden`
+  return css
+}
 ---
 
 <Button variant="ghost" size="icon" id="themeToggle">
-  <Sun className="h-[1.5rem] w-[1.3rem] dark:hidden" />
-  <Moon className="hidden h-5 w-5 dark:block" />
+  <Sun className={generateButtonCSS('light')} id="lightButton" />
+  <Leaf className={generateButtonCSS('eramorp')} id="eramorpButton" />
+  <Moon className={generateButtonCSS('dark')} id="darkButton" />
   <span class="sr-only">Toggle theme</span>
 </Button>
 
@@ -18,11 +24,9 @@ const themes = ['light', 'eramorp', 'dark']
     return 'light'
   })()
 
-  if (theme === 'light') {
-    document.documentElement.classList.add('light')
-  } else {
-    document.documentElement.classList.add(theme)
-  }
+  document.documentElement.classList.add(theme)
+  document.getElementById(`${theme}Button`).classList.remove('hidden')
+  document.getElementById(`${theme}Button`).classList.add('block')
 
   window.localStorage.setItem('theme', theme)
   window.localStorage.setItem('themeIndex', themes.indexOf(theme))
@@ -44,6 +48,21 @@ const themes = ['light', 'eramorp', 'dark']
     localStorage.setItem('theme', nextTheme)
     localStorage.setItem('themeIndex', nextIndex)
     element.classList.replace(themes[currentIndex], nextTheme)
+
+    buttonClasses = themes.map((themeName) => {
+      ;`${themeName}Button`
+    })
+    for (themeName of themes) {
+      const button = document.getElementById(`${themeName}Button`)
+      button.classList.add('hidden')
+    }
+    const button = document.getElementById(`${nextTheme}Button`)
+    button.classList.remove('hidden')
+    button.classList.add('block')
+
+    // set content in the button
+    // const button = document.getElementById('themeToggle')
+    // button.textContent = `theme: ${localStorage.getItem('theme')}`
   }
 
   document
