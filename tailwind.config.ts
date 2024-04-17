@@ -10,7 +10,7 @@ const {
 
 
 const config = {
-  darkMode: ['class'],
+  darkMode: ['selector'],
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   prefix: '',
   theme: {
