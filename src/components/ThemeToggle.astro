@@ -15,12 +15,15 @@ const themeButtonCss = `h-5 w-5 hidden`
 
 <script is:inline define:vars={{ themes }}>
   const theme = (() => {
+    // check if localStorage is available and if a theme is set
     if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
       return localStorage.getItem('theme')
     }
+    // return default theme, if no theme is set
     return 'light'
   })()
 
+  // initialise theme
   document.documentElement.classList.add(theme)
   document.getElementById(`${theme}Button`).classList.remove('hidden')
   document.getElementById(`${theme}Button`).classList.add('block')
@@ -30,36 +33,28 @@ const themeButtonCss = `h-5 w-5 hidden`
 
   const handleToggleClick = () => {
     currentIndex = themes.indexOf(localStorage.getItem('theme'))
-    // console.log('current', currentIndex, themes[currentIndex])
+    // from current theme, get the next theme
     nextIndex = (currentIndex + 1) % themes.length
     nextTheme = themes[nextIndex]
-    // console.log('switch to', nextIndex, nextTheme)
 
     const element = document.documentElement
-    // console.log('current', element.classList)
 
-    // element.classList.toggle('dark')
-    // const isDark = element.classList.contains('dark')
-    // localStorage.setItem('theme', isDark ? 'dark' : 'light')
-
+    // set theme
     localStorage.setItem('theme', nextTheme)
     localStorage.setItem('themeIndex', nextIndex)
     element.classList.replace(themes[currentIndex], nextTheme)
 
-    buttonClasses = themes.map((themeName) => {
-      ;`${themeName}Button`
-    })
+    // hide all buttons
+    buttonClasses = themes.map((themeName) => `${themeName}Button`)
     for (themeName of themes) {
       const button = document.getElementById(`${themeName}Button`)
       button.classList.add('hidden')
     }
+
+    // show theme button
     const button = document.getElementById(`${nextTheme}Button`)
     button.classList.remove('hidden')
     button.classList.add('block')
-
-    // set content in the button
-    // const button = document.getElementById('themeToggle')
-    // button.textContent = `theme: ${localStorage.getItem('theme')}`
   }
 
   document
