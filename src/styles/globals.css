@@ -81,39 +81,39 @@
     --theme-quote: 102deg 100% 86%;
   }
 
-  .eramorp {
+  .nexus {
     --background: 218.2 31.4% 6.9%;
-    --foreground: 210 40% 98%;
+    --foreground: 270 8% 90.2%;
 
-    --card: 222.2 84% 1%;
-    --card-foreground: 210 40% 98%;
+    --card: 218.2 31.4% 6.9%;
+    --card-foreground: 270 8% 90.2%;
 
-    --popover: 222.2 84% 1%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 218.2 31.4% 6.9%;
+    --popover-foreground: 270 8% 90.2%;
 
-    --primary: 53.1 95% 53.1%;
+    --primary: 253.3 52.5% 61.2%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 324.3 58.7 62.9%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 45.6 84.7% 69.2%;
+    --secondary-foreground: 270 8% 90.2%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 45.6 84.7% 69.2%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45.6 84.7% 69.2%;
+    --accent-foreground: 270 8% 90.2%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 270 8% 90.2%;
 
-    --border: 53 95.1 68.2%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 220 17.1% 13.7%;
+    --input: 220 17.1% 13.7%;
     --ring: 212.7 26.8% 83.9%;
 
     /* cactus */
     --theme-bg: 210deg 6% 12%;
     --theme-link: 330deg 49% 67%;
-    --theme-text: 220deg 3% 79%;
+    --theme-text: 270deg 8% 90.2%;
     --theme-accent: 159deg 64% 45%;
     --theme-accent-2: 53.1deg 95% 53.1%;
     --theme-quote: 102deg 100% 86%;
