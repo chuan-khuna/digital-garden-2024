@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 1%;
+    --background: 40 47.4% 96.3%;
+    --foreground: 0 0% 22%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 1%;
+    --card: 40 47.4% 96.3%;
+    --card-foreground: 0 0% 22%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 1%;
+    --popover: 40 47.4% 96.3%;
+    --popover-foreground: 0 0% 22%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 227.1 52.2% 26.3%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 13.1 100% 64.1%;
+    --secondary-foreground: 227.1 52.2% 26.3%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 13.1 100% 64.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 13.1 100% 64.1%;
+    --accent-foreground: 227.1 52.2% 26.3%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 1%;
+    --border: 42.9 35.6% 88.4%;
+    --input: 42.9 35.6% 88.4%;
+    --ring: 0 0% 22%;
 
     --radius: 0.5rem;
 
@@ -38,8 +38,7 @@
     --theme-bg: 0deg 0% 98%;
     --theme-link: 172deg 18% 41%;
     --theme-text: 203deg 11% 15%;
-    /* adapted from 202f66 and ff7048 */
-    --theme-accent: 13 100% 69.2%;
+    --theme-accent: 13.1 100% 64.1%;
     --theme-accent-2: 227.1 52.2% 26.3%;
     --theme-quote: 253.1deg 80% 64.1%;
   }
