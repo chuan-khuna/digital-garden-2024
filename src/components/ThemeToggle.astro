@@ -1,13 +1,14 @@
 ---
 import { Moon, Sun, Leaf, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-const themes = ['light', 'nexus', 'dark']
 
+const defaultTheme = '-30k'
+const themes = [defaultTheme, 'nexus', 'dark']
 const themeButtonCss = `h-5 w-5 hidden`
 ---
 
 <Button variant="ghost" size="icon" id="themeToggle">
-  <Sun className={themeButtonCss} id="lightButton" />
+  <Sun className={themeButtonCss} id=`${defaultTheme}Button` />
   <Flame className={themeButtonCss} id="nexusButton" />
   <Moon className={themeButtonCss} id="darkButton" />
   <span class="sr-only">Toggle theme</span>
@@ -20,7 +21,7 @@ const themeButtonCss = `h-5 w-5 hidden`
       return localStorage.getItem('theme')
     }
     // return default theme, if no theme is set
-    return 'light'
+    return defaultTheme
   })()
 
   // initialise theme
