@@ -19,7 +19,7 @@ export const BackReferenceSection: React.FC<BackReferenceProps> = ({
 }) => {
   return (
     <div className="mt-12">
-      Referenced in:
+      {incomingReferences.length > 0 && (<>Referenced in:</>)}
       <div className="mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-4 md:auto-rows-[18rem] md:grid-cols-3">
         {incomingReferences.map((item, idx) => (
           <PostCard

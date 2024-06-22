@@ -11,6 +11,10 @@ export function getOutgoingNotes(node) {
   const regex = /\[\[([^\]]+)\]\]/g
   let outgoingNotes = node.body.match(regex)
 
+  if (!outgoingNotes) {
+    return []
+  }
+
   // extract note title or alias
   outgoingNotes = outgoingNotes.map((note) => {
     return extractNoteTitle(note)
