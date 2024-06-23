@@ -5,12 +5,13 @@
 @layer base {
   :root {
     /* colour palette variables */
-    /* define colours here */
+    /* define base colours here */
     --palette-background: 40 47.4% 96.3%;
     --palette-foreground: 0 0% 22%;
     --palette-primary: 227.1 52.2% 26.3%;
 
     /* theme config */
+    /* theme component colours - all picked from base colours? */
     --background: var(--palette-background);
     --foreground: var(--palette-foreground);
 
