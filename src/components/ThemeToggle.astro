@@ -2,7 +2,7 @@
 import { Moon, Sun, Leaf, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const defaultTheme = 'light'
+const defaultTheme = '-30k'
 
 // theme name from `styles/globals.css`
 const themes = [defaultTheme, 'nexus', 'dark']
@@ -47,6 +47,8 @@ const themeButtonCss = `h-5 w-5 hidden`
     // set theme
     localStorage.setItem('theme', nextTheme)
     localStorage.setItem('themeIndex', nextIndex)
+
+    // set theme class at the <html> element
     element.classList.replace(themes[currentIndex], nextTheme)
 
     // hide all buttons
