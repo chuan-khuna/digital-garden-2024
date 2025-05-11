@@ -221,15 +221,15 @@ function bgDotGrid({ matchUtilities, theme }: any) {
         )}")`,
       }),
       "bg-dot": (value: any) => {
-        console.log("🍵 ~ bgDotGrid ~ value:", value)
+        // console.log("🍵 ~ bgDotGrid ~ value:", value)
 
-        console.log(theme("cactus-text"))
+        // console.log(theme("cactus-text"))
 
         let colours = flattenColorPalette(theme("colors"))
         // console.log("🍵 ~ bgDotGrid ~ colours:", colours)
 
         let colourValue = toColorValue(value)
-        console.log("🍵 ~ bgDotGrid ~ colourValue:", colourValue)
+        // console.log("🍵 ~ bgDotGrid ~ colourValue:", colourValue)
 
         return ({
           backgroundImage: `url("${svgToDataUri(
