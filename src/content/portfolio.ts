@@ -2,6 +2,8 @@ export const PORTFOLIO = {
   firstName: 'Phattharanat',
   name: 'Phattharanat Khunakornophat',
   nickname: 'Chuan',
+  // image file in `public` folder
+  avatarUrl: 'lucy.jpg', 
   headLine: 'I take an avid interest in data science and data visualisation.',
   shortIntros: [
     '💻 Data Scientist | Developer',
