@@ -1,14 +1,5 @@
 ---
-import {
-  Linkedin,
-  Github,
-  Mail,
-  Youtube,
-  Twitter,
-  Rss,
-  Book,
-  PanelsTopLeft,
-} from 'lucide-react'
+import { Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PORTFOLIO } from '@/content/portfolio.ts'
 ---
@@ -36,7 +27,7 @@ import { PORTFOLIO } from '@/content/portfolio.ts'
         aria-label="github profile"
         target="_blank"
       >
-        <Button aria-label="github profile">
+        <Button aria-label="github profile" variant="ghost">
           <Github />
           <span class="sr-only">GitHub Profile</span>
         </Button>
