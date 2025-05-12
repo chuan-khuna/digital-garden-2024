@@ -1,5 +1,4 @@
-
-import { z, defineCollection } from "astro:content";
+import { z, defineCollection } from 'astro:content'
 
 export const postsCollection = defineCollection({
   type: 'content',
@@ -10,5 +9,5 @@ export const postsCollection = defineCollection({
     aliases: z.array(z.string()).optional(),
     tags: z.array(z.string()).optional(),
     stage: z.enum(['seedling', 'budding', 'evergreen']).optional(),
-  })
-});
+  }),
+})

@@ -5,7 +5,6 @@ function extractNoteTitle(wikilink: string) {
   return wikilink.replace('[[', '').replace(']]', '').split(':')[0]
 }
 
-
 export function getOutgoingNotes(node) {
   // node: astro getCollection entry
   const regex = /\[\[([^\]]+)\]\]/g
@@ -22,7 +21,6 @@ export function getOutgoingNotes(node) {
 
   return outgoingNotes
 }
-
 
 export async function getNoteFromTitle(title) {
   const allPosts = await getCollection('posts', (data) => {

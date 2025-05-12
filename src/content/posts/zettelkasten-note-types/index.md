@@ -5,7 +5,6 @@ aliases: []
 tags: []
 ---
 
-
 Related to: [[Zettelkasten]]
 
 Remember that:
