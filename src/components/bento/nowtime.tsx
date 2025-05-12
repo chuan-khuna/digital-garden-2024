@@ -6,7 +6,11 @@ const NowTime = ({timezone, hideSeconds = false}: { timezone?: string, hideSecon
   const [currentTime, setCurrentTime] = useState<string>('');
 
 
-  const secondUpdateDuration = 1001; // be naughty
+  // the author added a small 1 millisecond delay, I don't know why...
+  // ref: https://github.com/tim-hub/techtim-astro-bento-portfolio/blob/template/src/components/react/NowTime.tsx
+  const oneSecUpdate = 1001;  // be naughty
+  const fiveSecUpdate = 5001;
+  const secondUpdateDuration = hideSeconds ? fiveSecUpdate : oneSecUpdate;
 
 
   // get user timezone
