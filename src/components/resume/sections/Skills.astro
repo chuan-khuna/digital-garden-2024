@@ -7,31 +7,39 @@ import Item from '../Item.astro'
 <SectionBlock title="Skills">
   <div>
     <h2 class="text-lg">Programming Languages and Tools</h2>
-    <text class="text-sm"><b>Proficient:{' '}</b> Python</text>
-    <br />
-    <div class="pl-4 text-sm">
-      pandas, numpy, netCDF, matplotlib, seaborn, pyvis, PyThaiNLP, NLTK,
-      gensim, TensorFlow
-    </div>
     <text class="text-sm"
-      ><b>Intermediate:{' '}</b>R, Ruby, SQL, Git, Google Looker Studio, Docker
+      ><b>Languages:{' '}</b>Python, Elixir, Haskell, R, SQL, Ruby, Go
     </text>
     <br />
     <text class="text-sm"
-      ><b>Others:{' '}</b>Streamlit, Haskell, Go Fiber, React, Astro, NextJS, Nivo,
-      Recharts, Bitbucket Pipelines, Apache Kafka, Websocket, Vector Database
-      (eg Weaviate, Chroma), Stable Diffusion QR code
+      ><b>Frameworks and libraries:{' '}</b>Django, FastAPI, pandas, numpy,
+      pythainlp, gensim, NLTK, streamlit, matplotlib, seaborn, Phoenix, Fiber,
+      Gin
+    </text>
+    <br />
+    <text class="text-sm"
+      ><b>Tools:{' '}</b>Git, Docker, uv, Postgres, MongoDB, Airflow, Kafka,
+      Bitbucket Pipelines, Ollama, RAG, MCP, Google Looker Studio, Vector
+      Database (eg Chroma), Digital Ocean
     </text>
   </div>
   <div>
-    <h2 class="text-lg">Data Science and Machine Learning</h2>
+    <h2 class="text-lg">Data Science</h2>
     <UnorderedList
       ulClass="text-sm"
       items={[
-        'Data visualisation using matplotlib, seaborn, Google Looker Studio, Streamlit',
-        'Text network analysis, wordcloud',
+        'Data visualisation with matplotlib, seaborn, Google Looker Studio, streamlit',
+        'Text network analysis, word cloud',
         'Time series analysis, RFM analysis, cohort analysis, association rule learning',
+      ]}
+    />
+    <h2 class="text-lg">Machine Learning and Deep Learning</h2>
+    <UnorderedList
+      ulClass="text-sm"
+      items={[
+        'Achieved TensorFlow Developer Certificate',
         'Trained Speech Emotion Recognition model using LSTM and Transformer',
+        'Built a simple RAG/MCP for Jira task summarisation',
       ]}
     />
   </div>

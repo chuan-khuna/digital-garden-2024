@@ -4,26 +4,34 @@
 
 @layer base {
   :root {
-    --background: 40 47.4% 96.3%;
-    --foreground: 0 0% 22%;
+    /* colour palette variables */
+    /* define base colours here */
+    --palette-background: 40 47.4% 96.3%;
+    --palette-foreground: 0 0% 22%;
+    --palette-primary: 227.1 52.2% 26.3%;
 
-    --card: 40 47.4% 96.3%;
-    --card-foreground: 0 0% 22%;
+    /* theme config */
+    /* theme component colours - all picked from base colours? */
+    --background: var(--palette-background);
+    --foreground: var(--palette-foreground);
 
-    --popover: 40 47.4% 96.3%;
-    --popover-foreground: 0 0% 22%;
+    --card: var(--palette-background);
+    --card-foreground: var(--palette-foreground);
 
-    --primary: 227.1 52.2% 26.3%;
+    --popover: var(--palette-background);
+    --popover-foreground: var(--palette-foreground);
+
+    --primary: var(--palette-primary);
     --primary-foreground: 210 40% 98%;
 
     --secondary: 13.1 100% 64.1%;
-    --secondary-foreground: 227.1 52.2% 26.3%;
+    --secondary-foreground: var(--palette-primary);
 
     --muted: 13.1 100% 64.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 13.1 100% 64.1%;
-    --accent-foreground: 227.1 52.2% 26.3%;
+    --accent-foreground: var(--palette-primary);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;

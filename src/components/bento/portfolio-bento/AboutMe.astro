@@ -1,0 +1,18 @@
+---
+import { PORTFOLIO } from '@/content/portfolio.ts'
+const skills = PORTFOLIO.skills
+---
+
+<div class="animate-appear flex flex-col gap-2">
+  <ul class="list-inside list-disc">
+    {
+      skills.map((skill) => {
+        return (
+          <li>
+            <span>{skill}</span>
+          </li>
+        )
+      })
+    }
+  </ul>
+</div>
