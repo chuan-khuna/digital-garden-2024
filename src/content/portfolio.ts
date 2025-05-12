@@ -2,6 +2,7 @@ export const PORTFOLIO = {
   firstName: 'Phattharanat',
   name: 'Phattharanat Khunakornophat',
   nickname: 'Chuan',
+  timezone: 'Asia/Bangkok',
   // image file in `public` folder
   avatarUrl: 'lucy.jpg', 
   headLine: 'I take an avid interest in data science and data visualisation.',
