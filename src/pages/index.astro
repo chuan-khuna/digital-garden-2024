@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import {Meteors} from '@/components/aceternity/meteors.tsx'
+import IntroCard from '@/components/portfolio-bento/IntroCard.astro'
+
+import Card from '@/components/bento/card.astro'
 ---
 
 <BaseLayout title="ALTR" description="">
@@ -8,7 +10,9 @@ import {Meteors} from '@/components/aceternity/meteors.tsx'
     <main
     class="relative m-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:p-4 md:grid-cols-2 md:gap-3 md:p-6 lg:grid-cols-12 lg:gap-4"
   >
-  Welcome to my Digital Garden.
-  <Meteors client:load/>
-</main>
+
+    <Card colSpan="lg:col-span-9 md:col-span-2" rowSpan="md:row-span-1 lg:row-span-4">
+      <IntroCard/>
+    </Card>
+  </main>
 </BaseLayout>

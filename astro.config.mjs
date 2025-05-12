@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import mdx from "@astrojs/mdx";
+import icon from "astro-icon";
 
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -28,5 +29,5 @@ export default defineConfig({
   },
   integrations: [react(), tailwind({
     applyBaseStyles: false
-  }), mdx()]
+  }), mdx(), icon()]
 });
