@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import moment from "moment-timezone";
 import {getUserTimeZoneInBrowser} from "@/lib/browser-timezone";
 
-const NowTime = ({timezone}: { timezone?: string }) => {
+const NowTime = ({timezone, hideSeconds = false}: { timezone?: string, hideSeconds?: boolean }) => {
   const [currentTime, setCurrentTime] = useState<string>('');
 
 
@@ -14,7 +14,6 @@ const NowTime = ({timezone}: { timezone?: string }) => {
 
   const usingTimezone = timezone ? timezone : browserTimezone;
 
-  console.log(usingTimezone)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,8 +26,16 @@ const NowTime = ({timezone}: { timezone?: string }) => {
   }, [usingTimezone]);
 
   const dateStrings = currentTime.split(' ');
+
   const theDate = dateStrings.slice(0, 4).join(' ');
   const theTime = dateStrings.slice(4).join(' ');
+
+  const timeStrings = theTime.split(':');
+  const hour = timeStrings[0];
+  const minute = timeStrings[1];
+
+
+  const theTimeToShow = hideSeconds ? `${hour}:${minute}` : theTime;
 
 
   return (
@@ -37,7 +44,7 @@ const NowTime = ({timezone}: { timezone?: string }) => {
         currentTime ? <>
           <div>
             <p>{theDate}</p>
-            <p className={"text-2xl my-2"}>{theTime}</p>
+            <p className={"text-2xl my-2"}>{theTimeToShow}</p>
             <p className="text-sm text-gray-500">{usingTimezone}</p>
           </div>
           {!timezone && (
