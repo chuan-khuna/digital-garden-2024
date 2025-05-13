@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="ALTR" description="">
+  <main
+    class="not-prose grid grid-cols-[auto_minmax(0,_1fr)] items-center gap-4"
+  >
+    <!-- colour group container -->
+    <div
+      class="not-prose flex justify-center overflow-auto rounded-lg bg-white p-8 outline outline-white/5 dark:bg-gray-950/50"
+    >
+      <!-- colour row -->
+      <div
+        class="*:*:first:inset-ring *:*:first:inset-ring-black/5 mx-auto inline-grid max-w-lg grid-cols-1 justify-center gap-3 *:*:first:size-9 *:*:first:rounded-md sm:grid-cols-11 sm:flex-row sm:*:*:first:aspect-square sm:*:*:first:w-full"
+      >
+        <!-- colour item -->
+        <div class="flex items-center gap-1.5 sm:flex-col">
+          <!-- colour box -->
+          <div class="" style="background-color: hsl(var(--accent));"></div>
+          <p
+            class="text-center font-mono text-xs text-gray-600 dark:text-gray-400"
+          >
+            accent
+          </p>
+        </div>
+
+                <div class="flex items-center gap-1.5 sm:flex-col">
+          <!-- colour box -->
+          <div class="" style="background-color: hsl(var(--primary));"></div>
+          <p
+            class="text-center font-mono text-xs text-gray-600 dark:text-gray-400"
+          >
+            primary
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
