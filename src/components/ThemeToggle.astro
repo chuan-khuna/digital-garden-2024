@@ -18,12 +18,15 @@ const themeButtonCss = `h-5 w-5 hidden`
   <span class="sr-only">Toggle theme</span>
 </Button>
 
-<script is:inline define:vars={{ themes }}>
+<script is:inline define:vars={{ themes, defaultTheme }}>
   const theme = (() => {
     // check if localStorage is available and if a theme is set
     if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      // console.log('localStorage theme:', localStorage.getItem('theme'))
       return localStorage.getItem('theme')
     }
+
+    // console.log('localStorage theme not set, using default theme:', defaultTheme)
     // return default theme, if no theme is set
     return defaultTheme
   })()
