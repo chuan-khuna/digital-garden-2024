@@ -38,12 +38,13 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --font-sans: 'Lato', Inter, Inter override, ui-sans-serif, system-ui,
+  /* --font-sans: 'Lato', Inter, Inter override, ui-sans-serif, system-ui,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
 
   --font-serif: 'DM Serif', Merriweather, ui-serif, Georgia, Cambria,
-    'Times New Roman', --animate-accordion-down: accordion-down 0.2s ease-out;
+    'Times New Roman', --animate-accordion-down: accordion-down 0.2s ease-out; */
+
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
   @keyframes accordion-down {
