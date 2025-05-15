@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import Color from '@/components/styleguide/color.astro'
 ---
 
 <BaseLayout title="ALTR" description="">
@@ -14,26 +15,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
       <div
         class="*:*:first:inset-ring *:*:first:inset-ring-black/5 mx-auto inline-grid max-w-lg grid-cols-1 justify-center gap-3 *:*:first:size-9 *:*:first:rounded-md sm:grid-cols-11 sm:flex-row sm:*:*:first:aspect-square sm:*:*:first:w-full"
       >
-        <!-- colour item -->
-        <div class="flex items-center gap-1.5 sm:flex-col">
-          <!-- colour box -->
-          <div class="" style="background-color: hsl(var(--accent));"></div>
-          <p
-            class="text-center font-mono text-xs text-gray-600 dark:text-gray-400"
-          >
-            accent
-          </p>
-        </div>
-
-                <div class="flex items-center gap-1.5 sm:flex-col">
-          <!-- colour box -->
-          <div class="" style="background-color: hsl(var(--primary));"></div>
-          <p
-            class="text-center font-mono text-xs text-gray-600 dark:text-gray-400"
-          >
-            primary
-          </p>
-        </div>
+        <Color cssValue="hsl(var(--accent))" name="accent" />
+        <Color cssValue="hsl(var(--primary))" name="primary" />
       </div>
     </div>
   </main>
