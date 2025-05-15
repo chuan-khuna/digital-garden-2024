@@ -18,6 +18,8 @@
     "@astrojs/react": "^4.2.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@tabler/icons-react": "^2.47.0",
+    "@tailwindcss/cli": "^4.1.6",
+    "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/vite": "^4.1.6",
     "astro": "^5.6.1",
     "astro-icon": "^1.1.5",
