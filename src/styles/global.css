@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+@layer base {
+  :root {
+    /* colour palette variables */
+    /* define base colours here */
+    --palette-background: 40 47.4% 96.3%;
+    --palette-foreground: 0 0% 22%;
+    --palette-primary: 227.1 52.2% 26.3%;
+
+    /* theme config */
+    /* theme component colours - all picked from base colours? */
+    --background: var(--palette-background);
+    --foreground: var(--palette-foreground);
+
+    --card: var(--palette-background);
+    --card-foreground: var(--palette-foreground);
+
+    --popover: var(--palette-background);
+    --popover-foreground: var(--palette-foreground);
+
+    --primary: var(--palette-primary);
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 13.1 100% 64.1%;
+    --secondary-foreground: var(--palette-primary);
+
+    --muted: 13.1 100% 64.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 13.1 100% 64.1%;
+    --accent-foreground: var(--palette-primary);
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 42.9 35.6% 88.4%;
+    --input: 42.9 35.6% 88.4%;
+    --ring: 0 0% 22%;
+
+    --radius: 0.5rem;
+
+    /* cactus */
+    --theme-bg: 0deg 0% 98%;
+    --theme-link: 172deg 18% 41%;
+    --theme-text: 203deg 11% 15%;
+    --theme-accent: 13.1 100% 64.1%;
+    --theme-accent-2: 227.1 52.2% 26.3%;
+    --theme-quote: 253.1deg 80% 64.1%;
+  }
+
+  .nzk {
+    /* colour palette variables */
+    /* define base colours here */
+    --palette-background: 40 47.4% 96.3%;
+    --palette-foreground: 0 0% 22%;
+    --palette-primary: 227.1 52.2% 26.3%;
+
+    /* theme config */
+    /* theme component colours - all picked from base colours? */
+    --background: var(--palette-background);
+    --foreground: var(--palette-foreground);
+
+    --card: var(--palette-background);
+    --card-foreground: var(--palette-foreground);
+
+    --popover: var(--palette-background);
+    --popover-foreground: var(--palette-foreground);
+
+    --primary: var(--palette-primary);
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 13.1 100% 64.1%;
+    --secondary-foreground: var(--palette-primary);
+
+    --muted: 13.1 100% 64.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 13.1 100% 64.1%;
+    --accent-foreground: var(--palette-primary);
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 42.9 35.6% 88.4%;
+    --input: 42.9 35.6% 88.4%;
+    --ring: 0 0% 22%;
+
+    --radius: 0.5rem;
+
+    /* cactus */
+    --theme-bg: 0deg 0% 98%;
+    --theme-link: 172deg 18% 41%;
+    --theme-text: 203deg 11% 15%;
+    --theme-accent: 13.1 100% 64.1%;
+    --theme-accent-2: 227.1 52.2% 26.3%;
+    --theme-quote: 253.1deg 80% 64.1%;
+  }
+
+  .dark {
+    --background: 222.2 84% 1%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 1%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 1%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    /* cactus */
+    --theme-bg: 210deg 6% 12%;
+    --theme-link: 330deg 49% 67%;
+    --theme-text: 220deg 3% 79%;
+    --theme-accent: 159deg 64% 45%;
+    --theme-accent-2: 0deg 0% 93%;
+    --theme-quote: 102deg 100% 86%;
+  }
+
+  .nexus {
+    --background: 218.2 31.4% 6.9%;
+    --foreground: 270 8% 90.2%;
+
+    --card: 218.2 31.4% 6.9%;
+    --card-foreground: 270 8% 90.2%;
+
+    --popover: 218.2 31.4% 6.9%;
+    --popover-foreground: 270 8% 90.2%;
+
+    --primary: 253.3 52.5% 61.2%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 45.6 84.7% 69.2%;
+    --secondary-foreground: 270 8% 90.2%;
+
+    --muted: 45.6 84.7% 69.2%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 45.6 84.7% 69.2%;
+    --accent-foreground: 270 8% 90.2%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 270 8% 90.2%;
+
+    --border: 220 17.1% 13.7%;
+    --input: 220 17.1% 13.7%;
+    --ring: 212.7 26.8% 83.9%;
+
+    /* cactus */
+    --theme-bg: 210deg 6% 12%;
+    --theme-link: 330deg 49% 67%;
+    --theme-text: 270deg 8% 90.2%;
+    --theme-accent: 159deg 64% 45%;
+    --theme-accent-2: 53.1deg 95% 53.1%;
+    --theme-quote: 102deg 100% 86%;
+  }
+}
+/* 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+} */

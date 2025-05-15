@@ -19,6 +19,7 @@
     "@astrojs/tailwind": "^6.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@tabler/icons-react": "^2.47.0",
+    "@tailwindcss/vite": "^4.1.6",
     "astro": "^5.6.1",
     "astro-icon": "^1.1.5",
     "class-variance-authority": "^0.7.0",
@@ -35,7 +36,7 @@
     "remark-wiki-link": "^2.0.1",
     "sharp": "^0.33.2",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4.1.6",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
