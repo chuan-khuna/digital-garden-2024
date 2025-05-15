@@ -1,9 +1,58 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from 'tailwindcss/defaultTheme'
 
 export default {
   plugins: [require("@tailwindcss/typography")],
   theme: {
     extend: {
+      colors: {
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        // quote: '#ff7048',
+        // cactus colours
+        'cactus-bg': 'hsl(var(--theme-bg) / <alpha-value>)',
+        'cactus-text': 'hsl(var(--theme-text) / <alpha-value>)',
+        'cactus-link': 'hsl(var(--theme-link) / <alpha-value>)',
+        'cactus-accent': 'hsl(var(--theme-accent) / <alpha-value>)',
+        'cactus-accent-2': 'hsl(var(--theme-accent-2) / <alpha-value>)',
+        'cactus-quote': 'hsl(var(--theme-quote) / <alpha-value>)',
+      },
+      fontFamily: {
+        sans: ['Lato', ...fontFamily.sans],
+        serif: ['DM Serif Text', 'DM Serif Display', ...fontFamily.serif],
+        mono: ['Inconsolata', ...fontFamily.mono],
+      },
       typography: () => ({
         DEFAULT: {
           css: {
