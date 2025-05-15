@@ -8,7 +8,6 @@ const {
   default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette')
 
-const { default: toColorValue } = require('tailwindcss/lib/util/toColorValue')
 
 const config = {
   darkMode: ['selector'],
@@ -223,16 +222,6 @@ function bgDotGrid({ matchUtilities, theme }: any) {
         )}")`,
       }),
       'bg-dot': (value: any) => {
-        // console.log("🍵 ~ bgDotGrid ~ value:", value)
-
-        // console.log(theme("cactus-text"))
-
-        let colours = flattenColorPalette(theme('colors'))
-        // console.log("🍵 ~ bgDotGrid ~ colours:", colours)
-
-        let colourValue = toColorValue(value)
-        // console.log("🍵 ~ bgDotGrid ~ colourValue:", colourValue)
-
         return {
           backgroundImage: `url("${svgToDataUri(
             `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`,
