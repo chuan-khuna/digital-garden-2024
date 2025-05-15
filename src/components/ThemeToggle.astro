@@ -2,11 +2,10 @@
 import { Moon, Sun, Leaf, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const defaultTheme = '-30k'
+const defaultTheme = 'nzk'
 
 // theme name from `styles/globals.css`
 const themes = [defaultTheme, 'nexus', 'dark']
-// const themes = [defaultTheme, 'dark']
 
 const themeButtonCss = `h-5 w-5 hidden`
 ---
@@ -33,9 +32,11 @@ const themeButtonCss = `h-5 w-5 hidden`
 
   // initialise theme
   document.documentElement.classList.add(theme)
+  // show the current theme button
   document.getElementById(`${theme}Button`).classList.remove('hidden')
   document.getElementById(`${theme}Button`).classList.add('block')
 
+  // set theme in localStorage
   window.localStorage.setItem('theme', theme)
   window.localStorage.setItem('themeIndex', themes.indexOf(theme))
 

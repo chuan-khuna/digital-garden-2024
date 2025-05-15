@@ -7,3 +7,8 @@
 ```bash
 docker compose up -d
 ```
+
+## How to add colour palette
+
+- update `src/styles/globals.css`
+- update `src/components/ThemeToggle.astro`
