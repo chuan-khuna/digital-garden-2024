@@ -5,7 +5,7 @@ services:
     container_name: astro-garden
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: bun.Dockerfile
     stdin_open: true
     tty: true
     ports:
