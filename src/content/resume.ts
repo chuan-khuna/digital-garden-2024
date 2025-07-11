@@ -1,4 +1,48 @@
 export const RESUME = {
+  skills: {
+    languages: ['Python', 'Haskell', 'Elixir', 'R', 'SQL', 'Ruby', 'Go'],
+    frameworks: [
+      'Django',
+      'FastAPI',
+      'pandas',
+      'numpy',
+      'pythainlp',
+      'gensim',
+      'NLTK',
+      'streamlit',
+      'matplotlib',
+      'seaborn',
+      'Phoenix',
+      'Fiber',
+      'Gin',
+    ],
+    tools: [
+      'Git',
+      'Docker',
+      'uv',
+      'Postgres',
+      'MongoDB',
+      'Airflow',
+      'Kafka',
+      'Bitbucket Pipelines',
+      'Ollama',
+      'RAG',
+      'MCP',
+      'Google Looker Studio',
+      'Vector Database (eg Chroma)',
+      'Digital Ocean',
+    ],
+    dataScienceDetails: [
+      'Data visualisation with matplotlib, seaborn, Google Looker Studio, streamlit',
+      'Text network analysis, word cloud',
+      'Time series analysis, RFM analysis, cohort analysis, association rule learning',
+    ],
+    machineLearningDetails: [
+      'Achieved TensorFlow Developer Certificate',
+      'Trained Speech Emotion Recognition model using LSTM and Transformer',
+      'Built a simple RAG/MCP for Jira task summarisation',
+    ],
+  },
   experiences: [
     {
       jobTitle: 'Data Scientist',
