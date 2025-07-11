@@ -4,9 +4,9 @@
 
 @config "../../tailwind.config.ts";
 
-@import "./theme_dark.css";
-@import "./theme_nexus.css";
-@import "./theme_nzk.css";
+@import './theme_dark.css';
+@import './theme_nexus.css';
+@import './theme_nzk.css';
 
 @custom-variant dark (&:is(.dark *));
 

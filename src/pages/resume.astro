@@ -2,6 +2,7 @@
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 
 // section
+import { PORTFOLIO } from '@/content/portfolio.ts'
 import Experiences from '@/components/resume/sections/Experiences.astro'
 import Projects from '@/components/resume/sections/Projects.astro'
 import Activity from '@/components/resume/sections/Activity.astro'
@@ -45,7 +46,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
               <p>
                 <b>Github</b>:
                 <a
-                  href="https://github.com/chuan-khuna"
+                  href={PORTFOLIO.links.github}
                   target="_blank"
                   rel="noreferrer"
                   class="font-medium underline"

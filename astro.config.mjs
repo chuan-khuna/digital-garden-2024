@@ -9,7 +9,7 @@ import rehypeKatex from 'rehype-katex'
 
 import wikiLinkPlugin from 'remark-wiki-link'
 
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite'
 
 // https://astro.build/config
 export default defineConfig({
