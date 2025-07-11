@@ -13,4 +13,4 @@ services:
     volumes:
       - /app/node_modules/
       - .:/app
-    command: 'npm run dev'
+    command: 'bun run dev'
