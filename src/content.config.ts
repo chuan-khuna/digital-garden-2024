@@ -4,5 +4,5 @@ import { resumeSkillsCollection } from '@/content/collection-definitions/resume'
 
 export const collections = {
   posts: postsCollection,
-  resumeSkills: resumeSkillsCollection,
+  // resumeSkills: resumeSkillsCollection,
 }
