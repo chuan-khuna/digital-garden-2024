@@ -8,8 +8,8 @@ services:
     stdin_open: true
     tty: true
     ports:
-      - '4321:4321'
+      - '4322:4322'
     volumes:
       - /app/node_modules/
       - .:/app
-    command: 'bun run dev'
+    command: 'bun run dev --port 4322'
