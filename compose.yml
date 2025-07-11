@@ -1,8 +1,7 @@
-name: astro-garden
+name: bun-astro-garden
 
 services:
   astro-garden:
-    container_name: astro-garden
     build:
       context: .
       dockerfile: bun.Dockerfile
