@@ -65,4 +65,54 @@ export const RESUME = {
       ],
     },
   ],
+  projects: [
+    {
+      title: 'altr - my personal python package',
+      time: 'May 2025',
+      description: 'Personal project',
+      url: 'https://github.com/chuan-khuna/altr',
+      details: [
+        'A collection of snippets of code for solving problems bundled as python package that can be installed from github',
+      ],
+    },
+    {
+      title: 'Wordle game by Haskell',
+      time: 'Sep 2023',
+      description: 'Personal project',
+      url: 'https://github.com/chuan-khuna/learning-haskell',
+      details: [
+        'Implement the Wordle puzzle in Haskell language to explore functional programming style',
+      ],
+    },
+    {
+      title: 'Wordle But Statistics',
+      time: 'Jan 2022',
+      description: 'Personal project',
+      url: 'https://github.com/chuan-khuna/wordle-but-statistics',
+      details: [
+        'Solve the Wordle puzzle optimally by using statistics/information theory',
+      ],
+    },
+    {
+      title:
+        'Bias Correction of Multi-Dimensional Climate Data and Visualisation',
+      time: '2019 - 2020',
+      description: 'Senior project at KMUTNB',
+      url: null,
+      details: [
+        'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
+        'Performed and evaluated performance of climate bias correction methods',
+      ],
+    },
+    {
+      title: 'Data Mining and AI Course',
+      time: '2019 - 2020',
+      description: 'Enrolled University Courses at KMUTNB',
+      url: null,
+      details: [
+        'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
+        'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
+      ],
+    },
+  ],
 }
