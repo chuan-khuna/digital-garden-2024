@@ -12,6 +12,11 @@ import Interests from '@/components/resume/sections/Interests.astro'
 import Now from '@/components/resume/sections/Now.astro'
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
+
+import { getCollection } from 'astro:content'
+const skills = await getCollection('resumeSkills')
+
+console.log(skills)
 ---
 
 <BaseLayoutPrint title="ALTR's Resume" description="">

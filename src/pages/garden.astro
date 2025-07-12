@@ -14,7 +14,7 @@ const allPosts = await getCollection('posts')
       allPosts.map((post) => (
         <PostCard
           rootURL={'posts'}
-          slug={post.slug}
+          slug={post.id}
           title={post.data.title}
           description={post.data.description}
           date={post.data.date}
