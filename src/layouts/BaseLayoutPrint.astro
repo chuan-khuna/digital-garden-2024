@@ -30,7 +30,7 @@ const { title, description, ogImage } = Astro.props
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
       <!-- <Header /> -->
-      <Nav isPrint={true} />
+      <Nav />
       <main class="flex-auto">
         <!-- global container -->
         <section
@@ -43,3 +43,7 @@ const { title, description, ogImage } = Astro.props
     </div>
   </body>
 </html>
+
+<style>
+  @page { size: auto;  margin: 0mm; }
+</style>
