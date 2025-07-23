@@ -8,7 +8,10 @@ import { RESUME } from '@/content/resume.ts'
 
 <SectionBlock title="Skills">
   <div>
-    <h2 class="text-lg">Programming Languages and Tools</h2>
+    <!-- <h2 class="text-lg">Programming Languages and Tools</h2> -->
+    <Item
+      title="Programming Languages and Tools"
+    />
     <text class="text-sm"
       ><b>Languages:{' '}</b>{RESUME.skills.languages.join(', ')}
     </text>
@@ -23,10 +26,20 @@ import { RESUME } from '@/content/resume.ts'
       ><b>Tools:{' '}</b>{RESUME.skills.tools.join(', ')}
     </text>
   </div>
+
+    <Divider />
+
   <div>
-    <h2 class="text-lg">Data Science</h2>
+    <Item
+      title="Data Science"
+    />
     <UnorderedList ulClass="text-sm" items={RESUME.skills.dataScienceDetails} />
-    <h2 class="text-lg">Machine Learning and Deep Learning</h2>
+
+    <Divider />
+
+    <Item
+      title="Machine Learning"
+    />
     <UnorderedList
       ulClass="text-sm"
       items={RESUME.skills.machineLearningDetails}
