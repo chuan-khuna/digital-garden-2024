@@ -2,13 +2,14 @@
 import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
 import Item from '../Item.astro'
+import Divider from '../Divider.astro'
 
 import { RESUME } from '@/content/resume.ts'
 ---
 
 <SectionBlock title="Projects">
   {
-    RESUME.projects.map((project) => {
+    RESUME.projects.map((project, index) => {
       return (
         <>
           <Item
@@ -23,6 +24,11 @@ import { RESUME } from '@/content/resume.ts'
           ) : (
             <UnorderedList ulClass="text-sm" items={project.details} />
           )}
+
+
+          {index < RESUME.projects.length - 1 && 
+            <Divider />
+          }
         </>
       )
     })
