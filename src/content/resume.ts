@@ -4,6 +4,7 @@ export const RESUME = {
     jobTitle: "Data Scientist/Developer",
     email: "k.phattharanat@gmail.com",
     github: "https://github.com/chuan-khuna",
+    githubName: "chuan-khuna",
     introduction: "I three years of experience as a Data Scientist and Developer. Most of my tasks are about providing analyses to support a strategy team. I gained experience in the field of spatiotemporal data and time series analysis whilst working on my senior project.",
     location: "Bangkok, Thailand",
   },
