@@ -2,11 +2,10 @@
 import { Moon, Sun, Leaf, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const defaultTheme = '-30k'
+const defaultTheme = 'nzk'
 
 // theme name from `styles/globals.css`
 const themes = [defaultTheme, 'nexus', 'dark']
-// const themes = [defaultTheme, 'dark']
 
 const themeButtonCss = `h-5 w-5 hidden`
 ---
@@ -18,21 +17,26 @@ const themeButtonCss = `h-5 w-5 hidden`
   <span class="sr-only">Toggle theme</span>
 </Button>
 
-<script is:inline define:vars={{ themes }}>
+<script is:inline define:vars={{ themes, defaultTheme }}>
   const theme = (() => {
     // check if localStorage is available and if a theme is set
     if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      // console.log('localStorage theme:', localStorage.getItem('theme'))
       return localStorage.getItem('theme')
     }
+
+    // console.log('localStorage theme not set, using default theme:', defaultTheme)
     // return default theme, if no theme is set
     return defaultTheme
   })()
 
   // initialise theme
   document.documentElement.classList.add(theme)
+  // show the current theme button
   document.getElementById(`${theme}Button`).classList.remove('hidden')
   document.getElementById(`${theme}Button`).classList.add('block')
 
+  // set theme in localStorage
   window.localStorage.setItem('theme', theme)
   window.localStorage.setItem('themeIndex', themes.indexOf(theme))
 

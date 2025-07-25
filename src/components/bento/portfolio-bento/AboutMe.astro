@@ -1,18 +1,33 @@
 ---
 import { PORTFOLIO } from '@/content/portfolio.ts'
-const skills = PORTFOLIO.skills
 ---
 
 <div class="animate-appear flex flex-col gap-2">
+  <p class="text-md mb-1 font-medium">
+    {PORTFOLIO.headLine}
+  </p>
+
+  <hr />
+
+  <p class="text-sm font-light">I am currently interested in:</p>
   <ul class="list-inside list-disc">
     {
-      skills.map((skill) => {
+      PORTFOLIO.interests.map((topic) => {
         return (
           <li>
-            <span>{skill}</span>
+            <span>{topic}</span>
           </li>
         )
       })
     }
   </ul>
+
+  <hr />
+
+  <p class="text-sm font-light">
+    For more information, please visit <a
+      href="/resume"
+      class="underline hover:font-bold">resume page</a
+    >.
+  </p>
 </div>

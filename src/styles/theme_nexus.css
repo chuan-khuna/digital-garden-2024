@@ -1,0 +1,28 @@
+.nexus {
+  --background: 218.2 31.4% 6.9%;
+  --foreground: 270 8% 90.2%;
+  --card: 218.2 31.4% 6.9%;
+  --card-foreground: 270 8% 90.2%;
+  --popover: 218.2 31.4% 6.9%;
+  --popover-foreground: 270 8% 90.2%;
+  --primary: 253.3 52.5% 61.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 13.1 100% 64.1%;
+  --secondary-foreground: 253.3 52.5% 61.2%;
+  --muted: 13.1 100% 64.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 13.1 100% 64.1%;
+  --accent-foreground: 253.3 52.5% 61.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 42.9 35.6% 88.4%;
+  --ring: 0 0% 22%;
+  --radius: 0.5rem;
+  --theme-bg: 218.2deg 31.4% 6.9%;
+  --theme-link: 253.3deg 52.5% 61.2%;
+  --theme-text: 270deg 8% 90.2%;
+  --theme-accent: 13.1 100% 64.1%;
+  --theme-accent-2: 253.3 52.5% 61.2%;
+  --theme-quote: 253.1deg 80% 64.1%;
+}

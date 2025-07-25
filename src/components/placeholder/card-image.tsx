@@ -4,7 +4,7 @@ import colors from 'tailwindcss/colors'
 
 export const CardImageDot = () => {
   return (
-    <div className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl border border-transparent bg-neutral-100 bg-dot-black/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black dark:bg-dot-white/[0.2]"></div>
+    <div className="bg-dot-black/[0.2] dark:bg-dot-white/[0.2] flex h-full min-h-[6rem] w-full flex-1 rounded-xl border border-transparent bg-neutral-100 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black"></div>
   )
 }
 
@@ -27,7 +27,7 @@ export const CardImageGradient = () => {
         repeat: Infinity,
         repeatType: 'reverse',
       }}
-      className="flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 rounded-lg bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
+      className="bg-dot-black/[0.2] dark:bg-dot-white/[0.2] flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 rounded-lg"
       style={{
         background:
           'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',

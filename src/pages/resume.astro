@@ -10,6 +10,9 @@ import Education from '@/components/resume/sections/Education.astro'
 import Interests from '@/components/resume/sections/Interests.astro'
 import Now from '@/components/resume/sections/Now.astro'
 
+import { RESUME } from '@/content/resume.ts'
+
+
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 ---
 
@@ -24,17 +27,14 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
         <div class="relative border p-4">
           <div class="md:flex">
             <div>
-              <h1 class="text-4xl font-bold">Phattharanat Khunakornophat</h1>
-              <p class=`${textGrayClasses} text-xl`>Data Scientist/Developer</p>
+              <h1 class="text-4xl font-bold">{RESUME.header.name}</h1>
+              <p class=`${textGrayClasses} text-xl`>{RESUME.header.jobTitle}</p>
             </div>
           </div>
           <div class="mt-4 md:flex">
             <div name="summary">
               <p>
-                I three years of experience as a Data Scientist and Developer. Most of my
-                tasks are about providing analyses to support a strategy team. I
-                gained experience in the field of spatiotemporal data and time
-                series analysis whilst working on my senior project.
+                {RESUME.header.introduction}
               </p>
             </div>
             <div
@@ -44,7 +44,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
               <p>
                 <b>Github</b>:
                 <a
-                  href="https://github.com/chuan-khuna"
+                  href={RESUME.header.github}
                   target="_blank"
                   rel="noreferrer"
                   class="font-medium underline"
@@ -52,8 +52,8 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
                   chuan-khuna
                 </a>
               </p>
-              <p><b>Email</b>: k.phattharanat@gmail.com</p>
-              <p><b>Address</b>: Chonburi/Bangkok, Thailand</p>
+              <p><b>Email</b>: {RESUME.header.email}</p>
+              <p><b>Location</b>: {RESUME.header.location}</p>
             </div>
           </div>
         </div>

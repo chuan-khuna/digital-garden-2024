@@ -2,15 +2,14 @@ name: bun-astro-garden
 
 services:
   astro-garden:
-    container_name: astro-garden
     build:
       context: .
       dockerfile: bun.Dockerfile
     stdin_open: true
     tty: true
     ports:
-      - '4321:4321'
+      - '4322:4322'
     volumes:
       - /app/node_modules/
       - .:/app
-    command: 'bun run dev'
+    command: 'bun run dev --port 4322'

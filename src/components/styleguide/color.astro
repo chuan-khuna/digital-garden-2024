@@ -1,0 +1,18 @@
+---
+interface Props {
+  cssValue: string
+  name: string
+}
+
+const { cssValue, name } = Astro.props
+---
+
+<div class="flex items-center gap-1.5 sm:flex-col">
+  <!-- colour box -->
+  <div class="" style=`background-color: ${cssValue};`></div>
+
+  <!-- colour name -->
+  <p class="text-center font-mono text-xs text-gray-600 dark:text-gray-400">
+    {name}
+  </p>
+</div>

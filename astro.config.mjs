@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
-import tailwind from '@astrojs/tailwind'
+// import tailwind from '@astrojs/tailwind'
 import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
 
@@ -9,11 +9,14 @@ import rehypeKatex from 'rehype-katex'
 
 import wikiLinkPlugin from 'remark-wiki-link'
 
+import tailwindcss from '@tailwindcss/vite'
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.CI
     ? 'https://github.com/chuan-khuna'
     : 'http://localhost:4321',
+
   markdown: {
     syntaxHighlight: 'shiki',
     gfm: true,
@@ -35,12 +38,17 @@ export default defineConfig({
       ],
     ],
   },
+
   integrations: [
     react(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
+    // tailwind({
+    //   applyBaseStyles: false,
+    // }),
     mdx(),
     icon(),
   ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 })

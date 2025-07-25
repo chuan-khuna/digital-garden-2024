@@ -1,4 +1,7 @@
 ---
+import '@/styles/global.css'
+import '@/styles/fonts.css'
+
 import BaseLayout from './BaseLayout.astro'
 import { BackReferenceSection } from '@/components/post/back-reference.tsx'
 
@@ -11,7 +14,7 @@ const { frontmatter, incomingNotes, rootURL } = Astro.props
   <!-- content container -->
   <div class="container max-w-[100ch]">
     <div
-      class="prose prose-cactus mt-12 max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+      class="prose-cactus prose mt-12 max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
     >
       <slot />
     </div>

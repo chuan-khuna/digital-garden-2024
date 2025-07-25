@@ -2,29 +2,21 @@
 import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
 import Item from '../Item.astro'
+
+import { RESUME } from '@/content/resume.ts'
 ---
 
 <SectionBlock title="Experience">
-  <div>
-    <Item
-      title="Data Scientist"
-      timeDescription="Jul 2022 - Present"
-      description="The Mather"
-    />
-    <UnorderedList
-      ulClass="text-sm"
-      items={[
-        'Provide data analysis and visualisation for a strategy team',
-        'Implement data scraper for social media platforms including Pantip (Thailand discussion forum), Twitter, YouTube and TikTok',
-        'Analyse point of sale data: RFM analysis, cohort analysis and association rule learning',
-        'Train a Thai Speech Emotion Recognition model using Transformer architecture, achieve 60% validation accuracy with five classes data',
-        'Analyse and visualise survey responses using word cloud, n-gram and LDA topic modelling',
-        'Research, design and develop backend systems and data pipelines for a POC project centred in real-time people detection, face recognition using Django, FastAPI, DBSCAN, Airflow, Chroma',
-        'Research and implement Retrieval-Augmented Generation and Model Context Protocol for Postgres and Jira',
-        'Implement basic Bitbucket Pipelines to automate the deployment to an internal testing server, eliminating the need of manual tasks',
-        'Maintain and refactor Django starter template, add TOTP and LINE login features, migrate package manager from pip to uv, websocket-based notifications',
-        'Explore, containerise, scaffold project structure for backend frameworks including Go Fiber, Elixir Phoenix',
-      ]}
-    />
-  </div>
+  {
+    RESUME.experiences.map((experience) => (
+      <div>
+        <Item
+          title={experience.jobTitle}
+          timeDescription={experience.time}
+          description={experience.company}
+        />
+        <UnorderedList ulClass="text-sm" items={experience.details} />
+      </div>
+    ))
+  }
 </SectionBlock>

@@ -1,4 +1,7 @@
 ---
+import '@/styles/global.css'
+import '@/styles/fonts.css'
+
 import HeadSEO from '@/components/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
@@ -27,7 +30,7 @@ const { title, description, ogImage } = Astro.props
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
       <!-- <Header /> -->
-      <Nav isPrint={true} />
+      <Nav />
       <main class="flex-auto">
         <!-- global container -->
         <section
@@ -40,3 +43,7 @@ const { title, description, ogImage } = Astro.props
     </div>
   </body>
 </html>
+
+<style>
+  @page { size: auto;  margin: 0mm; }
+</style>

@@ -6,7 +6,7 @@ interface Props {
 const { title } = Astro.props
 ---
 
-<div class="prose prose-cactus relative max-w-full border p-4 md:block">
+<div class="prose-cactus prose relative max-w-full border p-4 md:block">
   {title && <h1 class="text-2xl">{title}</h1>}
   <slot />
 </div>

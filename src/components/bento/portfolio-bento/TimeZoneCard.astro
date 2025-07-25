@@ -1,0 +1,8 @@
+---
+import NowTime from '@/components/bento/nowtime.tsx'
+const { timezone = null } = Astro.props
+---
+
+<div class="animate-appear flex flex-row items-center gap-2 p-1">
+  <NowTime timezone={timezone} client:load />
+</div>

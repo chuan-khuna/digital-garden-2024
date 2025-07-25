@@ -1,16 +1,14 @@
 ---
-import {
-  Linkedin,
-  Github,
-  Mail,
-  Youtube,
-  Twitter,
-  Rss,
-  Book,
-  PanelsTopLeft,
-} from 'lucide-react'
+import { Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PORTFOLIO } from '@/content/portfolio.ts'
+import { Image } from 'astro:assets'
+
+var fixedAvatarClass =
+  'pointer-events-none absolute bottom-auto right-[-0px] z-[-1] max-h-[256px] w-auto select-none opacity-25 md:relative md:bottom-auto md:right-auto md:z-auto md:opacity-100'
+
+var origAvatarClass =
+  'pointer-events-none absolute bottom-[-20px] right-[-110px] z-[-1] max-h-[300px] w-auto select-none opacity-50 md:relative md:bottom-auto md:right-auto md:z-auto md:opacity-100'
 ---
 
 <div class="animate-appear flex h-full w-full">
@@ -20,6 +18,11 @@ import { PORTFOLIO } from '@/content/portfolio.ts'
         Hi, I'm
         <b class="font-bold">{PORTFOLIO.firstName}</b>.
       </p>
+
+      <p class="m-0 text-xl font-light">
+        An ordinary Data Scientist who loves SAWANO Hiroyuki's music
+      </p>
+
       <ul class="pt-4">
         {
           PORTFOLIO.shortIntros.map((intro, _index) => (
@@ -36,11 +39,28 @@ import { PORTFOLIO } from '@/content/portfolio.ts'
         aria-label="github profile"
         target="_blank"
       >
-        <Button aria-label="github profile">
+        <Button aria-label="github profile" variant="ghost">
           <Github />
           <span class="sr-only">GitHub Profile</span>
         </Button>
       </a>
     </div>
   </div>
+
+  <!-- TODO: image bug, when text isn't long enough -->
+  <img
+    src={PORTFOLIO.avatarUrl}
+    class={fixedAvatarClass}
+    width="300"
+    height="auto"
+    alt={`image of ${PORTFOLIO.name}`}
+  />
+
+  <!-- <Image
+    alt={`image of ${PORTFOLIO.name}`}
+    class="pointer-events-none absolute bottom-[-20px] right-[-110px] z-[-1] max-h-[300px] w-auto select-none opacity-50 md:relative md:bottom-auto md:right-auto md:z-auto md:opacity-100"
+    height="300"
+    src={`/${PORTFOLIO.avatarUrl}`}
+    width="300"
+  /> -->
 </div>

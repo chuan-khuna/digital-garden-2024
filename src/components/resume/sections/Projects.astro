@@ -2,67 +2,35 @@
 import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
 import Item from '../Item.astro'
+import Divider from '../Divider.astro'
+
+import { RESUME } from '@/content/resume.ts'
 ---
 
 <SectionBlock title="Projects">
-  <Item
-    title="altr - my personal python package"
-    timeDescription="May 2025"
-    description="Personal project"
-    url="https://github.com/chuan-khuna/altr"
-  />
-  <p class="mb-4 mt-0 text-sm">
-    A collection of snippets of code for solving problems, bundled as python
-    package that can be installed from github
-  </p>
-  
-  <Item
-    title="Wordle game by Haskell"
-    timeDescription="Sep 2023"
-    description="Personal project"
-    url="https://github.com/chuan-khuna/learning-haskell"
-  />
-  <p class="mb-4 mt-0 text-sm">
-    Implement the Wordle puzzle in Haskell language to explore functional
-    programming style
-  </p>
+  {
+    RESUME.projects.map((project, index) => {
+      return (
+        <>
+          <Item
+            title={project.title}
+            timeDescription={project.time}
+            description={project.description}
+            url={project.url}
+          />
 
-  
-  <Item
-    title="Wordle But Statistics"
-    timeDescription="Jan 2022"
-    description="Personal project"
-    url="https://github.com/chuan-khuna/wordle-but-statistics"
-  />
-  <p class="mb-4 mt-0 text-sm">
-    Solve the Wordle puzzle optimally by using statistics/information theory
-  </p>
+          {project.details.length === 1 ? (
+            <p class="mb-4 mt-0 text-sm">{project.details[0]}</p>
+          ) : (
+            <UnorderedList ulClass="text-sm" items={project.details} />
+          )}
 
-  
-  <Item
-    title="Bias Correction of Multi-Dimensional Climate Data and Visualisation"
-    timeDescription="2019 - 2020"
-    description="Senior project at KMUTNB"
-  />
-  <UnorderedList
-    ulClass="text-sm"
-    items={[
-      'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
-      'Performed and evaluated performance of climate bias correction methods',
-    ]}
-  />
 
-  
-  <Item
-    title="Data Mining and AI Course­"
-    timeDescription="2019 - 2020"
-    description="Enrolled University Courses at KMUTNB"
-  />
-  <UnorderedList
-    ulClass="text-sm"
-    items={[
-      'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
-      'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
-    ]}
-  />
+          {index < RESUME.projects.length - 1 && 
+            <Divider />
+          }
+        </>
+      )
+    })
+  }
 </SectionBlock>
