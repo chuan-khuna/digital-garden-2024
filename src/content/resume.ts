@@ -118,7 +118,7 @@ export const RESUME = {
     {
       title: 'Data Mining and AI Course',
       time: '2019 - 2020',
-      description: 'Enrolled University Courses at KMUTNB',
+      description: 'Enrolled Courses at KMUTNB',
       url: null,
       details: [
         'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',

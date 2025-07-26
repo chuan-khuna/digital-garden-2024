@@ -12,18 +12,18 @@ const descriptionMarginRight = timeDescription ? 'mr-2' : ''
 ---
 
 <div class="border-b">
-  <div class="grid grid-cols-3">
-    <div>
-      <span class="text-md">{title}</span>
+  <div class="grid grid-cols-5">
+    <div class="col-span-3">
+      <span class="font-bold">{title}</span>
     </div>
 
     <div class="col-span-2 text-right">
       {
         description && (
-          <span class={`text-md ${descriptionMarginRight}`}>{description}</span>
+          <span class={`text-sm ${descriptionMarginRight}`}>{description}</span>
         )
       }
-      {timeDescription && <span class="text-md ">({timeDescription})</span>}
+      {timeDescription && <span class="text-sm">({timeDescription})</span>}
     </div>
   </div>
 </div>
