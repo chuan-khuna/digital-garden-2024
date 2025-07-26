@@ -41,9 +41,10 @@ const { title, description, ogImage } = Astro.props
       </main>
       <div class="print:hidden"><Footer /></div>
     </div>
-  </body>
+  </body><style>
+    @page {
+      size: auto;
+      margin: 0mm;
+    }
+  </style>
 </html>
-
-<style>
-  @page { size: auto;  margin: 0mm; }
-</style>

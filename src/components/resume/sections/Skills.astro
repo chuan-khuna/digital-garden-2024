@@ -10,9 +10,7 @@ import { RESUME } from '@/content/resume.ts'
 <SectionBlock title="Skills">
   <div>
     <!-- <h2 class="text-lg">Programming Languages and Tools</h2> -->
-    <Item
-      title="Programming Languages and Tools"
-    />
+    <Item title="Programming Languages and Tools" />
     <text class="text-sm"
       ><b>Languages:{' '}</b>{RESUME.skills.languages.join(', ')}
     </text>
@@ -28,19 +26,15 @@ import { RESUME } from '@/content/resume.ts'
     </text>
   </div>
 
-    <Divider />
+  <Divider />
 
   <div>
-    <Item
-      title="Data Science"
-    />
+    <Item title="Data Science" />
     <UnorderedList ulClass="text-sm" items={RESUME.skills.dataScienceDetails} />
 
     <Divider />
 
-    <Item
-      title="Machine Learning"
-    />
+    <Item title="Machine Learning" />
     <UnorderedList
       ulClass="text-sm"
       items={RESUME.skills.machineLearningDetails}

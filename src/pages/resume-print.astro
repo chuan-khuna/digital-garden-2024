@@ -16,47 +16,44 @@ import { RESUME } from '@/content/resume.ts'
 ---
 
 <div>
-
-
-
-    <div
-      class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2 print:grid-cols-5"
-    >
+  <div
+    class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2 print:grid-cols-5"
+  >
     <!-- header: name and summary -->
-      <div class="md:col-span-2 print:col-span-5" name="header-summary">
-        <div class="relative border p-4">
-          <div class="md:flex">
-            <div>
-              <h1 class="text-4xl font-bold">{RESUME.header.name}</h1>
-              <p class=`text-xl`>{RESUME.header.jobTitle}</p>
-            </div>
+    <div class="md:col-span-2 print:col-span-5" name="header-summary">
+      <div class="relative border p-4">
+        <div class="md:flex">
+          <div>
+            <h1 class="text-4xl font-bold">{RESUME.header.name}</h1>
+            <p class=`text-xl`>{RESUME.header.jobTitle}</p>
           </div>
-          <div class="mt-4 md:flex">
-            <div name="summary">
-              <p>
-                {RESUME.header.introduction}
-              </p>
-            </div>
-            <div
-              class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
-              name="contact-info"
-            >
-              <p>
-                <b>Github</b>:
-                <a
-                  href={RESUME.header.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="font-medium underline"
-                >
-                  {RESUME.header.githubName}
-                </a>
-              </p>
-              <p><b>Email</b>: {RESUME.header.email}</p>
-              <p><b>Location</b>: {RESUME.header.location}</p>
-            </div>
+        </div>
+        <div class="mt-4 md:flex">
+          <div name="summary">
+            <p>
+              {RESUME.header.introduction}
+            </p>
+          </div>
+          <div
+            class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
+            name="contact-info"
+          >
+            <p>
+              <b>Github</b>:
+              <a
+                href={RESUME.header.github}
+                target="_blank"
+                rel="noreferrer"
+                class="font-medium underline"
+              >
+                {RESUME.header.githubName}
+              </a>
+            </p>
+            <p><b>Email</b>: {RESUME.header.email}</p>
+            <p><b>Location</b>: {RESUME.header.location}</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>

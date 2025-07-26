@@ -50,7 +50,11 @@ export default {
       },
       fontFamily: {
         sans: ['Lato', ...defaultTheme.fontFamily.sans],
-        serif: ['DM Serif Text', 'DM Serif Display', ...defaultTheme.fontFamily.serif],
+        serif: [
+          'DM Serif Text',
+          'DM Serif Display',
+          ...defaultTheme.fontFamily.serif,
+        ],
         mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
       },
       typography: () => ({
