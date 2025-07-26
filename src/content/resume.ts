@@ -39,8 +39,9 @@ export const RESUME = {
       'RAG',
       'MCP',
       'Google Looker Studio',
-      'Vector Database (eg Chroma)',
+      'Chroma Vector Database',
       'Digital Ocean',
+      'AWS'
     ],
     dataScienceDetails: [
       'Data visualisation with matplotlib, seaborn, Google Looker Studio, streamlit',
