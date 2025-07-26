@@ -12,7 +12,12 @@ import Education from '@/components/resume/sections/Education.astro'
 
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/PrintItem.astro'
+import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+
+
 import UnorderedList from '@/components/resume/UnorderedList.astro'
+
+
 
 import { RESUME } from '@/content/resume.ts'
 ---
@@ -84,7 +89,7 @@ import { RESUME } from '@/content/resume.ts'
               url={RESUME.experiences[0].url}
             />
 
-            <UnorderedList ulClass="text-sm" items={experience.details} />
+            <PrintUnorderedList items={experience.details} />
           </PrintSectionBlock>
         ))
       }

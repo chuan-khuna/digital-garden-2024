@@ -1,0 +1,14 @@
+---
+interface Props {
+  ulClass: string
+  items: string[]
+}
+
+const { ulClass, items } = Astro.props
+---
+
+<div>
+  <ul class={`text-sm mt-2 mb-2 ${ulClass} marker:text-gray-300`}>
+    {items.map((item, index) => <li class="text-sm mb-1 mt-1">{item}</li>)}
+  </ul>
+</div>
