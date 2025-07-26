@@ -23,21 +23,23 @@ import { RESUME } from '@/content/resume.ts'
   >
     <!-- header: name and summary -->
     <div class="md:col-span-2 print:col-span-5" name="header-summary">
-      <div class="relative border p-4">
+      <div class="relative border p-2">
+        <!-- name and job title -->
         <div class="md:flex">
           <div>
             <h1 class="text-4xl font-bold">{RESUME.header.name}</h1>
             <p class=`text-xl`>{RESUME.header.jobTitle}</p>
           </div>
         </div>
-        <div class="mt-4 md:flex">
-          <div name="summary">
+        <!-- introduction and contact info -->
+        <div class="mt-2 grid grid-cols-3">
+          <div name="summary" class="block col-span-2 text-sm">
             <p>
               {RESUME.header.introduction}
             </p>
           </div>
           <div
-            class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
+            class="block col-span-1 text-sm text-right"
             name="contact-info"
           >
             <p>
