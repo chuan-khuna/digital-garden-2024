@@ -11,7 +11,8 @@ import Skills from '@/components/resume/sections/Skills.astro'
 import Education from '@/components/resume/sections/Education.astro'
 
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
-
+import PrintItem from '@/components/resume/PrintItem.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
 
 import { RESUME } from '@/content/resume.ts'
 ---
@@ -58,16 +59,33 @@ import { RESUME } from '@/content/resume.ts'
     </div>
 
     <!-- detail -->
-    <div class="block space-y-2 print:block print:space-y-1 print:col-span-2" name="detail-small">
+    <div
+      class="block space-y-2 print:col-span-2 print:block print:space-y-1"
+      name="detail-small"
+    >
       <Skills />
       <Education />
       <Activity />
     </div>
 
-    <div class="block space-y-2 print:block print:space-y-1 print:col-span-3" name="detail-large">
-      <PrintSectionBlock title="Experiences">
-      </PrintSectionBlock>
-      <Experiences />
+    <div
+      class="block space-y-2 print:col-span-3 print:block print:space-y-1"
+      name="detail-large"
+    >
+      {
+        RESUME.experiences.map((experience) => (
+          <PrintSectionBlock title="Experiences">
+            <PrintItem
+              title={RESUME.experiences[0].jobTitle}
+              timeDescription={RESUME.experiences[0].time}
+              description={RESUME.experiences[0].company}
+              url={RESUME.experiences[0].url}
+            />
+
+            <UnorderedList ulClass="text-sm" items={experience.details} />
+          </PrintSectionBlock>
+        ))
+      }
       <Projects />
     </div>
   </div>

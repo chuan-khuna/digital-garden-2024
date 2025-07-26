@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string
+  timeDescription: string
+  description: string
+  url: string
+}
+
+const { title, timeDescription, description, url } = Astro.props
+
+const descriptionMarginRight = timeDescription ? 'mr-2' : ''
+---
+
+<div class="border-b">
+  <div class="grid grid-cols-3">
+    <div>
+      <span class="text-md">{title}</span>
+    </div>
+
+    <div class="col-span-2 text-right">
+      {
+        description && (
+          <span class={`text-md ${descriptionMarginRight}`}>{description}</span>
+        )
+      }
+      {timeDescription && <span class="text-md ">({timeDescription})</span>}
+    </div>
+  </div>
+</div>
