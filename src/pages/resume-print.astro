@@ -14,10 +14,7 @@ import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/PrintItem.astro'
 import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
 
-
 import UnorderedList from '@/components/resume/UnorderedList.astro'
-
-
 
 import { RESUME } from '@/content/resume.ts'
 ---
@@ -38,15 +35,12 @@ import { RESUME } from '@/content/resume.ts'
         </div>
         <!-- introduction and contact info -->
         <div class="mt-2 grid grid-cols-3">
-          <div name="summary" class="block col-span-2 text-sm">
+          <div name="summary" class="col-span-2 block text-sm">
             <p>
               {RESUME.header.introduction}
             </p>
           </div>
-          <div
-            class="block col-span-1 text-sm text-right"
-            name="contact-info"
-          >
+          <div class="col-span-1 block text-right text-sm" name="contact-info">
             <p>
               <b>Github</b>:
               <a
@@ -79,21 +73,37 @@ import { RESUME } from '@/content/resume.ts'
       class="block space-y-2 print:col-span-3 print:block print:space-y-1"
       name="detail-large"
     >
-      {
-        RESUME.experiences.map((experience) => (
-          <PrintSectionBlock title="Experiences">
-            <PrintItem
-              title={RESUME.experiences[0].jobTitle}
-              timeDescription={RESUME.experiences[0].time}
-              description={RESUME.experiences[0].company}
-              url={RESUME.experiences[0].url}
-            />
+      <PrintSectionBlock title="Experiences">
+        {
+          RESUME.experiences.map((experience) => (
+            <>
+              <PrintItem
+                title={RESUME.experiences[0].jobTitle}
+                timeDescription={RESUME.experiences[0].time}
+                description={RESUME.experiences[0].company}
+                url={RESUME.experiences[0].url}
+              />
+              <PrintUnorderedList items={experience.details} />
+            </>
+          ))
+        }
+      </PrintSectionBlock>
 
-            <PrintUnorderedList items={experience.details} />
-          </PrintSectionBlock>
-        ))
-      }
-      <Projects />
+      <PrintSectionBlock title="Projects">
+        {
+          RESUME.projects.map((project) => (
+            <>
+              <PrintItem
+                title={project.title}
+                timeDescription={project.time}
+                description={project.description}
+                url={project.url}
+              />
+              <PrintUnorderedList items={project.details} />
+            </>
+          ))
+        }
+      </PrintSectionBlock>
     </div>
   </div>
 </div>
