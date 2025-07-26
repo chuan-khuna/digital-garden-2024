@@ -41,7 +41,7 @@ export const RESUME = {
       'Google Looker Studio',
       'Chroma Vector Database',
       'Digital Ocean',
-      'AWS'
+      'AWS',
     ],
     dataScienceDetails: [
       'Data visualisation with matplotlib, seaborn, Google Looker Studio, streamlit',
