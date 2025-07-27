@@ -1,4 +1,6 @@
 ---
+import ItemSeparator from './ItemSeparator.astro'
+
 interface Props {
   title: string
   timeDescription: string
@@ -30,31 +32,31 @@ const titleClass = titleFontSize
         <div>
           <div class="ml-2 flex-shrink-0 text-right text-sm">
             {description && (
-              <span class="ml-2 border-l pl-2 text-gray-500">
+              <span class="ml-2 border-l border-gray-300 pl-2 text-gray-500">
                 {description}
               </span>
             )}
             {timeDescription && (
-              <span class="ml-2 border-l pl-2 text-gray-500">
+              <span class="ml-2 border-l border-gray-300 pl-2 text-gray-500">
                 {timeDescription}
               </span>
             )}
           </div>
         </div>
       )}
-      <div class="ml-4 flex flex-1 items-center border-t border-gray-200" />
+      <ItemSeparator />
     </div>
   ) : (
     <div class="mb-2">
       <div class="flex items-center">
         <div class={titleClass}>{title}</div>
-        <div class="ml-4 flex flex-1 items-center border-t border-gray-200" />
+        <ItemSeparator />
       </div>
       {(description || timeDescription || url) && (
         <div class="mt-0 flex flex-row gap-2 text-sm text-gray-500">
           {description && <span>{description}</span>}
           {timeDescription && (
-            <span class="border-l pl-2 ">{timeDescription}</span>
+            <span class="border-l border-gray-300 pl-2">{timeDescription}</span>
           )}
         </div>
       )}
