@@ -1,71 +1,81 @@
 ---
-import '@/styles/global.css'
-import '@/styles/fonts.css'
+import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 
 // section
 import PrintExperiences from '@/components/resume/sections/PrintExperiences.astro'
 import PrintSkills from '@/components/resume/sections/PrintSkills.astro'
 import PrintProjects from '@/components/resume/sections/PrintProjects.astro'
 import PrintEducation from '@/components/resume/sections/PrintEducation.astro'
+import PrintInterests from '@/components/resume/sections/PrintInterests.astro'
+import PrintActivity from '@/components/resume/sections/PrintActivity.astro'
 
 import { RESUME } from '@/content/resume.ts'
 ---
 
-<div>
-  <div
-    class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2 print:grid-cols-7"
-  >
-    <!-- header: name and summary -->
-    <div class="md:col-span-2 print:col-span-7" name="header-summary">
-      <div class="relative border p-2">
-        <!-- name and job title -->
-        <div class="md:flex">
-          <div>
-            <h1 class="font-serif text-3xl font-bold">{RESUME.header.name}</h1>
-            <p class=`text-md`>{RESUME.header.jobTitle}</p>
+<BaseLayoutPrint title="ALTR's Resume" description="">
+  <div>
+    <div
+      class="mx-auto grid max-w-[1200px] grid-cols-1 gap-2 p-2 md:grid-cols-2 print:grid-cols-7"
+    >
+      <!-- header: name and summary -->
+      <div class="md:col-span-2 print:col-span-7" name="header-summary">
+        <div class="relative border p-2">
+          <!-- name and job title -->
+          <div class="md:flex">
+            <div>
+              <h1 class="font-serif text-3xl font-bold">
+                {RESUME.header.name}
+              </h1>
+              <p class=`text-md`>{RESUME.header.jobTitle}</p>
+            </div>
           </div>
-        </div>
-        <!-- introduction and contact info -->
-        <div class="mt-2 grid grid-cols-3">
-          <div name="summary" class="col-span-2 block text-sm">
-            <p>
-              {RESUME.header.introduction}
-            </p>
-          </div>
-          <div class="col-span-1 block text-right text-sm" name="contact-info">
-            <p>
-              <b>Github</b>:
-              <a
-                href={RESUME.header.github}
-                target="_blank"
-                rel="noreferrer"
-                class="font-medium underline"
-              >
-                {RESUME.header.githubName}
-              </a>
-            </p>
-            <p><b>Email</b>: {RESUME.header.email}</p>
-            <p><b>Location</b>: {RESUME.header.location}</p>
+          <!-- introduction and contact info -->
+          <div class="mt-2 grid grid-cols-3">
+            <div name="summary" class="col-span-2 block text-sm">
+              <p>
+                {RESUME.header.introduction}
+              </p>
+            </div>
+            <div
+              class="col-span-1 block text-right text-sm"
+              name="contact-info"
+            >
+              <p>
+                <b>Github</b>:
+                <a
+                  href={RESUME.header.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-medium underline"
+                >
+                  {RESUME.header.githubName}
+                </a>
+              </p>
+              <p><b>Email</b>: {RESUME.header.email}</p>
+              <p><b>Location</b>: {RESUME.header.location}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- detail -->
-    <div
-      class="block space-y-2 print:col-span-2 print:block print:space-y-1"
-      name="detail-small"
-    >
-      <PrintSkills />
-    </div>
+      <!-- detail -->
+      <div
+        class="block space-y-2 print:col-span-2 print:block print:space-y-1"
+        name="detail-small"
+      >
+        <PrintSkills />
+        <PrintActivity />
+        <PrintInterests />
+      </div>
 
-    <div
-      class="block space-y-2 print:col-span-5 print:block print:space-y-1"
-      name="detail-large"
-    >
-      <PrintExperiences />
-      <PrintProjects />
-      <PrintEducation />
+      <div
+        class="block space-y-2 print:col-span-5 print:block print:space-y-1"
+        name="detail-large"
+      >
+        <PrintExperiences />
+        <PrintProjects />
+        <PrintEducation />
+      </div>
     </div>
   </div>
-</div>
+</BaseLayoutPrint>

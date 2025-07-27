@@ -142,4 +142,24 @@ export const RESUME = {
       ],
     },
   ],
+  interests: [
+    'Data visualisation',
+    'Table Tennis',
+    'Listening to music (Sawano Hiroyuki)',
+    'People I admire: John Burn-Murdoch, David Spiegelhalter, Grant Sanderson (3B1B), Matt Parker',
+    'British English accents (RP, Cockney)',
+    'Functional Programming, Haskell, Elixir',
+    'Personal Knowledge Management, Zettelkasten, Evergreen Notes',
+  ],
+  activities: [
+    {
+      title: 'An internal meetup talk "What not to Plot and Data Visualisation in History"',
+      time: 'Aug 2023',
+      description: 'The Mather',
+      details: [
+        'Provided a retrospective analysis of a chart and proposed improvements',
+        'Highlighted some great data visualisations in history',
+      ]
+    }
+  ]
 }

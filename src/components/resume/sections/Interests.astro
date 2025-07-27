@@ -1,20 +1,12 @@
 ---
 import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
-import Item from '../Item.astro'
+import { RESUME } from '@/content/resume.ts'
 ---
 
 <SectionBlock title="Interests">
   <UnorderedList
     ulClass="text-sm"
-    items={[
-      'Data visualisation',
-      'Table Tennis',
-      'Listening to music (Sawano Hiroyuki)',
-      'People I admire: John Burn-Murdoch, David Spiegelhalter, Grant Sanderson (3B1B), Matt Parker',
-      'British English accents (RP, Cockney)',
-      'Functional Programming, Haskell, Elixir',
-      'Personal Knowledge Management, Zettelkasten, Evergreen Notes',
-    ]}
+    items={RESUME.interests}
   />
 </SectionBlock>
