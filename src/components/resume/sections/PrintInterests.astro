@@ -1,0 +1,10 @@
+---
+import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
+import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+
+import { RESUME } from '@/content/resume.ts'
+---
+
+<PrintSectionBlock title="Interests">
+  <PrintUnorderedList ulClass="text-sm" items={RESUME.interests} />
+</PrintSectionBlock>

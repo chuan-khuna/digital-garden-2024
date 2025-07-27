@@ -1,0 +1,23 @@
+---
+import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
+
+import { RESUME } from '@/content/resume.ts'
+---
+
+<PrintSectionBlock title="Skills">
+  <div class="mb-1 text-sm">
+    <text class="mr-1 font-bold">Languages:</text><text
+      >{RESUME.skills.languages.join(', ')}</text
+    >
+  </div>
+  <div class="mb-1 text-sm">
+    <text class="mr-1 font-bold">Frameworks:</text><text
+      >{RESUME.skills.frameworks.join(', ')}</text
+    >
+  </div>
+  <div class="mb-1 text-sm">
+    <text class="mr-1 font-bold">Tools:</text><text
+      >{RESUME.skills.tools.join(', ')}</text
+    >
+  </div>
+</PrintSectionBlock>

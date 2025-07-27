@@ -1,0 +1,23 @@
+---
+import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
+import PrintItem from '@/components/resume/PrintItem.astro'
+import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+
+import { RESUME } from '@/content/resume.ts'
+---
+
+<PrintSectionBlock title="Activity">
+  {
+    RESUME.activities.map((activity) => (
+      <>
+        <PrintItem
+          title={activity.title}
+          timeDescription={activity.time}
+          description={activity.description}
+          titleFontSize="sm"
+        />
+        <PrintUnorderedList items={activity.details} />
+      </>
+    ))
+  }
+</PrintSectionBlock>

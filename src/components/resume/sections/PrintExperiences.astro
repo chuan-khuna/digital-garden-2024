@@ -1,0 +1,23 @@
+---
+import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
+import PrintItem from '@/components/resume/PrintItem.astro'
+import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+
+import { RESUME } from '@/content/resume.ts'
+---
+
+<PrintSectionBlock title="Experiences">
+  {
+    RESUME.experiences.map((experience) => (
+      <>
+        <PrintItem
+          title={experience.jobTitle}
+          timeDescription={experience.time}
+          description={experience.company}
+          url={experience.url}
+        />
+        <PrintUnorderedList items={experience.details} />
+      </>
+    ))
+  }
+</PrintSectionBlock>

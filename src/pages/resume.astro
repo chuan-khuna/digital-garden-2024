@@ -12,7 +12,6 @@ import Now from '@/components/resume/sections/Now.astro'
 
 import { RESUME } from '@/content/resume.ts'
 
-
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 ---
 
@@ -49,7 +48,7 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
                   rel="noreferrer"
                   class="font-medium underline"
                 >
-                  chuan-khuna
+                  {RESUME.header.githubName}
                 </a>
               </p>
               <p><b>Email</b>: {RESUME.header.email}</p>
@@ -69,6 +68,11 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
         <Education />
         <Interests />
         <Now />
+        <div class="block border p-4">
+          <a href="/resume-print" class="font-medium underline"
+            >>Print Version</a
+          >
+        </div>
       </div>
     </div>
   </div>

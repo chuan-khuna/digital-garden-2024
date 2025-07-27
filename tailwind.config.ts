@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import { fontFamily } from 'tailwindcss/defaultTheme'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
   plugins: [require('@tailwindcss/typography')],
@@ -49,9 +49,14 @@ export default {
         'cactus-quote': 'hsl(var(--theme-quote) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Lato', ...fontFamily.sans],
-        serif: ['DM Serif Text', 'DM Serif Display', ...fontFamily.serif],
-        mono: ['Inconsolata', ...fontFamily.mono],
+        sans: ['Lato', "Metric", "Metric HPEXS", ...defaultTheme.fontFamily.sans],
+        serif: [
+          'DM Serif Text',
+          'DM Serif Display',
+          'Canela',
+          ...defaultTheme.fontFamily.serif,
+        ],
+        mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
       },
       typography: () => ({
         DEFAULT: {
