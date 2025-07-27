@@ -145,9 +145,7 @@ export const RESUME = {
   interests: [
     'Data visualisation',
     'Table Tennis',
-    'Listening to music (Sawano Hiroyuki)',
-    'People I admire: John Burn-Murdoch, David Spiegelhalter, Grant Sanderson (3B1B), Matt Parker',
-    'British English accents (RP, Cockney)',
+    "Listening to Sawano Hiroyuki's music",
     'Functional Programming, Haskell, Elixir',
     'Personal Knowledge Management, Zettelkasten, Evergreen Notes',
   ],
