@@ -6,17 +6,16 @@ import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
 import { RESUME } from '@/content/resume.ts'
 ---
 
-<PrintSectionBlock title="Experiences">
+<PrintSectionBlock title="Education">
   {
-    RESUME.experiences.map((experience) => (
+    RESUME.educations.map((education) => (
       <>
         <PrintItem
-          title={experience.jobTitle}
-          timeDescription={experience.time}
-          description={experience.company}
-          url={experience.url}
+          title={education.degree}
+          timeDescription={education.time}
+          description={education.institution}
         />
-        <PrintUnorderedList items={experience.details} />
+        <PrintUnorderedList items={education.details} />
       </>
     ))
   }

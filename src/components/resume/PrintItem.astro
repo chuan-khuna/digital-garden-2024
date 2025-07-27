@@ -1,4 +1,7 @@
 ---
+// this component represent a single item in the resume section
+// for example, a job or a project
+
 interface Props {
   title: string
   timeDescription: string
@@ -7,22 +10,30 @@ interface Props {
 }
 
 const { title, timeDescription, description, url } = Astro.props
-
-const descriptionMarginRight = timeDescription ? 'mr-2' : ''
 ---
 
 <div class="flex items-center">
+  <!-- title -->
   <div class="text-md flex-shrink-0 font-bold">
     {title}
   </div>
 
-  <div class="mx-2 flex-shrink-0 text-right text-sm">
-    {description && <span class={descriptionMarginRight}>{description}</span>}
-    {timeDescription && <span>({timeDescription})</span>}
-  </div>
+  <!-- detail -->
+  {
+    (timeDescription || description || url) && (
+      <div>
+        <div class="ml-2 flex-shrink-0 border-l text-right text-sm">
+          {description && <text class="ml-2 text-gray-500">{description}</text>}
+          {timeDescription && (
+            <text class="ml-2 text-gray-500">{timeDescription}</text>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   <!-- separator -->
-  <div class="mx-1 flex flex-1 items-center">
+  <div class="ml-4 flex flex-1 items-center">
     <div class="h-px w-full bg-gray-200"></div>
   </div>
 </div>

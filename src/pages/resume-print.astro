@@ -1,6 +1,4 @@
 ---
-import '@/styles/global_print.css'
-
 import '@/styles/global.css'
 import '@/styles/fonts.css'
 
@@ -8,6 +6,7 @@ import '@/styles/fonts.css'
 import PrintExperiences from '@/components/resume/sections/PrintExperiences.astro'
 import PrintSkills from '@/components/resume/sections/PrintSkills.astro'
 import PrintProjects from '@/components/resume/sections/PrintProjects.astro'
+import PrintEducation from '@/components/resume/sections/PrintEducation.astro'
 
 import { RESUME } from '@/content/resume.ts'
 ---
@@ -66,6 +65,7 @@ import { RESUME } from '@/content/resume.ts'
     >
       <PrintExperiences />
       <PrintProjects />
+      <PrintEducation />
     </div>
   </div>
 </div>

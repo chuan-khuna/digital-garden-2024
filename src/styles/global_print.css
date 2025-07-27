@@ -1,4 +1,6 @@
-@page {
-  size: a4;
-  margin: 0.2mm;
+@media print {
+  @page {
+    size: a4;
+    margin: 0.2mm;
+  }
 }
