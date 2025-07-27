@@ -1,20 +1,13 @@
 ---
-import '@/styles/global.css'
-import '@/styles/fonts.css'
 import '@/styles/global_print.css'
 
+import '@/styles/global.css'
+import '@/styles/fonts.css'
+
 // section
-import Experiences from '@/components/resume/sections/Experiences.astro'
-import Projects from '@/components/resume/sections/Projects.astro'
-import Activity from '@/components/resume/sections/Activity.astro'
-import Skills from '@/components/resume/sections/Skills.astro'
-import Education from '@/components/resume/sections/Education.astro'
-
-import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
-import PrintItem from '@/components/resume/PrintItem.astro'
-import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
-
-import UnorderedList from '@/components/resume/UnorderedList.astro'
+import PrintExperiences from '@/components/resume/sections/PrintExperiences.astro'
+import PrintSkills from '@/components/resume/sections/PrintSkills.astro'
+import PrintProjects from '@/components/resume/sections/PrintProjects.astro'
 
 import { RESUME } from '@/content/resume.ts'
 ---
@@ -64,60 +57,15 @@ import { RESUME } from '@/content/resume.ts'
       class="block space-y-2 print:col-span-2 print:block print:space-y-1"
       name="detail-small"
     >
-      <PrintSectionBlock title="Skills">
-        <div class="mb-1 text-sm">
-          <text class="mr-1 font-bold">Languages:</text><text
-            >{RESUME.skills.languages.join(', ')}</text
-          >
-        </div>
-        <div class="mb-1 text-sm">
-          <text class="mr-1 font-bold">Frameworks:</text><text
-            >{RESUME.skills.frameworks.join(', ')}</text
-          >
-        </div>
-        <div class="mb-1 text-sm">
-          <text class="mr-1 font-bold">Tools:</text><text
-            >{RESUME.skills.tools.join(', ')}</text
-          >
-        </div>
-      </PrintSectionBlock>
+      <PrintSkills />
     </div>
 
     <div
       class="block space-y-2 print:col-span-5 print:block print:space-y-1"
       name="detail-large"
     >
-      <PrintSectionBlock title="Experiences">
-        {
-          RESUME.experiences.map((experience) => (
-            <>
-              <PrintItem
-                title={RESUME.experiences[0].jobTitle}
-                timeDescription={RESUME.experiences[0].time}
-                description={RESUME.experiences[0].company}
-                url={RESUME.experiences[0].url}
-              />
-              <PrintUnorderedList items={experience.details} />
-            </>
-          ))
-        }
-      </PrintSectionBlock>
-
-      <PrintSectionBlock title="Projects">
-        {
-          RESUME.projects.map((project) => (
-            <>
-              <PrintItem
-                title={project.title}
-                timeDescription={project.time}
-                description={project.description}
-                url={project.url}
-              />
-              <PrintUnorderedList items={project.details} />
-            </>
-          ))
-        }
-      </PrintSectionBlock>
+      <PrintExperiences />
+      <PrintProjects />
     </div>
   </div>
 </div>
