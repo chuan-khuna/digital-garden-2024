@@ -85,6 +85,7 @@ export const RESUME = {
       details: [
         'A collection of snippets of code for solving problems bundled as python package that can be installed from github',
       ],
+      showOnPrint: true,
     },
     {
       title: 'Wordle game by Haskell',
@@ -94,6 +95,7 @@ export const RESUME = {
       details: [
         'Implement the Wordle puzzle in Haskell language to explore functional programming style',
       ],
+      showOnPrint: false,
     },
     {
       title: 'Wordle But Statistics',
@@ -103,6 +105,7 @@ export const RESUME = {
       details: [
         'Solve the Wordle puzzle optimally by using statistics/information theory',
       ],
+      showOnPrint: true,
     },
     {
       title:
@@ -114,6 +117,7 @@ export const RESUME = {
         'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
         'Performed and evaluated performance of climate bias correction methods',
       ],
+      showOnPrint: false,
     },
     {
       title: 'Data Mining and AI Course',
@@ -124,6 +128,7 @@ export const RESUME = {
         'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
         'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
       ],
+      showOnPrint: false,
     },
   ],
 }
