@@ -53,6 +53,7 @@ export default {
         serif: [
           'DM Serif Text',
           'DM Serif Display',
+          'Canela',
           ...defaultTheme.fontFamily.serif,
         ],
         mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],

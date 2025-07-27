@@ -153,13 +153,14 @@ export const RESUME = {
   ],
   activities: [
     {
-      title: 'An internal meetup talk "What not to Plot and Data Visualisation in History"',
+      title:
+        'An internal meetup talk "What not to Plot and Data Visualisation in History"',
       time: 'Aug 2023',
       description: 'The Mather',
       details: [
         'Provided a retrospective analysis of a chart and proposed improvements',
         'Highlighted some great data visualisations in history',
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }
