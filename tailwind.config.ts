@@ -49,7 +49,7 @@ export default {
         'cactus-quote': 'hsl(var(--theme-quote) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Lato', ...defaultTheme.fontFamily.sans],
+        sans: ['Lato', "Metric", "Metric HPEXS", ...defaultTheme.fontFamily.sans],
         serif: [
           'DM Serif Text',
           'DM Serif Display',
