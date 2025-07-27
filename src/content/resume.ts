@@ -133,13 +133,13 @@ export const RESUME = {
   ],
   educations: [
     {
-      degree: "Bachelor of Engineering, Computer Engineering",
+      degree: 'Bachelor of Engineering, Computer Engineering',
       institution: "King Mongkut's University of Technology North Bangkok",
       time: 'Aug 2016 - Apr 2020',
       details: [
         'First Class Honour (CGPA 3.83)',
         'Senior Project: Bias Correction of Multi-Dimensional Climate Data and Visualisation',
       ],
-    }
-  ]
+    },
+  ],
 }

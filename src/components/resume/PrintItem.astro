@@ -28,7 +28,9 @@ const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
               <span class="ml-2 text-gray-500">{description}</span>
             )}
             {timeDescription && (
-              <span class="border-l pl-2 ml-2 text-gray-500">{timeDescription}</span>
+              <span class="ml-2 border-l pl-2 text-gray-500">
+                {timeDescription}
+              </span>
             )}
           </div>
         </div>
@@ -48,7 +50,9 @@ const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
       {(description || timeDescription || url) && (
         <div class="mt-0 flex flex-row gap-2 text-sm text-gray-500">
           {description && <span>{description}</span>}
-          {timeDescription && <span class="border-l pl-2 ">{timeDescription}</span>}
+          {timeDescription && (
+            <span class="border-l pl-2 ">{timeDescription}</span>
+          )}
         </div>
       )}
     </div>
