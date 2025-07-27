@@ -5,9 +5,11 @@ interface Props {
   description: string
   url: string
   inline?: boolean
+  titleFontSize?: string
 }
 
-const { title, timeDescription, description, url, inline } = Astro.props
+const { title, timeDescription, description, url, inline, titleFontSize } =
+  Astro.props
 
 const totalLength =
   (title?.length || 0) +
@@ -15,12 +17,15 @@ const totalLength =
   (description?.length || 0)
 
 const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
+const titleClass = titleFontSize
+  ? `text-${titleFontSize} font-bold`
+  : 'text-md font-bold'
 ---
 
 {
   useInline ? (
     <div class="flex items-center">
-      <div class="text-md flex-shrink-0 font-bold">{title}</div>
+      <div class={`flex-shrink-0 ${titleClass}`}>{title}</div>
       {(timeDescription || description || url) && (
         <div>
           <div class="ml-2 flex-shrink-0 border-l text-right text-sm">
@@ -42,7 +47,7 @@ const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
   ) : (
     <div class="mb-2">
       <div class="flex items-center">
-        <div class="text-md font-bold">{title}</div>
+        <div class={titleClass}>{title}</div>
         <div class="ml-4 flex flex-1 items-center">
           <div class="h-px w-full bg-gray-200" />
         </div>
