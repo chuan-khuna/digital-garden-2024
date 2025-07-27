@@ -40,17 +40,13 @@ const titleClass = titleFontSize
           </div>
         </div>
       )}
-      <div class="ml-4 flex flex-1 items-center">
-        <div class="h-px w-full bg-gray-200" />
-      </div>
+      <div class="ml-4 flex flex-1 items-center border-t border-gray-200" />
     </div>
   ) : (
     <div class="mb-2">
       <div class="flex items-center">
         <div class={titleClass}>{title}</div>
-        <div class="ml-4 flex flex-1 items-center">
-          <div class="h-px w-full bg-gray-200" />
-        </div>
+        <div class="ml-4 flex flex-1 items-center border-t border-gray-200" />
       </div>
       {(description || timeDescription || url) && (
         <div class="mt-0 flex flex-row gap-2 text-sm text-gray-500">

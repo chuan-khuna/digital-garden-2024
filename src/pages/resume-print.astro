@@ -19,14 +19,14 @@ import { RESUME } from '@/content/resume.ts'
     >
       <!-- header: name and summary -->
       <div class="md:col-span-2 print:col-span-7" name="header-summary">
-        <div class="relative border p-2">
+        <div class="relative border-b-1 p-2">
           <!-- name and job title -->
           <div class="md:flex">
             <div>
-              <h1 class="font-serif text-3xl font-bold">
+              <h1 class="font-serif text-3xl font-bold print:font-[canella]">
                 {RESUME.header.name}
               </h1>
-              <p class=`text-md`>{RESUME.header.jobTitle}</p>
+              <p class=`text-md print:font-[canella] font-bold`>{RESUME.header.jobTitle}</p>
             </div>
           </div>
           <!-- introduction and contact info -->
