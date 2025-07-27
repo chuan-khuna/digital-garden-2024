@@ -11,19 +11,18 @@ const { title, timeDescription, description, url } = Astro.props
 const descriptionMarginRight = timeDescription ? 'mr-2' : ''
 ---
 
-<div class="border-b">
-  <div class="grid grid-cols-5">
-    <div class="text-md col-span-3">
-      <text class="font-bold">{title}</text>
-    </div>
+<div class="flex items-center">
+  <div class="text-md flex-shrink-0 font-bold">
+    {title}
+  </div>
 
-    <div class="col-span-2 text-right">
-      {
-        description && (
-          <text class={`text-sm ${descriptionMarginRight}`}>{description}</text>
-        )
-      }
-      {timeDescription && <text class="text-sm">({timeDescription})</text>}
-    </div>
+  <div class="mx-2 flex-shrink-0 text-right text-sm">
+    {description && <span class={descriptionMarginRight}>{description}</span>}
+    {timeDescription && <span>({timeDescription})</span>}
+  </div>
+
+  <!-- separator -->
+  <div class="mx-1 flex flex-1 items-center">
+    <div class="h-px w-full bg-gray-200"></div>
   </div>
 </div>
