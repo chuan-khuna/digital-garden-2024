@@ -1,39 +1,56 @@
 ---
-// this component represent a single item in the resume section
-// for example, a job or a project
-
 interface Props {
   title: string
   timeDescription: string
   description: string
   url: string
+  inline?: boolean
 }
 
-const { title, timeDescription, description, url } = Astro.props
+const { title, timeDescription, description, url, inline } = Astro.props
+
+const totalLength =
+  (title?.length || 0) +
+  (timeDescription?.length || 0) +
+  (description?.length || 0)
+
+const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
 ---
 
-<div class="flex items-center">
-  <!-- title -->
-  <div class="text-md flex-shrink-0 font-bold">
-    {title}
-  </div>
-
-  <!-- detail -->
-  {
-    (timeDescription || description || url) && (
-      <div>
-        <div class="ml-2 flex-shrink-0 border-l text-right text-sm">
-          {description && <text class="ml-2 text-gray-500">{description}</text>}
-          {timeDescription && (
-            <text class="ml-2 text-gray-500">{timeDescription}</text>
-          )}
+{
+  useInline ? (
+    <div class="flex items-center">
+      <div class="text-md flex-shrink-0 font-bold">{title}</div>
+      {(timeDescription || description || url) && (
+        <div>
+          <div class="ml-2 flex-shrink-0 border-l text-right text-sm">
+            {description && (
+              <span class="ml-2 text-gray-500">{description}</span>
+            )}
+            {timeDescription && (
+              <span class="border-l pl-2 ml-2 text-gray-500">{timeDescription}</span>
+            )}
+          </div>
+        </div>
+      )}
+      <div class="ml-4 flex flex-1 items-center">
+        <div class="h-px w-full bg-gray-200" />
+      </div>
+    </div>
+  ) : (
+    <div class="mb-2">
+      <div class="flex items-center">
+        <div class="text-md font-bold">{title}</div>
+        <div class="ml-4 flex flex-1 items-center">
+          <div class="h-px w-full bg-gray-200" />
         </div>
       </div>
-    )
-  }
-
-  <!-- separator -->
-  <div class="ml-4 flex flex-1 items-center">
-    <div class="h-px w-full bg-gray-200"></div>
-  </div>
-</div>
+      {(description || timeDescription || url) && (
+        <div class="mt-0 flex flex-row gap-2 text-sm text-gray-500">
+          {description && <span>{description}</span>}
+          {timeDescription && <span class="border-l pl-2 ">{timeDescription}</span>}
+        </div>
+      )}
+    </div>
+  )
+}

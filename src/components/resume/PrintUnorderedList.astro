@@ -8,7 +8,7 @@ const { ulClass, items } = Astro.props
 ---
 
 <div>
-  <ul class={`text-sm mt-2 mb-2 ${ulClass} marker:text-gray-300`}>
+  <ul class={`text-sm mt-1 mb-1 ${ulClass} marker:text-gray-300`}>
     {items.map((item, index) => <li class="mb-0 mt-0 text-sm">{item}</li>)}
   </ul>
 </div>
