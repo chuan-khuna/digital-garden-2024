@@ -13,6 +13,12 @@ import Now from '@/components/resume/sections/Now.astro'
 import { RESUME } from '@/content/resume.ts'
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
+
+import { getCollection, getEntry } from 'astro:content';
+
+// const allPosts = await getCollection('posts');
+// console.log('allPosts', allPosts);
+
 ---
 
 <BaseLayoutPrint title="ALTR's Resume" description="">
