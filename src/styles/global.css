@@ -8,6 +8,7 @@
 @import './theme_nexus.css';
 @import './theme_nzk.css';
 @import './global_print.css';
+@import './fonts.css';
 
 @custom-variant dark (&:is(.dark *));
 
