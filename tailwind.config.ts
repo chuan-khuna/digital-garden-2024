@@ -49,7 +49,12 @@ export default {
         'cactus-quote': 'hsl(var(--theme-quote) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Lato', "Metric", "MetricHPEXS", ...defaultTheme.fontFamily.sans],
+        sans: [
+          'Lato',
+          'Metric',
+          'MetricHPEXS',
+          ...defaultTheme.fontFamily.sans,
+        ],
         serif: [
           'DM Serif Text',
           'DM Serif Display',
@@ -57,6 +62,8 @@ export default {
           ...defaultTheme.fontFamily.serif,
         ],
         mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
+        metric: ['Metric', 'MetricHPEXS', 'MetricHPEXS Medium'],
+        canela: ['Canela Deck', 'Canela', 'Canela Medium'],
       },
       typography: () => ({
         DEFAULT: {

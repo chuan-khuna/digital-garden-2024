@@ -11,7 +11,7 @@ const { ulClass, items } = Astro.props
   <ul class={`text-sm mt-1 mb-1 ${ulClass} marker:text-gray-300`}>
     {
       items.map((item, index) => (
-        <li class="print:font-[MetricHPEXS] mb-0 mt-0 text-sm">{item}</li>
+        <li class="mb-0 mt-0 text-sm print:font-[metric]">{item}</li>
       ))
     }
   </ul>

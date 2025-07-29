@@ -14,11 +14,10 @@ import { RESUME } from '@/content/resume.ts'
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content'
 
 // const allPosts = await getCollection('posts');
 // console.log('allPosts', allPosts);
-
 ---
 
 <BaseLayoutPrint title="ALTR's Resume" description="">
@@ -57,8 +56,14 @@ import { getCollection, getEntry } from 'astro:content';
                   {RESUME.header.githubName}
                 </a>
               </p>
-              <p><text class="font-medium">Email</text>: {RESUME.header.email}</p>
-              <p><text class="font-medium">Location</text>: {RESUME.header.location}</p>
+              <p>
+                <text class="font-medium">Email</text>: {RESUME.header.email}
+              </p>
+              <p>
+                <text class="font-medium">Location</text>: {
+                  RESUME.header.location
+                }
+              </p>
             </div>
           </div>
         </div>
