@@ -43,18 +43,26 @@ import { RESUME } from '@/content/resume.ts'
               name="contact-info"
             >
               <p>
-                <b>Github</b>:
+                <text class="font-[MetricHPEXS_Medium] font-medium">Github</text
+                >:
                 <a
                   href={RESUME.header.github}
                   target="_blank"
                   rel="noreferrer"
-                  class="font-medium underline"
+                  class="underline"
                 >
                   {RESUME.header.githubName}
                 </a>
               </p>
-              <p><b>Email</b>: {RESUME.header.email}</p>
-              <p><b>Location</b>: {RESUME.header.location}</p>
+              <p>
+                <text class="font-[MetricHPEXS_Medium] font-medium">Email</text
+                >: {RESUME.header.email}
+              </p>
+              <p>
+                <text class="font-[MetricHPEXS_Medium] font-medium"
+                  >Location</text
+                >: {RESUME.header.location}
+              </p>
             </div>
           </div>
         </div>
