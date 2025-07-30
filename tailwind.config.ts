@@ -65,7 +65,12 @@ export default {
         metric: ['Metric', 'MetricHPEXS', 'MetricHPEXS Medium'],
         canela: ['Canela Deck', 'Canela'],
         resumesans: ['Metric', 'MetricHPEXS', 'MetricHPEXS_Medium'],
-        resumeserif: ['Canela Deck', 'Canela', 'DM Serif Text', 'DM Serif Display'],
+        resumeserif: [
+          'Canela Deck',
+          'Canela',
+          'DM Serif Text',
+          'DM Serif Display',
+        ],
       },
       typography: () => ({
         DEFAULT: {
