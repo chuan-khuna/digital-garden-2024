@@ -1,0 +1,34 @@
+{
+  "languages": ["Python", "Haskell", "Elixir", "R", "SQL", "Ruby", "Go"],
+  "frameworks": [
+    "Django",
+    "FastAPI",
+    "pandas",
+    "numpy",
+    "pythainlp",
+    "gensim",
+    "NLTK",
+    "streamlit",
+    "matplotlib",
+    "seaborn",
+    "Phoenix",
+    "Fiber",
+    "Gin"
+  ],
+  "tools": [
+    "Git",
+    "Docker",
+    "uv",
+    "Postgres",
+    "MongoDB",
+    "Airflow",
+    "Kafka",
+    "Bitbucket Pipelines",
+    "Ollama",
+    "RAG",
+    "MCP",
+    "Google Looker Studio",
+    "Vector Database (eg Chroma)",
+    "Digital Ocean"
+  ]
+}

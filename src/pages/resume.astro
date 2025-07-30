@@ -16,8 +16,8 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 
 import { getCollection, getEntry } from 'astro:content'
 
-// const allPosts = await getCollection('posts');
-// console.log('allPosts', allPosts);
+const allItems = await getCollection('resumeSkills');
+console.log('allItems', allItems);
 ---
 
 <BaseLayoutPrint title="ALTR's Resume" description="">
