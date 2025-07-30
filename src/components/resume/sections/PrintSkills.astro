@@ -6,19 +6,12 @@ const skillCategoryClass = 'mr-1 font-resumesans font-medium'
 ---
 
 <PrintSectionBlock title="Skills">
-  <div class="mb-1 text-sm">
-    <text class={skillCategoryClass}>Languages:</text><text
-      >{RESUME.skills.languages.join(', ')}</text
-    >
-  </div>
-  <div class="mb-1 text-sm">
-    <text class={skillCategoryClass}>Frameworks:</text><text
-      >{RESUME.skills.frameworks.join(', ')}</text
-    >
-  </div>
-  <div class="mb-1 text-sm">
-    <text class={skillCategoryClass}>Tools:</text><text
-      >{RESUME.skills.tools.join(', ')}</text
-    >
-  </div>
+  {
+    RESUME.skills.map((skill) => (
+      <div class="mb-1 text-sm">
+        <text class={skillCategoryClass}>{skill.category}:</text>
+        <text>{skill.details.join(', ')}</text>
+      </div>
+    ))
+  }
 </PrintSectionBlock>
