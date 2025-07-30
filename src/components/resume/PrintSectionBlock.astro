@@ -7,10 +7,6 @@ const { title } = Astro.props
 ---
 
 <div class="prose-cactus prose relative block max-w-full p-1 md:block">
-  {
-    title && (
-      <h1 class="mb-1 text-center text-lg print:font-resumeserif">{title}</h1>
-    )
-  }
+  {title && <h1 class="mb-1 font-resumeserif text-lg">{title}</h1>}
   <slot />
 </div>

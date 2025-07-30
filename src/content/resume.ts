@@ -30,6 +30,7 @@ export const RESUME = {
         'Phoenix',
         'Fiber',
         'Gin',
+        'Astro',
       ]
     },
     {
@@ -42,6 +43,7 @@ export const RESUME = {
         'MongoDB',
         'Airflow',
         'Kafka',
+        'RabbitMQ',
         'Bitbucket Pipelines',
         'Ollama',
         'RAG',
