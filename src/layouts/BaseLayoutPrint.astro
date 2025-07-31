@@ -1,9 +1,10 @@
 ---
+// Hide header/footer in print mode
+
 import '@/styles/global.css'
 
 import HeadSEO from '@/components/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
-import Header from '@/components/Header.astro'
 import Nav from '@/components/Nav.astro'
 
 interface Props {
@@ -27,19 +28,23 @@ const { title, description, ogImage } = Astro.props
     />
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
-    <div class="flex min-h-screen flex-col print:relative">
-      <!-- <Header /> -->
+    <div class="relative flex min-h-screen flex-col">
+      <!-- hide header -->
       <div class="print:hidden">
         <Nav />
       </div>
+
       <main class="flex-auto">
-        <!-- global container -->
+        <!-- remove padding and margin -->
+        <!-- adding small padding-x for print mode -->
         <section
           class="container grid items-center gap-6 px-2 pb-8 pt-6 md:py-10 print:gap-0 print:px-4 print:pb-0 print:pt-0"
         >
           <slot />
         </section>
       </main>
+
+      <!-- hide footer -->
       <div class="print:hidden"><Footer /></div>
     </div>
   </body>
