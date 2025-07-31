@@ -1,0 +1,93 @@
+---
+import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
+
+// section
+import PrintExperiences from '@/components/resume/sections/PrintExperiences.astro'
+import PrintSkills from '@/components/resume/sections/PrintSkills.astro'
+import PrintProjects from '@/components/resume/sections/PrintProjects.astro'
+import PrintEducation from '@/components/resume/sections/PrintEducation.astro'
+import PrintInterests from '@/components/resume/sections/PrintInterests.astro'
+import PrintActivity from '@/components/resume/sections/PrintActivity.astro'
+import PrintPageBreak from '@/components/resume/PrintPageBreak.astro'
+
+import { RESUME } from '@/content/resume.ts'
+---
+
+<BaseLayoutPrint title="ALTR's Resume" description="">
+  <div class="flex min-h-screen flex-col justify-center font-resumesans mt-4">
+    <div class="mx-auto max-w-[1200px]">
+      <!-- header: name and summary -->
+      <div class="md:col-span-2 print:col-span-7" name="header-summary">
+        <div class="border-b-1 relative p-2 print:border-gray-200">
+          <!-- name and job title -->
+          <div class="md:flex">
+            <div>
+              <h1 class="font-resumeserif font-serif text-4xl font-bold">
+                {RESUME.header.name}
+              </h1>
+              <p
+                class=`text-lg font-resumeserif print:font-resumesans font-bold text-gray-500`
+              >
+                {RESUME.header.jobTitle}
+              </p>
+            </div>
+          </div>
+          <!-- introduction and contact info -->
+          <div class="mt-2 grid grid-cols-3">
+            <div name="summary" class="col-span-2 block text-sm">
+              <p>
+                {RESUME.header.introduction}
+              </p>
+            </div>
+            <div
+              class="col-span-1 block text-right text-sm"
+              name="contact-info"
+            >
+              <p>
+                <text class="font-resumesans font-medium">Github</text>:
+                <a
+                  href={RESUME.header.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="underline"
+                >
+                  {RESUME.header.githubName}
+                </a>
+              </p>
+              <p>
+                <text class="font-resumesans font-medium">Email</text>: {
+                  RESUME.header.email
+                }
+              </p>
+              <p>
+                <text class="font-resumesans font-medium">Location</text>: {
+                  RESUME.header.location
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="block space-y-2 print:col-span-2 print:block print:space-y-1"
+        name="detail-small"
+      >
+        <PrintSkills />
+        <PrintExperiences />
+        <PrintEducation />
+        <PrintProjects />
+      </div>
+
+      <PrintPageBreak />
+
+      <div
+        class="block space-y-2 print:col-span-5 print:block print:space-y-1"
+        name="detail-large"
+      >
+        <PrintActivity />
+        <PrintInterests />
+      </div>
+    </div>
+  </div>
+</BaseLayoutPrint>
