@@ -3,24 +3,24 @@ import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 
 // section
 import PageLayout from '@/components/resume/layout/PageLayout.astro'
-import ContentLayout from '@/components/resume/layout/ContentLayout.astro'
+import Content from '@/components/resume/layout/Content.astro'
 
-import PrintHeader from '@/components/resume/sections/PrintHeader.astro'
-import PrintExperiences from '@/components/resume/sections/PrintExperiences.astro'
-import PrintSkills from '@/components/resume/sections/PrintSkills.astro'
-import PrintProjects from '@/components/resume/sections/PrintProjects.astro'
-import PrintEducation from '@/components/resume/sections/PrintEducation.astro'
-import PrintInterests from '@/components/resume/sections/PrintInterests.astro'
-import PrintActivity from '@/components/resume/sections/PrintActivity.astro'
+import PrintHeader from '@/components/resume/sections/print/Header.astro'
+import PrintExperiences from '@/components/resume/sections/print/Experiences.astro'
+import PrintSkills from '@/components/resume/sections/print/Skills.astro'
+import PrintProjects from '@/components/resume/sections/print/Projects.astro'
+import PrintEducation from '@/components/resume/sections/print/Education.astro'
+import PrintInterests from '@/components/resume/sections/print/Interests.astro'
+import PrintActivity from '@/components/resume/sections/print/Activity.astro'
 ---
 
 <BaseLayoutPrint title="ALTR's Resume" description="">
   <div class="flex min-h-screen flex-col justify-center font-resumesans">
     <PageLayout>
-      <ContentLayout
+      <Content
         className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 p-2 md:grid-cols-2 print:grid-cols-7"
       >
-        <div class="md:col-span-2 print:col-span-7" name="header-summary">
+        <div class="md:col-span-2 print:col-span-7">
           <PrintHeader />
         </div>
 
@@ -39,7 +39,7 @@ import PrintActivity from '@/components/resume/sections/PrintActivity.astro'
           <PrintProjects />
           <PrintEducation />
         </div>
-      </ContentLayout>
+      </Content>
     </PageLayout>
   </div>
 </BaseLayoutPrint>
