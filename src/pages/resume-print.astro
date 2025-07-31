@@ -16,9 +16,9 @@ import PrintActivity from '@/components/resume/sections/print/Activity.astro'
 
 <BaseLayoutPrint title="ALTR's Resume" description="">
   <div class="flex min-h-screen flex-col justify-center font-resumesans">
-    <PageLayout>
+    <PageLayout className="print:px-8 print:py-4">
       <Content
-        className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 p-2 md:grid-cols-2 print:grid-cols-7"
+        className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 md:grid-cols-2 print:grid-cols-7"
       >
         <div class="md:col-span-2 print:col-span-7">
           <PrintHeader />
