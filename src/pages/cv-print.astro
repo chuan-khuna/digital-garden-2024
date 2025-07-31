@@ -1,10 +1,12 @@
 ---
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 
-// section
+// layout
 import PageLayout from '@/components/resume/layout/PageLayout.astro'
 import Content from '@/components/resume/layout/Content.astro'
+import WebWrapper from '@/components/resume/layout/WebWrapper.astro'
 
+// sections
 import PrintHeader from '@/components/resume/sections/print/Header.astro'
 import PrintExperiences from '@/components/resume/sections/print/Experiences.astro'
 import PrintSkills from '@/components/resume/sections/print/Skills.astro'
@@ -17,7 +19,7 @@ import PrintPageBreak from '@/components/resume/PrintPageBreak.astro'
 ---
 
 <BaseLayoutPrint title="ALTR's Resume" description="">
-  <div class="flex min-h-screen flex-col justify-center">
+  <WebWrapper className="flex min-h-screen flex-col justify-center">
     <PageLayout className="font-resumesans print:px-8 print:py-4">
       <Content className="mx-auto max-w-[1200px]">
         <div class="md:col-span-2 print:col-span-7">
@@ -47,5 +49,5 @@ import PrintPageBreak from '@/components/resume/PrintPageBreak.astro'
         </div>
       </Content>
     </PageLayout>
-  </div>
+  </WebWrapper>
 </BaseLayoutPrint>
