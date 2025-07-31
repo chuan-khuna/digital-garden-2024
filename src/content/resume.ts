@@ -11,11 +11,11 @@ export const RESUME = {
   },
   skills: [
     {
-      category: "Languages",
+      category: 'Languages',
       details: ['Python', 'Haskell', 'Elixir', 'R', 'SQL', 'Ruby', 'Go'],
     },
     {
-      category: "Frameworks and Libraries",
+      category: 'Frameworks and Libraries',
       details: [
         'Django',
         'FastAPI',
@@ -31,10 +31,10 @@ export const RESUME = {
         'Fiber',
         'Gin',
         'Astro',
-      ]
+      ],
     },
     {
-      category: "Tools",
+      category: 'Tools',
       details: [
         'Git',
         'Docker',
