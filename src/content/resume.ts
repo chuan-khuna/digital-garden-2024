@@ -49,7 +49,6 @@ export const RESUME = {
         'RAG',
         'MCP',
         'Google Looker Studio',
-        'Chroma Vector Database',
         'Digital Ocean',
         'AWS',
       ],
