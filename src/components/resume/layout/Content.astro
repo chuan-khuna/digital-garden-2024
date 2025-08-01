@@ -1,0 +1,11 @@
+---
+// This represents how the resume content is formatted on the page
+
+// for example one column, two columns, etc.
+
+const { className = '' } = Astro.props
+---
+
+<div class={className}>
+  <slot />
+</div>

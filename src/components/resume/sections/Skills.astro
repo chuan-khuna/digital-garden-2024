@@ -1,43 +1,23 @@
 ---
 import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
-import Item from '../Item.astro'
+import Item from '@/components/resume/Item/Item.astro'
 import Divider from '../Divider.astro'
 
 import { RESUME } from '@/content/resume.ts'
+
+const skillCategoryClass = 'mr-1 font-medium'
 ---
 
 <SectionBlock title="Skills">
   <div>
-    <!-- <h2 class="text-lg">Programming Languages and Tools</h2> -->
-    <Item title="Programming Languages and Tools" />
-    <text class="text-sm"
-      ><b>Languages:{' '}</b>{RESUME.skills.languages.join(', ')}
-    </text>
-    <br />
-    <text class="text-sm"
-      ><b>Frameworks and libraries:{' '}</b>{
-        RESUME.skills.frameworks.join(', ')
-      }
-    </text>
-    <br />
-    <text class="text-sm"
-      ><b>Tools:{' '}</b>{RESUME.skills.tools.join(', ')}
-    </text>
-  </div>
-
-  <Divider />
-
-  <div>
-    <Item title="Data Science" />
-    <UnorderedList ulClass="text-sm" items={RESUME.skills.dataScienceDetails} />
-
-    <Divider />
-
-    <Item title="Machine Learning" />
-    <UnorderedList
-      ulClass="text-sm"
-      items={RESUME.skills.machineLearningDetails}
-    />
+    {
+      RESUME.skills.map((skill) => (
+        <div class="mb-1 text-sm">
+          <text class={skillCategoryClass}>{skill.category}:</text>
+          <text>{skill.details.join(', ')}</text>
+        </div>
+      ))
+    }
   </div>
 </SectionBlock>

@@ -1,0 +1,9 @@
+---
+// this component represents just a div for wrap the print components to web layout
+
+const { className = '' } = Astro.props
+---
+
+<div class={className}>
+  <slot />
+</div>

@@ -1,0 +1,10 @@
+---
+// this component represents a physical paper page
+// you can add the padding here for bleed or margins
+
+const { className = '' } = Astro.props
+---
+
+<div class={className}>
+  <slot />
+</div>

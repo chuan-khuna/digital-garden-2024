@@ -1,0 +1,17 @@
+---
+import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
+
+import { RESUME } from '@/content/resume.ts'
+const skillCategoryClass = 'mr-1 font-resumesans font-medium'
+---
+
+<PrintSectionBlock title="Skills">
+  {
+    RESUME.skills.map((skill) => (
+      <div class="mb-1 text-sm">
+        <text class={skillCategoryClass}>{skill.category}:</text>
+        <text>{skill.details.join(', ')}</text>
+      </div>
+    ))
+  }
+</PrintSectionBlock>
