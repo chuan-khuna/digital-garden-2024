@@ -19,53 +19,109 @@ const themeButtonCss = `h-5 w-5 hidden`
 
 <script is:inline define:vars={{ themes, defaultTheme }}>
   const theme = (() => {
-    // check if localStorage is available and if a theme is set
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      // console.log('localStorage theme:', localStorage.getItem('theme'))
-      return localStorage.getItem('theme')
-    }
+    try {
+      // check if localStorage is available and if a theme is set
+      if (
+        typeof localStorage !== 'undefined' &&
+        localStorage.getItem('theme')
+      ) {
+        const storedTheme = localStorage.getItem('theme')
+        // validate that the stored theme exists in our themes array
+        if (themes.includes(storedTheme)) {
+          // console.log('localStorage theme:', storedTheme)
+          return storedTheme
+        } else {
+          // console.log('localStorage theme mismatch, using default theme:', defaultTheme)
+          return defaultTheme
+        }
+      }
 
-    // console.log('localStorage theme not set, using default theme:', defaultTheme)
-    // return default theme, if no theme is set
-    return defaultTheme
+      // console.log('localStorage theme not set, using default theme:', defaultTheme)
+      // return default theme, if no theme is set
+      return defaultTheme
+    } catch (error) {
+      // console.error('Error reading theme from localStorage:', error)
+      return defaultTheme
+    }
   })()
 
-  // initialise theme
-  document.documentElement.classList.add(theme)
-  // show the current theme button
-  document.getElementById(`${theme}Button`).classList.remove('hidden')
-  document.getElementById(`${theme}Button`).classList.add('block')
-
-  // set theme in localStorage
-  window.localStorage.setItem('theme', theme)
-  window.localStorage.setItem('themeIndex', themes.indexOf(theme))
-
-  const handleToggleClick = () => {
-    currentIndex = themes.indexOf(localStorage.getItem('theme'))
-    // from current theme, get the next theme
-    nextIndex = (currentIndex + 1) % themes.length
-    nextTheme = themes[nextIndex]
-
-    const element = document.documentElement
-
-    // set theme
-    localStorage.setItem('theme', nextTheme)
-    localStorage.setItem('themeIndex', nextIndex)
-
-    // set theme class at the <html> element
-    element.classList.replace(themes[currentIndex], nextTheme)
-
-    // hide all buttons
-    buttonClasses = themes.map((themeName) => `${themeName}Button`)
-    for (themeName of themes) {
-      const button = document.getElementById(`${themeName}Button`)
-      button.classList.add('hidden')
+  try {
+    // initialise theme
+    document.documentElement.classList.add(theme)
+    // show the current theme button
+    const themeButton = document.getElementById(`${theme}Button`)
+    if (themeButton) {
+      themeButton.classList.remove('hidden')
+      themeButton.classList.add('block')
     }
 
-    // show theme button
-    const button = document.getElementById(`${nextTheme}Button`)
-    button.classList.remove('hidden')
-    button.classList.add('block')
+    // set theme in localStorage
+    window.localStorage.setItem('theme', theme)
+  } catch (error) {
+    // console.error('Error initializing theme:', error)
+  }
+
+  const handleToggleClick = () => {
+    try {
+      const storedTheme = localStorage.getItem('theme')
+      currentIndex = themes.indexOf(storedTheme)
+
+      // if stored theme is not found in themes array, reset to default
+      if (currentIndex === -1) {
+        currentIndex = themes.indexOf(defaultTheme)
+      }
+
+      // from current theme, get the next theme
+      nextIndex = (currentIndex + 1) % themes.length
+      nextTheme = themes[nextIndex]
+
+      const element = document.documentElement
+
+      // set theme
+      localStorage.setItem('theme', nextTheme)
+
+      // set theme class at the <html> element
+      element.classList.replace(themes[currentIndex], nextTheme)
+
+      // hide all buttons
+      buttonClasses = themes.map((themeName) => `${themeName}Button`)
+      for (themeName of themes) {
+        const button = document.getElementById(`${themeName}Button`)
+        if (button) {
+          button.classList.add('hidden')
+        }
+      }
+
+      // show theme button
+      const button = document.getElementById(`${nextTheme}Button`)
+      if (button) {
+        button.classList.remove('hidden')
+        button.classList.add('block')
+      }
+    } catch (error) {
+      // console.error('Error toggling theme:', error)
+      // fallback to default theme on error
+      try {
+        document.documentElement.classList.remove(...themes)
+        document.documentElement.classList.add(defaultTheme)
+        localStorage.setItem('theme', defaultTheme)
+
+        // reset buttons
+        for (themeName of themes) {
+          const button = document.getElementById(`${themeName}Button`)
+          if (button) {
+            button.classList.add('hidden')
+          }
+        }
+        const defaultButton = document.getElementById(`${defaultTheme}Button`)
+        if (defaultButton) {
+          defaultButton.classList.remove('hidden')
+          defaultButton.classList.add('block')
+        }
+      } catch (fallbackError) {
+        // console.error('Error applying fallback theme:', fallbackError)
+      }
+    }
   }
 
   document
