@@ -11,10 +11,10 @@ const { frontmatter, incomingNotes, rootURL } = Astro.props
 
 <BaseLayout title={frontmatter.title}>
   <!-- content container -->
-  <div id="prose-container" class="">
+  <div id="prose-container" class="overflow-x-hidden">
     <div
       id="prose-content-wrapper"
-      class="prose-cactus prose mt-12 max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-th:before:content-none"
+      class="prose-cactus prose mt-12 max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-a:break-words prose-code:break-words prose-th:before:content-none"
     >
       <slot />
     </div>
@@ -24,3 +24,47 @@ const { frontmatter, incomingNotes, rootURL } = Astro.props
     />
   </div>
 </BaseLayout>
+
+<style is:global>
+  /* Table responsive wrapper */
+  #prose-content-wrapper table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure table cells don't break awkwardly */
+  #prose-content-wrapper td,
+  #prose-content-wrapper th {
+    vertical-align: top;
+    word-wrap: break-word;
+    max-width: 300px;
+  }
+
+  /* Handle long URLs in links */
+  #prose-content-wrapper a {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Better handling for code blocks with long content */
+  #prose-content-wrapper code {
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  /* Prevent pre blocks from causing overflow */
+  #prose-content-wrapper pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Handle highlight marks (==text==) if using remark-mark or similar */
+  #prose-content-wrapper mark {
+    background-color: hsl(var(--theme-accent) / 0.3);
+    padding: 0.1em 0.2em;
+    border-radius: 2px;
+  }
+</style>
