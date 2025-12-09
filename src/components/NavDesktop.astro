@@ -1,0 +1,23 @@
+---
+import { buttonVariants } from '@/components/ui/button'
+import ThemeToggle from '@/components/ThemeToggle.astro'
+import { getCollection } from 'astro:content'
+
+const navItems = await getCollection('navItems')
+const sortedNavItems = navItems.sort((a, b) => a.data.order - b.data.order)
+
+const navItemClass = buttonVariants({ variant: 'ghost' })
+---
+
+<nav
+  class="fixed inset-x-0 top-2 z-[5000] mx-auto hidden max-w-fit items-center justify-center space-x-4 rounded-full bg-transparent py-1 pl-2 pr-2 supports-[backdrop-filter]:bg-background/10 md:flex"
+>
+  {
+    sortedNavItems.map((item) => (
+      <a href={item.data.link} class={`${navItemClass}`}>
+        {item.data.label}
+      </a>
+    ))
+  }
+  <ThemeToggle />
+</nav>
