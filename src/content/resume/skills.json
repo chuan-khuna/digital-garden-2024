@@ -1,0 +1,58 @@
+[
+  {
+    "id": "languages",
+    "category": "Languages",
+    "details": [
+      "Python",
+      "Haskell",
+      "Elixir",
+      "R",
+      "SQL",
+      "Ruby",
+      "Gleam",
+      "JavaScript",
+      "Go"
+    ]
+  },
+  {
+    "id": "frameworks_and_libraries",
+    "category": "Frameworks and Libraries",
+    "details": [
+      "Django",
+      "FastAPI",
+      "pandas",
+      "numpy",
+      "pythainlp",
+      "gensim",
+      "NLTK",
+      "streamlit",
+      "matplotlib",
+      "seaborn",
+      "Phoenix",
+      "Fiber",
+      "Gin",
+      "Astro"
+    ]
+  },
+  {
+    "id": "tools",
+    "category": "Tools",
+    "details": [
+      "Git",
+      "Docker",
+      "uv",
+      "Postgres",
+      "MongoDB",
+      "Airflow",
+      "Kafka",
+      "RabbitMQ",
+      "Bitbucket Pipelines",
+      "Ollama",
+      "RAG",
+      "MCP",
+      "Google Looker Studio",
+      "Digital Ocean",
+      "AWS"
+    ]
+  }
+]

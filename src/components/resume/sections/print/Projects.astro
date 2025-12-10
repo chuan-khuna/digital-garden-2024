@@ -9,7 +9,7 @@ import { RESUME } from '@/content/resume.ts'
 <PrintSectionBlock title="Projects">
   {
     RESUME.projects
-      .filter((project) => project.showOnPrint !== false)
+      .filter((project) => project.visibility.resume_print)
       .map((project) => (
         <>
           <PrintItem

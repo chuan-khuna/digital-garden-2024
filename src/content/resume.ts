@@ -1,4 +1,66 @@
-export const RESUME = {
+// Shared type for visibility across resume items
+export type Visibility = {
+  web: boolean
+  resume_print: boolean
+  cv_print: boolean
+}
+
+type ResumeHeader = {
+  name: string
+  jobTitle: string
+  email: string
+  github: string
+  githubName: string
+  introduction: string
+  location: string
+}
+
+type Skill = {
+  category: string
+  details: string[] // keywords/jargons
+}
+
+type Experience = {
+  jobTitle: string
+  company: string
+  time: string
+  details: string[] // responsibilities, as bullets
+}
+
+type Project = {
+  title: string
+  time: string
+  description: string
+  url: string | null
+  details: string[]
+  visibility: Visibility
+}
+
+type Education = {
+  degree: string
+  institution: string
+  time: string
+  details: string[]
+}
+
+type Activity = {
+  title: string
+  time: string
+  description: string
+  details: string[]
+}
+
+type Resume = {
+  header: ResumeHeader
+  skills: Skill[]
+  experiences: Experience[]
+  projects: Project[]
+  educations: Education[]
+  interests: string[]
+  activities: Activity[]
+}
+
+export const RESUME: Resume = {
   header: {
     name: 'Phattharanat Khunakornophat',
     jobTitle: 'Data Scientist/Developer',
@@ -12,7 +74,17 @@ export const RESUME = {
   skills: [
     {
       category: 'Languages',
-      details: ['Python', 'Haskell', 'Elixir', 'R', 'SQL', 'Ruby', 'Gleam', 'JavaScript', 'Go'],
+      details: [
+        'Python',
+        'Haskell',
+        'Elixir',
+        'R',
+        'SQL',
+        'Ruby',
+        'Gleam',
+        'JavaScript',
+        'Go',
+      ],
     },
     {
       category: 'Frameworks and Libraries',
@@ -70,7 +142,7 @@ export const RESUME = {
         'Implement basic Bitbucket Pipelines to automate the deployment to an internal testing server, eliminating manual tasks',
         'Maintain and refactor Django starter template, adding TOTP and LINE login features, websocket-based notifications, migrating package manager from pip to uv',
         'Explore, containerise, scaffold project structure for backend frameworks including Go Fiber, Elixir Phoenix',
-        'Develop a proof-of-concept vehicle detection system using TimescaleDB, Kafka, YOLO, RF-DETR, and Svelte',
+        'Develop a proof-of-concept vehicle detection system using TimescaleDB, Kafka, YOLO, and RF-DETR',
         'Configure and manage cloud instances, including setting up environments, installing dependencies, and managing Nginx and Cloudflare for web infrastructure',
         'Research and set up an internal shadcn component registry to enable reusable UI components across projects',
       ],
@@ -85,7 +157,7 @@ export const RESUME = {
       details: [
         'A collection of snippets of code for solving problems bundled as python package that can be installed from github',
       ],
-      showOnPrint: true,
+      visibility: { resume_print: true, web: true, cv_print: true },
     },
     {
       title: 'Wordle game by Haskell',
@@ -95,7 +167,7 @@ export const RESUME = {
       details: [
         'Implement the Wordle puzzle in Haskell language to explore functional programming style',
       ],
-      showOnPrint: false,
+      visibility: { resume_print: false, web: true, cv_print: true },
     },
     {
       title: 'Wordle But Statistics',
@@ -105,7 +177,7 @@ export const RESUME = {
       details: [
         'Solve the Wordle puzzle optimally by using statistics/information theory',
       ],
-      showOnPrint: true,
+      visibility: { resume_print: true, web: true, cv_print: true },
     },
     {
       title:
@@ -117,7 +189,7 @@ export const RESUME = {
         'Developed a backend server for climate analysis tasks: trend analysis (Mann-Kendall test), spatiotemporal data visualisation',
         'Performed and evaluated performance of climate bias correction methods',
       ],
-      showOnPrint: false,
+      visibility: { resume_print: false, web: true, cv_print: true },
     },
     {
       title: 'Data Mining and AI Course',
@@ -128,7 +200,7 @@ export const RESUME = {
         'Implemented basic machine learning models: linear regression, linear classification, K-mean, Naïve Bayes, bias-variance trade-off',
         'Explored and visualised NILM (Non-Intrusive Load Monitoring) dataset',
       ],
-      showOnPrint: false,
+      visibility: { resume_print: false, web: true, cv_print: true },
     },
   ],
   educations: [
