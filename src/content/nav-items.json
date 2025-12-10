@@ -1,0 +1,26 @@
+[
+  {
+    "id": "home",
+    "label": "Home",
+    "link": "/",
+    "order": 1
+  },
+  {
+    "id": "garden",
+    "label": "Garden",
+    "link": "/garden",
+    "order": 2
+  },
+  {
+    "id": "uses",
+    "label": "Uses",
+    "link": "/uses",
+    "order": 3
+  },
+  {
+    "id": "resume",
+    "label": "Resume",
+    "link": "/resume",
+    "order": 4
+  }
+]
