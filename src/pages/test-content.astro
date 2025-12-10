@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
-const collectionName = 'resumeProjects'
+
+// const collectionName = 'resumeProjects'
+const collectionName = 'resumeSkills'
 
 const items = await getCollection(collectionName)
 console.log(collectionName, items)
