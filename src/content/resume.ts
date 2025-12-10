@@ -1,4 +1,66 @@
-export const RESUME = {
+// Shared type for visibility across resume items
+export type Visibility = {
+  web: boolean
+  resume_print: boolean
+  cv_print: boolean
+}
+
+type ResumeHeader = {
+  name: string
+  jobTitle: string
+  email: string
+  github: string
+  githubName: string
+  introduction: string
+  location: string
+}
+
+type Skill = {
+  category: string
+  details: string[] // keywords/jargons
+}
+
+type Experience = {
+  jobTitle: string
+  company: string
+  time: string
+  details: string[] // responsibilities, as bullets
+}
+
+type Project = {
+  title: string
+  time: string
+  description: string
+  url: string | null
+  details: string[]
+  visibility: Visibility
+}
+
+type Education = {
+  degree: string
+  institution: string
+  time: string
+  details: string[]
+}
+
+type Activity = {
+  title: string
+  time: string
+  description: string
+  details: string[]
+}
+
+type Resume = {
+  header: ResumeHeader
+  skills: Skill[]
+  experiences: Experience[]
+  projects: Project[]
+  educations: Education[]
+  interests: string[]
+  activities: Activity[]
+}
+
+export const RESUME: Resume = {
   header: {
     name: 'Phattharanat Khunakornophat',
     jobTitle: 'Data Scientist/Developer',

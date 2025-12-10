@@ -1,5 +1,13 @@
 import { z, defineCollection } from 'astro:content'
 import { file } from 'astro/loaders'
+import type { Visibility } from '@/content/resume'
+
+// Zod schema for the shared Visibility type
+const visibilitySchema = z.object({
+  web: z.boolean(),
+  resume_print: z.boolean(),
+  cv_print: z.boolean(),
+})
 
 export const resumeSkillsCollection = defineCollection({
   loader: file('src/content/resume/skills.json'),
@@ -18,17 +26,11 @@ export const resumeProjectsCollection = defineCollection({
     description: z.string(),
     url: z.string().url().nullable(),
     details: z.array(z.string()),
-    visibility: z
-      .object({
-        web: z.boolean(),
-        resume_print: z.boolean(),
-        cv_print: z.boolean(),
-      })
-      .default({
-        web: true,
-        resume_print: true,
-        cv_print: true,
-      }),
+    visibility: visibilitySchema.default({
+      web: true,
+      resume_print: true,
+      cv_print: true,
+    }),
   }),
 })
 
@@ -39,17 +41,11 @@ export const resumeExperiencesCollection = defineCollection({
     company: z.string(),
     time: z.string(),
     details: z.array(z.string()),
-    visibility: z
-      .object({
-        web: z.boolean(),
-        resume_print: z.boolean(),
-        cv_print: z.boolean(),
-      })
-      .default({
-        web: true,
-        resume_print: true,
-        cv_print: true,
-      }),
+    visibility: visibilitySchema.default({
+      web: true,
+      resume_print: true,
+      cv_print: true,
+    }),
   }),
 })
 
@@ -60,16 +56,10 @@ export const resumeEducationsCollection = defineCollection({
     institution: z.string(),
     time: z.string(),
     details: z.array(z.string()),
-    visibility: z
-      .object({
-        web: z.boolean(),
-        resume_print: z.boolean(),
-        cv_print: z.boolean(),
-      })
-      .default({
-        web: true,
-        resume_print: true,
-        cv_print: true,
-      }),
+    visibility: visibilitySchema.default({
+      web: true,
+      resume_print: true,
+      cv_print: true,
+    }),
   }),
 })
