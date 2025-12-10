@@ -1,8 +1,10 @@
 import { postsCollection } from '@/content/collection-definitions/post'
 import { navItemsCollection } from '@/content/collection-definitions/nav'
 
-import { resumeSkillsCollection } from '@/content/collection-definitions/resume/skills'
-import { resumeProjectsCollection } from '@/content/collection-definitions/resume/project'
+import {
+  resumeSkillsCollection,
+  resumeProjectsCollection,
+} from '@/content/collection-definitions/resume'
 
 export const collections = {
   posts: postsCollection,
