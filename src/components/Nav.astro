@@ -18,10 +18,10 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
     class=`container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 print:hidden`
   >
     <nav
-      class="fixed inset-x-0 top-2 z-[5000] mx-auto flex max-w-fit items-center justify-end space-x-4 rounded-full bg-transparent py-1 pl-2 pr-4 supports-[backdrop-filter]:bg-background/10 md:justify-center md:pr-2"
+      class="fixed inset-x-0 top-2 z-[5000] flex max-w-fit items-center justify-end space-x-4 rounded-full bg-transparent py-1 pl-2 pr-4 supports-[backdrop-filter]:bg-background/10 md:mx-auto md:justify-center md:pr-2"
     >
       <!-- desktop size nav -->
-      <div class="hidden md:flex">
+      <div id="desktop-nav" class="hidden md:flex">
         {
           sortedNavItems.map((item) => (
             <a href={item.data.link} class={`${navItemClass}`}>
@@ -31,8 +31,8 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
         }
       </div>
       <ThemeToggle />
-      <!-- mobile nav button -->
-      <div class="flex md:hidden">
+      <!-- mobile nav buttons -->
+      <div id="mobile-nav-buttons" class="flex md:hidden">
         <Button variant="ghost" size="icon" id="mobile-nav">
           <Menu className="h-[1.5rem] w-[1.3rem]" id="nav-hamburger" />
           <Close className="hidden h-[1.5rem] w-[1.3rem]" id="nav-close" />
