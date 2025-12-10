@@ -70,7 +70,7 @@ export const RESUME = {
         'Implement basic Bitbucket Pipelines to automate the deployment to an internal testing server, eliminating manual tasks',
         'Maintain and refactor Django starter template, adding TOTP and LINE login features, websocket-based notifications, migrating package manager from pip to uv',
         'Explore, containerise, scaffold project structure for backend frameworks including Go Fiber, Elixir Phoenix',
-        'Develop a proof-of-concept vehicle detection system using TimescaleDB, Kafka, YOLO, RF-DETR, and Svelte',
+        'Develop a proof-of-concept vehicle detection system using TimescaleDB, Kafka, YOLO, and RF-DETR',
         'Configure and manage cloud instances, including setting up environments, installing dependencies, and managing Nginx and Cloudflare for web infrastructure',
         'Research and set up an internal shadcn component registry to enable reusable UI components across projects',
       ],
