@@ -11,6 +11,8 @@ import wikiLinkPlugin from 'remark-wiki-link'
 
 import tailwindcss from '@tailwindcss/vite'
 
+import cloudflare from '@astrojs/cloudflare'
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.CI
@@ -51,4 +53,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  adapter: cloudflare({ imageService: 'cloudflare' }),
 })
