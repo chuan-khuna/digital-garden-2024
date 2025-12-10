@@ -12,7 +12,17 @@ export const RESUME = {
   skills: [
     {
       category: 'Languages',
-      details: ['Python', 'Haskell', 'Elixir', 'R', 'SQL', 'Ruby', 'Gleam', 'JavaScript', 'Go'],
+      details: [
+        'Python',
+        'Haskell',
+        'Elixir',
+        'R',
+        'SQL',
+        'Ruby',
+        'Gleam',
+        'JavaScript',
+        'Go',
+      ],
     },
     {
       category: 'Frameworks and Libraries',
