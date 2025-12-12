@@ -5,6 +5,7 @@ This guide explains how to add a new theme to your digital garden.
 ## Overview
 
 The theming system consists of three main parts:
+
 1. **CSS theme files** - Define the color variables for each theme
 2. **Global CSS** - Imports and loads all theme files
 3. **Theme toggle component** - Allows users to switch between themes
@@ -18,11 +19,13 @@ The `global.css` file is loaded in the following layout files:
 - `src/layouts/PostLayout.astro` - Blog post layout
 
 **Import statement:**
+
 ```astro
 import '@/styles/global.css'
 ```
 
 The `global.css` file (`src/styles/global.css`) imports all theme files:
+
 ```css
 @import './fonts.css';
 @import './theme_dark.css';
@@ -102,7 +105,7 @@ Add an `@import` statement to `src/styles/global.css`:
 @import './theme_dark.css';
 @import './theme_nexus.css';
 @import './theme_nzk.css';
-@import './theme_forest.css';  /* Add your new theme here */
+@import './theme_forest.css'; /* Add your new theme here */
 @import './global_print.css';
 ```
 
@@ -121,7 +124,7 @@ const themes = [defaultTheme, 'nexus', 'dark', 'forest']
 2. **Import an icon for the theme:**
 
 ```astro
-import { Moon, Sun, Leaf, Flame, TreePine } from 'lucide-react'
+import {(Moon, Sun, Leaf, Flame, TreePine)} from 'lucide-react'
 ```
 
 3. **Add a button for the theme:**
@@ -152,6 +155,7 @@ import { Moon, Sun, Leaf, Flame, TreePine } from 'lucide-react'
 All themes must define these CSS variables:
 
 **Colors:**
+
 - `--background` / `--foreground` - Main page background and text
 - `--card` / `--card-foreground` - Card components
 - `--popover` / `--popover-foreground` - Popover components
@@ -165,9 +169,11 @@ All themes must define these CSS variables:
 - `--ring` - Focus ring color
 
 **Borders:**
+
 - `--radius` - Border radius for components
 
 **Custom Variables (for markdown content):**
+
 - `--theme-bg` - Background color
 - `--theme-link` - Link color
 - `--theme-text` - Text color
@@ -178,6 +184,7 @@ All themes must define these CSS variables:
 ### Color Format
 
 Colors use HSL format without the `hsl()` wrapper:
+
 ```css
 /* Correct */
 --background: 120 20% 95%;
@@ -197,16 +204,19 @@ Colors use HSL format without the `hsl()` wrapper:
 ## Troubleshooting
 
 **Theme not showing up:**
+
 - Check that the theme file is imported in `global.css`
 - Verify the class name matches the theme name exactly
 - Ensure the theme name is added to the `themes` array in `ThemeToggle.astro`
 
 **Theme button not appearing:**
+
 - Check that the button ID follows the pattern: `<themeName>Button`
 - Verify you imported the icon component from `lucide-react`
 - Restart the dev server
 
 **Colors look wrong:**
+
 - Verify HSL values are in the correct format (no `hsl()` wrapper)
 - Check that all required CSS variables are defined
 - Use browser DevTools to inspect the computed CSS variables

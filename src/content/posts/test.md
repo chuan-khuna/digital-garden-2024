@@ -16,3 +16,5 @@ print("hello world!")
 [google](https://www.google.com)
 
 [[markdown-content:markdown example]]
+
+[[lorem]]

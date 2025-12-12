@@ -11,5 +11,6 @@ export const postsCollection = defineCollection({
     aliases: z.array(z.string()).optional(),
     tags: z.array(z.string()).optional(),
     stage: z.enum(['seedling', 'budding', 'evergreen']).optional(),
+    pinned: z.boolean().optional().default(false),
   }),
 })

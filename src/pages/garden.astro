@@ -1,24 +1,86 @@
 ---
+import type { CollectionEntry } from 'astro:content'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
-import { PostCard } from '@/components/post/post-card'
+import PostItem from '@/components/post/PostItem.astro'
+
+// Get all posts
 const allPosts = await getCollection('posts')
+
+// Sort posts by date (newest first)
+const allPostsByDate = allPosts.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0
+  return dateB - dateA
+})
+
+// Group posts by year
+const groupPostsByYear = (posts: CollectionEntry<'posts'>[]) => {
+  return posts.reduce(
+    (acc, post) => {
+      const year = post.data.date
+        ? new Date(post.data.date).getFullYear().toString()
+        : 'Undated'
+      if (!acc[year]) {
+        acc[year] = []
+      }
+      acc[year].push(post)
+      return acc
+    },
+    {} as Record<string, CollectionEntry<'posts'>[]>,
+  )
+}
+
+// Get pinned/featured posts (posts marked as 'evergreen')
+const pinnedPosts = allPostsByDate
+  .filter((p) => p.data.stage === 'evergreen')
+  .slice(0, 3)
+
+const groupedByYear = groupPostsByYear(allPostsByDate)
+const descYearKeys = Object.keys(groupedByYear).sort((a, b) => {
+  // Handle 'Undated' specially
+  if (a === 'Undated') return 1
+  if (b === 'Undated') return 1
+  return +b - +a
+})
+
+const meta = {
+  title: 'Garden',
+  description: 'A collection of my digital garden notes and thoughts',
+}
 ---
 
-<BaseLayout title="ALTR" description="">
-  <p>garden</p>
-  <div
-    class="container mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-4 md:auto-rows-[18rem] md:grid-cols-3"
-  >
+<BaseLayout title={meta.title} description={meta.description}>
+  <div class="container mx-auto max-w-4xl">
     {
-      allPosts.map((post) => (
-        <PostCard
-          rootURL={'posts'}
-          slug={post.id}
-          title={post.data.title}
-          description={post.data.description}
-          date={post.data.date}
-        />
+      pinnedPosts.length > 0 && (
+        <section class="mb-16">
+          <h2 class="mb-4 text-2xl font-semibold">Featured</h2>
+          <ul class="space-y-1">
+            {pinnedPosts.map((post) => (
+              <li>
+                <PostItem post={post} withDesc={true} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      descYearKeys.map((yearKey) => (
+        <section class="mb-16">
+          <h2 id={`year-${yearKey}`} class="mb-4 text-xl font-semibold">
+            {yearKey}
+          </h2>
+          <ul class="space-y-1">
+            {groupedByYear[yearKey]?.map((post) => (
+              <li>
+                <PostItem post={post} />
+              </li>
+            ))}
+          </ul>
+        </section>
       ))
     }
   </div>
