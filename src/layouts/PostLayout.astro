@@ -5,6 +5,9 @@ import BaseLayout from './BaseLayout.astro'
 import { BackReferenceSection } from '@/components/post/back-reference.tsx'
 
 const { frontmatter, incomingNotes, outgoingNotes, rootURL } = Astro.props
+// console.log("incomingNotes:", incomingNotes);
+// console.log("outgoingNotes:", outgoingNotes);
+
 // incomingNotes: an array of note objects from Astro getCollection()
 // outgoingNotes: an array of note objects from Astro getCollection()
 // to access frontmatter of a note, use note.data

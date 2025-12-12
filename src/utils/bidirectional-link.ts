@@ -10,6 +10,7 @@ function extractNoteTitle(wikilink: string) {
 function getMarkdownContent(postId: string): string {
   try {
     // Construct the file path - posts are in src/content/posts
+    // Try flat file structure first
     const filePath = path.join(
       process.cwd(),
       'src/content/posts',
@@ -21,11 +22,29 @@ function getMarkdownContent(postId: string): string {
       `${postId}.mdx`,
     )
 
-    // Try .md first, then .mdx
+    // Try folder/index structure
+    const folderMdPath = path.join(
+      process.cwd(),
+      'src/content/posts',
+      postId,
+      'index.md',
+    )
+    const folderMdxPath = path.join(
+      process.cwd(),
+      'src/content/posts',
+      postId,
+      'index.mdx',
+    )
+
+    // Try all possible paths
     if (fs.existsSync(filePath)) {
       return fs.readFileSync(filePath, 'utf-8')
     } else if (fs.existsSync(mdxPath)) {
       return fs.readFileSync(mdxPath, 'utf-8')
+    } else if (fs.existsSync(folderMdPath)) {
+      return fs.readFileSync(folderMdPath, 'utf-8')
+    } else if (fs.existsSync(folderMdxPath)) {
+      return fs.readFileSync(folderMdxPath, 'utf-8')
     }
 
     return ''
