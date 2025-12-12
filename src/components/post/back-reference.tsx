@@ -110,7 +110,7 @@ export const BackReferenceSection: React.FC<BackReferenceProps> = ({
 
       {outgoingReferences.length > 0 && (
         <section className="mb-12">
-          <h2 className="text-l mb-4 font-semibold">Outgoging Notes</h2>
+          <h2 className="text-l mb-4 font-semibold">Outgoing Notes</h2>
           <ul className="space-y-1">
             {outgoingReferences.map((note, idx) => (
               <li key={idx}>
