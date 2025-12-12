@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  post: CollectionEntry<'posts'>
+  rootURL?: string
+  withDesc?: boolean
+}
+
+const { post, rootURL = 'posts', withDesc = false } = Astro.props
+
+// Format date
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return null
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+const formattedDate = formatDate(post.data.date)
+
+// Get stage badge
+const stageBadge = {
+  seedling: '🌱',
+  budding: '🌿',
+  evergreen: '🌲',
+}
+---
+
+<div class="group flex flex-col gap-2 py-3 sm:flex-row sm:items-baseline sm:gap-2">
+  {
+    formattedDate && (
+      <time
+        class="font-mono text-sm text-gray-600 dark:text-gray-400 sm:min-w-[120px] sm:shrink-0"
+        datetime={post.data.date}
+      >
+        {formattedDate}
+      </time>
+    )
+  }
+  <div
+    class="hidden flex-[0.5] border-b border-dashed border-gray-300 dark:border-gray-700 sm:block"
+  >
+  </div>
+  <div class="flex-[3]">
+    <a
+      href={`/${rootURL}/${post.id}`}
+      class="inline-flex items-center gap-2 font-medium text-foreground transition-colors hover:text-accent"
+    >
+      {
+        post.data.stage && (
+          <span aria-label={post.data.stage}>
+            {stageBadge[post.data.stage]}
+          </span>
+        )
+      }
+      <span class="group-hover:underline">{post.data.title}</span>
+    </a>
+    {
+      withDesc && post.data.description && (
+        <p class="mt-1 text-sm italic text-muted-foreground">
+          {post.data.description}
+        </p>
+      )
+    }
+    {
+      post.data.tags && post.data.tags.length > 0 && (
+        <div class="mt-2 flex flex-wrap gap-2">
+          {post.data.tags.map((tag) => (
+            <span class="rounded-md bg-gray-100 px-2 py-0.5 text-xs text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</div>
