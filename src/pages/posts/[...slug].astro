@@ -4,7 +4,6 @@ import PostLayout from '@/layouts/PostLayout.astro'
 import {
   getOutgoingNotes,
   getIncomingNotes,
-  getNoteFromTitle,
 } from '@/utils/bidirectional-link'
 
 export async function getStaticPaths() {
@@ -18,8 +17,16 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { Content } = await render(entry)
 
-const outgoingNotes = getOutgoingNotes(entry)
+const outgoingNoteTitles = getOutgoingNotes(entry)
 const incomingNotes = await getIncomingNotes(entry)
+
+// Fetch full note objects for outgoing notes
+const allPosts = await getCollection('posts')
+const outgoingNotes = allPosts.filter((post) => {
+  return outgoingNoteTitles.includes(post.data.title) || 
+         outgoingNoteTitles.includes(post.id) ||
+         post.data.aliases?.some((alias) => outgoingNoteTitles.includes(alias))
+})
 
 // /posts/<slug>
 const collectionRoot = 'posts'
@@ -28,6 +35,7 @@ const collectionRoot = 'posts'
 <PostLayout
   frontmatter={entry.data}
   incomingNotes={incomingNotes}
+  outgoingNotes={outgoingNotes}
   rootURL={collectionRoot}
 >
   <Content />

@@ -4,8 +4,9 @@ import '@/styles/global.css'
 import BaseLayout from './BaseLayout.astro'
 import { BackReferenceSection } from '@/components/post/back-reference.tsx'
 
-const { frontmatter, incomingNotes, rootURL } = Astro.props
+const { frontmatter, incomingNotes, outgoingNotes, rootURL } = Astro.props
 // incomingNotes: an array of note objects from Astro getCollection()
+// outgoingNotes: an array of note objects from Astro getCollection()
 // to access frontmatter of a note, use note.data
 ---
 
@@ -20,6 +21,7 @@ const { frontmatter, incomingNotes, rootURL } = Astro.props
     </div>
     <BackReferenceSection
       incomingReferences={incomingNotes}
+      outgoingReferences={outgoingNotes}
       rootURL={rootURL}
     />
   </div>
