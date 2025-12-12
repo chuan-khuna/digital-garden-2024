@@ -3,6 +3,7 @@
 @import './theme_nexus.css';
 @import './theme_nzk.css';
 @import './global_print.css';
+@import './obsidian_callout.css';
 
 @import 'tailwindcss';
 

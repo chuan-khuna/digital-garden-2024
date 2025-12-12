@@ -7,7 +7,7 @@ import icon from 'astro-icon'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import remarkFlexibleMarkers from "remark-flexible-markers";
-
+import remarkObsidianCallout from "remark-obsidian-callout";
 import wikiLinkPlugin from 'remark-wiki-link'
 
 import tailwindcss from '@tailwindcss/vite'
@@ -26,6 +26,7 @@ export default defineConfig({
     remarkPlugins: [
       remarkMath,
       remarkFlexibleMarkers,
+      remarkObsidianCallout,
       [
         wikiLinkPlugin,
         {
