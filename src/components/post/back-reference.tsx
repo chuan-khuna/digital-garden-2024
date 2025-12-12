@@ -47,20 +47,22 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, rootURL }) => {
     <div className="group flex flex-col gap-2 py-3 sm:flex-row sm:items-baseline sm:gap-2">
       {formattedDate && (
         <time
-          className="font-mono text-sm text-gray-600 dark:text-gray-400 sm:min-w-[120px] sm:shrink-0"
+          className="font-mono text-sm text-gray-600 sm:min-w-[120px] sm:shrink-0 dark:text-gray-400"
           dateTime={note.data.date}
         >
           {formattedDate}
         </time>
       )}
-      <div className="hidden flex-[0.5] border-b border-dashed border-gray-300 dark:border-gray-700 sm:block"></div>
+      <div className="hidden flex-[0.5] border-b border-dashed border-gray-300 sm:block dark:border-gray-700"></div>
       <div className="flex-[3]">
         <a
           href={`/${rootURL}/${note.id}`}
           className="inline-flex items-center gap-2 font-medium text-foreground transition-colors hover:text-accent"
         >
           {note.data.stage && (
-            <span aria-label={note.data.stage}>{stageBadge[note.data.stage]}</span>
+            <span aria-label={note.data.stage}>
+              {stageBadge[note.data.stage]}
+            </span>
           )}
           <span className="group-hover:underline">{note.data.title}</span>
         </a>
@@ -86,17 +88,18 @@ export const BackReferenceSection: React.FC<BackReferenceProps> = ({
   outgoingReferences,
   rootURL,
 }) => {
-  const hasReferences = incomingReferences.length > 0 || outgoingReferences.length > 0
+  const hasReferences =
+    incomingReferences.length > 0 || outgoingReferences.length > 0
 
   if (!hasReferences) return null
 
   return (
     <div className="mx-auto mt-16 max-w-[80ch] border-t border-gray-200 pt-8 dark:border-gray-800">
-      {outgoingReferences.length > 0 && (
+      {incomingReferences.length > 0 && (
         <section className="mb-12">
-          <h2 className="mb-4 text-xl font-semibold">Links from this note</h2>
+          <h2 className="text-l mb-4 font-semibold">Incoming Notes</h2>
           <ul className="space-y-1">
-            {outgoingReferences.map((note, idx) => (
+            {incomingReferences.map((note, idx) => (
               <li key={idx}>
                 <NoteItem note={note} rootURL={rootURL} />
               </li>
@@ -105,11 +108,11 @@ export const BackReferenceSection: React.FC<BackReferenceProps> = ({
         </section>
       )}
 
-      {incomingReferences.length > 0 && (
+      {outgoingReferences.length > 0 && (
         <section className="mb-12">
-          <h2 className="mb-4 text-xl font-semibold">Links to this note</h2>
+          <h2 className="text-l mb-4 font-semibold">Outgoging Notes</h2>
           <ul className="space-y-1">
-            {incomingReferences.map((note, idx) => (
+            {outgoingReferences.map((note, idx) => (
               <li key={idx}>
                 <NoteItem note={note} rootURL={rootURL} />
               </li>

@@ -30,11 +30,13 @@ const stageBadge = {
 }
 ---
 
-<div class="group flex flex-col gap-2 py-3 sm:flex-row sm:items-baseline sm:gap-2">
+<div
+  class="group flex flex-col gap-2 py-3 sm:flex-row sm:items-baseline sm:gap-2"
+>
   {
     formattedDate && (
       <time
-        class="font-mono text-sm text-gray-600 dark:text-gray-400 sm:min-w-[120px] sm:shrink-0"
+        class="font-mono text-sm text-gray-600 sm:min-w-[120px] sm:shrink-0 dark:text-gray-400"
         datetime={post.data.date}
       >
         {formattedDate}
@@ -42,7 +44,7 @@ const stageBadge = {
     )
   }
   <div
-    class="hidden flex-[0.5] border-b border-dashed border-gray-300 dark:border-gray-700 sm:block"
+    class="hidden flex-[0.5] border-b border-dashed border-gray-300 sm:block dark:border-gray-700"
   >
   </div>
   <div class="flex-[3]">

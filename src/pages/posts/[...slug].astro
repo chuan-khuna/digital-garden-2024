@@ -1,10 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import PostLayout from '@/layouts/PostLayout.astro'
-import {
-  getOutgoingNotes,
-  getIncomingNotes,
-} from '@/utils/bidirectional-link'
+import { getOutgoingNotes, getIncomingNotes } from '@/utils/bidirectional-link'
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts')
@@ -23,9 +20,11 @@ const incomingNotes = await getIncomingNotes(entry)
 // Fetch full note objects for outgoing notes
 const allPosts = await getCollection('posts')
 const outgoingNotes = allPosts.filter((post) => {
-  return outgoingNoteTitles.includes(post.data.title) || 
-         outgoingNoteTitles.includes(post.id) ||
-         post.data.aliases?.some((alias) => outgoingNoteTitles.includes(alias))
+  return (
+    outgoingNoteTitles.includes(post.data.title) ||
+    outgoingNoteTitles.includes(post.id) ||
+    post.data.aliases?.some((alias) => outgoingNoteTitles.includes(alias))
+  )
 })
 
 // /posts/<slug>
