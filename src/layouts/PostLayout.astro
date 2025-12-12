@@ -8,9 +8,6 @@ const { frontmatter, incomingNotes, outgoingNotes, rootURL } = Astro.props
 // incomingNotes: an array of note objects from Astro getCollection()
 // outgoingNotes: an array of note objects from Astro getCollection()
 // to access frontmatter of a note, use note.data
-
-console.log('out', outgoingNotes)
-console.log('in', incomingNotes)
 ---
 
 <BaseLayout title={frontmatter.title}>
