@@ -4,6 +4,7 @@ import ThemeToggle from '@/components/ThemeToggle.astro'
 import { Button } from '@/components/ui/button'
 import { Menu, X as Close } from 'lucide-react'
 import { getCollection } from 'astro:content'
+import Logo from '@/components/Logo.astro'
 
 const navItems = await getCollection('navItems')
 const sortedNavItems = navItems.sort((a, b) => a.data.order - b.data.order)
@@ -17,8 +18,14 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
   <div
     class=`container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 print:hidden`
   >
+    <!-- Logo on the left -->
+    <div class="fixed left-4 top-2 z-[5000] flex h-12 items-center">
+      <a href="/" class="flex h-full items-center">
+        <Logo />
+      </a>
+    </div>
     <nav
-      class="fixed right-2 top-2 z-[5000] flex max-w-fit items-center justify-end space-x-4 rounded-full bg-transparent py-1 pl-2 pr-2 supports-[backdrop-filter]:bg-background/10 md:left-1/2 md:right-auto md:-translate-x-1/2 md:justify-center"
+      class="fixed right-2 top-2 z-[5000] flex max-w-fit items-center justify-end space-x-2 rounded-full bg-transparent py-1 pl-2 pr-2 supports-[backdrop-filter]:bg-background/10"
     >
       <!-- desktop size nav -->
       <div id="desktop-nav" class="hidden md:flex">
@@ -30,6 +37,8 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
           ))
         }
       </div>
+      <!-- Vertical separator -->
+      <div class="mx-2 hidden h-6 w-px bg-border md:block"></div>
       <ThemeToggle />
       <!-- mobile nav buttons -->
       <div id="mobile-nav-buttons" class="flex md:hidden">
