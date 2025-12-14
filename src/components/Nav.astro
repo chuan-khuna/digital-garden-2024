@@ -16,16 +16,16 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
 
 <header class={`${blurryFullNav} print:hidden`}>
   <div
-    class=`container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 print:hidden`
+    class="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 print:hidden"
   >
     <!-- Logo on the left -->
-    <div class="fixed left-4 top-2 z-[5000] flex h-12 items-center">
+    <div class="z-[5000] flex h-12 items-center">
       <a href="/" class="flex h-full items-center">
         <Logo />
       </a>
     </div>
     <nav
-      class="fixed right-2 top-2 z-[5000] flex max-w-fit items-center justify-end space-x-2 rounded-full bg-transparent py-1 pl-2 pr-2 supports-[backdrop-filter]:bg-background/10"
+      class="z-[5000] flex max-w-fit items-center justify-end space-x-2 rounded-full bg-transparent py-1 pl-2 pr-2 supports-[backdrop-filter]:bg-background/10"
     >
       <!-- desktop size nav -->
       <div id="desktop-nav" class="hidden md:flex">
