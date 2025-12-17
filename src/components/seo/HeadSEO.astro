@@ -1,5 +1,5 @@
 ---
-import OGHead from './OGHead.astro'
+import OpenGraph from './OpenGraph.astro'
 
 interface Props {
   title?: string | undefined
@@ -32,4 +32,4 @@ const { title, description, ogImage } = Astro.props
 <meta name="description" content={description} />
 
 <!-- OG -->
-<OGHead title={title} description={description} />
+<OpenGraph title={title} description={description} />
