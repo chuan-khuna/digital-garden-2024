@@ -1,7 +1,7 @@
 ---
+import type { GetStaticPaths } from 'astro'
 import HeadSEO from '@/components/seo/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
-import Header from '@/components/Header.astro'
 import Nav from '@/components/Nav.astro'
 import '@/styles/global.css'
 interface Props {
@@ -10,7 +10,15 @@ interface Props {
   ogImage?: URL | undefined
 }
 
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+
 const { title, description, ogImage } = Astro.props
+
+// console.log('BaseLayout - canonicalURL', canonicalURL.toString())
+// console.log('BaseLayout - Astro.site', Astro.site.toString())
+// console.log('BaseLayout - title', title)
+// console.log('BaseLayout - description', description)
+// console.log('BaseLayout - ogImage', ogImage)
 ---
 
 <html lang="en">
@@ -26,7 +34,6 @@ const { title, description, ogImage } = Astro.props
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
-      <!-- <Header /> -->
       <Nav />
       <main class="flex-auto">
         <!-- global container -->
