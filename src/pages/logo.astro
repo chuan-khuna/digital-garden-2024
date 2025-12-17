@@ -1,0 +1,140 @@
+---
+
+---
+
+<style>
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: white;
+  }
+
+  .masked-logo {
+    max-width: 400px;
+    height: auto;
+  }
+
+  /* Animate the three vertical strokes from left to right, top to bottom */
+  /* Each stroke waits for the previous one to finish */
+  .stroke-left {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation:
+      draw-stroke 1s ease-in-out forwards;
+      /*erase-stroke 0.6s ease-in-out forwards;*/
+    animation-delay: 0s, 5.2s;
+  }
+
+  .stroke-middle {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation:
+      draw-stroke 1s ease-in-out forwards;
+      /*erase-stroke 0.6s ease-in-out forwards;*/
+    animation-delay: 1s, 4.6s;
+  }
+
+  .stroke-right {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation:
+      draw-stroke 1s ease-in-out forwards;
+      /*erase-stroke 0.6s ease-in-out forwards;*/
+    animation-delay: 2s, 4s;
+  }
+
+  @keyframes draw-stroke {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes erase-stroke {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: 1000;
+    }
+  }
+</style>
+
+<div class="logo-container">
+  <svg
+    class="masked-logo"
+    width="201"
+    height="252"
+    viewBox="0 0 201 252"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <!-- Define the mask using the chuan character shape -->
+      <mask id="chuanMask">
+        <!-- Black background hides everything -->
+        <rect width="201" height="252" fill="black"></rect>
+        <!-- White shape reveals the strokes where the character should be visible -->
+        <path
+          d="M0.256035 0C2.64537 0 5.71737 0.170664 9.47203 0.511993C13.2267 0.682658 17.152 1.27999 21.248 2.30399C25.5147 3.32799 29.2694 5.20533 32.512 7.93599C37.4614 11.52 40.5334 16.896 41.728 24.064C42.24 26.7947 42.5814 31.744 42.752 38.912C43.0934 45.9093 43.264 54.1867 43.264 63.744C43.264 73.3013 43.1787 83.456 43.008 94.208C43.008 104.96 42.9227 115.627 42.752 126.208C42.5814 136.619 42.4107 146.261 42.24 155.136C42.0694 163.84 41.8987 170.923 41.728 176.384C41.5574 181.845 41.3867 185.003 41.216 185.856C40.5334 191.659 39.424 197.803 37.888 204.288C36.5227 210.773 33.6214 216.576 29.184 221.696C26.2827 224.939 22.4427 227.755 17.664 230.144C13.056 232.533 7.16803 234.155 3.43323e-05 235.008C3.43323e-05 234.496 3.43323e-05 230.741 3.43323e-05 223.744C3.43323e-05 216.917 3.43323e-05 207.872 3.43323e-05 196.608C0.170701 185.344 0.256035 172.8 0.256035 158.976C0.256035 144.981 0.256035 130.645 0.256035 115.968C0.256035 101.12 0.256035 86.8693 0.256035 73.216C0.256035 59.392 0.256035 47.0187 0.256035 36.096C0.256035 25.0027 0.256035 16.2133 0.256035 9.728C0.256035 3.24267 0.256035 0 0.256035 0ZM180.992 25.856C181.504 28.5867 181.845 34.1333 182.016 42.496C182.187 50.8587 182.272 60.928 182.272 72.704C182.272 84.3093 182.187 96.8533 182.016 110.336C181.845 123.648 181.589 136.875 181.248 150.016C181.077 162.987 180.821 174.933 180.48 185.856C180.139 196.779 179.797 205.653 179.456 212.48C179.115 219.307 178.859 223.061 178.688 223.744C178.005 225.963 176.725 227.925 174.848 229.632C172.971 231.509 169.984 232.875 165.888 233.728C162.475 234.581 158.549 234.837 154.112 234.496C149.845 234.325 146.176 233.728 143.104 232.704C140.032 231.68 138.496 230.656 138.496 229.632C138.496 229.12 138.496 225.451 138.496 218.624C138.667 211.968 138.752 203.179 138.752 192.256C138.752 181.163 138.752 168.789 138.752 155.136C138.752 141.483 138.752 127.488 138.752 113.152C138.752 98.816 138.752 84.9067 138.752 71.424C138.752 57.9413 138.752 45.824 138.752 35.072C138.752 24.32 138.752 15.7867 138.752 9.472C138.752 3.15733 138.752 0 138.752 0C141.312 0 144.64 0.255997 148.736 0.76799C153.003 1.10933 157.355 2.048 161.792 3.584C166.4 4.94933 170.325 7.33866 173.568 10.752C175.445 12.6293 176.981 14.848 178.176 17.408C179.541 19.7973 180.48 22.6133 180.992 25.856ZM68.864 9.728C74.8374 9.55733 81.0667 10.24 87.552 11.776C94.208 13.1413 99.84 15.36 104.448 18.432C109.227 21.504 111.616 25.5147 111.616 30.464C111.616 32.512 111.616 36.7787 111.616 43.264C111.616 49.7493 111.531 57.6853 111.36 67.072C111.36 76.288 111.36 86.1867 111.36 96.768C111.36 107.179 111.275 117.504 111.104 127.744C111.104 137.984 111.019 147.371 110.848 155.904C110.848 164.437 110.763 171.435 110.592 176.896C110.592 182.357 110.507 185.344 110.336 185.856C108.459 187.563 105.387 189.013 101.12 190.208C97.024 191.232 92.16 191.232 86.528 190.208C81.5787 189.355 77.4827 187.819 74.24 185.6C70.9974 183.211 69.2054 180.651 68.864 177.92C68.6934 176.384 68.608 172.288 68.608 165.632C68.608 158.805 68.608 150.357 68.608 140.288C68.608 130.048 68.608 119.125 68.608 107.52C68.608 95.744 68.608 84.1387 68.608 72.704C68.608 61.0987 68.608 50.6027 68.608 41.216C68.7787 31.6587 68.864 24.064 68.864 18.432C68.864 12.6293 68.864 9.728 68.864 9.728Z"
+          fill="white"></path>
+      </mask>
+    </defs>
+
+    <!-- Group with mask applied -->
+    <g mask="url(#chuanMask)">
+      <!-- Three vertical strokes from the vector file, separated for sequential animation -->
+      <!-- Left stroke (x=28) -->
+      <path
+        class="stroke-left"
+        d="M28 0V247.5"
+        stroke="black"
+        stroke-width="56"
+        stroke-linecap="round"></path>
+
+      <!-- Middle stroke (x=100.5) -->
+      <path
+        class="stroke-middle"
+        d="M100.5 10.5V213.5"
+        stroke="black"
+        stroke-width="56"
+        stroke-linecap="round"></path>
+
+      <!-- Right stroke (x=173) -->
+      <path
+        class="stroke-right"
+        d="M173 0V252"
+        stroke="black"
+        stroke-width="56"
+        stroke-linecap="round"></path>
+    </g>
+  </svg>
+</div>
+
+<script>
+  // Get precise path lengths for accurate animation
+  const leftStroke = document.querySelector('.stroke-left') as SVGPathElement
+  const middleStroke = document.querySelector(
+    '.stroke-middle',
+  ) as SVGPathElement
+  const rightStroke = document.querySelector('.stroke-right') as SVGPathElement
+
+  if (leftStroke) {
+    const length = leftStroke.getTotalLength()
+    leftStroke.style.strokeDasharray = `${length}`
+    leftStroke.style.strokeDashoffset = `${length}`
+  }
+
+  if (middleStroke) {
+    const length = middleStroke.getTotalLength()
+    middleStroke.style.strokeDasharray = `${length}`
+    middleStroke.style.strokeDashoffset = `${length}`
+  }
+
+  if (rightStroke) {
+    const length = rightStroke.getTotalLength()
+    rightStroke.style.strokeDasharray = `${length}`
+    rightStroke.style.strokeDashoffset = `${length}`
+  }
+</script>
