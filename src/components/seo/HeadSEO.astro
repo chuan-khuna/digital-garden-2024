@@ -32,4 +32,4 @@ const { title, description, ogImage } = Astro.props
 <meta name="description" content={description} />
 
 <!-- OG -->
-<OpenGraph title={title} description={description} />
+<OpenGraph title={title} description={description} image={ogImage?.toString()} />
