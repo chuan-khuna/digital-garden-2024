@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content'
 
 import { generateOgImage } from '@/lib/generate-og-image'
 
+export const prerender = true
+
 // load content collection
 const posts = await getCollection('posts')
 

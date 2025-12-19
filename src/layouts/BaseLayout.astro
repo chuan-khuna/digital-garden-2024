@@ -10,7 +10,7 @@ import '@/styles/global.css'
 interface Props {
   title?: string | undefined
   description?: string | undefined
-  ogImage?: URL | boolean | undefined
+  ogImage?: URL | undefined
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)

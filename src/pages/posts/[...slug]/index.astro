@@ -4,7 +4,7 @@ import PostLayout from '@/layouts/PostLayout.astro'
 import { getOutgoingNotes, getIncomingNotes } from '@/utils/bidirectional-link'
 
 // Generate OG image URL for this post
-const ogImageUrl = new URL(`/posts/${Astro.params.slug}/og-image.png`, Astro.site)
+const ogImageUrl = new URL(`og/posts/${Astro.params.slug}.png`, Astro.site)
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts')
