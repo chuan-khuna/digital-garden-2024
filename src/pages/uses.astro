@@ -3,10 +3,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 
 import SectionBlock from '@/components/resume/SectionBlock.astro'
 import UnorderedList from '@/components/resume/UnorderedList.astro'
-import Item from '@/components/resume/Item/Item.astro'
+
+const ogImageSlug = 'uses'
+const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
 ---
 
-<BaseLayout title="ALTR" description="">
+<BaseLayout title="ALTR" description="" ogImage={ogImageUrl}>
   <div class="font-sans">
     <div
       class="mx-auto grid max-w-[800px] grid-cols-1 gap-2 p-2 md:grid-cols-2"

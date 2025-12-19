@@ -1,17 +1,17 @@
 [
   {
-    "title": "My Digital Garden",
+    "title": "ALTR's Digital Garden",
     "description": "A collection of thoughts, ideas, and knowledge",
     "slug": "index"
   },
   {
     "title": "Resume",
-    "description": "Resume",
+    "description": "Professional experience, skills, and accomplishments",
     "slug": "resume"
   },
   {
-    "title": "Use",
-    "description": "Use",
+    "title": "Uses",
+    "description": "The items/tools I am using",
     "slug": "uses"
   }
 ]
