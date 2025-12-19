@@ -2,7 +2,7 @@
 // Hide header/footer in print mode
 
 import '@/styles/global.css'
-
+import OpenGraph from '@/components/seo/OpenGraph.astro'
 import HeadSEO from '@/components/seo/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
 import Nav from '@/components/Nav.astro'
@@ -10,14 +10,25 @@ import Nav from '@/components/Nav.astro'
 interface Props {
   title?: string | undefined
   description?: string | undefined
+  ogImage?: URL | undefined
 }
 
-const { title, description } = Astro.props
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+
+// title and description for og image
+const { title, description, ogImage } = Astro.props
 ---
 
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} />
+
+    <OpenGraph
+      title={title}
+      description={description}
+      image={ogImage?.toString()}
+    />
+
     <!-- katex style sheet -->
     <link
       rel="stylesheet"

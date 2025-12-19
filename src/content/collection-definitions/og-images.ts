@@ -10,6 +10,7 @@ const ogImagesCollection = defineCollection({
     description: z.string({
       required_error: 'Description is required',
     }),
+    // slug should not lead with a slash
     slug: z.string({
       required_error: 'Slug is required',
     }),
