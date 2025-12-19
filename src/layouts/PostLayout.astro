@@ -4,7 +4,8 @@ import '@/styles/global.css'
 import BaseLayout from './BaseLayout.astro'
 import { BackReferenceSection } from '@/components/post/back-reference.tsx'
 
-const { frontmatter, incomingNotes, outgoingNotes, rootURL } = Astro.props
+const { frontmatter, incomingNotes, outgoingNotes, rootURL, ogImage } =
+  Astro.props
 // console.log("incomingNotes:", incomingNotes);
 // console.log("outgoingNotes:", outgoingNotes);
 
@@ -13,7 +14,7 @@ const { frontmatter, incomingNotes, outgoingNotes, rootURL } = Astro.props
 // to access frontmatter of a note, use note.data
 ---
 
-<BaseLayout title={frontmatter.title}>
+<BaseLayout title={frontmatter.title} ogImage={ogImage}>
   <!-- content container -->
   <div id="prose-container" class="overflow-x-hidden">
     <div

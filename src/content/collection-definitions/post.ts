@@ -6,6 +6,7 @@ export const postsCollection = defineCollection({
   // type: 'content',
   schema: z.object({
     title: z.string(),
+    description: z.string().optional(),
     date: z.string().optional(),
     updated: z.string().optional(),
     aliases: z.array(z.string()).optional(),

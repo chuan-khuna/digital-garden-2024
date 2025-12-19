@@ -1,0 +1,44 @@
+---
+import '@/styles/global.css'
+import Logo from '@/components/Logo.astro'
+
+const { title, description } = Astro.props
+---
+
+<div class="social-card">
+  <div class="social-card__wrapper">
+    <div class="my-4">
+      <Logo />
+    </div>
+
+    <h1>{title}</h1>
+    <h2>{description}</h2>
+  </div>
+</div>
+
+<style>
+  .social-card {
+    display: flex;
+    width: 1200px; /* Match the width of screenshot request via Urlbox */
+    height: 630px; /* Match the height of screenshot request via Urlbox */
+    max-width: 1200px;
+    max-height: 630px;
+    font-family: 'Inconsolata', monospace;
+    background-color: var(--color-background);
+    border: 1rem solid var(--color-foreground);
+    color: var(--color-light);
+  }
+
+  .social-card__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+    line-height: 1;
+    max-width: 30ch;
+  }
+</style>

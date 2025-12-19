@@ -3,6 +3,9 @@ import { getCollection, render } from 'astro:content'
 import PostLayout from '@/layouts/PostLayout.astro'
 import { getOutgoingNotes, getIncomingNotes } from '@/utils/bidirectional-link'
 
+// Generate OG image URL for this post
+const ogImageUrl = new URL(`og/posts/${Astro.params.slug}.png`, Astro.site)
+
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts')
   return allPosts.map((entry) => ({
@@ -36,6 +39,7 @@ const collectionRoot = 'posts'
   incomingNotes={incomingNotes}
   outgoingNotes={outgoingNotes}
   rootURL={collectionRoot}
+  ogImage={ogImageUrl}
 >
   <Content />
 </PostLayout>

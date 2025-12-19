@@ -1,21 +1,41 @@
 ---
-import HeadSEO from '@/components/HeadSEO.astro'
+import type { GetStaticPaths } from 'astro'
+import HeadSEO from '@/components/seo/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
-import Header from '@/components/Header.astro'
 import Nav from '@/components/Nav.astro'
+import OpenGraph from '@/components/seo/OpenGraph.astro'
+
 import '@/styles/global.css'
+
 interface Props {
   title?: string | undefined
   description?: string | undefined
   ogImage?: URL | undefined
 }
 
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+
+// title and description for og image
 const { title, description, ogImage } = Astro.props
+
+// console.log('BaseLayout - Astro.url', Astro.url)
+// console.log('BaseLayout - canonicalURL', canonicalURL.toString())
+// console.log('BaseLayout - Astro.site', Astro.site.toString())
+// console.log('BaseLayout - title', title)
+// console.log('BaseLayout - description', description)
+// console.log('BaseLayout - ogImage', ogImage)
 ---
 
 <html lang="en">
   <head>
+    <!-- seo -->
     <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <OpenGraph
+      title={title}
+      description={description}
+      image={ogImage?.toString()}
+    />
+
     <!-- katex style sheet -->
     <link
       rel="stylesheet"
@@ -26,7 +46,6 @@ const { title, description, ogImage } = Astro.props
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
-      <!-- <Header /> -->
       <Nav />
       <main class="flex-auto">
         <!-- global container -->
