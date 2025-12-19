@@ -1,6 +1,4 @@
 ---
-import OpenGraph from './OpenGraph.astro'
-
 interface Props {
   title?: string | undefined
   description?: string | undefined
@@ -30,6 +28,3 @@ const { title, description, ogImage } = Astro.props
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-
-<!-- OG -->
-<OpenGraph title={title} description={description} image={ogImage?.toString()} />
