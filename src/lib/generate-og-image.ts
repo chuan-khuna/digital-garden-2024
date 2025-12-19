@@ -1,19 +1,19 @@
 import { OgTemplateReact } from '@/components/og/og-template'
 import satori, { type SatoriOptions } from 'satori'
 import sharp from 'sharp'
+import fs from 'fs/promises'
 
 async function getFontData(url: string) {
   const fontResponse = await fetch(url)
   return await fontResponse.arrayBuffer()
 }
 
-const [AritaBuri, AritaBuriBold] = await Promise.all([
-  getFontData(
-    'https://cdn.jsdelivr.net/gh/taevel02/typeface-arita/Arita-buriM.woff',
-  ),
-  getFontData(
-    'https://cdn.jsdelivr.net/gh/taevel02/typeface-arita/Arita-buriB.woff',
-  ),
+async function getFontDataFromFile(path: string) {
+  return await fs.readFile(path)
+}
+
+const [VictorMono] = await Promise.all([
+  getFontDataFromFile('./src/assets/fonts/VictorMono-Regular.woff'),
 ])
 
 export async function generateOgImage(title: string, description: string) {
@@ -25,14 +25,9 @@ export async function generateOgImage(title: string, description: string) {
     height: 630,
     fonts: [
       {
-        name: 'Arita Buri',
-        data: AritaBuri,
+        name: 'VictorMono',
+        data: VictorMono,
         weight: 400,
-      },
-      {
-        name: 'Arita Buri',
-        data: AritaBuriBold,
-        weight: 700,
       },
     ],
   }

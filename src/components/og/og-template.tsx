@@ -11,6 +11,8 @@ export function OgTemplateReact({
   description,
   theme = 'light',
 }: OgTemplateProps) {
+  const fontFamily = 'VictorMono, monospace'
+
   // Use inline styles instead of Tailwind classes for Satori compatibility
   return (
     <div
@@ -20,17 +22,17 @@ export function OgTemplateReact({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        fontFamily: 'Inconsolata, monospace',
+        fontFamily: fontFamily,
         backgroundColor: theme === 'dark' ? '#1e1e1e' : '#f7f8f9',
         color: theme === 'dark' ? '#e0e0e0' : '#383838',
-        border: `64px solid ${theme === 'dark' ? '#e0e0e0' : '#383838'}`,
+        border: `1rem solid ${theme === 'dark' ? '#e0e0e0' : '#383838'}`,
         padding: '80px',
       }}
     >
       <div style={{ marginBottom: '32px', display: 'flex' }}>
         <span
           style={{
-            fontFamily: 'Montez, cursive',
+            fontFamily: fontFamily,
             fontSize: '40px',
             fontWeight: 400,
             lineHeight: 1,
