@@ -1,0 +1,17 @@
+[
+  {
+    "title": "My Digital Garden",
+    "description": "A collection of thoughts, ideas, and knowledge",
+    "slug": "/"
+  },
+  {
+    "title": "Resume",
+    "description": "Resume",
+    "slug": "/resume"
+  },
+  {
+    "title": "Use",
+    "description": "Use",
+    "slug": "uses"
+  }
+]

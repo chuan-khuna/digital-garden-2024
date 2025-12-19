@@ -8,6 +8,8 @@ import {
   resumeEducationsCollection,
 } from '@/content/collection-definitions/resume'
 
+import { ogImagesCollection } from '@/content/collection-definitions/og-images'
+
 export const collections = {
   posts: postsCollection,
   resumeSkills: resumeSkillsCollection,
@@ -15,4 +17,5 @@ export const collections = {
   resumeExperiences: resumeExperiencesCollection,
   resumeEducations: resumeEducationsCollection,
   navItems: navItemsCollection,
+  ogImages: ogImagesCollection,
 }
