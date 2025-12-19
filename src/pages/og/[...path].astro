@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css'
+import Logo from '@/components/Logo.astro'
 
 export async function getStaticPaths() {
   return [
@@ -17,6 +18,10 @@ console.log('path name', Astro.url.pathname)
 
 <div class="social-card">
   <div class="social-card__wrapper">
+    <div class="my-4">
+      <Logo />
+    </div>
+
     <h1>OpenGraph</h1>
     <h2>path name = <code>`{Astro.url.pathname}`</code></h2>
   </div>
