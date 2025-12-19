@@ -9,9 +9,12 @@ import AboutMe from '@/components/bento/portfolio-bento/AboutMe.astro'
 import Lorem from '@/components/bento/portfolio-bento/Lorem.astro'
 import LoremSm from '@/components/bento/portfolio-bento/LoremSm.astro'
 import TimeZoneCard from '@/components/bento/portfolio-bento/TimeZoneCard.astro'
+
+const ogImageSlug = 'index'
+const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
 ---
 
-<BaseLayout title="ALTR" description="">
+<BaseLayout title="ALTR" description="" ogImage={ogImageUrl}>
   <main
     class="relative m-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:p-4 md:grid-cols-2 md:gap-3 md:p-6 lg:grid-cols-12 lg:gap-4"
   >
