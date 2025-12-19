@@ -1,6 +1,6 @@
 ---
-import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
-
+// import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
 // section
 import Experiences from '@/components/resume/sections/Experiences.astro'
 import Projects from '@/components/resume/sections/Projects.astro'
@@ -17,10 +17,12 @@ const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 import { getCollection, getEntry } from 'astro:content'
 
 const skills = await getCollection('resumeSkills')
-console.log('resumeSkills', skills)
+
+const ogImageSlug = 'resume'
+const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
 ---
 
-<BaseLayoutPrint title="ALTR's Resume" description="">
+<BaseLayout title="ALTR's Resume" description="" ogImage={ogImageUrl}>
   <div class="">
     <!-- resume layout -->
     <div
@@ -91,4 +93,4 @@ console.log('resumeSkills', skills)
       </div>
     </div>
   </div>
-</BaseLayoutPrint>
+</BaseLayout>
