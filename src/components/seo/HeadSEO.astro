@@ -2,16 +2,11 @@
 interface Props {
   title?: string | undefined
   description?: string | undefined
-  ogImage?: URL | undefined
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-if (Astro.props.ogImage === undefined) {
-  Astro.props.ogImage = new URL('lucy.jpg', Astro.site)
-}
-
-const { title, description, ogImage } = Astro.props
+const { title, description } = Astro.props
 ---
 
 <meta charset="utf-8" />

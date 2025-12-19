@@ -18,7 +18,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 // title and description for og image
 const { title, description, ogImage } = Astro.props
 
-// console.log('BaseLayout - Astro.url', Astro.url)
+console.log('BaseLayout - Astro.url', Astro.url)
 // console.log('BaseLayout - canonicalURL', canonicalURL.toString())
 // console.log('BaseLayout - Astro.site', Astro.site.toString())
 // console.log('BaseLayout - title', title)
@@ -29,7 +29,7 @@ const { title, description, ogImage } = Astro.props
 <html lang="en">
   <head>
     <!-- seo -->
-    <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <HeadSEO title={title} description={description} />
     <OpenGraph
       title={title}
       description={description}

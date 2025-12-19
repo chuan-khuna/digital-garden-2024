@@ -10,15 +10,14 @@ import Nav from '@/components/Nav.astro'
 interface Props {
   title?: string | undefined
   description?: string | undefined
-  ogImage?: URL | undefined
 }
 
-const { title, description, ogImage } = Astro.props
+const { title, description } = Astro.props
 ---
 
 <html lang="en">
   <head>
-    <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <HeadSEO title={title} description={description} />
     <!-- katex style sheet -->
     <link
       rel="stylesheet"
