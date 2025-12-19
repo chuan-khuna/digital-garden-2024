@@ -17,9 +17,10 @@ const [VictorMono] = await Promise.all([
 ])
 
 export async function generateOgImage(title: string, description: string) {
-  console.log('Generating OG image...')
-  console.log('Title:', title)
-  console.log('Description:', description)
+  // console.log('Generating OG image...')
+  // console.log('Title:', title)
+  // console.log('Description:', description)
+
   const satoriOption: SatoriOptions = {
     width: 1200,
     height: 630,
