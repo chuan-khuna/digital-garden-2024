@@ -64,6 +64,7 @@ export default {
         mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
         metric: ['Metric', 'MetricHPEXS', 'MetricHPEXS Medium'],
         canela: ['Canela Deck', 'Canela'],
+        montez: ['Montez', 'cursive'],
         resumesans: ['Metric', 'MetricHPEXS', 'MetricHPEXS_Medium'],
         resumeserif: [
           'Canela Deck',

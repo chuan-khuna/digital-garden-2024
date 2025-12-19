@@ -1,6 +1,6 @@
 ---
-import Logo from '@/components/Logo.astro'
 import OgTemplate from '@/components/og/OgTemplate.astro'
+import { OgTemplateReact } from '@/components/og/og-template.tsx'
 
 export async function getStaticPaths() {
   return [
@@ -16,7 +16,17 @@ const { path } = Astro.props
 console.log('path name', Astro.url.pathname)
 ---
 
+<h1>astro</h1>
+
 <OgTemplate
+  title="Lorem"
+  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+/>
+
+<h1>React</h1>
+
+<OgTemplateReact
+  client:load
   title="Lorem"
   description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 />
