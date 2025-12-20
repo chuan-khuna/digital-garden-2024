@@ -4,8 +4,17 @@ import { OgDefaultTheme } from './_components/og-default-theme'
 interface OgTemplateProps {
   title: string
   description: string
+  style: string
 }
 
-export function OgTemplateReact({ title, description }: OgTemplateProps) {
+export function OgImageTemplate({
+  title,
+  description,
+  style,
+}: OgTemplateProps) {
+  if (style === 'default') {
+    return <OgDefaultTheme title={title} description={description} />
+  }
+
   return <OgDefaultTheme title={title} description={description} />
 }

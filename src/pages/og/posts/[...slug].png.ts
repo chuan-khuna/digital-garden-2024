@@ -28,6 +28,7 @@ export async function GET(ctx: APIContext) {
   const ogImage = await generateOgImage(
     post.data.title,
     post.data.description || '',
+    post.data.ogStyle || 'default',
   )
 
   return new Response(ogImage, {
