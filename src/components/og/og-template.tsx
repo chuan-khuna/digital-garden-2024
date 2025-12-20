@@ -1,6 +1,7 @@
 import React from 'react'
 import { OgDefaultTheme } from './_components/og-default-theme'
 import { OgDefaultDarkTheme } from './_components/og-default-dark-theme'
+import { OgParticleTheme } from './_components/og-particle-theme'
 
 interface OgTemplateProps {
   title: string
@@ -16,6 +17,7 @@ export function OgImageTemplate({
   const themeComponents = {
     default: OgDefaultTheme,
     'default-dark': OgDefaultDarkTheme,
+    particle: OgParticleTheme,
   };
   
   const SelectedTheme = themeComponents[style as keyof typeof themeComponents] || OgDefaultTheme;

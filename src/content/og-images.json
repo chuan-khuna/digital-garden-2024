@@ -13,6 +13,7 @@
   {
     "title": "Uses",
     "description": "The items/tools I am using",
-    "slug": "uses"
+    "slug": "uses",
+    "ogStyle": "particle"
   }
 ]
