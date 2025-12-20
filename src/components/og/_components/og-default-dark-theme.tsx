@@ -47,7 +47,7 @@ export function OgDefaultDarkTheme({ title, description }: OgTemplateProps) {
           right: '0px',
         }}
       >
-        <OGImageLogo />
+        <OGImageLogo fillColor="#e0e0e0" />
       </div>
 
       <h1
