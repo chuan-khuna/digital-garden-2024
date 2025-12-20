@@ -21,6 +21,36 @@ const { frontmatter, incomingNotes, outgoingNotes, rootURL, ogImage } =
       id="prose-content-wrapper"
       class="prose-cactus prose mx-auto mt-12 w-full max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-a:break-words prose-code:break-words prose-th:before:content-none"
     >
+      <!-- Post metadata header -->
+      <header>
+        <text class="mb-2 text-4xl font-bold text-cactus-accent-2">
+          {frontmatter.title}
+        </text>
+        {
+          frontmatter.description && (
+            <p class="text-cactus-text-secondary mb-2 text-lg">
+              {frontmatter.description}
+            </p>
+          )
+        }
+        {
+          frontmatter.date && (
+            <time
+              class="text-cactus-text-muted text-sm"
+              datetime={frontmatter.date}
+            >
+              {new Date(frontmatter.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          )
+        }
+      </header>
+
+      <hr class="my-8 border-cactus-accent-2" />
+
       <slot />
     </div>
     <BackReferenceSection
