@@ -8,8 +8,11 @@ import OpenGraph from '@/components/seo/OpenGraph.astro'
 import '@/styles/global.css'
 
 interface Props {
+  // title for SEO header and OpenGraph
   title?: string | undefined
+  // description for SEO header and OpenGraph
   description?: string | undefined
+  // image for OpenGraph - `pages/og/...` will handle image generation for this
   ogImage?: URL | undefined
 }
 
