@@ -4,16 +4,10 @@ import { file } from 'astro/loaders'
 const ogImagesCollection = defineCollection({
   loader: file('src/content/og-images.json'),
   schema: z.object({
-    title: z.string({
-      required_error: 'Title is required',
-    }),
-    description: z.string({
-      required_error: 'Description is required',
-    }),
-    // slug should not lead with a slash
-    slug: z.string({
-      required_error: 'Slug is required',
-    }),
+    title: z.string(),
+    description: z.string(),
+    slug: z.string(),
+    ogStyle: z.string().optional().default('default'),
   }),
 })
 
