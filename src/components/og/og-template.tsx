@@ -1,5 +1,6 @@
 import React from 'react'
 import { OgDefaultTheme } from './_components/og-default-theme'
+import { OgDefaultDarkTheme } from './_components/og-default-dark-theme'
 
 interface OgTemplateProps {
   title: string
@@ -12,9 +13,12 @@ export function OgImageTemplate({
   description,
   style,
 }: OgTemplateProps) {
-  if (style === 'default') {
-    return <OgDefaultTheme title={title} description={description} />
-  }
-
-  return <OgDefaultTheme title={title} description={description} />
+  const themeComponents = {
+    default: OgDefaultTheme,
+    'default-dark': OgDefaultDarkTheme,
+  };
+  
+  const SelectedTheme = themeComponents[style as keyof typeof themeComponents] || OgDefaultTheme;
+  
+  return <SelectedTheme title={title} description={description} />;
 }

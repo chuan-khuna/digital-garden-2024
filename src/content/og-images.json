@@ -2,7 +2,8 @@
   {
     "title": "ALTR's Digital Garden",
     "description": "A collection of thoughts, ideas, and knowledge",
-    "slug": "index"
+    "slug": "index",
+    "ogStyle": "default-dark"
   },
   {
     "title": "Resume",
