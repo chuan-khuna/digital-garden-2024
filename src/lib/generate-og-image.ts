@@ -1,4 +1,4 @@
-import { OgTemplateReact } from '@/components/og/og-template'
+import { OgImageTemplate } from '@/components/og/og-template'
 import satori, { type SatoriOptions } from 'satori'
 import sharp from 'sharp'
 import fs from 'fs/promises'
@@ -16,11 +16,11 @@ const [VictorMono] = await Promise.all([
   getFontDataFromFile('./src/assets/fonts/VictorMono-Regular.woff'),
 ])
 
-export async function generateOgImage(title: string, description: string) {
-  // console.log('Generating OG image...')
-  // console.log('Title:', title)
-  // console.log('Description:', description)
-
+export async function generateOgImage(
+  title: string,
+  description: string,
+  style: string = 'default',
+) {
   const satoriOption: SatoriOptions = {
     width: 1200,
     height: 630,
@@ -33,7 +33,7 @@ export async function generateOgImage(title: string, description: string) {
     ],
   }
 
-  const component = OgTemplateReact({ title, description })
+  const component = OgImageTemplate({ title, description, style })
 
   const svg = await satori(component, satoriOption)
 

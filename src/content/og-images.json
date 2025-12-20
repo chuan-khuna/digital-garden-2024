@@ -2,7 +2,8 @@
   {
     "title": "ALTR's Digital Garden",
     "description": "A collection of thoughts, ideas, and knowledge",
-    "slug": "index"
+    "slug": "index",
+    "ogStyle": "default-dark"
   },
   {
     "title": "Resume",
@@ -12,6 +13,7 @@
   {
     "title": "Uses",
     "description": "The items/tools I am using",
-    "slug": "uses"
+    "slug": "uses",
+    "ogStyle": "particle"
   }
 ]
