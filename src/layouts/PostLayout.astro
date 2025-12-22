@@ -20,10 +20,11 @@ const { frontmatter, incomingNotes, outgoingNotes, rootURL, ogImage } =
   <div id="prose-container" class="overflow-x-hidden">
     <div
       id="prose-content-wrapper"
-      class="prose-cactus prose mx-auto mt-12 w-full max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-cactus-accent prose-headings:before:content-['#'] prose-a:break-words prose-code:break-words prose-th:before:content-none"
+      class="prose-cactus prose mx-auto mt-12 w-full max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-6 prose-headings:before:text-foreground prose-headings:before:opacity-25 prose-headings:before:content-['#'] prose-headings:hover:before:text-accent prose-headings:hover:before:opacity-80 prose-a:break-words prose-code:break-words prose-th:before:content-none"
     >
       <!-- Post metadata header -->
       <PostMetadata frontmatter={frontmatter} />
+
       <slot />
     </div>
     <BackReferenceSection
