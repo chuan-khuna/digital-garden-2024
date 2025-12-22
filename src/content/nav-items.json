@@ -22,5 +22,11 @@
     "label": "Resume",
     "link": "/resume",
     "order": 4
+  },
+  {
+    "id": "style-guide",
+    "label": "Style Guide",
+    "link": "/style-guide",
+    "order": 5
   }
 ]
