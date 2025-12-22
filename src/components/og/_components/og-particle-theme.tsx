@@ -70,7 +70,6 @@ export function OgParticleTheme({ title, description }: OgParticleThemeProps) {
           height: '100%',
           fontFamily: fontFamily,
           color: '#383838',
-          opacity: 0.8,
         }}
       >
         <div
@@ -82,8 +81,8 @@ export function OgParticleTheme({ title, description }: OgParticleThemeProps) {
           <h1
             style={{
               fontSize: `${titleSize}px`,
-              fontWeight: 400,
-              lineHeight: 1,
+              fontWeight: 600,
+              lineHeight: 1.2,
               marginBottom: '16px',
             }}
           >
@@ -96,7 +95,6 @@ export function OgParticleTheme({ title, description }: OgParticleThemeProps) {
               backgroundColor: '#383838',
               margin: '16px 0',
               width: '100%',
-              // opacity: 0.8,
               display: 'flex',
             }}
           />
@@ -106,7 +104,6 @@ export function OgParticleTheme({ title, description }: OgParticleThemeProps) {
               fontSize: `${descriptionSize}px`,
               fontWeight: 400,
               lineHeight: 1.2,
-              // opacity: 0.9,
             }}
           >
             {formattedDescription}

@@ -53,8 +53,8 @@ export function OgDefaultDarkTheme({ title, description }: OgTemplateProps) {
       <h1
         style={{
           fontSize: `${titleSize}px`,
-          fontWeight: 400,
-          lineHeight: 1,
+          fontWeight: 600,
+          lineHeight: 1.2,
           marginBottom: '16px',
         }}
       >
