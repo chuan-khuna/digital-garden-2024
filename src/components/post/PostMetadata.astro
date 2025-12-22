@@ -1,0 +1,61 @@
+---
+const { frontmatter } = Astro.props
+---
+
+<header class="mb-8">
+  <text class="mb-2 text-4xl font-bold text-cactus-accent-2">
+    {frontmatter.title}
+  </text>
+  {
+    frontmatter.description && (
+      <p class="text-cactus-text-secondary mb-2 text-lg">
+        {frontmatter.description}
+      </p>
+    )
+  }
+  <div
+    class="text-cactus-text-muted flex flex-wrap items-center gap-x-3 gap-y-1 text-sm"
+  >
+    {
+      frontmatter.date && (
+        <time datetime={frontmatter.date}>
+          {new Date(frontmatter.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+      )
+    }
+    {
+      frontmatter.updated && (
+        <>
+          <span class="hidden sm:inline">/</span>
+          <span class="w-full sm:w-auto">
+            Updated:{' '}
+            {new Date(frontmatter.updated).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </span>
+        </>
+      )
+    }
+  </div>
+  {
+    frontmatter.tags && frontmatter.tags.length > 0 && (
+      <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <span class="text-cactus-text-muted">🏷️</span>
+        {frontmatter.tags.map((tag: string) => (
+          <a
+            href={`/tags/${tag}`}
+            class="text-cactus-accent transition-colors hover:text-cactus-accent-2"
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )
+  }
+</header>
