@@ -53,7 +53,7 @@ export function OgDefaultTheme({ title, description }: OgTemplateProps) {
       <h1
         style={{
           fontSize: `${titleSize}px`,
-          fontWeight: 400,
+          fontWeight: 600,
           lineHeight: 1,
           marginBottom: '16px',
         }}

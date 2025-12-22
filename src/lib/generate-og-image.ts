@@ -12,8 +12,10 @@ async function getFontDataFromFile(path: string) {
   return await fs.readFile(path)
 }
 
-const [VictorMono] = await Promise.all([
-  getFontDataFromFile('./src/assets/fonts/VictorMono-Regular.woff'),
+const [VictorMono, VictorMonoLight, VictorMonoBold] = await Promise.all([
+  getFontDataFromFile('./src/assets/fonts/VictorMono-Regular.ttf'),
+  getFontDataFromFile('./src/assets/fonts/VictorMono-Light.ttf'),
+  getFontDataFromFile('./src/assets/fonts/VictorMono-Bold.ttf'),
 ])
 
 export async function generateOgImage(
@@ -29,6 +31,16 @@ export async function generateOgImage(
         name: 'VictorMono',
         data: VictorMono,
         weight: 400,
+      },
+      {
+        name: 'VictorMono',
+        data: VictorMonoLight,
+        weight: 300,
+      },
+      {
+        name: 'VictorMono',
+        data: VictorMonoBold,
+        weight: 700,
       },
     ],
   }
