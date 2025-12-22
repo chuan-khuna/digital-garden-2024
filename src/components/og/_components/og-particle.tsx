@@ -53,7 +53,7 @@ export default function OGParticle({
           y1: particles[i].y,
           x2: particles[j].x,
           y2: particles[j].y,
-          opacity: opacity * 0.5,
+          opacity: opacity * 0.7,
         })
       }
     }
@@ -102,7 +102,7 @@ export default function OGParticle({
             cy={particle.y}
             r="4"
             fill={particleColor}
-            opacity="0.3"
+            opacity="0.7"
           />
         ))}
       </svg>
