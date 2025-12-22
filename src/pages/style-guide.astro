@@ -33,16 +33,14 @@ const colorGroups = [
   >
     <!-- colour group container -->
     <div
-      class="flex flex-col gap-6 overflow-auto rounded-lg p-8 outline outline-cactus-text/40"
+      class="flex flex-col gap-6 overflow-auto rounded-lg p-8 border"
     >
       <!-- colour row -->
 
       {
         colorGroups.map((group) => (
           <div>
-            <h3 class="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
-              {group.name}
-            </h3>
+            <h3 class="mb-3 text-sm font-semibold">{group.name}</h3>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-8">
               {group.colors.map((variable) => (
                 <Color cssValue={`hsl(var(--${variable}))`} name={variable} />
