@@ -54,7 +54,7 @@ export function OgDefaultTheme({ title, description }: OgTemplateProps) {
         style={{
           fontSize: `${titleSize}px`,
           fontWeight: 600,
-          lineHeight: 1,
+          lineHeight: 1.2,
           marginBottom: '16px',
         }}
       >
