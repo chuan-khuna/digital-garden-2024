@@ -2,11 +2,9 @@
   --palette-main-darkblue: 0.28 0.0369 259.97;
   --palette-main-lightblue: 0.8087 0.1067 222.35;
   --palette-accent-green: 0.7091 0.1415 163.79;
-
   --palette-background-black: 0.0791 0.0178 254.43;
   --palette-text-white: 0.9838 0.0035 247.86;
   --palette-text-white-darker: 0.8354 0.0032 264.54;
-
   --palette-link-pink: 0.7044 0.1133 349.04;
 
   --background: var(--palette-background-black);
