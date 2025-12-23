@@ -1,27 +1,37 @@
 .dark {
-  --background: 222.2 84% 1%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 1%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 1%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
-  --theme-bg: 210deg 6% 12%;
-  --theme-link: 330deg 49% 67%;
-  --theme-text: 220deg 3% 79%;
-  --theme-accent: 159deg 64% 45%;
-  --theme-accent-2: 0deg 0% 93%;
-  --theme-quote: 102deg 100% 86%;
+  --palette-main-darkblue: 0.28 0.0369 259.97;
+  --palette-main-lightblue: 0.8087 0.1067 222.35;
+  --palette-accent-green: 0.7091 0.1415 163.79;
+
+  --palette-background-black: 0.0791 0.0178 254.43;
+  --palette-text-white: 0.9838 0.0035 247.86;
+  --palette-text-white-darker: 0.8354 0.0032 264.54;
+
+  --palette-link-pink: 0.7044 0.1133 349.04;
+
+  --background: var(--palette-background-black);
+  --foreground: var(--palette-text-white-darker);
+  --card: var(--palette-background-black);
+  --card-foreground: var(--palette-text-white);
+  --popover: var(--palette-background-black);
+  --popover-foreground: var(--palette-text-white);
+  --primary: var(--palette-text-white);
+  --primary-foreground: var(--palette-background-black);
+  --secondary: var(--palette-main-darkblue);
+  --secondary-foreground: var(--palette-text-white);
+  --muted: var(--palette-main-darkblue);
+  --muted-foreground: var(--palette-text-white);
+  --accent: var(--palette-accent-green);
+  --accent-foreground: var(--palette-text-white);
+  --destructive: 0.3959 0.1331 25.72;
+  --destructive-foreground: var(--palette-text-white);
+  --border: var(--palette-main-darkblue);
+  --input: var(--palette-main-darkblue);
+  --ring: var(--palette-text-white);
+  --theme-bg: var(--palette-background-black);
+  --theme-link: var(--palette-link-pink);
+  --theme-text: var(--palette-text-white-darker);
+  --theme-accent: var(--palette-accent-green);
+  --theme-accent-2: var(--palette-main-lightblue);
+  --theme-quote: 0.948 0.1067 136.49;
 }

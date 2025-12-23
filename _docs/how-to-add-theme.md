@@ -2,6 +2,12 @@
 
 This guide explains how to add a new theme to your digital garden.
 
+## Tools
+
+- https://tweakcn.com/editor/theme?p=custom
+- https://oklch.com/
+
+
 ## Overview
 
 The theming system consists of three main parts:

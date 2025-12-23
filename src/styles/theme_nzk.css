@@ -19,7 +19,7 @@
   /* theme config */
   /* theme component colours - all picked from base colours? */
   --background: var(--palette-background-offwhite);
-  --foreground: var(--palette-text-grey);
+  --foreground: var(--palette-text-black);
 
   --card: var(--palette-background-offwhite-darker);
   --card-foreground: var(--palette-text-black);
