@@ -10,8 +10,8 @@ const navItems = await getCollection('navItems')
 const sortedNavItems = navItems.sort((a, b) => a.data.order - b.data.order)
 
 const blurryFullNav =
-  'sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
-const navItemClass = buttonVariants({ variant: 'ghost' })
+  'sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur'
+const navItemClass = buttonVariants({ variant: 'link' })
 ---
 
 <header class={`${blurryFullNav} print:hidden`}>
@@ -25,7 +25,7 @@ const navItemClass = buttonVariants({ variant: 'ghost' })
       </a>
     </div>
     <nav
-      class="z-[5000] flex max-w-fit items-center justify-end space-x-2 rounded-full bg-transparent py-1 pl-2 pr-2 supports-[backdrop-filter]:bg-background/10"
+      class="z-[5000] flex max-w-fit items-center justify-end space-x-2 rounded-full bg-transparent py-1 pl-2 pr-2"
     >
       <!-- desktop size nav -->
       <div id="desktop-nav" class="hidden md:flex">
