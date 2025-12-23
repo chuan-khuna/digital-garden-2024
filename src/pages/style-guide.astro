@@ -1,23 +1,52 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import Color from '@/components/styleguide/color.astro'
+
+// colour variable from `global.css` and `theme_<name>.css`
+
+const colorGroups = [
+  { name: 'Background', colors: ['background', 'foreground'] },
+  { name: 'Card', colors: ['card', 'card-foreground'] },
+  { name: 'Primary', colors: ['primary', 'primary-foreground'] },
+  { name: 'Secondary', colors: ['secondary', 'secondary-foreground'] },
+  { name: 'Muted', colors: ['muted', 'muted-foreground'] },
+  { name: 'Accent', colors: ['accent', 'accent-foreground'] },
+  { name: 'Destructive', colors: ['destructive', 'destructive-foreground'] },
+  { name: 'Border', colors: ['border', 'input', 'ring'] },
+  {
+    name: 'Theme',
+    colors: [
+      'theme-bg',
+      'theme-link',
+      'theme-text',
+      'theme-accent',
+      'theme-accent-2',
+      'theme-quote',
+    ],
+  },
+]
 ---
 
 <BaseLayout title="ALTR" description="">
   <main
-    class="not-prose grid grid-cols-[auto_minmax(0,_1fr)] items-center gap-4"
+    class="relative m-auto w-full max-w-6xl overflow-hidden p-2 sm:p-4 md:p-6"
   >
     <!-- colour group container -->
-    <div
-      class="not-prose flex justify-center overflow-auto rounded-lg bg-white p-8 outline outline-white/5 dark:bg-gray-950/50"
-    >
+    <div class="flex flex-col gap-6 overflow-auto rounded-lg border p-8">
       <!-- colour row -->
-      <div
-        class="*:*:first:inset-ring *:*:first:inset-ring-black/5 mx-auto inline-grid max-w-lg grid-cols-1 justify-center gap-3 *:*:first:size-9 *:*:first:rounded-md sm:grid-cols-11 sm:flex-row sm:*:*:first:aspect-square sm:*:*:first:w-full"
-      >
-        <Color cssValue="hsl(var(--accent))" name="accent" />
-        <Color cssValue="hsl(var(--primary))" name="primary" />
-      </div>
+
+      {
+        colorGroups.map((group) => (
+          <div>
+            <h3 class="mb-3 text-sm font-semibold">{group.name}</h3>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-8">
+              {group.colors.map((variable) => (
+                <Color cssValue={`oklch(var(--${variable}))`} name={variable} />
+              ))}
+            </div>
+          </div>
+        ))
+      }
     </div>
   </main>
 </BaseLayout>

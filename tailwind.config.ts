@@ -6,47 +6,47 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        border: 'oklch(var(--border))',
+        input: 'oklch(var(--input))',
+        ring: 'oklch(var(--ring))',
+        background: 'oklch(var(--background))',
+        foreground: 'oklch(var(--foreground))',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: 'oklch(var(--primary))',
+          foreground: 'oklch(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'oklch(var(--secondary))',
+          foreground: 'oklch(var(--secondary-foreground))',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'oklch(var(--destructive))',
+          foreground: 'oklch(var(--destructive-foreground))',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: 'oklch(var(--muted))',
+          foreground: 'oklch(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: 'oklch(var(--accent))',
+          foreground: 'oklch(var(--accent-foreground))',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: 'oklch(var(--popover))',
+          foreground: 'oklch(var(--popover-foreground))',
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: 'oklch(var(--card))',
+          foreground: 'oklch(var(--card-foreground))',
         },
         // quote: '#ff7048',
         // cactus colours
-        'cactus-bg': 'hsl(var(--theme-bg) / <alpha-value>)',
-        'cactus-text': 'hsl(var(--theme-text) / <alpha-value>)',
-        'cactus-link': 'hsl(var(--theme-link) / <alpha-value>)',
-        'cactus-accent': 'hsl(var(--theme-accent) / <alpha-value>)',
-        'cactus-accent-2': 'hsl(var(--theme-accent-2) / <alpha-value>)',
-        'cactus-quote': 'hsl(var(--theme-quote) / <alpha-value>)',
+        'cactus-bg': 'oklch(var(--theme-bg) / <alpha-value>)',
+        'cactus-text': 'oklch(var(--theme-text) / <alpha-value>)',
+        'cactus-link': 'oklch(var(--theme-link) / <alpha-value>)',
+        'cactus-accent': 'oklch(var(--theme-accent) / <alpha-value>)',
+        'cactus-accent-2': 'oklch(var(--theme-accent-2) / <alpha-value>)',
+        'cactus-quote': 'oklch(var(--theme-quote) / <alpha-value>)',
       },
       fontFamily: {
         sans: [

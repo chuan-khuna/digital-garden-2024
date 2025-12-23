@@ -56,7 +56,7 @@ Three main collections defined in `src/content.config.ts`:
 **Themes:** `nzk` (default), `nexus`, `dark`
 
 - **Configuration:** `src/components/ThemeToggle.astro` defines available themes
-- **CSS Variables:** Each theme file (`src/styles/theme_*.css`) defines HSL color variables
+- **CSS Variables:** Each theme file (`src/styles/theme_*.css`) defines oklch color variables
 - **Storage:** Theme persisted to localStorage, applied via class on `<html>` element
 - **Adding New Themes:**
   1. Create `src/styles/theme_name.css` with CSS variables (follow `theme_dark.css` structure)
@@ -147,7 +147,7 @@ import { getCollection } from 'astro:content'
 ### Styling Conventions
 
 1. **Tailwind v4:** Uses `@import 'tailwindcss'` in CSS (not `base`/`components`/`utilities`)
-2. **CSS Variables:** All colors use HSL variables defined per theme
+2. **CSS Variables:** All colors use oklch variables defined per theme
 3. **Typography:** `@tailwindcss/typography` with custom prose styles in `tailwind.config.ts`
 4. **Fonts:**
    - Sans: Lato, Metric (primary)

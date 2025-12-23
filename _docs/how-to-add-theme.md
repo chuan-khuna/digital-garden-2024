@@ -2,6 +2,12 @@
 
 This guide explains how to add a new theme to your digital garden.
 
+## Tools
+
+- https://tweakcn.com/editor/theme?p=custom
+- https://oklch.com/
+
+
 ## Overview
 
 The theming system consists of three main parts:
@@ -48,9 +54,9 @@ For example, to create a "forest" theme:
 .forest {
   /* colour palette variables */
   /* define base colours here */
-  --palette-background: 120 20% 95%;
-  --palette-foreground: 120 30% 15%;
-  --palette-primary: 140 50% 35%;
+  --palette-background: 0.95 0.04 142;
+  --palette-foreground: 0.35 0.08 142;
+  --palette-primary: 0.55 0.12 152;
 
   /* theme config */
   /* theme component colours - all picked from base colours? */
@@ -64,33 +70,33 @@ For example, to create a "forest" theme:
   --popover-foreground: var(--palette-foreground);
 
   --primary: var(--palette-primary);
-  --primary-foreground: 120 20% 98%;
+  --primary-foreground: 0.98 0.02 142;
 
-  --secondary: 90 60% 50%;
+  --secondary: 0.75 0.15 110;
   --secondary-foreground: var(--palette-primary);
 
-  --muted: 120 15% 85%;
-  --muted-foreground: 120 20% 40%;
+  --muted: 0.88 0.03 142;
+  --muted-foreground: 0.55 0.06 142;
 
-  --accent: 80 70% 45%;
+  --accent: 0.72 0.18 105;
   --accent-foreground: var(--palette-primary);
 
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive: 0.62 0.22 25;
+  --destructive-foreground: 0.98 0.01 247;
 
-  --border: 120 20% 80%;
-  --input: 120 20% 80%;
-  --ring: 120 30% 15%;
+  --border: 0.85 0.04 142;
+  --input: 0.85 0.04 142;
+  --ring: 0.35 0.08 142;
 
   --radius: 0.5rem;
 
   /* cactus (custom theme variables) */
-  --theme-bg: 120deg 20% 95%;
-  --theme-link: 140deg 50% 40%;
-  --theme-text: 120deg 30% 15%;
-  --theme-accent: 90deg 60% 50%;
-  --theme-accent-2: 140deg 50% 35%;
-  --theme-quote: 80deg 70% 45%;
+  --theme-bg: 0.95 0.04 142;
+  --theme-link: 0.58 0.12 152;
+  --theme-text: 0.35 0.08 142;
+  --theme-accent: 0.75 0.15 110;
+  --theme-accent-2: 0.55 0.12 152;
+  --theme-quote: 0.72 0.18 105;
 }
 ```
 
@@ -183,20 +189,24 @@ All themes must define these CSS variables:
 
 ### Color Format
 
-Colors use HSL format without the `hsl()` wrapper:
+Colors use OKLCH format without the `oklch()` wrapper. The format is: `lightness chroma hue`
+
+- **Lightness**: 0 to 1 (0 = black, 1 = white)
+- **Chroma**: 0 to ~0.4 (saturation, 0 = grayscale)
+- **Hue**: 0 to 360 (color angle)
 
 ```css
 /* Correct */
---background: 120 20% 95%;
+--background: 0.95 0.04 142;
 
 /* Incorrect */
---background: hsl(120, 20%, 95%);
+--background: oklch(0.95 0.04 142);
 ```
 
 ## Tips
 
 1. **Start with an existing theme** - Copy `theme_nzk.css` or `theme_dark.css` and modify the colors
-2. **Use a color picker** - Tools like [HSL Color Picker](https://hslpicker.com/) can help you find HSL values
+2. **Use a color picker** - Tools like [OKLCH Color Picker](https://oklch.com/) can help you find OKLCH values
 3. **Test contrast** - Ensure text is readable on backgrounds using tools like [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 4. **Choose appropriate icons** - Browse [Lucide Icons](https://lucide.dev/) for theme-appropriate icons
 5. **Theme persistence** - The selected theme is automatically saved to localStorage
@@ -217,6 +227,7 @@ Colors use HSL format without the `hsl()` wrapper:
 
 **Colors look wrong:**
 
-- Verify HSL values are in the correct format (no `hsl()` wrapper)
+- Verify OKLCH values are in the correct format (no `oklch()` wrapper)
+- Ensure values are in the correct order: lightness (0-1), chroma (0-0.4), hue (0-360)
 - Check that all required CSS variables are defined
 - Use browser DevTools to inspect the computed CSS variables

@@ -47,7 +47,7 @@ const { frontmatter } = Astro.props
     frontmatter.tags && frontmatter.tags.length > 0 && (
       <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
         {frontmatter.tags.map((tag: string) => (
-          <button class="border-l-2 border-t-2 border-cactus-accent px-2 py-1 font-mono font-bold transition-all hover:border-2 hover:shadow-[3px_3px_0px_0px_hsl(var(--theme-accent))]">
+          <button class="border-l-2 border-t-2 border-cactus-accent px-2 py-1 font-mono font-bold transition-all hover:border-2 hover:shadow-[3px_3px_0px_0px_oklch(var(--theme-accent))]">
             #{tag}
           </button>
         ))}
