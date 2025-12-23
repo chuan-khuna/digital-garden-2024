@@ -36,8 +36,8 @@
   --muted: var(--palette-nzk-orange);
   --muted-foreground: var(--palette-background-offwhite);
 
-  --accent: var(--palette-nzk-orange);
-  --accent-foreground: var(--palette-text-black);
+  --accent: var(--palette-nzk-blue-accent);
+  --accent-foreground: var(--palette-text-black-lighter);
 
   --destructive: oklch(0.6368 0.2078 25.33);
   --destructive-foreground: var(--palette-background-offwhite);
