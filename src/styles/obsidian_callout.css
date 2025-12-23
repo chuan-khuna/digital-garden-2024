@@ -1,38 +1,38 @@
 .callout-info {
   padding: 1rem;
-  border-left: 4px solid hsl(var(--primary));
+  border-left: 4px solid oklch(var(--primary));
   border-radius: var(--radius-md);
 }
 
 .callout-note {
   padding: 1rem;
-  border-left: 4px solid hsl(var(--accent));
+  border-left: 4px solid oklch(var(--accent));
   border-radius: var(--radius-md);
 }
 
 .callout-warning {
   padding: 1rem;
-  border-left: 4px solid hsl(var(--secondary));
+  border-left: 4px solid oklch(var(--secondary));
   border-radius: var(--radius-md);
 }
 
 .callout-error,
 .callout-danger {
   padding: 1rem;
-  border-left: 4px solid hsl(var(--destructive));
+  border-left: 4px solid oklch(var(--destructive));
   border-radius: var(--radius-md);
 }
 
 .callout-success,
 .callout-tip {
   padding: 1rem;
-  border-left: 4px solid hsl(var(--accent-2));
+  border-left: 4px solid oklch(var(--accent-2));
   border-radius: var(--radius-md);
 }
 
 .callout-quote {
   padding: 1rem;
-  border-left: 4px solid hsl(var(--quote));
+  border-left: 4px solid oklch(var(--quote));
   border-radius: var(--radius-md);
   font-style: italic;
 }

@@ -183,14 +183,14 @@ All themes must define these CSS variables:
 
 ### Color Format
 
-Colors use HSL format without the `hsl()` wrapper:
+Colors use oklch format without the `oklch()` wrapper:
 
 ```css
 /* Correct */
 --background: 120 20% 95%;
 
 /* Incorrect */
---background: hsl(120, 20%, 95%);
+--background: oklch(0.977 0.0085 84.57);
 ```
 
 ## Tips
