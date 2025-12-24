@@ -10,13 +10,13 @@ const { cssValue, name } = Astro.props
 <div class="flex items-center gap-1.5 sm:flex-col">
   <!-- colour box -->
   <div
-    class="size-14 flex-shrink-0 rounded-sm border border-foreground/20"
+    class="border-foreground/20 size-14 flex-shrink-0 rounded-sm border"
     style={`background-color: ${cssValue}`}
   >
   </div>
 
   <!-- colour name -->
-  <p class="text-center font-mono text-xs text-gray-600 dark:text-gray-400">
+  <p class="text-center font-mono text-xs">
     {name}
   </p>
 </div>

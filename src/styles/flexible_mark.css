@@ -1,0 +1,4 @@
+mark {
+  background-color: oklch(var(--theme-accent) / 0.2);
+  color: oklch(var(--color-accent-foreground));
+}

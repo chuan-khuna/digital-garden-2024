@@ -22,6 +22,8 @@ const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
 const titleClass = titleFontSize
   ? `text-${titleFontSize} font-resumesans font-medium`
   : 'text-md font-resumesans font-medium'
+
+const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
 ---
 
 {
@@ -32,18 +34,15 @@ const titleClass = titleFontSize
         <div>
           <div class="ml-2 flex-shrink-0 text-right text-sm">
             {description && (
-              <span class="ml-2 border-l border-gray-300 pl-2 text-gray-500">
-                {description}
-              </span>
+              <span class={descriptionAndTimeClass}>{description}</span>
             )}
             {timeDescription && (
-              <span class="ml-2 border-l border-gray-300 pl-2 text-gray-500">
-                {timeDescription}
-              </span>
+              <span class={descriptionAndTimeClass}>{timeDescription}</span>
             )}
           </div>
         </div>
       )}
+      <!-- dashed-line separator  -->
       <ItemSeparator />
     </div>
   ) : (
@@ -53,11 +52,9 @@ const titleClass = titleFontSize
         <ItemSeparator />
       </div>
       {(description || timeDescription || url) && (
-        <div class="mt-0 flex flex-row gap-2 text-sm text-gray-500">
+        <div class="mt-0 flex flex-row gap-2 text-sm text-gray-600">
           {description && <span>{description}</span>}
-          {timeDescription && (
-            <span class="border-l border-gray-300 pl-2">{timeDescription}</span>
-          )}
+          {timeDescription && <span class="pl-2">{timeDescription}</span>}
         </div>
       )}
     </div>
