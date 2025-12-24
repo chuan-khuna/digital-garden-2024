@@ -6,11 +6,12 @@
 
   /* lighter/less saturated version of primary/secondary */
   --palette-nzk-blue-accent: 0.818 0.0418 268.87;
+  --palette-nzk-orange-accent: 0.713 0.1525 36.43;
 
   /* background and text */
   --palette-background-offwhite: 0.977 0.0085 84.57;
   --palette-background-offwhite-darker: 0.967 0.0085 84.57;
-  --palette-text-black: 0.3411 0 0;
+  --palette-text-black: 0.307 0 0;
   --palette-text-black-lighter: 0.2699 0.0096 235.05;
   --palette-border-offwhite: 0.9254 0.0211 88.78;
   --palette-border-offwhite-blue: 0.5838 0.0211 257.6;
@@ -36,7 +37,7 @@
   --muted: var(--palette-nzk-orange);
   --muted-foreground: var(--palette-background-offwhite);
 
-  --accent: var(--palette-nzk-blue-accent);
+  --accent: var(--palette-nzk-orange-accent);
   --accent-foreground: var(--palette-text-black-lighter);
 
   --destructive: oklch(0.6368 0.2078 25.33);
