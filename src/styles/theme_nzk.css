@@ -16,6 +16,7 @@
   --palette-border-offwhite: 0.9254 0.0211 88.78;
   --palette-border-offwhite-blue: 0.5838 0.0211 257.6;
   --palette-link-teal: 0.5544 0.0431 185.69;
+  --palette-muted: 0.6346 0.0212 210.11;
 
   /* theme config */
   /* theme component colours - all picked from base colours? */
@@ -34,10 +35,10 @@
   --secondary: var(--palette-nzk-orange);
   --secondary-foreground: var(--palette-background-offwhite);
 
-  --muted: var(--palette-nzk-orange);
+  --muted: var(--palette-muted);
   --muted-foreground: var(--palette-background-offwhite);
 
-  --accent: var(--palette-nzk-orange-accent);
+  --accent: var(--palette-nzk-blue-accent);
   --accent-foreground: var(--palette-text-black-lighter);
 
   --destructive: oklch(0.6368 0.2078 25.33);
