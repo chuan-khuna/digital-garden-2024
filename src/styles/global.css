@@ -4,6 +4,7 @@
 @import './theme_nzk.css';
 @import './global_print.css';
 @import './obsidian_callout.css';
+@import './flexible_mark.css';
 
 @import 'tailwindcss';
 

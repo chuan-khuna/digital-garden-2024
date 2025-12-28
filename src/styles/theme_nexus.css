@@ -1,4 +1,5 @@
 .nexus {
+  --palette-main-darkblue: 0.28 0.0369 259.97;
   --palette-background: 0.1727 0.0161 261.53;
   --palette-foreground: 0.9216 0.0058 308.39;
   --palette-border: 0.28 0.0369 259.97;
@@ -16,8 +17,8 @@
   --primary-foreground: var(--palette-foreground);
   --secondary: var(--palette-nexus-orange);
   --secondary-foreground: var(--palette-nexus-purple);
-  --muted: var(--palette-nexus-orange);
-  --muted-foreground: 0.5547 0.0407 257.44;
+  --muted: var(--palette-main-darkblue);
+  --muted-foreground: var(--palette-foreground);
   --accent: var(--palette-nexus-orange);
   --accent-foreground: var(--palette-nexus-purple);
   --destructive: 0.6368 0.2078 25.33;

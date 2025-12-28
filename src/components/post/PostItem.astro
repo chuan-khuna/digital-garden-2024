@@ -36,17 +36,14 @@ const stageBadge = {
   {
     formattedDate && (
       <time
-        class="font-mono text-sm text-gray-600 sm:min-w-[120px] sm:shrink-0 dark:text-gray-400"
+        class="font-mono text-sm  sm:min-w-[120px] sm:shrink-0 "
         datetime={post.data.date}
       >
         {formattedDate}
       </time>
     )
   }
-  <div
-    class="hidden flex-[0.5] border-b border-dashed border-gray-300 sm:block dark:border-gray-700"
-  >
-  </div>
+  <div class="hidden flex-[0.5] border-b border-dashed sm:block"></div>
   <div class="flex-[3]">
     <a
       href={`/${rootURL}/${post.id}`}
@@ -72,7 +69,7 @@ const stageBadge = {
       post.data.tags && post.data.tags.length > 0 && (
         <div class="mt-2 flex flex-wrap gap-2">
           {post.data.tags.map((tag) => (
-            <span class="rounded-md bg-gray-100 px-2 py-0.5 font-mono text-xs font-bold  text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            <span class="rounded-md bg-border px-2 py-0.5 font-mono text-xs font-bold">
               #{tag}
             </span>
           ))}
