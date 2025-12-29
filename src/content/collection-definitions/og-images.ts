@@ -1,6 +1,6 @@
 import { z, defineCollection } from 'astro:content'
 import { file } from 'astro/loaders'
-import { ogStyleChoices } from './_og-styles'
+import { ogStyleChoices } from './common-fields/_og-styles'
 
 const ogImagesCollection = defineCollection({
   loader: file('src/content/og-images.json'),
