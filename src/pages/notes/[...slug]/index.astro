@@ -3,11 +3,16 @@ import { getCollection, render } from 'astro:content'
 import PostLayout from '@/layouts/PostLayout.astro'
 import { getOutgoingNotes, getIncomingNotes } from '@/utils/bidirectional-link'
 
+export const collectionName = 'notes'
+
 // Generate OG image URL for this post
-const ogImageUrl = new URL(`og/notes/${Astro.params.slug}.png`, Astro.site)
+const ogImageUrl = new URL(
+  `og/${collectionName}/${Astro.params.slug}.png`,
+  Astro.site,
+)
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('posts')
+  const allPosts = await getCollection(collectionName)
   return allPosts.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
@@ -21,7 +26,7 @@ const outgoingNoteTitles = getOutgoingNotes(entry)
 const incomingNotes = await getIncomingNotes(entry)
 
 // Fetch full note objects for outgoing notes
-const allPosts = await getCollection('posts')
+const allPosts = await getCollection(collectionName)
 const outgoingNotes = allPosts.filter((post) => {
   return (
     outgoingNoteTitles.includes(post.data.title) ||
@@ -29,16 +34,13 @@ const outgoingNotes = allPosts.filter((post) => {
     post.data.aliases?.some((alias) => outgoingNoteTitles.includes(alias))
   )
 })
-
-// /posts/<slug>
-const collectionRoot = 'posts'
 ---
 
 <PostLayout
   frontmatter={entry.data}
   incomingNotes={incomingNotes}
   outgoingNotes={outgoingNotes}
-  rootURL={collectionRoot}
+  rootURL={collectionName}
   ogImage={ogImageUrl}
 >
   <Content />
