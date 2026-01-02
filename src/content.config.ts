@@ -1,5 +1,4 @@
 import { postsCollection } from '@/content/collection-definitions/post'
-import { notesCollection } from '@/content/collection-definitions/note'
 import { navItemsCollection } from '@/content/collection-definitions/nav'
 
 import {
@@ -13,7 +12,6 @@ import { ogImagesCollection } from '@/content/collection-definitions/og-images'
 
 export const collections = {
   posts: postsCollection,
-  notes: notesCollection,
   resumeSkills: resumeSkillsCollection,
   resumeProjects: resumeProjectsCollection,
   resumeExperiences: resumeExperiencesCollection,
