@@ -1,0 +1,100 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  article: CollectionEntry<'posts'> | CollectionEntry<'notes'>
+  rootURL?: string
+}
+
+const { article, rootURL = 'posts' } = Astro.props
+
+// Format date
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return null
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+const formattedDate = formatDate(article.data.date)
+
+// Get stage icon and color
+const stageConfig = {
+  seedling: { icon: '🌱', label: 'Seedling' },
+  budding: { icon: '🌿', label: 'Budding' },
+  evergreen: { icon: '🌲', label: 'Evergreen' },
+}
+
+const stage = article.data.stage ? stageConfig[article.data.stage] : null
+
+// Determine card type label
+const cardType = rootURL === 'notes' ? 'Note' : rootURL === 'posts' ? 'Pattern' : 'Essay'
+---
+
+<article
+  class="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:border-accent"
+>
+  <!-- Header with icon and type -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      {
+        stage && (
+          <span class="text-xl" aria-label={stage.label} title={stage.label}>
+            {stage.icon}
+          </span>
+        )
+      }
+      <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        {cardType}
+      </span>
+    </div>
+    {
+      formattedDate && (
+        <time
+          class="text-xs text-muted-foreground"
+          datetime={article.data.date}
+        >
+          {formattedDate}
+        </time>
+      )
+    }
+  </div>
+
+  <!-- Title -->
+  <a
+    href={`/${rootURL}/${article.id}`}
+    class="text-lg font-semibold text-foreground transition-colors group-hover:text-accent"
+  >
+    <span class="group-hover:underline">{article.data.title}</span>
+  </a>
+
+  <!-- Description -->
+  {
+    article.data.description && (
+      <p class="text-sm text-muted-foreground line-clamp-3">
+        {article.data.description}
+      </p>
+    )
+  }
+
+  <!-- Tags -->
+  {
+    article.data.tags && article.data.tags.length > 0 && (
+      <div class="mt-auto flex flex-wrap gap-2">
+        {article.data.tags.slice(0, 3).map((tag) => (
+          <span class="rounded-md bg-accent/10 px-2 py-1 text-xs font-medium text-accent">
+            #{tag}
+          </span>
+        ))}
+        {article.data.tags.length > 3 && (
+          <span class="rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+            +{article.data.tags.length - 3}
+          </span>
+        )}
+      </div>
+    )
+  }
+</article>

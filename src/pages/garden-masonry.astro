@@ -1,0 +1,97 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+import PostCard from '@/components/post/PostCard.astro'
+
+// Get all posts and notes
+let allPosts = await getCollection('posts')
+let allNotes = await getCollection('notes')
+
+// Add collection type to each article
+allPosts = allPosts.map((post) => ({
+  ...post,
+  collection: 'posts',
+}))
+allNotes = allNotes.map((note) => ({
+  ...note,
+  collection: 'notes',
+}))
+
+const allArticles = [...allPosts, ...allNotes]
+
+// Sort articles by date (newest first)
+const allArticlesByDate = allArticles.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0
+  return dateB - dateA
+})
+
+// Get pinned/featured articles (articles marked as 'evergreen')
+const pinnedArticles = allArticlesByDate
+  .filter((p) => p.data.stage === 'evergreen')
+  .slice(0, 3)
+
+// Get remaining articles (non-evergreen or beyond first 3)
+const remainingArticles = allArticlesByDate.filter(
+  (article) => !pinnedArticles.includes(article)
+)
+
+const meta = {
+  title: 'Garden',
+  description: 'A collection of my digital garden notes and thoughts',
+}
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="mb-12 max-w-3xl">
+      <h1 class="mb-4 text-4xl font-bold">Digital Garden</h1>
+      <p class="text-lg text-muted-foreground">
+        A collection of interconnected notes, thoughts, and patterns growing over time.
+      </p>
+    </header>
+
+    <!-- Featured/Pinned Articles -->
+    {
+      pinnedArticles.length > 0 && (
+        <section class="mb-16">
+          <h2 class="mb-6 text-2xl font-semibold flex items-center gap-2">
+            <span>🌲</span>
+            <span>Evergreen</span>
+          </h2>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {pinnedArticles.map((article) => (
+              <PostCard article={article} rootURL={article.collection} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Masonry Grid for All Articles -->
+    <section>
+      <h2 class="mb-6 text-2xl font-semibold">All Articles</h2>
+      
+      <!-- CSS Columns Masonry Layout -->
+      <div class="columns-1 gap-6 sm:columns-2 lg:columns-3 xl:columns-4">
+        {
+          remainingArticles.map((article) => (
+            <div class="mb-6 break-inside-avoid">
+              <PostCard article={article} rootURL={article.collection} />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Ensure masonry items don't break across columns */
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+</style>

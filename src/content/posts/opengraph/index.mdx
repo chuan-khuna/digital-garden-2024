@@ -68,7 +68,97 @@ Astro component that injects OpenGraph and Twitter Card meta tags into page `<he
 />
 ```
 
-### 3. OG Image Templates (`src/components/og/`)
+### 3. Dynamic Route Handlers (`src/pages/og/`)
+
+Astro API routes that generate OG images at build time. This project has two implementations:
+
+#### Simple Version: Single Collection (`og/posts_/[...slug].png.ts`)
+
+Generates OG images for one collection only (`posts`):
+
+```typescript
+// Load collection at module level
+const posts = await getCollection('posts')
+
+export async function getStaticPaths() {
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }))
+}
+
+export async function GET(ctx: APIContext) {
+  const post = posts.find((p) => p.id === ctx.params.slug)
+  const ogImage = await generateOgImage(
+    post.data.title,
+    post.data.description || '',
+    post.data.ogStyle || 'default',
+  )
+  return new Response(ogImage, {
+    headers: { 'Content-Type': 'image/png' },
+  })
+}
+```
+
+**URL Pattern:** `/og/posts_/my-post-slug.png`
+
+**Pros:** Simple, straightforward, minimal boilerplate
+**Cons:** Only works for one collection, requires duplication for additional content types
+
+#### Dynamic Version: Multiple Collections (`og/[articleType]/[...slug].png.ts`)
+
+Generates OG images for multiple collections (`posts`, `notes`, etc.):
+
+```typescript
+const VALID_ARTICLE_TYPES = ['posts', 'notes'] as const
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const articleType of VALID_ARTICLE_TYPES) {
+    const articles = await getCollection(articleType)
+    for (const article of articles) {
+      paths.push({
+        params: { articleType, slug: article.id },
+        props: { article, articleType },
+      })
+    }
+  }
+  return paths
+}
+
+export async function GET(ctx: APIContext) {
+  const { articleType } = ctx.params
+  
+  // Validate article type
+  if (!VALID_ARTICLE_TYPES.includes(articleType as ArticleType)) {
+    return new Response('Invalid article type', { status: 400 })
+  }
+  
+  const article = ctx.props.article
+  const ogImage = await generateOgImage(
+    article.data.title,
+    article.data.description || '',
+    article.data.ogStyle || 'default',
+  )
+  return new Response(ogImage, {
+    headers: { 'Content-Type': 'image/png' },
+  })
+}
+```
+
+**URL Pattern:** `/og/posts/my-post-slug.png`, `/og/notes/my-note-slug.png`
+
+**Pros:** Works with multiple collections, easy to extend (add to array), type-safe validation
+**Cons:** Slightly more complex, extra validation overhead
+
+**Adding new collections:** Simply add to the `VALID_ARTICLE_TYPES` array:
+```typescript
+const VALID_ARTICLE_TYPES = ['posts', 'notes', 'projects'] as const
+```
+
+For detailed comparison and usage guide, see `_docs/how-og-image-generator-work.md`.
+
+### 4. OG Image Templates (`src/components/og/`)
 
 React components that define the visual design of OG images:
 
@@ -117,73 +207,19 @@ export function OgDefaultTheme({ title, description }) {
 }
 ```
 
-### 4. Dynamic Route Handlers (`src/pages/og/`)
+### 5. Frontmatter Integration
 
-Astro API routes that generate OG images on-demand (at build time):
-
-#### Posts Route (`og/posts/[...slug].png.ts`)
-
-Generates OG images for blog posts from the `posts` collection:
-
-```typescript
-// URL pattern: /og/posts/my-post-slug.png
-
-export async function getStaticPaths() {
-  const posts = await getCollection('posts')
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }))
-}
-
-export async function GET(ctx) {
-  const post = posts.find((p) => p.id === ctx.params.slug)
-
-  const ogImage = await generateOgImage(
-    post.data.title,
-    post.data.description || '',
-    post.data.ogStyle || 'default',
-  )
-
-  return new Response(ogImage, {
-    headers: { 'Content-Type': 'image/png' },
-  })
-}
-```
-
-**Frontmatter integration:**
-Posts can specify their OG style in frontmatter:
+Posts and notes can specify their OG style preference in frontmatter:
 
 ```yaml
 ---
 title: My Post
-description: Post description
+description: Post description for social media
 ogStyle: 'particle' # or 'default', 'default-dark'
 ---
 ```
 
-#### Pages Route (`og/pages/[...slug].png.ts`)
-
-Generates OG images for static pages using the `ogImages` content collection:
-
-```typescript
-// URL pattern: /og/pages/about.png
-
-const ogImages = await getCollection('ogImages')
-```
-
-**Configuration file:** `src/content/og-images.json`
-
-```json
-[
-  {
-    "title": "About Me",
-    "description": "Learn about my background",
-    "slug": "about",
-    "ogStyle": "default"
-  }
-]
-```
+The route handler reads this field and passes it to `generateOgImage()`, allowing per-article customization of the OG image theme.
 
 ## How It Works: Complete Flow
 
