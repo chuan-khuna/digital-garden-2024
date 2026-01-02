@@ -1,0 +1,109 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+import PostItem from '@/components/post/PostItem.astro'
+
+// Get all posts
+let allPosts = await getCollection('posts')
+let allNotes = await getCollection('notes')
+
+// add key collectionType to all
+allPosts = allPosts.map((post) => ({
+  ...post,
+  collection: 'posts',
+}))
+allNotes = allNotes.map((note) => ({
+  ...note,
+  collection: 'notes',
+}))
+
+const allArticles = [...allPosts, ...allNotes]
+
+// Sort articles by date (newest first)
+const allArticlesByDate = allArticles.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0
+  return dateB - dateA
+})
+
+// Group articles by year
+const groupArticlesByYear = (
+  articles: (CollectionEntry<'posts'> | CollectionEntry<'notes'>)[],
+) => {
+  return articles.reduce(
+    (acc, article) => {
+      const year = article.data.date
+        ? new Date(article.data.date).getFullYear().toString()
+        : 'Undated'
+      if (!acc[year]) {
+        acc[year] = []
+      }
+      acc[year].push(article)
+      return acc
+    },
+    {} as Record<
+      string,
+      (CollectionEntry<'posts'> | CollectionEntry<'notes'>)[]
+    >,
+  )
+}
+
+// Get pinned/featured articles (articles marked as 'evergreen')
+const pinnedArticles = allArticlesByDate
+  .filter((p) => p.data.stage === 'evergreen')
+  .slice(0, 3)
+
+const groupedByYear = groupArticlesByYear(allArticlesByDate)
+const descYearKeys = Object.keys(groupedByYear).sort((a, b) => {
+  // Handle 'Undated' specially
+  if (a === 'Undated') return 1
+  if (b === 'Undated') return 1
+  return +b - +a
+})
+
+const meta = {
+  title: 'Garden',
+  description: 'A collection of my digital garden notes and thoughts',
+}
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <div class="container mx-auto max-w-4xl">
+    {
+      pinnedArticles.length > 0 && (
+        <section class="mb-16">
+          <h2 class="mb-4 text-2xl font-semibold">Featured</h2>
+          <ul class="space-y-1">
+            {pinnedArticles.map((article) => (
+              <li>
+                <PostItem
+                  post={article}
+                  withDesc={true}
+                  rootURL={article.collection}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      descYearKeys.map((yearKey) => (
+        <section class="mb-16">
+          <h2 id={`year-${yearKey}`} class="mb-4 text-xl font-semibold">
+            {yearKey}
+          </h2>
+          <ul class="space-y-1">
+            {groupedByYear[yearKey]?.map((article) => (
+              <li>
+                <PostItem post={article} rootURL={article.collection} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>
