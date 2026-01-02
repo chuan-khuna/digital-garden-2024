@@ -1,3 +1,13 @@
+/**
+ * Dynamic Open Graph (OG) image generator for article-derived collections
+ * eg posts, notes, essays, etc
+ *
+ * /og/posts/<post-slug>
+ * /og/notes/<note-slug>
+ * /og/<articleType>/<slug>
+ *
+ */
+
 import type { APIContext } from 'astro'
 import { getCollection } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
