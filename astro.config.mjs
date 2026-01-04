@@ -17,7 +17,7 @@ import cloudflare from '@astrojs/cloudflare'
 // https://astro.build/config
 export default defineConfig({
   site: process.env.CI
-    ? 'https://altr-digital-garden.chuan-khuna.workers.dev/'
+    ? 'https://altrf.dev/'
     : 'http://localhost:4321',
 
   markdown: {
