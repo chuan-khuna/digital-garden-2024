@@ -66,12 +66,12 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
       rowSpan="md:row-span-1 lg:row-span-2"
     >
       <div class="flex h-full flex-col justify-between">
-        <blockquote class="mt-6 border-l-2 pl-6 italic">
+        <blockquote class="mt-4 border-l-2 pl-6 italic">
           "Data Visualisation is an act of communication with a mass audience."
           -- John Burn-Murdoch
         </blockquote>
 
-        <blockquote class="mt-6 border-l-2 pl-6 italic">
+        <blockquote class="mt-4 border-l-2 pl-6 italic">
           "You don't have to get a reward every time you act but your reward
           might be delayed [...]" -- Alexander Amini (MIT Reinforcement
           Learning, 2020, 6:41)
@@ -82,9 +82,26 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
     <Card
       colSpan="md:col-span-1 lg:col-span-5"
       rowSpan="md:row-span-2 lg:row-span-2"
-      title="Education and Certificates"
+      title="About this digital garden"
     >
-      <LoremSm />
+      <p class="my-2">
+        This website is built with <a
+          class="underline"
+          href="https://astro.build/">Astro</a
+        >, deployed on Cloudflare Pages.
+      </p>
+      <p class="my-2">
+        The domain name <code class="border px-2 text-accent">altr f</code> is come
+        from an anime character "Alicetaria February".
+      </p>
+
+      <p class="my-2">
+        To learn more about digital gardens, check out <a
+          class="underline"
+          href="https://maggieappleton.com/garden-history"
+          >Maggie Appleton's post</a
+        >.
+      </p>
     </Card>
   </main>
 </BaseLayout>
