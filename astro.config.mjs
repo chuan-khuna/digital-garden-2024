@@ -6,19 +6,19 @@ import icon from 'astro-icon'
 
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
-import remarkFlexibleMarkers from "remark-flexible-markers";
-import remarkObsidianCallout from "remark-obsidian-callout";
+import remarkFlexibleMarkers from 'remark-flexible-markers'
+import remarkObsidianCallout from 'remark-obsidian-callout'
 import wikiLinkPlugin from 'remark-wiki-link'
 
 import tailwindcss from '@tailwindcss/vite'
 
 import cloudflare from '@astrojs/cloudflare'
 
+import sitemap from '@astrojs/sitemap'
+
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.CI
-    ? 'https://altrf.dev/'
-    : 'http://localhost:4321',
+  site: process.env.CI ? 'https://altrf.dev/' : 'http://localhost:4321',
 
   markdown: {
     syntaxHighlight: 'shiki',
@@ -45,8 +45,8 @@ export default defineConfig({
   },
 
   integrations: [
-    react(),
-    // tailwind({
+    sitemap(),
+    react(), // tailwind({
     //   applyBaseStyles: false,
     // }),
     mdx(),
