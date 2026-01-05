@@ -1,4 +1,9 @@
+# *
 User-agent: *
 Allow: /
 
+# Host
+Host: https://altrf.dev
+
+# Sitemaps
 Sitemap: https://altrf.dev/sitemap-index.xml

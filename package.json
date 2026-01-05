@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "astro build",
+    "build": "CI=true astro build",
     "dev": "astro dev --host",
     "format": "prettier -w . --cache",
     "preview": "astro preview",
