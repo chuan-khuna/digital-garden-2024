@@ -8,7 +8,7 @@ const { frontmatter } = Astro.props
   </text>
   {
     frontmatter.description && (
-      <p class="text-cactus-text-secondary mb-2 text-lg">
+      <p class="text-cactus-text-secondary mb-2 text-md">
         {frontmatter.description}
       </p>
     )
@@ -19,7 +19,7 @@ const { frontmatter } = Astro.props
     {
       frontmatter.date && (
         <time datetime={frontmatter.date}>
-          {new Date(frontmatter.date).toLocaleDateString('en-US', {
+          {new Date(frontmatter.date).toLocaleDateString('en-UK', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -33,7 +33,7 @@ const { frontmatter } = Astro.props
           <span class="hidden sm:inline">/</span>
           <span class="w-full sm:w-auto">
             Updated:{' '}
-            {new Date(frontmatter.updated).toLocaleDateString('en-US', {
+            {new Date(frontmatter.updated).toLocaleDateString('en-UK', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
@@ -54,5 +54,5 @@ const { frontmatter } = Astro.props
       </div>
     )
   }
-  <hr class="my-8 border-dashed border-foreground opacity-30" />
+  <hr class="my-2 border-dashed border-foreground opacity-30" />
 </header>

@@ -13,4 +13,5 @@ export const articleSchema = z.object({
   tags: z.array(z.string()).optional(),
   stage: evergreenStages,
   ogStyle: ogStyleChoices,
+  llmAssisted: z.boolean().optional().default(false),
 })

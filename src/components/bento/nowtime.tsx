@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import moment from 'moment-timezone'
 import { getUserTimeZoneInBrowser } from '@/lib/browser-timezone'
 
 const NowTime = ({
@@ -25,26 +24,28 @@ const NowTime = ({
   useEffect(() => {
     const interval = setInterval(() => {
       const date = new Date()
-      const theMoment = moment(date)
-      const now = theMoment
-        .clone()
-        .tz(usingTimezone)
-        .format('ddd MMM DD YYYY HH:mm:ss')
-      setCurrentTime(now)
+      const dateStr = date.toLocaleDateString('en-UK', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        timeZone: usingTimezone,
+      })
+      const timeStr = date.toLocaleTimeString('en-UK', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: hideSeconds ? undefined : '2-digit',
+        hour12: false,
+        timeZone: usingTimezone,
+      })
+      setCurrentTime(`${dateStr}|${timeStr}`)
     }, secondUpdateDuration)
     return () => clearInterval(interval)
-  }, [usingTimezone])
+  }, [usingTimezone, hideSeconds])
 
-  const dateStrings = currentTime.split(' ')
+  const [theDate, theTime] = currentTime.split('|')
 
-  const theDate = dateStrings.slice(0, 4).join(' ')
-  const theTime = dateStrings.slice(4).join(' ')
-
-  const timeStrings = theTime.split(':')
-  const hour = timeStrings[0]
-  const minute = timeStrings[1]
-
-  const theTimeToShow = hideSeconds ? `${hour}:${minute}` : theTime
+  const theTimeToShow = theTime
 
   return (
     <>
