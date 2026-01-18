@@ -1,0 +1,102 @@
+---
+title: How to create cloudflare tunnel with fixed domain and multiple subdomains/services
+date: '2026-01-18'
+---
+
+## Simple Cloudflare tunnel with dynamic domain
+
+Suppose that we want to publish localhost:3000
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
+## Cloudflare tunnel with fixed domain
+
+### 1. Authenticate
+
+```bash
+cloudflared login
+```
+
+Then select domain from the browser prompt.
+
+### 2. Create tunnel
+
+```bash
+cloudflared tunnel create <tunnel name>
+```
+
+**tunnel name**: The name of the service or group of services on your local machine
+
+Example: `foo-services` = a tunnel for multiple projects
+
+**Example output:**
+
+```bash
+> cloudflared tunnel create foo-services
+
+# Tunnel credentials written to ~/.cloudflared/61dbf6c3-a7e3-4d1b-80e4-15a1d90fd374.json.
+# cloudflared chose this file based on where your origin certificate was found. Keep this file secret.
+# To revoke these credentials, delete the tunnel.
+# Created tunnel foo-services with id 61dbf6c3-a7e3-4d1b-80e4-15a1d90fd374
+```
+
+`<tunnel uuid>.json` → UUID required for config.yml
+
+### 3. Update config.yml
+
+Create/Update config.yml file
+
+```bash
+# use zed editor
+zed ~/.cloudflared/config.yml
+```
+
+Add content to file:
+
+**Simple configuration (single domain):**
+
+```/dev/null/yaml.yml
+url: http://localhost:3000
+tunnel: <tunnel uuid>
+credentials-file: ~/.cloudflared/<tunnel uuid>.json
+```
+
+**Advanced configuration (multiple domains):**
+
+```/dev/null/yaml.yml
+tunnel: 61dbf6c3-a7e3-4d1b-80e4-15a1d90fd374
+credentials-file: ~/.cloudflared/61dbf6c3-a7e3-4d1b-80e4-15a1d90fd374.json
+ingress:
+  - hostname: sub-1.themather.asia
+    service: http://localhost:8100
+  - hostname: sub-2.themather.asia
+    service: http://localhost:4321
+  - service: http_status:404
+```
+
+Tunnel id `61dbf6c3...` has multiple (domain → local service) mapping
+
+⚠️ **Important:** The last row of ingress must be `service: http_status:404`
+
+In the example file above, we map `sub-1` public domain to django 8100 and `sub-2` public domain to astro 4321.
+
+### 4. Create domain mapping
+
+```bash
+cloudflared tunnel route dns <tunnel uuid or name> <host name>
+```
+
+You can create multiple domain mappings:
+
+```bash
+cloudflared tunnel route dns 61db... sub-1.yourdomain.com
+cloudflared tunnel route dns 61db... sub-2.yourdomain.com
+```
+
+### 5. Start tunnel
+
+```bash
+cloudflared tunnel run <tunnel uuid/name>
+```
