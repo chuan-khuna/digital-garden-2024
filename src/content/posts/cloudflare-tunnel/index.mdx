@@ -59,7 +59,7 @@ Add content to file:
 
 **Simple configuration (single domain):**
 
-```yaml
+```yaml title="config.yml"
 url: http://localhost:3000
 tunnel: <tunnel uuid>
 credentials-file: ~/.cloudflared/<tunnel uuid>.json
@@ -67,7 +67,7 @@ credentials-file: ~/.cloudflared/<tunnel uuid>.json
 
 **Advanced configuration (multiple domains):**
 
-```yaml
+```yaml title="config.yml"
 tunnel: 61dbf6c3-a7e3-4d1b-80e4-15a1d90fd374
 credentials-file: ~/.cloudflared/61dbf6c3-a7e3-4d1b-80e4-15a1d90fd374.json
 ingress:
