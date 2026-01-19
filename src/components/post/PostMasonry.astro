@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import PostCard from './PostCard.astro'
+
+interface Props {
+  articles: (CollectionEntry<'posts'> | CollectionEntry<'notes'>)[]
+  maxColumns?: number
+}
+
+const { articles, maxColumns = 3 } = Astro.props
+---
+
+<div>
+  <div class={`columns-1 gap-2 sm:columns-2 lg:columns-${maxColumns}`}>
+    {
+      articles.map((article) => (
+        <div class="masonry-item my-2">
+          <PostCard article={article} rootURL={article.collection} />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* Ensure masonry items don't break across columns */
+  .masonry-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+</style>

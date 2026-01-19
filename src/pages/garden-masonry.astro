@@ -2,7 +2,8 @@
 import type { CollectionEntry } from 'astro:content'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
-import PostCard from '@/components/post/PostCard.astro'
+// import PostCard from '@/components/post/PostCard.astro'
+import PostMasonry from '@/components/post/PostMasonry.astro'
 
 // Get all posts and notes
 let allPosts = await getCollection('posts')
@@ -40,27 +41,7 @@ const meta = {
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
-  <div class="container mx-auto px-4 py-8">
-    <!-- Masonry Grid for All Articles -->
-    <section>
-      <!-- CSS Columns Masonry Layout -->
-      <div class="columns-1 gap-6 sm:columns-2 lg:columns-3">
-        {
-          allArticleSortedByDate.map((article) => (
-            <div class="mb-6 break-inside-avoid">
-              <PostCard article={article} rootURL={article.collection} />
-            </div>
-          ))
-        }
-      </div>
-    </section>
+  <div class="container mx-auto max-w-[1000px] px-4 py-8">
+    <PostMasonry articles={allArticleSortedByDate} maxColumns={3} />
   </div>
 </BaseLayout>
-
-<style>
-  /* Ensure masonry items don't break across columns */
-  .break-inside-avoid {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-</style>
