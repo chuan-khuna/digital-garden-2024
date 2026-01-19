@@ -2,129 +2,154 @@
 import { Moon, Sun, Leaf, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const defaultTheme = 'nzk'
+// theme list in `global.css`
+const DEFAULT_THEME = 'nzk'
+const THEMES = [DEFAULT_THEME, 'dark', 'nexus'] as const
 
-// theme name from `styles/globals.css`
-const themes = [defaultTheme, 'dark', 'nexus']
+// theme list in `astro.config.mjs`
+const SYNTAX_HIGHLIGHTER_THEMES = {
+  nzk: 'catppuccin-latte',
+  dark: 'catppuccin-macchiato',
+  nexus: 'catppuccin-macchiato',
+} as const
 
-const themeButtonCss = `h-5 w-5 hidden`
+const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
 ---
 
 <Button variant="ghost" size="icon" id="themeToggle">
-  <Sun className={themeButtonCss} id=`${defaultTheme}Button` />
-  <Flame className={themeButtonCss} id="nexusButton" />
-  <Moon className={themeButtonCss} id="darkButton" />
+  <Sun className={THEME_BUTTON_CSS} id={`${DEFAULT_THEME}Button`} />
+  <Flame className={THEME_BUTTON_CSS} id="nexusButton" />
+  <Moon className={THEME_BUTTON_CSS} id="darkButton" />
   <span class="sr-only">Toggle theme</span>
 </Button>
 
-<script is:inline define:vars={{ themes, defaultTheme }}>
-  const theme = (() => {
+<script
+  is:inline
+  define:vars={{ THEMES, DEFAULT_THEME, SYNTAX_HIGHLIGHTER_THEMES }}
+>
+  // Get stored theme or return default
+  function getStoredTheme() {
     try {
-      // check if localStorage is available and if a theme is set
-      if (
-        typeof localStorage !== 'undefined' &&
-        localStorage.getItem('theme')
-      ) {
-        const storedTheme = localStorage.getItem('theme')
-        // validate that the stored theme exists in our themes array
-        if (themes.includes(storedTheme)) {
-          // console.log('localStorage theme:', storedTheme)
-          return storedTheme
-        } else {
-          // console.log('localStorage theme mismatch, using default theme:', defaultTheme)
-          return defaultTheme
-        }
+      if (typeof localStorage === 'undefined') {
+        return DEFAULT_THEME
       }
 
-      // console.log('localStorage theme not set, using default theme:', defaultTheme)
-      // return default theme, if no theme is set
-      return defaultTheme
+      const storedTheme = localStorage.getItem('theme')
+
+      if (storedTheme && THEMES.includes(storedTheme)) {
+        return storedTheme
+      }
+
+      return DEFAULT_THEME
     } catch (error) {
-      // console.error('Error reading theme from localStorage:', error)
-      return defaultTheme
+      return DEFAULT_THEME
     }
-  })()
-
-  try {
-    // initialise theme
-    document.documentElement.classList.add(theme)
-    // show the current theme button
-    const themeButton = document.getElementById(`${theme}Button`)
-    if (themeButton) {
-      themeButton.classList.remove('hidden')
-      themeButton.classList.add('block')
-    }
-
-    // set theme in localStorage
-    window.localStorage.setItem('theme', theme)
-  } catch (error) {
-    // console.error('Error initializing theme:', error)
   }
 
-  const handleToggleClick = () => {
+  // Save theme to localStorage
+  function saveTheme(themeName) {
     try {
-      const storedTheme = localStorage.getItem('theme')
-      currentIndex = themes.indexOf(storedTheme)
+      localStorage.setItem('theme', themeName)
+    } catch (error) {
+      // Silent fail - localStorage might be unavailable
+    }
+  }
 
-      // if stored theme is not found in themes array, reset to default
-      if (currentIndex === -1) {
-        currentIndex = themes.indexOf(defaultTheme)
-      }
+  // Apply theme class to document element
+  function applyThemeClass(themeName) {
+    document.documentElement.classList.add(themeName)
+  }
 
-      // from current theme, get the next theme
-      nextIndex = (currentIndex + 1) % themes.length
-      nextTheme = themes[nextIndex]
+  // Set syntax highlighter theme via data attribute
+  function applySyntaxHighlighterTheme(themeName) {
+    const syntaxTheme =
+      SYNTAX_HIGHLIGHTER_THEMES[themeName] ||
+      SYNTAX_HIGHLIGHTER_THEMES[DEFAULT_THEME]
+    document.documentElement.setAttribute('data-theme', syntaxTheme)
+  }
 
-      const element = document.documentElement
+  // Show specific theme button, hide others
+  function updateThemeButton(themeName) {
+    THEMES.forEach((theme) => {
+      const button = document.getElementById(`${theme}Button`)
+      if (!button) return
 
-      // set theme
-      localStorage.setItem('theme', nextTheme)
-
-      // set theme class at the <html> element
-      element.classList.replace(themes[currentIndex], nextTheme)
-
-      // hide all buttons
-      buttonClasses = themes.map((themeName) => `${themeName}Button`)
-      for (themeName of themes) {
-        const button = document.getElementById(`${themeName}Button`)
-        if (button) {
-          button.classList.add('hidden')
-        }
-      }
-
-      // show theme button
-      const button = document.getElementById(`${nextTheme}Button`)
-      if (button) {
+      if (theme === themeName) {
         button.classList.remove('hidden')
         button.classList.add('block')
+      } else {
+        button.classList.add('hidden')
+        button.classList.remove('block')
       }
-    } catch (error) {
-      // console.error('Error toggling theme:', error)
-      // fallback to default theme on error
-      try {
-        document.documentElement.classList.remove(...themes)
-        document.documentElement.classList.add(defaultTheme)
-        localStorage.setItem('theme', defaultTheme)
+    })
+  }
 
-        // reset buttons
-        for (themeName of themes) {
-          const button = document.getElementById(`${themeName}Button`)
-          if (button) {
-            button.classList.add('hidden')
-          }
-        }
-        const defaultButton = document.getElementById(`${defaultTheme}Button`)
-        if (defaultButton) {
-          defaultButton.classList.remove('hidden')
-          defaultButton.classList.add('block')
-        }
-      } catch (fallbackError) {
-        // console.error('Error applying fallback theme:', fallbackError)
-      }
+  // Get next theme in rotation
+  function getNextTheme(currentTheme) {
+    const currentIndex = THEMES.indexOf(currentTheme)
+    const validIndex = currentIndex === -1 ? 0 : currentIndex
+    const nextIndex = (validIndex + 1) % THEMES.length
+    return THEMES[nextIndex]
+  }
+
+  // Replace old theme class with new one
+  function replaceThemeClass(oldTheme, newTheme) {
+    document.documentElement.classList.replace(oldTheme, newTheme)
+  }
+
+  // Initialize theme on page load
+  function initializeTheme() {
+    try {
+      const theme = getStoredTheme()
+      applyThemeClass(theme)
+      applySyntaxHighlighterTheme(theme)
+      updateThemeButton(theme)
+      saveTheme(theme)
+    } catch (error) {
+      // Fallback to default on any error
+      applyThemeClass(DEFAULT_THEME)
+      applySyntaxHighlighterTheme(DEFAULT_THEME)
+      updateThemeButton(DEFAULT_THEME)
+      saveTheme(DEFAULT_THEME)
     }
   }
 
-  document
-    .getElementById('themeToggle')
-    .addEventListener('click', handleToggleClick)
+  // Reset to default theme (fallback handler)
+  function resetToDefaultTheme() {
+    try {
+      THEMES.forEach((theme) => {
+        document.documentElement.classList.remove(theme)
+      })
+      applyThemeClass(DEFAULT_THEME)
+      applySyntaxHighlighterTheme(DEFAULT_THEME)
+      updateThemeButton(DEFAULT_THEME)
+      saveTheme(DEFAULT_THEME)
+    } catch (error) {
+      // Silent fail - we've done our best
+    }
+  }
+
+  // Handle theme toggle click
+  function handleThemeToggle() {
+    try {
+      const currentTheme = getStoredTheme()
+      const nextTheme = getNextTheme(currentTheme)
+
+      replaceThemeClass(currentTheme, nextTheme)
+      applySyntaxHighlighterTheme(nextTheme)
+      updateThemeButton(nextTheme)
+      saveTheme(nextTheme)
+    } catch (error) {
+      resetToDefaultTheme()
+    }
+  }
+
+  // Initialize theme immediately
+  initializeTheme()
+
+  // Attach click handler
+  const toggleButton = document.getElementById('themeToggle')
+  if (toggleButton) {
+    toggleButton.addEventListener('click', handleThemeToggle)
+  }
 </script>

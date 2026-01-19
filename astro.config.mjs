@@ -16,6 +16,9 @@ import cloudflare from '@astrojs/cloudflare'
 
 import sitemap from '@astrojs/sitemap'
 
+import expressiveCode from 'astro-expressive-code'
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.CI ? 'https://altrf.dev/' : 'http://localhost:4321',
@@ -45,13 +48,17 @@ export default defineConfig({
   },
 
   integrations: [
-    sitemap(),
-    react(), // tailwind({
-    //   applyBaseStyles: false,
+    sitemap(), // tailwind({
+    react(), //   applyBaseStyles: false,
     // }),
+    expressiveCode({
+      themes: ['catppuccin-latte', 'catppuccin-macchiato'],
+    }),
     mdx(),
     icon(),
   ],
+
+  plugins: [pluginLineNumbers()],
 
   vite: {
     plugins: [tailwindcss()],
