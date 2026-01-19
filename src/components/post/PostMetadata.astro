@@ -1,4 +1,6 @@
 ---
+import AISparkleIcon from './AISparkleIcon.astro';
+
 const { frontmatter } = Astro.props
 ---
 
@@ -42,6 +44,20 @@ const { frontmatter } = Astro.props
               month: 'long',
               day: 'numeric',
             })}
+          </span>
+        </>
+      )
+    }
+    {
+      frontmatter.llmAssisted && (
+        <>
+          <span class="hidden sm:inline">/</span>
+          <span
+            class="flex w-full items-center gap-1 sm:w-auto"
+            title="Written with AI assistance."
+          >
+            <AISparkleIcon />
+            Written with AI assistance
           </span>
         </>
       )
