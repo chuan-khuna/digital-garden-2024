@@ -10,22 +10,15 @@ interface Props {
 const { articles, maxColumns = 3 } = Astro.props
 ---
 
-<div>
-  <div class={`columns-1 gap-2 sm:columns-2 lg:columns-${maxColumns}`}>
-    {
-      articles.map((article) => (
-        <div class="masonry-item my-2">
-          <PostCard article={article} rootURL={article.collection} />
-        </div>
-      ))
-    }
-  </div>
-</div>
-
-<style>
-  /* Ensure masonry items don't break across columns */
-  .masonry-item {
-    break-inside: avoid;
-    page-break-inside: avoid;
+<div
+  class="columns-1 gap-4 sm:columns-2 lg:gap-4"
+  style={`column-count: ${maxColumns};`}
+>
+  {
+    articles.map((article) => (
+      <div class="mb-4 break-inside-avoid">
+        <PostCard article={article} rootURL={article.collection} />
+      </div>
+    ))
   }
-</style>
+</div>
