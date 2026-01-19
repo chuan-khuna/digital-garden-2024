@@ -21,21 +21,17 @@ allNotes = allNotes.map((note) => ({
 const allArticles = [...allPosts, ...allNotes]
 
 // Sort articles by date (newest first)
-const allArticlesByDate = allArticles.sort((a, b) => {
+const allArticleSortedByDate = allArticles.sort((a, b) => {
   const dateA = a.data.date ? new Date(a.data.date).getTime() : 0
+  const updatedA = a.data.updated ? new Date(a.data.updated).getTime() : 0
+  const maxA = Math.max(dateA, updatedA)
+
   const dateB = b.data.date ? new Date(b.data.date).getTime() : 0
-  return dateB - dateA
+  const updatedB = b.data.updated ? new Date(b.data.updated).getTime() : 0
+  const maxB = Math.max(dateB, updatedB)
+
+  return maxB - maxA
 })
-
-// Get pinned/featured articles (articles marked as 'evergreen')
-const pinnedArticles = allArticlesByDate
-  .filter((p) => p.data.stage === 'evergreen')
-  .slice(0, 3)
-
-// Get remaining articles (non-evergreen or beyond first 3)
-const remainingArticles = allArticlesByDate.filter(
-  (article) => !pinnedArticles.includes(article),
-)
 
 const meta = {
   title: 'Garden',
@@ -45,29 +41,12 @@ const meta = {
 
 <BaseLayout title={meta.title} description={meta.description}>
   <div class="container mx-auto px-4 py-8">
-    <!-- Featured/Pinned Articles -->
-    {
-      pinnedArticles.length > 0 && (
-        <section class="mb-16">
-          <h2 class="mb-6 flex items-center gap-2 text-2xl font-semibold">
-            <span>🌲</span>
-            <span>Evergreen</span>
-          </h2>
-          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {pinnedArticles.map((article) => (
-              <PostCard article={article} rootURL={article.collection} />
-            ))}
-          </div>
-        </section>
-      )
-    }
-
     <!-- Masonry Grid for All Articles -->
     <section>
       <!-- CSS Columns Masonry Layout -->
       <div class="columns-1 gap-6 sm:columns-2 lg:columns-3">
         {
-          remainingArticles.map((article) => (
+          allArticleSortedByDate.map((article) => (
             <div class="mb-6 break-inside-avoid">
               <PostCard article={article} rootURL={article.collection} />
             </div>
