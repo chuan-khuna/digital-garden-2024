@@ -52,7 +52,7 @@ export default defineConfig({
     react(), //   applyBaseStyles: false,
     // }),
     expressiveCode({
-      themes: ['catppuccin-macchiato'],
+      themes: ['catppuccin-latte', 'catppuccin-macchiato'],
     }),
     mdx(),
     icon(),
