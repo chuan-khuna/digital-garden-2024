@@ -34,7 +34,7 @@ const pinnedArticles = allArticlesByDate
 
 // Get remaining articles (non-evergreen or beyond first 3)
 const remainingArticles = allArticlesByDate.filter(
-  (article) => !pinnedArticles.includes(article)
+  (article) => !pinnedArticles.includes(article),
 )
 
 const meta = {
@@ -45,19 +45,11 @@ const meta = {
 
 <BaseLayout title={meta.title} description={meta.description}>
   <div class="container mx-auto px-4 py-8">
-    <!-- Header -->
-    <header class="mb-12 max-w-3xl">
-      <h1 class="mb-4 text-4xl font-bold">Digital Garden</h1>
-      <p class="text-lg text-muted-foreground">
-        A collection of interconnected notes, thoughts, and patterns growing over time.
-      </p>
-    </header>
-
     <!-- Featured/Pinned Articles -->
     {
       pinnedArticles.length > 0 && (
         <section class="mb-16">
-          <h2 class="mb-6 text-2xl font-semibold flex items-center gap-2">
+          <h2 class="mb-6 flex items-center gap-2 text-2xl font-semibold">
             <span>🌲</span>
             <span>Evergreen</span>
           </h2>
@@ -72,10 +64,8 @@ const meta = {
 
     <!-- Masonry Grid for All Articles -->
     <section>
-      <h2 class="mb-6 text-2xl font-semibold">All Articles</h2>
-      
       <!-- CSS Columns Masonry Layout -->
-      <div class="columns-1 gap-6 sm:columns-2 lg:columns-3 xl:columns-4">
+      <div class="columns-1 gap-6 sm:columns-2 lg:columns-3">
         {
           remainingArticles.map((article) => (
             <div class="mb-6 break-inside-avoid">
