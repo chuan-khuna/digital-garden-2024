@@ -5,6 +5,7 @@ date: '2025-12-19'
 updated: '2025-12-19'
 ogStyle: 'particle'
 tags: ['astro', 'satori', 'sharp']
+llmAssisted: true
 ---
 
 ## Overview
@@ -128,12 +129,12 @@ export async function getStaticPaths() {
 
 export async function GET(ctx: APIContext) {
   const { articleType } = ctx.params
-  
+
   // Validate article type
   if (!VALID_ARTICLE_TYPES.includes(articleType as ArticleType)) {
     return new Response('Invalid article type', { status: 400 })
   }
-  
+
   const article = ctx.props.article
   const ogImage = await generateOgImage(
     article.data.title,
@@ -152,6 +153,7 @@ export async function GET(ctx: APIContext) {
 **Cons:** Slightly more complex, extra validation overhead
 
 **Adding new collections:** Simply add to the `VALID_ARTICLE_TYPES` array:
+
 ```typescript
 const VALID_ARTICLE_TYPES = ['posts', 'notes', 'projects'] as const
 ```
