@@ -17,6 +17,7 @@ import cloudflare from '@astrojs/cloudflare'
 import sitemap from '@astrojs/sitemap'
 
 import expressiveCode from 'astro-expressive-code'
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 
 // https://astro.build/config
 export default defineConfig({
@@ -56,6 +57,8 @@ export default defineConfig({
     mdx(),
     icon(),
   ],
+
+  plugins: [pluginLineNumbers()],
 
   vite: {
     plugins: [tailwindcss()],
