@@ -6,6 +6,8 @@
 @import './obsidian_callout.css';
 @import './flexible_mark.css';
 
+@import './expressive_code.css';
+
 @import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
