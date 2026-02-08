@@ -1,0 +1,8 @@
+/*
+Hide copy button on mobile devices
+*/
+@media (max-width: 768px) {
+  .expressive-code .copy button {
+    display: none;
+  }
+}

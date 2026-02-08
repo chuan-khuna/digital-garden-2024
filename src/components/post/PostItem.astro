@@ -13,7 +13,7 @@ const { post, rootURL = 'posts', withDesc = false } = Astro.props
 const formatDate = (dateString: string | undefined) => {
   if (!dateString) return null
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('en-UK', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

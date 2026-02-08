@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+// import PostCard from '@/components/post/PostCard.astro'
+import PostMasonry from '@/components/post/PostMasonry.astro'
+
+// Get all posts and notes
+let allPosts = await getCollection('posts')
+let allNotes = await getCollection('notes')
+
+// Add collection type to each article
+allPosts = allPosts.map((post) => ({
+  ...post,
+  collection: 'posts',
+}))
+allNotes = allNotes.map((note) => ({
+  ...note,
+  collection: 'notes',
+}))
+
+const allArticles = [...allPosts, ...allNotes]
+
+// Sort articles by date (newest first)
+const allArticleSortedByDate = allArticles.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0
+  const updatedA = a.data.updated ? new Date(a.data.updated).getTime() : 0
+  const maxA = Math.max(dateA, updatedA)
+
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0
+  const updatedB = b.data.updated ? new Date(b.data.updated).getTime() : 0
+  const maxB = Math.max(dateB, updatedB)
+
+  return maxB - maxA
+})
+
+const meta = {
+  title: 'Garden',
+  description: 'A collection of my digital garden notes and thoughts',
+}
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <div class="container mx-auto max-w-[1000px] px-4 py-8">
+    <PostMasonry articles={allArticleSortedByDate} maxColumns={3} />
+  </div>
+</BaseLayout>

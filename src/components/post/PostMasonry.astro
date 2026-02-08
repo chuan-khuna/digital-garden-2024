@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import PostCard from './PostCard.astro'
+
+interface Props {
+  articles: (CollectionEntry<'posts'> | CollectionEntry<'notes'>)[]
+  maxColumns?: number
+}
+
+const { articles, maxColumns = 3 } = Astro.props
+---
+
+<div
+  class="columns-1 gap-4 sm:columns-2 lg:gap-4"
+  style={`column-count: ${maxColumns};`}
+>
+  {
+    articles.map((article) => (
+      <div class="mb-4 break-inside-avoid">
+        <PostCard article={article} rootURL={article.collection} />
+      </div>
+    ))
+  }
+</div>

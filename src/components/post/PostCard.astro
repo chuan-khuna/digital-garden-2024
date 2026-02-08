@@ -12,14 +12,17 @@ const { article, rootURL = 'posts' } = Astro.props
 const formatDate = (dateString: string | undefined) => {
   if (!dateString) return null
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('en-UK', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
   })
 }
 
-const formattedDate = formatDate(article.data.date)
+// Use updated date if available, otherwise fall back to date
+const dateToDisplay = article.data.updated || article.data.date
+const formattedDate = formatDate(dateToDisplay)
+const isUpdated = !!article.data.updated
 
 // Get stage icon and color
 const stageConfig = {
@@ -30,71 +33,46 @@ const stageConfig = {
 
 const stage = article.data.stage ? stageConfig[article.data.stage] : null
 
-// Determine card type label
-const cardType = rootURL === 'notes' ? 'Note' : rootURL === 'posts' ? 'Pattern' : 'Essay'
+// Determine card type label (hidden in UI)
+const cardType =
+  rootURL === 'notes' ? 'Note' : rootURL === 'posts' ? 'Pattern' : 'Essay'
+
+// Truncate description to 200 characters
+const truncateText = (text: string | undefined, maxLength: number) => {
+  if (!text) return ''
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength).trim() + '...'
+}
+
+const truncatedDescription = truncateText(article.data.description, 200)
 ---
 
-<article
-  class="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:border-accent"
->
-  <!-- Header with icon and type -->
-  <div class="flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      {
-        stage && (
-          <span class="text-xl" aria-label={stage.label} title={stage.label}>
-            {stage.icon}
-          </span>
-        )
-      }
-      <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-        {cardType}
-      </span>
-    </div>
+<a href={`/${rootURL}/${article.id}`}>
+  <article
+    class="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-6 shadow-sm transition-all duration-200 hover:border-accent hover:shadow-md"
+  >
+    <!-- Title -->
+    <text
+      class="text-xl text-card-foreground transition-colors group-hover:text-accent"
+    >
+      <span>{article.data.title}</span>
+    </text>
+
+    <!-- Description -->
     {
-      formattedDate && (
-        <time
-          class="text-xs text-muted-foreground"
-          datetime={article.data.date}
-        >
-          {formattedDate}
-        </time>
+      truncatedDescription && (
+        <p class="text-card-foreground/70 line-clamp-3 text-sm">
+          {truncatedDescription}
+        </p>
       )
     }
-  </div>
-
-  <!-- Title -->
-  <a
-    href={`/${rootURL}/${article.id}`}
-    class="text-lg font-semibold text-foreground transition-colors group-hover:text-accent"
-  >
-    <span class="group-hover:underline">{article.data.title}</span>
-  </a>
-
-  <!-- Description -->
-  {
-    article.data.description && (
-      <p class="text-sm text-muted-foreground line-clamp-3">
-        {article.data.description}
-      </p>
-    )
-  }
-
-  <!-- Tags -->
-  {
-    article.data.tags && article.data.tags.length > 0 && (
-      <div class="mt-auto flex flex-wrap gap-2">
-        {article.data.tags.slice(0, 3).map((tag) => (
-          <span class="rounded-md bg-accent/10 px-2 py-1 text-xs font-medium text-accent">
-            #{tag}
-          </span>
-        ))}
-        {article.data.tags.length > 3 && (
-          <span class="rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
-            +{article.data.tags.length - 3}
-          </span>
-        )}
-      </div>
-    )
-  }
-</article>
+    <!-- Header with icon and date -->
+    <div class="flex items-center justify-between">
+      {
+        formattedDate && (
+          <time class="text-card-foreground/70 text-xs">{formattedDate}</time>
+        )
+      }
+    </div>
+  </article>
+</a>

@@ -13,6 +13,7 @@ This is an **Astro-based digital garden and personal portfolio** combining a Zet
 - **Content Management:** Astro Content Collections for type-safe content
 - **React Integration:** Used selectively for interactive components (Bento cards, forms)
 - **Path Aliases:** `@/*` maps to `src/*` (see `tsconfig.json`)
+- Use `UK` date formatting
 
 ## Content Architecture
 
