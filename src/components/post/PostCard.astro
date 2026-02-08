@@ -47,31 +47,32 @@ const truncateText = (text: string | undefined, maxLength: number) => {
 const truncatedDescription = truncateText(article.data.description, 200)
 ---
 
-<article
-  class="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-6 shadow-sm transition-all duration-200 hover:border-accent hover:shadow-md"
->
-  <!-- Title -->
-  <a
-    href={`/${rootURL}/${article.id}`}
-    class="text-lg font-semibold text-card-foreground transition-colors group-hover:text-accent"
+<a href={`/${rootURL}/${article.id}`}>
+  <article
+    class="group relative flex flex-col gap-3 rounded-lg border border-border bg-card p-6 shadow-sm transition-all duration-200 hover:border-accent hover:shadow-md"
   >
-    <span class="group-hover:underline">{article.data.title}</span>
-  </a>
+    <!-- Title -->
+    <text
+      class="text-xl text-card-foreground transition-colors group-hover:text-accent"
+    >
+      <span>{article.data.title}</span>
+    </text>
 
-  <!-- Description -->
-  {
-    truncatedDescription && (
-      <p class="text-card-foreground/70 line-clamp-3 text-sm">
-        {truncatedDescription}
-      </p>
-    )
-  }
-  <!-- Header with icon and date -->
-  <div class="flex items-center justify-between">
+    <!-- Description -->
     {
-      formattedDate && (
-        <time class="text-card-foreground/70 text-xs">{formattedDate}</time>
+      truncatedDescription && (
+        <p class="text-card-foreground/70 line-clamp-3 text-sm">
+          {truncatedDescription}
+        </p>
       )
     }
-  </div>
-</article>
+    <!-- Header with icon and date -->
+    <div class="flex items-center justify-between">
+      {
+        formattedDate && (
+          <time class="text-card-foreground/70 text-xs">{formattedDate}</time>
+        )
+      }
+    </div>
+  </article>
+</a>
