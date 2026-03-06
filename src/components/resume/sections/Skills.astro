@@ -1,10 +1,8 @@
 ---
 import SectionBlock from '../SectionBlock.astro'
-import UnorderedList from '../UnorderedList.astro'
-import Item from '@/components/resume/Item/Item.astro'
-import Divider from '../Divider.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const skills = await getCollection('resumeSkills')
 
 const skillCategoryClass = 'mr-1 font-medium'
 ---
@@ -12,10 +10,10 @@ const skillCategoryClass = 'mr-1 font-medium'
 <SectionBlock title="Skills">
   <div>
     {
-      RESUME.skills.map((skill) => (
+      skills.map((skill) => (
         <div class="mb-1 text-sm">
-          <text class={skillCategoryClass}>{skill.category}:</text>
-          <text>{skill.details.join(', ')}</text>
+          <text class={skillCategoryClass}>{skill.data.category}:</text>
+          <text>{skill.data.details.join(', ')}</text>
         </div>
       ))
     }

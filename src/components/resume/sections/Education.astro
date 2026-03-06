@@ -1,18 +1,18 @@
 ---
 import SectionBlock from '../SectionBlock.astro'
-import UnorderedList from '../UnorderedList.astro'
 import Item from '@/components/resume/Item/Item.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const educations = await getCollection('resumeEducations')
 ---
 
 <SectionBlock title="Education">
   {
-    RESUME.educations.map((edu) => (
+    educations.map((edu) => (
       <Item
-        title={edu.degree}
-        timeDescription={edu.time}
-        description={edu.institution}
+        title={edu.data.degree}
+        timeDescription={edu.data.time}
+        description={edu.data.institution}
       />
     ))
   }

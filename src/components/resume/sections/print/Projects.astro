@@ -2,24 +2,24 @@
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/Item/PrintItem.astro'
 import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const projects = await getCollection('resumeProjects')
+const printProjects = projects.filter((p) => p.data.visibility.resume_print)
 ---
 
 <PrintSectionBlock title="Projects">
   {
-    RESUME.projects
-      .filter((project) => project.visibility.resume_print)
-      .map((project) => (
-        <>
-          <PrintItem
-            title={project.title}
-            timeDescription={project.time}
-            description={project.description}
-            url={project.url}
-          />
-          <PrintUnorderedList items={project.details} />
-        </>
-      ))
+    printProjects.map((project) => (
+      <>
+        <PrintItem
+          title={project.data.title}
+          timeDescription={project.data.time}
+          description={project.data.description}
+          url={project.data.url}
+        />
+        <PrintUnorderedList items={project.data.details} />
+      </>
+    ))
   }
 </PrintSectionBlock>

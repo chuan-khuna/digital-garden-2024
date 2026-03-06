@@ -41,6 +41,7 @@
       "Git",
       "Docker",
       "uv",
+      "just",
       "Postgres",
       "MongoDB",
       "Airflow",

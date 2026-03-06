@@ -2,20 +2,21 @@
 import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
 import Item from '@/components/resume/Item/Item.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const experiences = await getCollection('resumeExperiences')
 ---
 
 <SectionBlock title="Experience">
   {
-    RESUME.experiences.map((experience) => (
+    experiences.map((experience) => (
       <div>
         <Item
-          title={experience.jobTitle}
-          timeDescription={experience.time}
-          description={experience.company}
+          title={experience.data.jobTitle}
+          timeDescription={experience.data.time}
+          description={experience.data.company}
         />
-        <UnorderedList ulClass="text-sm" items={experience.details} />
+        <UnorderedList ulClass="text-sm" items={experience.data.details} />
       </div>
     ))
   }

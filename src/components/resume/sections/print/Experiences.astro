@@ -2,21 +2,22 @@
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/Item/PrintItem.astro'
 import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const experiences = await getCollection('resumeExperiences')
+const printExperiences = experiences.filter((e) => e.data.visibility.resume_print)
 ---
 
 <PrintSectionBlock title="Experiences">
   {
-    RESUME.experiences.map((experience) => (
+    printExperiences.map((experience) => (
       <>
         <PrintItem
-          title={experience.jobTitle}
-          timeDescription={experience.time}
-          description={experience.company}
-          url={experience.url}
+          title={experience.data.jobTitle}
+          timeDescription={experience.data.time}
+          description={experience.data.company}
         />
-        <PrintUnorderedList items={experience.details} />
+        <PrintUnorderedList items={experience.data.details} />
       </>
     ))
   }

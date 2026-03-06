@@ -3,29 +3,30 @@ import SectionBlock from '../SectionBlock.astro'
 import UnorderedList from '../UnorderedList.astro'
 import Item from '@/components/resume/Item/Item.astro'
 import Divider from '../Divider.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const projects = await getCollection('resumeProjects')
 ---
 
 <SectionBlock title="Projects">
   {
-    RESUME.projects.map((project, index) => {
+    projects.map((project, index) => {
       return (
         <>
           <Item
-            title={project.title}
-            timeDescription={project.time}
-            description={project.description}
-            url={project.url}
+            title={project.data.title}
+            timeDescription={project.data.time}
+            description={project.data.description}
+            url={project.data.url}
           />
 
-          {project.details.length === 1 ? (
-            <p class="mb-4 mt-0 text-sm">{project.details[0]}</p>
+          {project.data.details.length === 1 ? (
+            <p class="mb-4 mt-0 text-sm">{project.data.details[0]}</p>
           ) : (
-            <UnorderedList ulClass="text-sm" items={project.details} />
+            <UnorderedList ulClass="text-sm" items={project.data.details} />
           )}
 
-          {index < RESUME.projects.length - 1 && <Divider />}
+          {index < projects.length - 1 && <Divider />}
         </>
       )
     })

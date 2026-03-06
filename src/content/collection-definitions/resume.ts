@@ -63,3 +63,43 @@ export const resumeEducationsCollection = defineCollection({
     }),
   }),
 })
+
+export const resumeActivitiesCollection = defineCollection({
+  loader: file('src/content/resume/activities.json'),
+  schema: z.object({
+    title: z.string(),
+    time: z.string(),
+    description: z.string(),
+    url: z.string().url().nullable().optional(),
+    details: z.array(z.string()),
+  }),
+})
+
+export const resumeInterestsCollection = defineCollection({
+  loader: file('src/content/resume/interests.json'),
+  schema: z.object({
+    items: z.array(z.string()),
+  }),
+})
+
+export const resumeNowCollection = defineCollection({
+  loader: file('src/content/resume/now.json'),
+  schema: z.object({
+    lastUpdated: z.string(),
+    intro: z.string(),
+    paragraphs: z.array(z.string()),
+  }),
+})
+
+export const resumeHeaderCollection = defineCollection({
+  loader: file('src/content/resume/header.json'),
+  schema: z.object({
+    name: z.string(),
+    jobTitle: z.string(),
+    email: z.string().email(),
+    github: z.string().url(),
+    githubName: z.string(),
+    introduction: z.string(),
+    location: z.string(),
+  }),
+})
