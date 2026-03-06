@@ -1,8 +1,8 @@
 ---
-import SectionBlock from '../SectionBlock.astro'
-import UnorderedList from '../UnorderedList.astro'
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
 import Item from '@/components/resume/Item/Item.astro'
-import Divider from '../Divider.astro'
+import Divider from '@/components/resume/Divider.astro'
 import { getCollection } from 'astro:content'
 
 const projects = await getCollection('resumeProjects')

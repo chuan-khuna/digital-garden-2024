@@ -1,6 +1,6 @@
 ---
-import SectionBlock from '../SectionBlock.astro'
-import UnorderedList from '../UnorderedList.astro'
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
 import { getCollection } from 'astro:content'
 
 const interestsEntries = await getCollection('resumeInterests')
