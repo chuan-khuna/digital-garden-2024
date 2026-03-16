@@ -6,11 +6,6 @@
       "sourceType": "github",
       "computedHash": "bca33ec7db2d49d70c9b4eb058a6a3670e362b8d90ce8acb40a8cec4791ab7f8"
     },
-    "frontend-design": {
-      "source": "anthropics/skills",
-      "sourceType": "github",
-      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
-    },
     "json-canvas": {
       "source": "kepano/obsidian-skills",
       "sourceType": "github",
@@ -30,11 +25,6 @@
       "source": "kepano/obsidian-skills",
       "sourceType": "github",
       "computedHash": "cacc9058a35ad3fd4985b4c31121bff8202f1337c39808c1326ded6a19a7915f"
-    },
-    "web-design-guidelines": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
     }
   }
 }
