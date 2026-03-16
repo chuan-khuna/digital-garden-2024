@@ -6,7 +6,7 @@
     "url": "https://github.com/chuan-khuna/bazaar",
     "description": "Personal project",
     "details": [
-      "Items and Skills tracker from The Bazaar game screenshots using computer vision techniques"
+      "Items and Skills tracker for The Bazaar game screenshots using computer vision techniques"
     ],
     "visibility": {
       "web": true,
