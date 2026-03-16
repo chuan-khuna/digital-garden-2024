@@ -1,5 +1,20 @@
 [
   {
+    "id": "the-bazaar-tracker",
+    "title": "The Bazaar Tracker",
+    "time": "Mar 2026",
+    "url": "https://github.com/chuan-khuna/bazaar",
+    "description": "Personal project",
+    "details": [
+      "Items and Skills tracker from The Bazaar game screenshots using computer vision techniques"
+    ],
+    "visibility": {
+      "web": true,
+      "resume_print": true,
+      "cv_print": true
+    }
+  },
+  {
     "id": "altr - my personal python package",
     "title": "altr - my personal python package",
     "time": "May 2025",
@@ -30,6 +45,19 @@
     }
   },
   {
+    "id": "astro-digital-garden",
+    "title": "Astro Digital Garden",
+    "time": "2025",
+    "description": "Personal project",
+    "url": "https://github.com/chuan-khuna/digital-garden-2024",
+    "details": ["Personal website built with Astro with PDF resume generation"],
+    "visibility": {
+      "web": true,
+      "resume_print": true,
+      "cv_print": true
+    }
+  },
+  {
     "id": "wordle-but-statistics",
     "title": "Wordle But Statistics",
     "time": "Jan 2022",
@@ -44,6 +72,7 @@
       "cv_print": true
     }
   },
+
   {
     "id": "bias-correction",
     "title": "Bias Correction of Multi-Dimensional Climate Data and Visualisation",

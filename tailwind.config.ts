@@ -62,10 +62,20 @@ export default {
           ...defaultTheme.fontFamily.serif,
         ],
         mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
-        metric: ['Metric', 'MetricHPEXS', 'MetricHPEXS Medium'],
+        metric: [
+          'Metric',
+          'MetricHPEXS',
+          'MetricHPEXS Medium',
+          'MetricHPEXS Bold',
+        ],
         canela: ['Canela Deck', 'Canela'],
         montez: ['Montez', 'cursive'],
-        resumesans: ['Metric', 'MetricHPEXS', 'MetricHPEXS_Medium'],
+        resumesans: [
+          'Metric',
+          'MetricHPEXS',
+          'MetricHPEXS_Medium',
+          'MetricHPEXS_Bold',
+        ],
         resumeserif: [
           'Canela Deck',
           'Canela',
