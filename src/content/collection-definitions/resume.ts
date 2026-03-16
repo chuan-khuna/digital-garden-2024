@@ -1,5 +1,5 @@
 import { z, defineCollection } from 'astro:content'
-import { file } from 'astro/loaders'
+import { file, glob } from 'astro/loaders'
 import type { Visibility } from '@/content/resume'
 
 // Zod schema for the shared Visibility type
@@ -35,12 +35,11 @@ export const resumeProjectsCollection = defineCollection({
 })
 
 export const resumeExperiencesCollection = defineCollection({
-  loader: file('src/content/resume/experiences.json'),
+  loader: glob({ pattern: '*.md', base: 'src/content/resume/experiences' }),
   schema: z.object({
     jobTitle: z.string(),
     company: z.string(),
     time: z.string(),
-    details: z.array(z.string()),
     visibility: visibilitySchema.default({
       web: true,
       resume_print: true,

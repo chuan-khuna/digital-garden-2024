@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "astro-framework": {
+      "source": "delineas/astro-framework-agents",
+      "sourceType": "github",
+      "computedHash": "37e597dd37a46438c8daf6b8cfb8b521beceedb90d890b0271141d76a52800aa"
+    },
     "defuddle": {
       "source": "kepano/obsidian-skills",
       "sourceType": "github",

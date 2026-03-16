@@ -1,0 +1,67 @@
+---
+interface Props {
+  variant?: 'web' | 'print'
+}
+
+const { variant = 'web' } = Astro.props
+---
+
+<div
+  class={variant === 'print'
+    ? 'resume-md-bullets-print'
+    : 'resume-md-bullets-web'}
+>
+  <slot />
+</div>
+
+<style is:global>
+  /* Web variant */
+  .resume-md-bullets-web ul {
+    font-size: 0.875rem; /* text-sm */
+    margin-top: 0.5rem; /* my-2 */
+    margin-bottom: 0.5rem;
+    list-style-type: disc;
+    padding-left: 1.25rem; /* pl-5 */
+  }
+  .resume-md-bullets-web li::marker {
+    color: rgb(209 213 219); /* gray-300 */
+  }
+  /* Markdown may wrap li content in <p> tags — kill their spacing */
+  .resume-md-bullets-web li p {
+    margin: 0;
+    padding: 0;
+    display: inline;
+  }
+  .resume-md-bullets-web strong {
+    font-weight: 700;
+  }
+
+  /* Print variant */
+  .resume-md-bullets-print ul {
+    font-size: 0.875rem;
+    margin-top: 0.25rem; /* mt-1 */
+    margin-bottom: 0.25rem;
+    list-style-type: disc;
+    padding-left: 1.25rem;
+  }
+  .resume-md-bullets-print li::marker {
+    color: rgb(209 213 219); /* gray-300 */
+  }
+  .resume-md-bullets-print li {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  /* Markdown may wrap li content in <p> tags — kill their spacing */
+  .resume-md-bullets-print li p {
+    margin: 0;
+    padding: 0;
+    display: inline;
+  }
+  .resume-md-bullets-print strong {
+    font-weight: 700;
+  }
+</style>
