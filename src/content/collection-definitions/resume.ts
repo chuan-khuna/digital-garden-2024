@@ -19,13 +19,13 @@ export const resumeSkillsCollection = defineCollection({
 })
 
 export const resumeProjectsCollection = defineCollection({
-  loader: file('src/content/resume/projects.json'),
+  loader: glob({ pattern: '*.md', base: 'src/content/resume/projects' }),
   schema: z.object({
     title: z.string(),
     time: z.string(),
     description: z.string(),
     url: z.string().url().nullable(),
-    details: z.array(z.string()),
+    order: z.number().int().optional(),
     visibility: visibilitySchema.default({
       web: true,
       resume_print: true,

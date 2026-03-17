@@ -1,34 +1,35 @@
 ---
 import SectionBlock from '@/components/resume/SectionBlock.astro'
-import UnorderedList from '@/components/resume/UnorderedList.astro'
 import Item from '@/components/resume/Item/Item.astro'
 import Divider from '@/components/resume/Divider.astro'
-import { getCollection } from 'astro:content'
+import ResumeMarkdownBulletWrapper from '@/components/resume/ResumeMarkdownBulletWrapper.astro'
+import { getCollection, render } from 'astro:content'
 
 const projects = await getCollection('resumeProjects')
+const sortedProjects = projects.sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+const renderedProjects = await Promise.all(
+  sortedProjects.map(async (project) => {
+    const { Content } = await render(project)
+    return { project, Content }
+  }),
+)
 ---
 
 <SectionBlock title="Projects">
   {
-    projects.map((project, index) => {
-      return (
-        <>
-          <Item
-            title={project.data.title}
-            timeDescription={project.data.time}
-            description={project.data.description}
-            url={project.data.url}
-          />
-
-          {project.data.details.length === 1 ? (
-            <p class="mb-4 mt-0 text-sm">{project.data.details[0]}</p>
-          ) : (
-            <UnorderedList ulClass="text-sm" items={project.data.details} />
-          )}
-
-          {index < projects.length - 1 && <Divider />}
-        </>
-      )
-    })
+    renderedProjects.map(({ project, Content }, index) => (
+      <>
+        <Item
+          title={project.data.title}
+          timeDescription={project.data.time}
+          description={project.data.description}
+          url={project.data.url}
+        />
+        <ResumeMarkdownBulletWrapper>
+          <Content />
+        </ResumeMarkdownBulletWrapper>
+        {index < renderedProjects.length - 1 && <Divider />}
+      </>
+    ))
   }
 </SectionBlock>

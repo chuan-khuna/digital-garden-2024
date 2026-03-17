@@ -1,16 +1,24 @@
 ---
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/Item/PrintItem.astro'
-import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
-import { getCollection } from 'astro:content'
+import ResumeMarkdownBulletWrapper from '@/components/resume/ResumeMarkdownBulletWrapper.astro'
+import { getCollection, render } from 'astro:content'
 
 const projects = await getCollection('resumeProjects')
-const printProjects = projects.filter((p) => p.data.visibility.resume_print)
+const printProjects = projects
+  .filter((p) => p.data.visibility.resume_print)
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+const renderedProjects = await Promise.all(
+  printProjects.map(async (project) => {
+    const { Content } = await render(project)
+    return { project, Content }
+  }),
+)
 ---
 
 <PrintSectionBlock title="Projects">
   {
-    printProjects.map((project) => (
+    renderedProjects.map(({ project, Content }) => (
       <>
         <PrintItem
           title={project.data.title}
@@ -18,7 +26,9 @@ const printProjects = projects.filter((p) => p.data.visibility.resume_print)
           description={project.data.description}
           url={project.data.url}
         />
-        <PrintUnorderedList items={project.data.details} />
+        <ResumeMarkdownBulletWrapper variant="print">
+          <Content />
+        </ResumeMarkdownBulletWrapper>
       </>
     ))
   }
