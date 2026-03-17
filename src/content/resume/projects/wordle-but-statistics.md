@@ -1,6 +1,6 @@
 ---
 title: 'Wordle But Statistics'
-time: 'Jan 2022'
+time: '2022'
 description: 'Personal project'
 url: 'https://github.com/chuan-khuna/wordle-but-statistics'
 order: 5

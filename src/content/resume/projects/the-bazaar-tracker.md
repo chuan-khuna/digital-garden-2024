@@ -10,4 +10,4 @@ visibility:
   cv_print: true
 ---
 
-- Items and Skills tracker for The Bazaar game screenshots using computer vision techniques
+- Item and skill tracker for The Bazaar, extracting data from screenshots using computer vision techniques

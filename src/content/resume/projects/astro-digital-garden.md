@@ -10,4 +10,4 @@ visibility:
   cv_print: true
 ---
 
-- Personal website built with Astro with PDF resume generation
+- Personal website built with Astro, with a built-in resume PDF export feature
