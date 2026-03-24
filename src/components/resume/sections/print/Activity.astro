@@ -2,21 +2,22 @@
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/Item/PrintItem.astro'
 import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const activities = await getCollection('resumeActivities')
 ---
 
 <PrintSectionBlock title="Activity">
   {
-    RESUME.activities.map((activity) => (
+    activities.map((activity) => (
       <>
         <PrintItem
-          title={activity.title}
-          timeDescription={activity.time}
-          description={activity.description}
+          title={activity.data.title}
+          timeDescription={activity.data.time}
+          description={activity.data.description}
           titleFontSize="sm"
         />
-        <PrintUnorderedList items={activity.details} />
+        <PrintUnorderedList items={activity.data.details} />
       </>
     ))
   }

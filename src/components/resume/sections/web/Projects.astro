@@ -1,0 +1,35 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import Item from '@/components/resume/Item/Item.astro'
+import Divider from '@/components/resume/Divider.astro'
+import ResumeMarkdownBulletWrapper from '@/components/resume/ResumeMarkdownBulletWrapper.astro'
+import { getCollection, render } from 'astro:content'
+
+const projects = await getCollection('resumeProjects')
+const sortedProjects = projects.sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+const renderedProjects = await Promise.all(
+  sortedProjects.map(async (project) => {
+    const { Content } = await render(project)
+    return { project, Content }
+  }),
+)
+---
+
+<SectionBlock title="Projects">
+  {
+    renderedProjects.map(({ project, Content }, index) => (
+      <>
+        <Item
+          title={project.data.title}
+          timeDescription={project.data.time}
+          description={project.data.description}
+          url={project.data.url}
+        />
+        <ResumeMarkdownBulletWrapper>
+          <Content />
+        </ResumeMarkdownBulletWrapper>
+        {index < renderedProjects.length - 1 && <Divider />}
+      </>
+    ))
+  }
+</SectionBlock>

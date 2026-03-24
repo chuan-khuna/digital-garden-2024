@@ -1,5 +1,8 @@
 ---
-import { RESUME } from '@/content/resume.ts'
+import { getCollection } from 'astro:content'
+
+const headerEntries = await getCollection('resumeHeader')
+const header = headerEntries[0].data
 ---
 
 <div class="border-b-1 relative border-gray-100 p-2">
@@ -7,10 +10,10 @@ import { RESUME } from '@/content/resume.ts'
   <div class="md:flex">
     <div>
       <h1 class="font-resumeserif font-serif text-4xl font-bold">
-        {RESUME.header.name}
+        {header.name}
       </h1>
       <p class=`text-lg font-resumesans font-bold text-gray-500`>
-        {RESUME.header.jobTitle}
+        {header.jobTitle}
       </p>
     </div>
   </div>
@@ -18,29 +21,27 @@ import { RESUME } from '@/content/resume.ts'
   <div class="mt-2 grid grid-cols-3">
     <div class="col-span-2 block text-sm">
       <p>
-        {RESUME.header.introduction}
+        {header.introduction}
       </p>
     </div>
     <div class="col-span-1 block text-right text-sm">
       <p>
         <text class="font-resumesans font-medium">Github</text>:
         <a
-          href={RESUME.header.github}
+          href={header.github}
           target="_blank"
           rel="noreferrer"
           class="underline"
         >
-          {RESUME.header.githubName}
+          {header.githubName}
         </a>
       </p>
       <p>
-        <text class="font-resumesans font-medium">Email</text>: {
-          RESUME.header.email
-        }
+        <text class="font-resumesans font-medium">Email</text>: {header.email}
       </p>
       <p>
         <text class="font-resumesans font-medium">Location</text>: {
-          RESUME.header.location
+          header.location
         }
       </p>
     </div>

@@ -1,10 +1,12 @@
 ---
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+import { getCollection } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const interestsEntries = await getCollection('resumeInterests')
+const interests = interestsEntries[0].data.items
 ---
 
 <PrintSectionBlock title="Interests">
-  <PrintUnorderedList items={RESUME.interests} />
+  <PrintUnorderedList items={interests} />
 </PrintSectionBlock>

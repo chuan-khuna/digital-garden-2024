@@ -1,22 +1,31 @@
 ---
 import PrintSectionBlock from '@/components/resume/PrintSectionBlock.astro'
 import PrintItem from '@/components/resume/Item/PrintItem.astro'
-import PrintUnorderedList from '@/components/resume/PrintUnorderedList.astro'
+import ResumeMarkdownBulletWrapper from '@/components/resume/ResumeMarkdownBulletWrapper.astro'
+import { getCollection, render } from 'astro:content'
 
-import { RESUME } from '@/content/resume.ts'
+const experiences = await getCollection('resumeExperiences')
+const printExperiences = experiences.filter((e) => e.data.visibility.resume_print)
+const renderedExperiences = await Promise.all(
+  printExperiences.map(async (exp) => {
+    const { Content } = await render(exp)
+    return { exp, Content }
+  }),
+)
 ---
 
 <PrintSectionBlock title="Experiences">
   {
-    RESUME.experiences.map((experience) => (
+    renderedExperiences.map(({ exp, Content }) => (
       <>
         <PrintItem
-          title={experience.jobTitle}
-          timeDescription={experience.time}
-          description={experience.company}
-          url={experience.url}
+          title={exp.data.jobTitle}
+          timeDescription={exp.data.time}
+          description={exp.data.company}
         />
-        <PrintUnorderedList items={experience.details} />
+        <ResumeMarkdownBulletWrapper variant="print">
+          <Content />
+        </ResumeMarkdownBulletWrapper>
       </>
     ))
   }

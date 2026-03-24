@@ -1,0 +1,19 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import Item from '@/components/resume/Item/Item.astro'
+import { getCollection } from 'astro:content'
+
+const educations = await getCollection('resumeEducations')
+---
+
+<SectionBlock title="Education">
+  {
+    educations.map((edu) => (
+      <Item
+        title={edu.data.degree}
+        timeDescription={edu.data.time}
+        description={edu.data.institution}
+      />
+    ))
+  }
+</SectionBlock>

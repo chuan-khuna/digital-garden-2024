@@ -7,6 +7,10 @@ import {
   resumeProjectsCollection,
   resumeExperiencesCollection,
   resumeEducationsCollection,
+  resumeActivitiesCollection,
+  resumeInterestsCollection,
+  resumeNowCollection,
+  resumeHeaderCollection,
 } from '@/content/collection-definitions/resume'
 
 import { ogImagesCollection } from '@/content/collection-definitions/og-images'
@@ -18,6 +22,10 @@ export const collections = {
   resumeProjects: resumeProjectsCollection,
   resumeExperiences: resumeExperiencesCollection,
   resumeEducations: resumeEducationsCollection,
+  resumeActivities: resumeActivitiesCollection,
+  resumeInterests: resumeInterestsCollection,
+  resumeNow: resumeNowCollection,
+  resumeHeader: resumeHeaderCollection,
   navItems: navItemsCollection,
   ogImages: ogImagesCollection,
 }

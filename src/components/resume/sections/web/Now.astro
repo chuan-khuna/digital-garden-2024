@@ -1,0 +1,19 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import { getCollection } from 'astro:content'
+
+const nowEntries = await getCollection('resumeNow')
+const now = nowEntries[0].data
+---
+
+<div class="print:hidden">
+  <SectionBlock title="Now">
+    <p class="mt-8 font-mono text-sm text-gray-600">
+      {now.intro}
+      <br />(Last Updated: {now.lastUpdated})
+    </p>
+    {now.paragraphs.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+  </SectionBlock>
+</div>

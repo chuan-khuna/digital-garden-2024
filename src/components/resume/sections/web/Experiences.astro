@@ -1,0 +1,31 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import Item from '@/components/resume/Item/Item.astro'
+import ResumeMarkdownBulletWrapper from '@/components/resume/ResumeMarkdownBulletWrapper.astro'
+import { getCollection, render } from 'astro:content'
+
+const experiences = await getCollection('resumeExperiences')
+const renderedExperiences = await Promise.all(
+  experiences.map(async (exp) => {
+    const { Content } = await render(exp)
+    return { exp, Content }
+  }),
+)
+---
+
+<SectionBlock title="Experience">
+  {
+    renderedExperiences.map(({ exp, Content }) => (
+      <div>
+        <Item
+          title={exp.data.jobTitle}
+          timeDescription={exp.data.time}
+          description={exp.data.company}
+        />
+        <ResumeMarkdownBulletWrapper>
+          <Content />
+        </ResumeMarkdownBulletWrapper>
+      </div>
+    ))
+  }
+</SectionBlock>

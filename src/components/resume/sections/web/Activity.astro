@@ -1,0 +1,24 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
+import Item from '@/components/resume/Item/Item.astro'
+import { getCollection } from 'astro:content'
+
+const activities = await getCollection('resumeActivities')
+---
+
+<SectionBlock title="Activity">
+  {
+    activities.map((activity) => (
+      <>
+        <Item
+          title={activity.data.title}
+          timeDescription={activity.data.time}
+          description={activity.data.description}
+          url={activity.data.url}
+        />
+        <UnorderedList items={activity.data.details} />
+      </>
+    ))
+  }
+</SectionBlock>

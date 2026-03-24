@@ -1,0 +1,17 @@
+---
+interface Props {
+  variant?: 'web' | 'print'
+}
+
+const { variant = 'web' } = Astro.props
+
+const webClasses =
+  '[&_ul]:text-sm [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-3 [&_li]:marker:text-gray-500 [&_li_p]:m-0 [&_li_p]:p-0 [&_li_p]:inline [&_strong]:font-bold'
+
+const printClasses =
+  '[&_ul]:text-sm [&_ul]:mt-1 [&_ul]:mb-1 [&_ul]:list-disc [&_ul]:pl-3 [&_li]:marker:text-gray-500 [&_li]:m-0 [&_li]:p-0 [&_li]:text-sm [&_li]:leading-5 [&_li_p]:m-0 [&_li_p]:p-0 [&_li_p]:inline [&_strong]:font-medium'
+---
+
+<div class={variant === 'print' ? printClasses : webClasses}>
+  <slot />
+</div>

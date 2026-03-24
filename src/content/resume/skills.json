@@ -41,6 +41,7 @@
       "Git",
       "Docker",
       "uv",
+      "just",
       "Postgres",
       "MongoDB",
       "Airflow",
@@ -52,7 +53,8 @@
       "MCP",
       "Google Looker Studio",
       "Digital Ocean",
-      "AWS"
+      "AWS",
+      "Obsidian"
     ]
   }
 ]

@@ -1,0 +1,18 @@
+.vscode
+
+# MacOS
+.DS_Store
+
+# python
+.venv
+.ipynb_checkpoints
+__pycache__/
+*.py[cod]
+Untitled.ipynb
+Untitled[a-zA-Z0-9]*.ipynb
+Untitled-*.ipynb
+
+.env
+
+# obsidian
+.obsidian/workspace.json
