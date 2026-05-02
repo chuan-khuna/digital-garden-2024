@@ -69,7 +69,11 @@ There are **two parallel data stores** for overlapping concepts:
 
 Skills and interests are **duplicated** between these. A template user must edit two separate files to keep them in sync.
 
-**Recommendation:** Merge into a single source of truth — either consolidate everything under `resume/` JSON, or create a single `src/content/site-config.ts`.
+**Recommendation:** Do **not** blindly merge these into one source. The portfolio and resume serve different audiences and intentionally need different content — portfolio is curated and creative, resume is comprehensive and formal. The same experience or skill may be presented differently in each context. Merging would require `showOnPortfolio` / `showOnResume` flags on every entry, which adds complexity without benefit.
+
+Instead, address the two real problems separately:
+- **Identity data** (name, job title, avatar, social links) should be consolidated into one place — these genuinely should never differ between pages
+- **Content data** (skills list, project descriptions, experience summaries) should remain in separate files, with each page owning its own curated version
 
 ### Over-split Content Collections
 Each resume section is its own JSON file and its own collection definition (8 collections total):
@@ -183,7 +187,7 @@ For this to work as a reusable template, all personalised content must be data-d
 ## 10. Recommended Conversion Roadmap
 
 1. **Strip blog system** — remove posts, garden page, wiki-link + math plugins, KaTeX
-2. **Consolidate data** — merge `portfolio.ts` into resume data or create single `src/content/site-config.ts`
+2. **Consolidate identity data** — extract name, job title, avatar, social links into a single `src/content/site-config.ts`; keep portfolio and resume content data separate (they serve different audiences and need different content)
 3. **Fix homepage** — replace `Lorem` placeholders with real sections; make all text data-driven from config
 4. **Promote the PDF feature** — add prominent `window.print()` CTA; improve print CSS; fix `BaseLayoutPrint`
 5. **Consolidate print pages** — merge `resume-print` and `cv-print` into one configurable template

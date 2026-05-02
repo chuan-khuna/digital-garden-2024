@@ -116,6 +116,10 @@ Skills and interests exist in **both** `portfolio.ts` and `resume/skills.json` /
 
 **For a new clone:** A user must find and update 5+ separate files just to change their name and identity.
 
+> **Design note (2026-05-02):** Keeping `portfolio.ts` and `resume/` as **separate sources is intentional** when the two pages serve different audiences with different content needs. Portfolio content is curated and creative; resume content is comprehensive and formal. The same experience may be described differently in each context, and a skill worth showing on the portfolio may not belong on the resume for a given application. Forcing a single shared source would require `showOnPortfolio` / `showOnResume` visibility flags on every entry — more complexity, not less.
+>
+> The actual problem is **identity data** (name, job title, social links) appearing in 5+ disconnected places — not the portfolio/resume content split itself. These two concerns should be fixed separately: consolidate identity into one place, but leave portfolio content and resume content as independent data sources.
+
 ---
 
 ## 6. `type { Visibility }` Imported from Deprecated File
