@@ -159,6 +159,150 @@ Without `inline`, Tailwind bakes the token value at build time — runtime CSS v
 
 ---
 
+## Gap Analysis vs shadcn/Tailwind Standard
+
+Comparing current preset files and `global.css` against the shadcn/Tailwind theming standard.
+
+### Missing CSS Variables in Presets & `:root`
+
+#### `--chart-*` tokens
+
+The standard defines 5 chart colour tokens for use with Recharts / data visualisation components:
+
+```css
+--chart-1: oklch(...);
+--chart-2: oklch(...);
+--chart-3: oklch(...);
+--chart-4: oklch(...);
+--chart-5: oklch(...);
+```
+
+And registers them in `@theme inline`:
+
+```css
+--color-chart-1: var(--chart-1);
+/* ... */
+--color-chart-5: var(--chart-5);
+```
+
+**Status:** Not defined in `:root`, not in any preset, not registered in `@theme inline`.
+
+#### `--sidebar-*` tokens
+
+The standard defines a full sidebar colour sub-system:
+
+```css
+--sidebar: oklch(...);
+--sidebar-foreground: oklch(...);
+--sidebar-primary: oklch(...);
+--sidebar-primary-foreground: oklch(...);
+--sidebar-accent: oklch(...);
+--sidebar-accent-foreground: oklch(...);
+--sidebar-border: oklch(...);
+--sidebar-ring: oklch(...);
+```
+
+**Status:** Not present. Less critical for this project (no sidebar component), but required for shadcn compatibility.
+
+#### `--shadow-*` tokens
+
+The standard's presets define per-preset shadow styles for consistent elevation:
+
+```css
+--shadow-2xs: 0px 2px 0px 0px hsl(0 0% 20% / 0.07);
+--shadow-xs: ...;
+--shadow-sm: ...;
+--shadow: ...;
+--shadow-md: ...;
+--shadow-lg: ...;
+--shadow-xl: ...;
+--shadow-2xl: ...;
+```
+
+These are applied via `@layer utilities` conditionally when a preset is active. **Status:** Not defined in any preset.
+
+---
+
+### Missing `@theme inline` Registrations
+
+The `@theme inline` block is missing these token registrations (compared to the standard):
+
+| Missing token | Needed for |
+|---|---|
+| `--color-chart-1` … `--color-chart-5` | Tailwind `text-chart-1` etc. utilities |
+| `--color-sidebar` … `--color-sidebar-ring` | Tailwind sidebar utilities |
+| `--radius-xl`, `--radius-2xl`, etc. | Tailwind `rounded-xl` using theme radius |
+
+The standard also registers **only** `--color-destructive` (no `--color-destructive-foreground`) — our `@theme inline` includes `--color-destructive-foreground` which is an intentional addition and fine.
+
+---
+
+### Missing Dark Variant in Presets
+
+The standard supports both a colour preset **and** independent dark mode simultaneously via:
+
+```css
+:root[data-color-preset="graphite"] { /* light */ }
+.dark:root[data-color-preset="graphite"] { /* dark override */ }
+```
+
+Our preset files only define the light variant. The `.dark` class has no effect when a preset is active because the preset values win regardless of light/dark.
+
+**Status:** `presets/dark.css`, `presets/nexus.css`, and `presets/nzk.css` all lack a `.dark:root[data-color-preset="..."]` block.
+
+---
+
+### Missing `@layer utilities` Shadow Override Block
+
+The standard conditionally activates shadow tokens only when a preset is active:
+
+```css
+@layer utilities {
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  /* ... all shadow sizes */
+}
+```
+
+This keeps the default Tailwind shadows when no preset overrides them. **Status:** Not present in `global.css`.
+
+---
+
+### Attribute Name Difference (`data-color-preset` vs `data-theme-preset`)
+
+The standard uses `[data-theme-preset]`. This project intentionally uses `data-color-preset` to avoid collision with `data-theme` used by expressive-code syntax highlighter. This is a **deliberate divergence**, not a bug.
+
+---
+
+### Missing Preset Metadata Comments
+
+The standard includes a machine-readable comment block at the top of each preset file used by tooling (e.g. theme pickers):
+
+```css
+/*
+label: Graphite
+value: graphite
+*/
+```
+
+**Status:** Not present in any of our preset files.
+
+---
+
+### Summary Table
+
+| Gap | Files Affected | Priority |
+|---|---|---|
+| `--chart-*` vars missing | `:root`, all presets, `@theme inline` | 🟡 Low (no charts currently) |
+| `--sidebar-*` vars missing | `:root`, all presets, `@theme inline` | 🟡 Low (no sidebar component) |
+| `--shadow-*` vars missing | all presets | 🟡 Low |
+| Dark variant missing in presets | `presets/*.css` | 🔴 Medium (dark mode broken with preset active) |
+| `@layer utilities` shadow block | `global.css` | 🟡 Low |
+| Metadata comments | `presets/*.css` | ⚪ Cosmetic |
+
+---
+
 ## Related
 
 - [[Architecture and Code Quality Analysis]]
