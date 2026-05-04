@@ -55,9 +55,9 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
     }
   }
 
-  // Apply theme class to document element
-  function applyThemeClass(themeName) {
-    document.documentElement.classList.add(themeName)
+  // Apply color preset via data attribute
+  function applyColorPreset(themeName) {
+    document.documentElement.setAttribute('data-color-preset', themeName)
   }
 
   // Set syntax highlighter theme via data attribute
@@ -92,22 +92,22 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
     return THEMES[nextIndex]
   }
 
-  // Replace old theme class with new one
-  function replaceThemeClass(oldTheme, newTheme) {
-    document.documentElement.classList.replace(oldTheme, newTheme)
+  // Replace old color preset with new one
+  function replaceColorPreset(oldTheme, newTheme) {
+    document.documentElement.setAttribute('data-color-preset', newTheme)
   }
 
   // Initialize theme on page load
   function initializeTheme() {
     try {
       const theme = getStoredTheme()
-      applyThemeClass(theme)
+      applyColorPreset(theme)
       applySyntaxHighlighterTheme(theme)
       updateThemeButton(theme)
       saveTheme(theme)
     } catch (error) {
       // Fallback to default on any error
-      applyThemeClass(DEFAULT_THEME)
+      applyColorPreset(DEFAULT_THEME)
       applySyntaxHighlighterTheme(DEFAULT_THEME)
       updateThemeButton(DEFAULT_THEME)
       saveTheme(DEFAULT_THEME)
@@ -117,10 +117,7 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
   // Reset to default theme (fallback handler)
   function resetToDefaultTheme() {
     try {
-      THEMES.forEach((theme) => {
-        document.documentElement.classList.remove(theme)
-      })
-      applyThemeClass(DEFAULT_THEME)
+      applyColorPreset(DEFAULT_THEME)
       applySyntaxHighlighterTheme(DEFAULT_THEME)
       updateThemeButton(DEFAULT_THEME)
       saveTheme(DEFAULT_THEME)
@@ -135,7 +132,7 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
       const currentTheme = getStoredTheme()
       const nextTheme = getNextTheme(currentTheme)
 
-      replaceThemeClass(currentTheme, nextTheme)
+      replaceColorPreset(currentTheme, nextTheme)
       applySyntaxHighlighterTheme(nextTheme)
       updateThemeButton(nextTheme)
       saveTheme(nextTheme)

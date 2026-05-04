@@ -1,0 +1,38 @@
+:root[data-color-preset='nzk'] {
+  --background: oklch(0.977 0.0085 84.57);
+  --foreground: oklch(0.307 0 0);
+
+  --card: oklch(0.967 0.0085 84.57);
+  --card-foreground: oklch(0.307 0 0);
+
+  --popover: oklch(0.977 0.0085 84.57);
+  --popover-foreground: oklch(0.307 0 0);
+
+  --primary: oklch(0.3261 0.0984 268.87);
+  --primary-foreground: oklch(0.977 0.0085 84.57);
+
+  --secondary: oklch(0.713 0.1834 36.43);
+  --secondary-foreground: oklch(0.977 0.0085 84.57);
+
+  --muted: oklch(0.6346 0.0212 210.11);
+  --muted-foreground: oklch(0.977 0.0085 84.57);
+
+  --accent: oklch(0.713 0.1525 36.43);
+  --accent-foreground: oklch(0.2699 0.0096 235.05);
+
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.977 0.0085 84.57);
+
+  --border: oklch(0.9254 0.0211 88.78);
+  --input: oklch(0.9254 0.0211 88.78);
+  --ring: oklch(0.5838 0.0211 257.6);
+
+  --radius: 0.5rem;
+
+  --theme-bg: oklch(0.977 0.0085 84.57);
+  --theme-link: oklch(0.5544 0.0431 185.69);
+  --theme-text: oklch(0.2699 0.0096 235.05);
+  --theme-accent: oklch(0.713 0.1834 36.43);
+  --theme-accent-2: oklch(0.3261 0.0984 268.87);
+  --theme-quote: oklch(0.5544 0.0431 185.69);
+}

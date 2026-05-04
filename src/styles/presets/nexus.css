@@ -1,0 +1,38 @@
+:root[data-color-preset='nexus'] {
+  --background: oklch(0.1727 0.0161 261.53);
+  --foreground: oklch(0.9216 0.0058 308.39);
+
+  --card: oklch(0.1727 0.0161 261.53);
+  --card-foreground: oklch(0.9216 0.0058 308.39);
+
+  --popover: oklch(0.1727 0.0161 261.53);
+  --popover-foreground: oklch(0.9216 0.0058 308.39);
+
+  --primary: oklch(0.5885 0.1542 291.11);
+  --primary-foreground: oklch(0.9216 0.0058 308.39);
+
+  --secondary: oklch(0.7128 0.1836 36.41);
+  --secondary-foreground: oklch(0.5885 0.1542 291.11);
+
+  --muted: oklch(0.28 0.0369 259.97);
+  --muted-foreground: oklch(0.9216 0.0058 308.39);
+
+  --accent: oklch(0.7128 0.1836 36.41);
+  --accent-foreground: oklch(0.5885 0.1542 291.11);
+
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.9216 0.0058 308.39);
+
+  --border: oklch(0.28 0.0369 259.97);
+  --input: oklch(0.1727 0.0161 261.53);
+  --ring: oklch(0.5885 0.1542 291.11);
+
+  --radius: 0.5rem;
+
+  --theme-bg: oklch(0.1727 0.0161 261.53);
+  --theme-link: oklch(0.5885 0.1542 291.11);
+  --theme-text: oklch(0.9216 0.0058 308.39);
+  --theme-accent: oklch(0.7128 0.1836 36.41);
+  --theme-accent-2: oklch(0.5885 0.1542 291.11);
+  --theme-quote: oklch(0.5885 0.1542 291.11);
+}

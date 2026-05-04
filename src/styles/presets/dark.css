@@ -1,0 +1,38 @@
+:root[data-color-preset='dark'] {
+  --background: oklch(0.0791 0.0178 254.43);
+  --foreground: oklch(0.8354 0.0032 264.54);
+
+  --card: oklch(0.0791 0.0178 254.43);
+  --card-foreground: oklch(0.9838 0.0035 247.86);
+
+  --popover: oklch(0.0791 0.0178 254.43);
+  --popover-foreground: oklch(0.9838 0.0035 247.86);
+
+  --primary: oklch(0.9838 0.0035 247.86);
+  --primary-foreground: oklch(0.0791 0.0178 254.43);
+
+  --secondary: oklch(0.28 0.0369 259.97);
+  --secondary-foreground: oklch(0.9838 0.0035 247.86);
+
+  --muted: oklch(0.28 0.0369 259.97);
+  --muted-foreground: oklch(0.9838 0.0035 247.86);
+
+  --accent: oklch(0.7091 0.1415 163.79);
+  --accent-foreground: oklch(0.9838 0.0035 247.86);
+
+  --destructive: oklch(0.3959 0.1331 25.72);
+  --destructive-foreground: oklch(0.9838 0.0035 247.86);
+
+  --border: oklch(0.28 0.0369 259.97);
+  --input: oklch(0.28 0.0369 259.97);
+  --ring: oklch(0.9838 0.0035 247.86);
+
+  --radius: 0.5rem;
+
+  --theme-bg: oklch(0.0791 0.0178 254.43);
+  --theme-link: oklch(0.7044 0.1133 349.04);
+  --theme-text: oklch(0.8354 0.0032 264.54);
+  --theme-accent: oklch(0.7091 0.1415 163.79);
+  --theme-accent-2: oklch(0.8087 0.1067 222.35);
+  --theme-quote: oklch(0.948 0.1067 136.49);
+}
