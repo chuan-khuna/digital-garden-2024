@@ -1,4 +1,5 @@
-import { z, defineCollection } from 'astro:content'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
 import { file } from 'astro/loaders'
 import { ogStyleChoices } from './common-fields/_og-styles'
 

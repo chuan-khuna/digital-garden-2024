@@ -1,7 +1,7 @@
 @import './fonts.css';
-@import './theme_dark.css';
-@import './theme_nexus.css';
-@import './theme_nzk.css';
+@import './presets/nzk.css';
+@import './presets/dark.css';
+@import './presets/nexus.css';
 @import './global_print.css';
 @import './obsidian_callout.css';
 @import './flexible_mark.css';
@@ -16,44 +16,37 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --color-border: oklch(var(--border));
-  --color-input: oklch(var(--input));
-  --color-ring: oklch(var(--ring));
-  --color-background: oklch(var(--background));
-  --color-foreground: oklch(var(--foreground));
+@theme inline {
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
-  --color-primary: oklch(var(--primary));
-  --color-primary-foreground: oklch(var(--primary-foreground));
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
 
-  --color-secondary: oklch(var(--secondary));
-  --color-secondary-foreground: oklch(var(--secondary-foreground));
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
-  --color-destructive: oklch(var(--destructive));
-  --color-destructive-foreground: oklch(var(--destructive-foreground));
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
-  --color-muted: oklch(var(--muted));
-  --color-muted-foreground: oklch(var(--muted-foreground));
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 
-  --color-accent: oklch(var(--accent));
-  --color-accent-foreground: oklch(var(--accent-foreground));
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 
-  --color-popover: oklch(var(--popover));
-  --color-popover-foreground: oklch(var(--popover-foreground));
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
-  --color-card: oklch(var(--card));
-  --color-card-foreground: oklch(var(--card-foreground));
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
-
-  /* --font-sans: 'Lato', Inter, Inter override, ui-sans-serif, system-ui,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-
-  --font-serif: 'DM Serif', Merriweather, ui-serif, Georgia, Cambria,
-    'Times New Roman', --animate-accordion-down: accordion-down 0.2s ease-out; */
 
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
@@ -111,51 +104,43 @@
 
 @layer base {
   :root {
-    /* colour palette variables */
-    /* define base colours here */
-    --palette-background: 40 47.4% 96.3%;
-    --palette-foreground: 0 0% 22%;
-    --palette-primary: 227.1 52.2% 26.3%;
+    /* nzk — default theme */
+    --background: oklch(0.977 0.0085 84.57);
+    --foreground: oklch(0.307 0 0);
 
-    /* theme config */
-    /* theme component colours - all picked from base colours? */
-    --background: var(--palette-background);
-    --foreground: var(--palette-foreground);
+    --card: oklch(0.967 0.0085 84.57);
+    --card-foreground: oklch(0.307 0 0);
 
-    --card: var(--palette-background);
-    --card-foreground: var(--palette-foreground);
+    --popover: oklch(0.977 0.0085 84.57);
+    --popover-foreground: oklch(0.307 0 0);
 
-    --popover: var(--palette-background);
-    --popover-foreground: var(--palette-foreground);
+    --primary: oklch(0.3261 0.0984 268.87);
+    --primary-foreground: oklch(0.977 0.0085 84.57);
 
-    --primary: var(--palette-primary);
-    --primary-foreground: 210 40% 98%;
+    --secondary: oklch(0.713 0.1834 36.43);
+    --secondary-foreground: oklch(0.977 0.0085 84.57);
 
-    --secondary: 13.1 100% 64.1%;
-    --secondary-foreground: var(--palette-primary);
+    --muted: oklch(0.6346 0.0212 210.11);
+    --muted-foreground: oklch(0.977 0.0085 84.57);
 
-    --muted: 13.1 100% 64.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: oklch(0.713 0.1525 36.43);
+    --accent-foreground: oklch(0.2699 0.0096 235.05);
 
-    --accent: 13.1 100% 64.1%;
-    --accent-foreground: var(--palette-primary);
+    --destructive: oklch(0.6368 0.2078 25.33);
+    --destructive-foreground: oklch(0.977 0.0085 84.57);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 42.9 35.6% 88.4%;
-    --input: 42.9 35.6% 88.4%;
-    --ring: 0 0% 22%;
+    --border: oklch(0.9254 0.0211 88.78);
+    --input: oklch(0.9254 0.0211 88.78);
+    --ring: oklch(0.5838 0.0211 257.6);
 
     --radius: 0.5rem;
 
-    /* cactus */
-    --theme-bg: 0deg 0% 98%;
-    --theme-link: 172deg 18% 41%;
-    --theme-text: 203deg 11% 15%;
-    --theme-accent: 13.1 100% 64.1%;
-    --theme-accent-2: 227.1 52.2% 26.3%;
-    --theme-quote: 253.1deg 80% 64.1%;
+    --theme-bg: oklch(0.977 0.0085 84.57);
+    --theme-link: oklch(0.5544 0.0431 185.69);
+    --theme-text: oklch(0.2699 0.0096 235.05);
+    --theme-accent: oklch(0.713 0.1834 36.43);
+    --theme-accent-2: oklch(0.3261 0.0984 268.87);
+    --theme-quote: oklch(0.5544 0.0431 185.69);
   }
 }
 
@@ -182,23 +167,23 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: oklch(var(--background));
+    background: var(--background);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: oklch(var(--muted));
+    background: var(--muted);
     border-radius: 6px;
-    border: 2px solid oklch(var(--background));
+    border: 2px solid var(--background);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: oklch(var(--accent));
+    background: var(--accent);
   }
 
   /* Firefox scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: oklch(var(--muted)) oklch(var(--background));
+    scrollbar-color: var(--muted) var(--background);
   }
 }
 

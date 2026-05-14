@@ -1,4 +1,4 @@
-import { z } from 'astro:content'
+import { z } from 'astro/zod'
 import { evergreenStages } from './_evergreen-stages'
 import { ogStyleChoices } from './_og-styles'
 

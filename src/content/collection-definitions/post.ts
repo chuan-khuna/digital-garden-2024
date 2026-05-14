@@ -1,4 +1,4 @@
-import { z, defineCollection } from 'astro:content'
+import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 
 import { articleSchema } from './common-fields/_article'

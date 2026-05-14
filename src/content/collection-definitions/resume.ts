@@ -1,4 +1,5 @@
-import { z, defineCollection } from 'astro:content'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
 import { file, glob } from 'astro/loaders'
 import type { Visibility } from '@/content/resume'
 
@@ -24,7 +25,7 @@ export const resumeProjectsCollection = defineCollection({
     title: z.string(),
     time: z.string(),
     description: z.string(),
-    url: z.string().url().nullable(),
+    url: z.url().nullable(),
     order: z.number().int().optional(),
     visibility: visibilitySchema.default({
       web: true,
@@ -69,7 +70,7 @@ export const resumeActivitiesCollection = defineCollection({
     title: z.string(),
     time: z.string(),
     description: z.string(),
-    url: z.string().url().nullable().optional(),
+    url: z.url().nullable().optional(),
     details: z.array(z.string()),
   }),
 })
@@ -95,8 +96,8 @@ export const resumeHeaderCollection = defineCollection({
   schema: z.object({
     name: z.string(),
     jobTitle: z.string(),
-    email: z.string().email(),
-    github: z.string().url(),
+    email: z.email(),
+    github: z.url(),
     githubName: z.string(),
     introduction: z.string(),
     location: z.string(),
