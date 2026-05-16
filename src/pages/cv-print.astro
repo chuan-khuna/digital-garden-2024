@@ -9,14 +9,29 @@ import WebWrapper from '@/components/resume/layout/WebWrapper.astro'
 
 // sections
 import PrintHeader from '@/components/resume/sections/print/Header.astro'
-import PrintExperiences from '@/components/resume/sections/print/Experiences.astro'
-import PrintSkills from '@/components/resume/sections/print/Skills.astro'
-import PrintProjects from '@/components/resume/sections/print/Projects.astro'
-import PrintEducation from '@/components/resume/sections/print/Education.astro'
-import PrintInterests from '@/components/resume/sections/print/Interests.astro'
-import PrintActivity from '@/components/resume/sections/print/Activity.astro'
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
 
 import PrintPageBreak from '@/components/resume/PrintPageBreak.astro'
+import { getCollection } from 'astro:content'
+
+const experiences = (await getCollection('resumeExperiences')).filter(
+  (e) => e.data.visibility.resume_print,
+)
+const projects = (await getCollection('resumeProjects'))
+  .filter((p) => p.data.visibility.resume_print)
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+const activities = await getCollection('resumeActivities')
+const skills = await getCollection('resumeSkills')
+const educations = (await getCollection('resumeEducations')).filter(
+  (e) => e.data.visibility.resume_print,
+)
+const interestsEntries = await getCollection('resumeInterests')
+const interests = interestsEntries[0].data.items
 
 const pageSettingClass = 'px-12 py-4 font-resumesans'
 ---
@@ -30,10 +45,10 @@ const pageSettingClass = 'px-12 py-4 font-resumesans'
         </div>
 
         <div class="col-span-2 block block space-y-1">
-          <PrintSkills />
-          <PrintExperiences />
-          <PrintEducation />
-          <PrintProjects />
+          <Skills data={skills} variant="print" />
+          <Experiences data={experiences} variant="print" />
+          <Education data={educations} variant="print" />
+          <Projects data={projects} variant="print" />
         </div>
       </Content>
     </PageLayout>
@@ -43,8 +58,8 @@ const pageSettingClass = 'px-12 py-4 font-resumesans'
     <PageLayout className={pageSettingClass}>
       <Content className="mx-auto max-w-[1200px]">
         <div class="col-span-5 block space-y-1">
-          <PrintActivity />
-          <PrintInterests />
+          <Activity data={activities} variant="print" />
+          <Interests items={interests} variant="print" />
         </div>
       </Content>
     </PageLayout>

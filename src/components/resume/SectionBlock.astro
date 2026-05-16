@@ -1,12 +1,27 @@
 ---
 interface Props {
   title: string
+  variant?: 'web' | 'print'
 }
 
-const { title } = Astro.props
+const { title, variant = 'web' } = Astro.props
+const isPrint = variant === 'print'
 ---
 
-<div class="prose-cactus prose relative max-w-full border p-4 md:block">
-  {title && <h1 class="text-2xl">{title}</h1>}
+<div
+  class:list={[
+    'prose-cactus prose relative max-w-full md:block',
+    isPrint ? 'block p-1' : 'border p-4',
+  ]}
+>
+  {
+    title && (
+      <h1
+        class:list={[isPrint ? 'mb-1 font-resumeserif text-lg' : 'text-2xl']}
+      >
+        {title}
+      </h1>
+    )
+  }
   <slot />
 </div>

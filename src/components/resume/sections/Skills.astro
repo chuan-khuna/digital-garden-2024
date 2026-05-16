@@ -1,0 +1,28 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  data: CollectionEntry<'resumeSkills'>[]
+  variant?: 'web' | 'print'
+  separator?: string
+}
+
+const { data, variant = 'web' } = Astro.props
+const separator = Astro.props.separator ?? (variant === 'print' ? ', ' : ' · ')
+const skillCategoryClass =
+  variant === 'print' ? 'mr-1 font-resumesans font-medium' : 'mr-1 font-medium'
+---
+
+<SectionBlock title="Skills" variant={variant}>
+  <div>
+    {
+      data.map((skill) => (
+        <div class="mb-1 text-sm">
+          <span class={skillCategoryClass}>{skill.data.category}:</span>
+          <span>{skill.data.details.join(separator)}</span>
+        </div>
+      ))
+    }
+  </div>
+</SectionBlock>
