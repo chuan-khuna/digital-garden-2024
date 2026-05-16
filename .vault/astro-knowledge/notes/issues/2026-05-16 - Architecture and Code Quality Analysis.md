@@ -14,11 +14,13 @@ updated: 2026-05-16
 
 Analysis of `digital-garden-2024` from the perspective of **maintainability**, **extensibility** (adding new pages/features), and **scalability** (cloning/reusing as a template for new projects).
 
-> [!success] Resolved (2026-05-16)
-> **Issue #7 — Redundant styling config:** `tailwind.config.ts` no longer defines colors. Only `fontFamily` and `typography` remain. `global.css @theme inline` is now the sole source of color tokens.
+> [!success] Resolved (2026-05-16, session 3)
+> **Issue #1 — Component Duplication:** `web/` and `print/` section dirs merged into `sections/`. Each section accepts `data[]` + `variant` prop. `SectionBlock`, `Item`, and `UnorderedList` unified with `variant` prop. 16 files deleted.
 
-> [!warning] Status (2026-05-16)
-> 14 of 15 issues remain open. Highest priority: `<text>` invalid HTML (13× across 5 files), no single config entry-point, web/print component duplication, data fetching in leaf components, hardcoded contact fields.
+> **Issue #3 — Data Fetching in Leaf Components:** Pages (`resume.astro`, `resume-print.astro`, `cv-print.astro`) now own all `getCollection()` calls and visibility filtering. Section components are purely presentational — they receive typed props.
+
+> [!warning] Status (2026-05-16, session 3)
+> 8 of 15 issues remain open. Fixed: tailwind color duplication, invalid HTML elements, Zod schema methods, `site.config.ts` (identity consolidation), duplicate React from `next` package, web/print section duplication (A1), leaf-level data fetching (A2).
 
 ---
 
@@ -302,17 +304,17 @@ import Footer from '@/components/Footer.astro'
 
 | Concern | Issue | Severity | Status |
 |---|---|---|---|
-| Maintainability | Every section duplicated as web + print component | High | ❌ Open |
-| Maintainability | Data fetched inside leaf components — not composable | High | ❌ Open |
+| Maintainability | Every section duplicated as web + print component | High | ✅ Fixed |
+| Maintainability | Data fetched inside leaf components — not composable | High | ✅ Fixed |
 | Maintainability | `Visibility` type imported from deprecated file | Medium | ❌ Open |
 | Maintainability | Redundant color config in both `tailwind.config.ts` and `global.css` | Medium | ✅ Fixed |
-| Maintainability | Invalid `<text>` / `<t>` HTML elements | Medium | ❌ Open |
+| Maintainability | Invalid `<text>` / `<t>` HTML elements | Medium | ✅ Fixed |
 | Extensibility | Hardcoded contact fields in header — no links array | High | ❌ Open |
 | Extensibility | Adding a resume section requires editing 2 components + 2 pages | High | ❌ Open |
 | Extensibility | Adding a theme requires 5 coordinated steps across 3 files | Medium | ❌ Open |
 | Extensibility | No `astro:after-swap` for view transitions | Low | ❌ Open |
-| Scalability | No single config entry-point — name/identity spread across 10+ files | High | ❌ Open |
-| Scalability | Two parallel data systems for the same person (`portfolio.ts` + resume JSONs) | High | ❌ Open |
+| Scalability | No single config entry-point — name/identity spread across 10+ files | High | ✅ Partial — `site.config.ts` created; page titles, Footer, OG title consolidated. `_resume.ts` `Visibility` import and `portfolio.ts` displayName remain separate. |
+| Scalability | Two parallel data systems for the same person (`portfolio.ts` + resume JSONs) | High | ❌ Open (by design — identity consolidated, content kept separate) |
 | Scalability | Blog-only remark/rehype plugins in global Astro config | Low | ❌ Open |
 | Scalability | Proprietary fonts (Metric, Canela) require licensing for new users | Medium | ❌ Open |
 | Print/PDF | No page-break control, no link URL printing, fragile margins | Medium | ❌ Open |
@@ -329,3 +331,8 @@ import Footer from '@/components/Footer.astro'
 ### 2026-05-16 (status review)
 - ✅ Issue #7 resolved — `tailwind.config.ts` color duplication removed; `@theme inline` is now sole source
 - ❌ 14 of 15 issues remain open
+
+### 2026-05-16 (session 3)
+- ✅ A1: web/print section duplication resolved — `sections/` now holds 7 unified components, 16 files deleted
+- ✅ A2: leaf-level data fetching resolved — all `getCollection()` calls moved to pages; sections are purely presentational
+- ❌ 8 of 15 issues remain open

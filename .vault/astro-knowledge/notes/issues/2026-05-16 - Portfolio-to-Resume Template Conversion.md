@@ -16,8 +16,8 @@ Analysis of converting `digital-garden-2024` from a digital garden + resume hybr
 
 **Killer feature:** Save Resume as PDF via the print-optimised `/resume-print` page.
 
-> [!warning] Status (2026-05-16)
-> No items from this analysis have been addressed. All issues remain open. The blog/garden system, Lorem placeholder cards, invalid `<text>` HTML, 6-line print CSS, and hardcoded content are all unchanged.
+> [!warning] Status (2026-05-16, updated)
+> `<text>`/`<t>` invalid HTML fixed. `site.config.ts` introduced — page titles and Footer no longer hardcoded. OG image site title now reads from `SITE.siteTitle`. All other items remain open.
 
 ---
 
@@ -209,4 +209,8 @@ For this to work as a reusable template, all personalised content must be data-d
 ### 2026-05-16 (status review)
 - ✅ `<text>`/`<t>` invalid HTML fixed — replaced with `<span>` across 6 files (Item.astro, web/Skills.astro, print/Skills.astro, print/Header.astro, resume.astro, PostMetadata.astro)
 - ✅ `Lorem.astro` / `LoremSm.astro` confirmed as intentional placeholder components — not an issue
-- ❌ All other items remain open (14 issues)
+- ✅ Page titles (`index`, `resume`, `uses`, `resume-print`, `cv-print`) now read from `SITE.displayName` via `site.config.ts`
+- ✅ Footer hardcoded "ALTR" and GitHub URL now read from `SITE`
+- ✅ `og-images.json` index title now resolved from `SITE.siteTitle` via `{{siteTitle}}` token
+- ✅ Rogue `next` package removed — fixes duplicate React / useState crash in `NowTime`
+- ❌ 11 items remain open: blog removal, Lorem placeholder cards, IntroCard bio hardcoded, print CSS, BaseLayoutPrint waste, resume-print/cv-print duplication, `_wip`/`_deprecated` dead code, resume.astro hardcoded description, `uses.astro` hardcoded content, no PDF CTA button, thin layout abstractions

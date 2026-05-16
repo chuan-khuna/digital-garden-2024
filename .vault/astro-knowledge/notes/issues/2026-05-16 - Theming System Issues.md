@@ -324,3 +324,6 @@ value: graphite
 - ✅ All 3 bugs resolved — `@theme inline` + `data-color-preset` architecture fully implemented
 - ✅ ThemeToggle updated to use `data-color-preset` attribute
 - ❌ 7 gaps remain open: dark variants in presets, missing token groups (`--chart-*`, `--sidebar-*`, `--shadow-*`), `--animate-accordion-down` property, metadata comments
+
+### 2026-05-16 (session 2)
+- No theming changes made this session — 7 gaps still open

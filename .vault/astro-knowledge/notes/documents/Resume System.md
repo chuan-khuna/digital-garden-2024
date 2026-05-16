@@ -41,30 +41,20 @@ src/
 │   │   ├── PageLayout.astro
 │   │   └── Content.astro
 │   ├── sections/
-│   │   ├── web/                         ← web section components
-│   │   │   ├── Experiences.astro
-│   │   │   ├── Projects.astro
-│   │   │   ├── Skills.astro
-│   │   │   ├── Education.astro
-│   │   │   ├── Activity.astro
-│   │   │   ├── Interests.astro
-│   │   │   └── Now.astro
-│   │   └── print/                       ← print section components
-│   │       ├── Header.astro
-│   │       ├── Experiences.astro
-│   │       ├── Projects.astro
-│   │       ├── Skills.astro
-│   │       ├── Education.astro
-│   │       ├── Activity.astro
-│   │       └── Interests.astro
+│   │   ├── Experiences.astro            ← unified: accepts data[] + variant prop
+│   │   ├── Projects.astro
+│   │   ├── Skills.astro
+│   │   ├── Education.astro
+│   │   ├── Activity.astro
+│   │   ├── Interests.astro
+│   │   ├── Now.astro                    ← web-only (no print equivalent)
+│   │   └── print/
+│   │       └── Header.astro             ← print-only resume header
 │   ├── Item/
-│   │   ├── Item.astro                   ← web job/project title row
-│   │   ├── PrintItem.astro              ← print job/project title row (auto inline/stack)
-│   │   └── ItemSeparator.astro          ← dashed line separator
-│   ├── SectionBlock.astro               ← web section wrapper (border + prose)
-│   ├── PrintSectionBlock.astro          ← print section wrapper (compact)
-│   ├── UnorderedList.astro              ← web bullet list (string arrays)
-│   ├── PrintUnorderedList.astro         ← print bullet list (string arrays)
+│   │   ├── Item.astro                   ← unified: web stacked / print inline-auto
+│   │   └── ItemSeparator.astro          ← dashed line separator (used in print)
+│   ├── SectionBlock.astro               ← unified section wrapper (variant prop)
+│   ├── UnorderedList.astro              ← unified bullet list (variant prop)
 │   ├── ResumeMarkdownBulletWrapper.astro ← bullet wrapper for markdown-rendered content
 │   ├── ListItem.astro                   ← single web list item
 │   ├── Divider.astro
@@ -192,7 +182,7 @@ Edit `src/content/resume/skills.json` — each entry is a category with a keywor
 
 **File:** `src/pages/resume.astro`
 
-Uses `BaseLayout` (full site layout with nav/footer). Header data is fetched directly via `getCollection('resumeHeader')`. Each section is a self-contained component that fetches its own data:
+Uses `BaseLayout` (full site layout with nav/footer). The page fetches **all** collection data at the top level and passes it down as props to each section component:
 
 ```
 ┌─────────────────────────────────────┐
@@ -208,7 +198,7 @@ Uses `BaseLayout` (full site layout with nav/footer). Header data is fetched dir
   md:grid-cols-2
 ```
 
-Each section component independently calls `getCollection(...)` — no data is passed as props from the page.
+All `getCollection()` calls happen in `resume.astro`. Section components receive typed `data` props and a `variant` prop — they are purely presentational.
 
 ---
 
@@ -261,47 +251,41 @@ Font for all print pages: `font-resumesans` (Metric / MetricHPEXS).
 
 ### Section Wrappers
 
-**`SectionBlock`** (web) — adds a visible border and `prose` styling:
-```astro
-<div class="prose-cactus prose relative max-w-full border p-4">
-  <h1 class="text-2xl">{title}</h1>
-  <slot />
-</div>
-```
+**`SectionBlock`** accepts a `variant` prop (`'web'` default | `'print'`):
 
-**`PrintSectionBlock`** (print) — compact, no border, smaller heading using `font-resumeserif`:
-```astro
-<div class="prose-cactus prose relative block max-w-full p-1">
-  <h1 class="mb-1 font-resumeserif text-lg">{title}</h1>
-  <slot />
-</div>
-```
+| | `variant="web"` | `variant="print"` |
+|---|---|---|
+| Border | visible | none |
+| Padding | `p-4` | `p-1` |
+| Heading size | `text-2xl` | `text-lg` |
+| Heading font | default | `font-resumeserif` |
 
 ### Item Rows
 
-**`Item`** (web) — title + company/description + time, stacked layout:
-```
-Job Title
-Company Name                            Jul 2022 - Present
-```
+**`Item`** accepts a `variant` prop:
 
-**`PrintItem`** (print) — auto-detects whether to go inline or stacked based on total character length (`≤ 64` chars = inline):
+- `variant="web"` — stacked layout: title on one line, company + time below
+- `variant="print"` — auto-detects inline vs stacked based on total character length (`≤ 64` chars = inline):
+
 ```
 // Inline (short):   Job Title | Company | Jul 2022 ----
 // Stacked (long):   Long Job Title --------------------
 //                   Company Name  Jul 2022 - Present
 ```
 
+Print variant also accepts `inline` (force bool) and `titleFontSize` override props.
+
 ### Bullet Lists
 
 There are two bullet list systems depending on the data source:
 
-**String array** (projects, educations, activities) → `UnorderedList` / `PrintUnorderedList`
+**String array** (projects, educations, activities) → `UnorderedList` with `variant` prop:
 
 ```astro
-<!-- receives items: string[] prop -->
+<!-- web -->
 <UnorderedList ulClass="text-sm" items={project.data.details} />
-<PrintUnorderedList items={project.data.details} />
+<!-- print -->
+<UnorderedList items={activity.data.details} variant="print" />
 ```
 
 **Markdown body** (experiences only) → `ResumeMarkdownBulletWrapper`
@@ -342,38 +326,49 @@ This component exists because Astro's scoped `<style>` cannot reach `<slot>` con
 
 ## How a Section Component Works (Experiences example)
 
+The **page** owns data fetching and filtering. The **section component** only renders.
+
 ```astro
 ---
-// 1. Fetch collection
-const experiences = await getCollection('resumeExperiences')
+// resume-print.astro (page) — fetches and filters
+const experiences = (await getCollection('resumeExperiences'))
+  .filter((e) => e.data.visibility.resume_print)
+---
+<Experiences data={experiences} variant="print" />
+```
 
-// 2. Pre-render markdown bodies (experiences use .md files)
-const renderedExperiences = await Promise.all(
-  experiences.map(async (exp) => {
+```astro
+---
+// sections/Experiences.astro (component) — presentational
+interface Props {
+  data: CollectionEntry<'resumeExperiences'>[]
+  variant?: 'web' | 'print'
+}
+const { data, variant = 'web' } = Astro.props
+
+// Pre-render markdown bodies
+const rendered = await Promise.all(
+  data.map(async (exp) => {
     const { Content } = await render(exp)
     return { exp, Content }
   })
 )
 ---
 
-<!-- 3. Render each entry -->
-<PrintSectionBlock title="Experiences">
-  {renderedExperiences.map(({ exp, Content }) => (
-    <>
-      <PrintItem
-        title={exp.data.jobTitle}
-        timeDescription={exp.data.time}
-        description={exp.data.company}
-      />
-      <ResumeMarkdownBulletWrapper variant="print">
+<SectionBlock title="Experience" variant={variant}>
+  {rendered.map(({ exp, Content }) => (
+    <div>
+      <Item title={exp.data.jobTitle} timeDescription={exp.data.time}
+            description={exp.data.company} variant={variant} />
+      <ResumeMarkdownBulletWrapper variant={variant}>
         <Content />
       </ResumeMarkdownBulletWrapper>
-    </>
+    </div>
   ))}
-</PrintSectionBlock>
+</SectionBlock>
 ```
 
-For JSON-based sections (projects, skills), the pattern is simpler — no `render()` needed, just pass `items={entry.data.details}` directly to `PrintUnorderedList`.
+For JSON-based sections (projects, skills), the pattern is simpler — no `render()` needed, just pass `items={entry.data.details}` to `UnorderedList`.
 
 ---
 
@@ -382,11 +377,10 @@ For JSON-based sections (projects, skills), the pattern is simpler — no `rende
 ```
 Content files (JSON / .md)
         ↓  Astro Content Collections (glob / file loaders)
-getCollection('resumeXxx')
-        ↓  each section component fetches its own data
-Section components (web/ or print/)
-        ↓  compose using Item + UnorderedList / ResumeMarkdownBulletWrapper
 resume.astro / resume-print.astro / cv-print.astro
+        ↓  getCollection() + .filter(visibility) — pages own all data fetching
+Section components (sections/*.astro)  ← receive typed data[] + variant as props
+        ↓  compose using SectionBlock + Item + UnorderedList / ResumeMarkdownBulletWrapper
         ↓  wrapped in BaseLayout / BaseLayoutPrint
 Browser → Ctrl+P → PDF
 ```
