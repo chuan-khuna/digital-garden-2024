@@ -117,14 +117,16 @@ The print-to-PDF flow is the main differentiator. Currently functional but **sev
 
 **Problems:**
 
-| Issue | Location |
-|---|---|
-| No prominent "Download Resume as PDF" button anywhere | `/resume`, homepage |
-| Print pages only reachable via small text link at the bottom of `/resume` | `resume.astro:81–88` |
-| `BaseLayoutPrint` imports Nav + Footer then hides them with `print:hidden` — wasteful | `BaseLayoutPrint.astro` |
-| `global_print.css` is only 6 lines — just sets A4 size, no page-break handling | `src/styles/global_print.css` |
-| `WebWrapper` and `PageLayout` are thin pass-through divs with no logic | `src/components/resume/layout/` |
-| No visible instruction on print page telling users to use browser print | `resume-print.astro` |
+| Issue | Location | Status |
+|---|---|---|
+| No prominent "Download Resume as PDF" button anywhere | `/resume`, homepage | ❌ Open |
+| Print pages only reachable via small text link at the bottom of `/resume` | `resume.astro:81–88` | ❌ Open |
+| `BaseLayoutPrint` imports Nav + Footer then hides them with `print:hidden` — wasteful | `BaseLayoutPrint.astro` | ❌ Open |
+| `global_print.css` — no page-break control | `src/styles/global_print.css` | ✅ Fixed — `print:break-inside-avoid` on `SectionBlock` + all entry divs in `Experiences`, `Projects`, `Activity`, `Education` |
+| `global_print.css` — no link URL printing | `src/styles/global_print.css` | ❌ Open |
+| `global_print.css` — no print font-size/color baseline | `src/styles/global_print.css` | ❌ Open |
+| `WebWrapper` and `PageLayout` are thin pass-through divs with no logic | `src/components/resume/layout/` | ❌ Open |
+| No visible instruction on print page telling users to use browser print | `resume-print.astro` | ❌ Open |
 
 **Recommended improvements:**
 - Add a prominent sticky "Save as PDF" CTA button on `/resume` that calls `window.print()`
@@ -214,3 +216,7 @@ For this to work as a reusable template, all personalised content must be data-d
 - ✅ `og-images.json` index title now resolved from `SITE.siteTitle` via `{{siteTitle}}` token
 - ✅ Rogue `next` package removed — fixes duplicate React / useState crash in `NowTime`
 - ❌ 11 items remain open: blog removal, Lorem placeholder cards, IntroCard bio hardcoded, print CSS, BaseLayoutPrint waste, resume-print/cv-print duplication, `_wip`/`_deprecated` dead code, resume.astro hardcoded description, `uses.astro` hardcoded content, no PDF CTA button, thin layout abstractions
+
+### 2026-05-16 (session 4)
+- ✅ Print page-break control fixed — `print:break-inside-avoid` added to `SectionBlock.astro` (section level) and each entry `<div>` in `Experiences.astro`, `Projects.astro`, `Activity.astro`, `Education.astro`. Fragments replaced with `<div>` wrappers where needed.
+- ❌ 2 print sub-items remain: link URL printing (`a[href]::after`) and print font-size/color baseline in `global_print.css`

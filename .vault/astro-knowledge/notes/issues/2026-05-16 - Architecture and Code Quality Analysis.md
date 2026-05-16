@@ -317,7 +317,7 @@ import Footer from '@/components/Footer.astro'
 | Scalability | Two parallel data systems for the same person (`portfolio.ts` + resume JSONs) | High | ❌ Open (by design — identity consolidated, content kept separate) |
 | Scalability | Blog-only remark/rehype plugins in global Astro config | Low | ❌ Open |
 | Scalability | Proprietary fonts (Metric, Canela) require licensing for new users | Medium | ❌ Open |
-| Print/PDF | No page-break control, no link URL printing, fragile margins | Medium | ❌ Open |
+| Print/PDF | No page-break control, no link URL printing, fragile margins | Medium | ⚠️ Partial — `page-break-inside: avoid` fixed via `print:break-inside-avoid` on `SectionBlock` + entry divs. Link URL printing and font-size/color baseline still open. |
 | Print/PDF | `BaseLayoutPrint` renders Nav+Footer only to hide them | Low | ❌ Open |
 | Print/PDF | Thin layout abstractions (`WebWrapper`, `PageLayout`, `Content`) | Low | ❌ Open |
 
@@ -336,3 +336,8 @@ import Footer from '@/components/Footer.astro'
 - ✅ A1: web/print section duplication resolved — `sections/` now holds 7 unified components, 16 files deleted
 - ✅ A2: leaf-level data fetching resolved — all `getCollection()` calls moved to pages; sections are purely presentational
 - ❌ 8 of 15 issues remain open
+
+### 2026-05-16 (session 4)
+- ✅ Issue #14 (partial): `page-break-inside: avoid` fixed — `print:break-inside-avoid` added to `SectionBlock.astro` and all multi-entry section components (`Experiences`, `Projects`, `Activity`, `Education`)
+- ❌ Remaining in #14: link URL printing and print font-size/color baseline
+- ❌ 7.5 of 15 issues remain open
