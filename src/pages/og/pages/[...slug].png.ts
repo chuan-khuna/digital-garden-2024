@@ -2,11 +2,15 @@ import type { APIContext } from 'astro'
 import { getCollection } from 'astro:content'
 
 import { generateOgImage } from '@/lib/generate-og-image'
+import { SITE } from '@/content/site.config'
 
 export const prerender = true
 
 // load content collection
 const ogImages = await getCollection('ogImages')
+
+const resolveTitle = (title: string) =>
+  title.replace('{{siteTitle}}', SITE.siteTitle)
 
 export async function getStaticPaths() {
   return ogImages.map((config) => ({
@@ -26,7 +30,7 @@ export async function GET(ctx: APIContext) {
   }
 
   const ogImage = await generateOgImage(
-    config.data.title,
+    resolveTitle(config.data.title),
     config.data.description || '',
     config.data.ogStyle || 'default',
   )
