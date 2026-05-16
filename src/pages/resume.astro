@@ -11,6 +11,7 @@ import Interests from '@/components/resume/sections/web/Interests.astro'
 import Now from '@/components/resume/sections/web/Now.astro'
 
 import { getCollection } from 'astro:content'
+import { SITE } from '@/content/site.config.ts'
 
 const headerEntries = await getCollection('resumeHeader')
 const header = headerEntries[0].data
@@ -21,7 +22,7 @@ const ogImageSlug = 'resume'
 const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
 ---
 
-<BaseLayout title="ALTR's Resume" description="" ogImage={ogImageUrl}>
+<BaseLayout title={`${SITE.displayName}'s Resume`} description="" ogImage={ogImageUrl}>
   <div class="">
     <!-- resume layout -->
     <div

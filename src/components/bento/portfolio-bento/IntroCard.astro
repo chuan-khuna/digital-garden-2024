@@ -2,6 +2,7 @@
 import { Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PORTFOLIO } from '@/content/portfolio.ts'
+import { SITE } from '@/content/site.config.ts'
 import { Image } from 'astro:assets'
 
 var fixedAvatarClass =
@@ -35,7 +36,7 @@ var origAvatarClass =
     </div>
     <div class="flex gap-4">
       <a
-        href={PORTFOLIO.links.github}
+        href={SITE.github}
         aria-label="github profile"
         target="_blank"
       >

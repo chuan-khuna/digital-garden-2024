@@ -25,7 +25,7 @@ export const resumeProjectsCollection = defineCollection({
     title: z.string(),
     time: z.string(),
     description: z.string(),
-    url: z.url().nullable(),
+    url: z.string().url().nullable(),
     order: z.number().int().optional(),
     visibility: visibilitySchema.default({
       web: true,
@@ -70,7 +70,7 @@ export const resumeActivitiesCollection = defineCollection({
     title: z.string(),
     time: z.string(),
     description: z.string(),
-    url: z.url().nullable().optional(),
+    url: z.string().url().nullable().optional(),
     details: z.array(z.string()),
   }),
 })
@@ -96,8 +96,8 @@ export const resumeHeaderCollection = defineCollection({
   schema: z.object({
     name: z.string(),
     jobTitle: z.string(),
-    email: z.email(),
-    github: z.url(),
+    email: z.string().email(),
+    github: z.string().url(),
     githubName: z.string(),
     introduction: z.string(),
     location: z.string(),
