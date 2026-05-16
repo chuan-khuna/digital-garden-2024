@@ -10,7 +10,7 @@ const isPrint = variant === 'print'
 
 <div
   class:list={[
-    'prose-cactus prose relative max-w-full md:block',
+    'prose-cactus prose relative max-w-full md:block print:break-inside-avoid',
     isPrint ? 'block p-1' : 'border p-4',
   ]}
 >

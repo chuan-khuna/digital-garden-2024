@@ -15,7 +15,7 @@ const { data, variant = 'web' } = Astro.props
 <SectionBlock title="Activity" variant={variant}>
   {
     data.map((activity) => (
-      <>
+      <div class="print:break-inside-avoid">
         <Item
           title={activity.data.title}
           timeDescription={activity.data.time}
@@ -25,7 +25,7 @@ const { data, variant = 'web' } = Astro.props
           variant={variant}
         />
         <UnorderedList items={activity.data.details} variant={variant} />
-      </>
+      </div>
     ))
   }
 </SectionBlock>

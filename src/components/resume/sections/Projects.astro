@@ -23,7 +23,7 @@ const rendered = await Promise.all(
 <SectionBlock title="Projects" variant={variant}>
   {
     rendered.map(({ project, Content }, index) => (
-      <>
+      <div class="print:break-inside-avoid">
         <Item
           title={project.data.title}
           timeDescription={project.data.time}
@@ -35,7 +35,7 @@ const rendered = await Promise.all(
           <Content />
         </ResumeMarkdownBulletWrapper>
         {variant === 'web' && index < rendered.length - 1 && <Divider />}
-      </>
+      </div>
     ))
   }
 </SectionBlock>
