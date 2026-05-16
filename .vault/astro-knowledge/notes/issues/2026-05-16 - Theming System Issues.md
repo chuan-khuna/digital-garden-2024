@@ -240,18 +240,18 @@ The standard also registers **only** `--color-destructive` (no `--color-destruct
 
 ---
 
-### Missing Dark Variant in Presets
+### ✅ Missing Dark Variant in Presets — Closed (Not a Bug)
 
-The standard supports both a colour preset **and** independent dark mode simultaneously via:
-
-```css
-:root[data-color-preset="graphite"] { /* light */ }
-.dark:root[data-color-preset="graphite"] { /* dark override */ }
-```
-
-Our preset files only define the light variant. The `.dark` class has no effect when a preset is active because the preset values win regardless of light/dark.
-
-**Status:** `presets/dark.css`, `presets/nexus.css`, and `presets/nzk.css` all lack a `.dark:root[data-color-preset="..."]` block.
+> [!success] Closed — By Design
+> The system is a **theme selector**, not a light/dark mode toggle. `nzk`, `dark`, and `nexus` are three independent, self-contained colour themes — not light/dark variants of the same palette.
+>
+> - `nzk` — light theme (`--background: oklch(0.977...)`)
+> - `dark` — dark theme (`--background: oklch(0.079...)`)
+> - `nexus` — dark theme (`--background: oklch(0.173...)`)
+>
+> `ThemeToggle.astro` cycles through all three themes. The `.dark` CSS class is never set anywhere — `@custom-variant dark` in `global.css` exists but is unused. There is no separate light/dark axis; the preset itself is the colour choice.
+>
+> The `.dark:root[data-color-preset="..."]` pattern from the shadcn standard applies to systems where a preset and a dark/light toggle coexist independently. That is not this system's design.
 
 ---
 
@@ -300,7 +300,7 @@ value: graphite
 | `--chart-*` vars missing | `:root`, all presets, `@theme inline` | 🟡 Low (no charts currently) | ❌ Open |
 | `--sidebar-*` vars missing | `:root`, all presets, `@theme inline` | 🟡 Low (no sidebar component) | ❌ Open |
 | `--shadow-*` vars missing | all presets | 🟡 Low | ❌ Open |
-| Dark variant missing in presets | `presets/*.css` | 🔴 Medium (dark mode broken with preset active) | ❌ Open |
+| Dark variant missing in presets | `presets/*.css` | ~~🔴 Medium~~ | ✅ Closed — not a bug; system is a theme selector, not a light/dark toggle |
 | `@layer utilities` shadow block | `global.css` | 🟡 Low | ❌ Open |
 | `--animate-accordion-down` missing | `global.css` | 🔴 Medium | ❌ Open |
 | Metadata comments | `presets/*.css` | ⚪ Cosmetic | ❌ Open |
@@ -325,5 +325,6 @@ value: graphite
 - ✅ ThemeToggle updated to use `data-color-preset` attribute
 - ❌ 7 gaps remain open: dark variants in presets, missing token groups (`--chart-*`, `--sidebar-*`, `--shadow-*`), `--animate-accordion-down` property, metadata comments
 
-### 2026-05-16 (session 2)
-- No theming changes made this session — 7 gaps still open
+### 2026-05-16 (session 4)
+- ✅ T2 closed — "dark variant missing in presets" was misframed; system is a theme selector (nzk/dark/nexus are independent themes), not a light/dark toggle. `.dark` class is intentionally unused.
+- ❌ 5 gaps remain open: `--animate-accordion-down`, `--chart-*`, `--sidebar-*`, `--shadow-*` tokens, metadata comments
