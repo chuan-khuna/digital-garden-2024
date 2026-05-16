@@ -7,11 +7,18 @@ tags:
 aliases:
   - Code Architecture Review
   - Maintainability Analysis
+updated: 2026-05-16
 ---
 
 # Architecture and Code Quality Analysis
 
 Analysis of `digital-garden-2024` from the perspective of **maintainability**, **extensibility** (adding new pages/features), and **scalability** (cloning/reusing as a template for new projects).
+
+> [!success] Resolved (2026-05-16)
+> **Issue #7 — Redundant styling config:** `tailwind.config.ts` no longer defines colors. Only `fontFamily` and `typography` remain. `global.css @theme inline` is now the sole source of color tokens.
+
+> [!warning] Status (2026-05-16)
+> 14 of 15 issues remain open. Highest priority: `<text>` invalid HTML (13× across 5 files), no single config entry-point, web/print component duplication, data fetching in leaf components, hardcoded contact fields.
 
 ---
 
@@ -134,16 +141,19 @@ import type { Visibility } from '@/content/resume'
 
 ---
 
-## 7. Redundant Styling Configuration
+## ✅ 7. Redundant Styling Configuration — Resolved (2026-05-16)
 
-Colors are defined **twice**:
+> [!success] Fixed
+> `tailwind.config.ts` no longer defines colors. Only `fontFamily` and `typography` extensions remain. `global.css @theme inline` is the sole color source.
 
-1. **`tailwind.config.ts`**: `colors: { border: 'oklch(var(--border))', ... }`
-2. **`global.css` `@theme` block**: `--color-border: oklch(var(--border));`
+~~Colors are defined **twice**:~~
 
-In Tailwind v4, `@theme` in CSS replaces `tailwind.config.ts` color definitions. Both exist simultaneously, creating two sources of truth. A theme update needs to touch both files — or only one, leading to silent divergence.
+~~1. **`tailwind.config.ts`**: `colors: { border: 'oklch(var(--border))', ... }`~~
+~~2. **`global.css` `@theme` block**: `--color-border: oklch(var(--border));`~~
 
-Additionally, `tailwind.config.ts` still references legacy cactus-theme colors (`cactus-bg`, `cactus-text`, etc.) that are remnants of the original Astro Cactus template. These are not used anywhere meaningful in the current codebase.
+~~In Tailwind v4, `@theme` in CSS replaces `tailwind.config.ts` color definitions. Both exist simultaneously, creating two sources of truth. A theme update needs to touch both files — or only one, leading to silent divergence.~~
+
+~~Additionally, `tailwind.config.ts` still references legacy cactus-theme colors (`cactus-bg`, `cactus-text`, etc.) that are remnants of the original Astro Cactus template. These are not used anywhere meaningful in the current codebase.~~
 
 ---
 
@@ -290,21 +300,32 @@ import Footer from '@/components/Footer.astro'
 
 ## Summary Table
 
-| Concern | Issue | Severity |
-|---|---|---|
-| Maintainability | Every section duplicated as web + print component | High |
-| Maintainability | Data fetched inside leaf components — not composable | High |
-| Maintainability | `Visibility` type imported from deprecated file | Medium |
-| Maintainability | Redundant color config in both `tailwind.config.ts` and `global.css` | Medium |
-| Maintainability | Invalid `<text>` / `<t>` HTML elements | Medium |
-| Extensibility | Hardcoded contact fields in header — no links array | High |
-| Extensibility | Adding a resume section requires editing 2 components + 2 pages | High |
-| Extensibility | Adding a theme requires 5 coordinated steps across 3 files | Medium |
-| Extensibility | No `astro:after-swap` for view transitions | Low |
-| Scalability | No single config entry-point — name/identity spread across 10+ files | High |
-| Scalability | Two parallel data systems for the same person (`portfolio.ts` + resume JSONs) | High |
-| Scalability | Blog-only remark/rehype plugins in global Astro config | Low |
-| Scalability | Proprietary fonts (Metric, Canela) require licensing for new users | Medium |
-| Print/PDF | No page-break control, no link URL printing, fragile margins | Medium |
-| Print/PDF | `BaseLayoutPrint` renders Nav+Footer only to hide them | Low |
-| Print/PDF | Thin layout abstractions (`WebWrapper`, `PageLayout`, `Content`) | Low |
+| Concern | Issue | Severity | Status |
+|---|---|---|---|
+| Maintainability | Every section duplicated as web + print component | High | ❌ Open |
+| Maintainability | Data fetched inside leaf components — not composable | High | ❌ Open |
+| Maintainability | `Visibility` type imported from deprecated file | Medium | ❌ Open |
+| Maintainability | Redundant color config in both `tailwind.config.ts` and `global.css` | Medium | ✅ Fixed |
+| Maintainability | Invalid `<text>` / `<t>` HTML elements | Medium | ❌ Open |
+| Extensibility | Hardcoded contact fields in header — no links array | High | ❌ Open |
+| Extensibility | Adding a resume section requires editing 2 components + 2 pages | High | ❌ Open |
+| Extensibility | Adding a theme requires 5 coordinated steps across 3 files | Medium | ❌ Open |
+| Extensibility | No `astro:after-swap` for view transitions | Low | ❌ Open |
+| Scalability | No single config entry-point — name/identity spread across 10+ files | High | ❌ Open |
+| Scalability | Two parallel data systems for the same person (`portfolio.ts` + resume JSONs) | High | ❌ Open |
+| Scalability | Blog-only remark/rehype plugins in global Astro config | Low | ❌ Open |
+| Scalability | Proprietary fonts (Metric, Canela) require licensing for new users | Medium | ❌ Open |
+| Print/PDF | No page-break control, no link URL printing, fragile margins | Medium | ❌ Open |
+| Print/PDF | `BaseLayoutPrint` renders Nav+Footer only to hide them | Low | ❌ Open |
+| Print/PDF | Thin layout abstractions (`WebWrapper`, `PageLayout`, `Content`) | Low | ❌ Open |
+
+---
+
+## Log
+
+### 2026-05-16
+- Initial analysis documented: 15 issues across maintainability, extensibility, scalability, and print/PDF
+
+### 2026-05-16 (status review)
+- ✅ Issue #7 resolved — `tailwind.config.ts` color duplication removed; `@theme inline` is now sole source
+- ❌ 14 of 15 issues remain open

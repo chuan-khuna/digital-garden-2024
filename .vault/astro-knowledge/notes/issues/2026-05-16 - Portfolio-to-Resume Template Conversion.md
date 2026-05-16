@@ -7,6 +7,7 @@ tags:
 aliases:
   - Conversion Plan
   - Resume Template Conversion
+updated: 2026-05-16
 ---
 
 # Portfolio-to-Resume Template Conversion
@@ -14,6 +15,9 @@ aliases:
 Analysis of converting `digital-garden-2024` from a digital garden + resume hybrid into a focused **landing page / resume / portfolio template** for developers.
 
 **Killer feature:** Save Resume as PDF via the print-optimised `/resume-print` page.
+
+> [!warning] Status (2026-05-16)
+> No items from this analysis have been addressed. All issues remain open. The blog/garden system, Lorem placeholder cards, invalid `<text>` HTML, 6-line print CSS, and hardcoded content are all unchanged.
 
 ---
 
@@ -194,3 +198,15 @@ For this to work as a reusable template, all personalised content must be data-d
 6. **Fix code quality** — replace `<text>` with `<span>`, `var` → `const`, fix Astro `<Image>` usage, remove `_wip`/`_deprecated`
 7. **Clean up navigation** — remove Garden/Uses or make Uses data-driven
 8. **Template documentation** — clear README on how to customise name, sections, links, avatar
+
+---
+
+## Log
+
+### 2026-05-16
+- Initial analysis documented: blog removal, bento placeholders, dual data sources, print/PDF weaknesses, hardcoded content audit
+
+### 2026-05-16 (status review)
+- ✅ `<text>`/`<t>` invalid HTML fixed — replaced with `<span>` across 6 files (Item.astro, web/Skills.astro, print/Skills.astro, print/Header.astro, resume.astro, PostMetadata.astro)
+- ✅ `Lorem.astro` / `LoremSm.astro` confirmed as intentional placeholder components — not an issue
+- ❌ All other items remain open (14 issues)
