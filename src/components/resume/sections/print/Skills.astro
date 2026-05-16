@@ -17,8 +17,8 @@ const skillCategoryClass = 'mr-1 font-resumesans font-medium'
   {
     skills.map((skill) => (
       <div class="mb-1 text-sm">
-        <text class={skillCategoryClass}>{skill.data.category}:</text>
-        <text>{skill.data.details.join(separator)}</text>
+        <span class={skillCategoryClass}>{skill.data.category}:</span>
+        <span>{skill.data.details.join(separator)}</span>
       </div>
     ))
   }

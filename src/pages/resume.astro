@@ -47,7 +47,7 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
               name="contact-info"
             >
               <p>
-                <text class="font-medium">Github</text>:
+                <span class="font-medium">Github</span>:
                 <a
                   href={header.github}
                   target="_blank"
@@ -58,10 +58,10 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
                 </a>
               </p>
               <p>
-                <text class="font-medium">Email</text>: {header.email}
+                <span class="font-medium">Email</span>: {header.email}
               </p>
               <p>
-                <text class="font-medium">Location</text>: {header.location}
+                <span class="font-medium">Location</span>: {header.location}
               </p>
             </div>
           </div>
