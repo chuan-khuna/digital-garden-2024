@@ -22,16 +22,16 @@ const NowTime = ({
   const usingTimezone = timezone ? timezone : browserTimezone
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const update = () => {
       const date = new Date()
-      const dateStr = date.toLocaleDateString('en-UK', {
+      const dateStr = date.toLocaleDateString('en-GB', {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
         day: 'numeric',
         timeZone: usingTimezone,
       })
-      const timeStr = date.toLocaleTimeString('en-UK', {
+      const timeStr = date.toLocaleTimeString('en-GB', {
         hour: '2-digit',
         minute: '2-digit',
         second: hideSeconds ? undefined : '2-digit',
@@ -39,7 +39,9 @@ const NowTime = ({
         timeZone: usingTimezone,
       })
       setCurrentTime(`${dateStr}|${timeStr}`)
-    }, secondUpdateDuration)
+    }
+    update()
+    const interval = setInterval(update, secondUpdateDuration)
     return () => clearInterval(interval)
   }, [usingTimezone, hideSeconds])
 
