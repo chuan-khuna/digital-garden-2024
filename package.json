@@ -2,6 +2,7 @@
   "name": "@chuan-khuna/astro-resume",
   "version": "2024.03.01",
   "description": "",
+  "type": "module",
   "author": {
     "name": "ALTR"
   },
