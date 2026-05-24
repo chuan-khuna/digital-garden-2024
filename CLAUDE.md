@@ -75,99 +75,9 @@ src/content/collection-definitions/
 
 ---
 
-## Critical Features
-
-### 1. Bidirectional Wiki Links
-
-**File:** `src/utils/bidirectional-link.ts`
-
-- **Syntax:** `[[note-title]]` or `[[note-title:custom display text]]`
-- **Processing:** `remark-wiki-link` plugin → `/posts/{permalink}`
-- **Functions:**
-  - `getOutgoingNotes(node)` — Extract all `[[links]]` from a post body
-  - `getIncomingNotes(node)` — Find posts linking TO this note (matches slug, title, or aliases)
-- **UI:** `BackReferenceSection` component renders backlinks at the bottom of each post page (`src/pages/posts/[...slug].astro`)
-
-### 2. Theme System
-
-**Themes:** `nzk` (default), `nexus`, `dark`
-
-- **Config:** `src/components/ThemeToggle.astro` — `themes` array + toggle buttons
-- **CSS Variables:** `src/styles/presets/nzk.css`, `nexus.css`, `dark.css` — oklch color variables
-- **Persistence:** localStorage → class on `<html>`
-
-To add a new theme, use the **`add-theme`** skill (`skills/add-theme/SKILL.md`).
-
-### 3. Bento Grid Homepage
-
-**Page:** `src/pages/index.astro`
-
-- **Card wrapper:** `src/components/bento/card.astro` — props: `colSpan`, `rowSpan`, `title`
-- **Cards:** `src/components/bento/portfolio-bento/` — `IntroCard.astro`, `AboutMe.astro`, `TimeZoneCard.astro`, etc.
-- **Layout:** Tailwind grid `md:grid-cols-2 lg:grid-cols-12`
-- **Now time:** `src/components/bento/nowtime.tsx` (React, client-side)
-
-### 4. Resume Pages
-
-**Routes:**
-
-- `/resume` — Web version (`src/pages/resume.astro`)
-- `/resume-print` — Print version (`src/pages/resume-print.astro`)
-- `/cv-print` — Alternative print layout (`src/pages/cv-print.astro`)
-
-**Data source:** `src/content/resume/` JSON files (one per section, loaded via Astro collections)
-
-**Components:** `src/components/resume/`
-
-```
-resume/
-  SectionBlock.astro
-  UnorderedList.astro
-  ListItem.astro
-  Divider.astro
-  PrintPageBreak.astro
-  ResumeMarkdownBulletWrapper.astro
-  Item/
-    Item.astro
-    ItemSeparator.astro
-  sections/
-    Activity.astro
-    Education.astro
-    Experiences.astro
-    Interests.astro
-    Now.astro
-    Projects.astro
-    Skills.astro
-    print/   ← print-specific overrides
-      Header.astro
-  layout/
-    Content.astro
-    PageLayout.astro
-    WebWrapper.astro
-```
-
----
-
 ## Development Workflows
 
-### Commands
-
-```bash
-bun run dev      # Dev server at localhost:4321
-bun run build    # Production build → dist/ (sets CI=true)
-bun run preview  # Preview production build
-bun run format   # Prettier with cache
-```
-
-### Deployment
-
-**Platform:** Cloudflare Workers (primary), also configured for Netlify and Vercel
-
-- Cloudflare: `wrangler.jsonc`, adapter `@astrojs/cloudflare`
-- Netlify: `netlify.toml`
-- Vercel: `vercel.json`
-
-**Build command:** `bun run build` | **Output:** `dist/`
+**Build:** `bun run build` → `dist/` | **Deploy:** Cloudflare Workers (primary) — see `.vault/astro-knowledge/notes/documents/Deployment.md`.
 
 ---
 
@@ -215,9 +125,6 @@ src/
     fonts.css
     global.css
     global_print.css
-    flexible_mark.css
-    obsidian_callout.css
-    expressive_code.css
   utils/          Pure functions (bidirectional-link.ts, cn.ts)
 ```
 
@@ -231,12 +138,6 @@ src/
    - Serif: Canela, DM Serif Text
    - Mono: Inconsolata
 
-### Content Writing
-
-For post/note frontmatter format, field descriptions, and examples, see the **`manage-content`** skill (`skills/manage-content/references/how-to-manage-posts.md`).
-
-Use `[[wiki-links]]` within post content. Math: inline `$...$`, block `$$...$$`.
-
 ### React Components
 
 Use React only for interactive UI, animations (Framer Motion), or client-side-only features.
@@ -248,49 +149,6 @@ import { MyComponent } from '@/components/my-component'
 
 <MyComponent client:load />
 ```
-
----
-
-## Markdown Processing Pipeline
-
-Configured in `astro.config.mjs`:
-
-**Remark plugins:**
-
-- `remark-math` — Parse `$...$` and `$$...$$`
-- `remark-flexible-markers` — Custom text markers
-- `remark-obsidian-callout` — Obsidian-style callout blocks
-- `remark-wiki-link` — Transform `[[links]]` → `/posts/{permalink}`
-
-**Rehype plugins:**
-
-- `rehype-katex` — Render math with KaTeX
-
-**Code blocks:** `astro-expressive-code` with `catppuccin-latte` (light) and `catppuccin-macchiato` (dark) themes, plus line numbers plugin.
-
----
-
-## Common Tasks
-
-### Add a new page
-
-1. Create `src/pages/pagename.astro`
-2. Wrap with `<BaseLayout>`
-3. Add to `src/content/nav-items.json` if navigable
-
-### Add a new theme
-
-Use the **`add-theme`** skill (`skills/add-theme/SKILL.md`) — it covers all four required changes with full CSS variable templates and a checklist.
-
-### Add a bento card to homepage
-
-1. Create `src/components/bento/portfolio-bento/YourCard.astro`
-2. Import in `src/pages/index.astro`
-3. Wrap in `<Card colSpan="lg:col-span-X" rowSpan="...">`
-
-### Modify resume content
-
-Edit the relevant JSON file in `src/content/resume/` — changes apply to both web and print.
 
 ---
 
