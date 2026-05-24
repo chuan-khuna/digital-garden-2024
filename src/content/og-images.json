@@ -1,6 +1,6 @@
 [
   {
-    "title": "ALTR's Digital Garden",
+    "title": "{{siteTitle}}",
     "description": "A collection of thoughts, ideas, and knowledge",
     "slug": "index",
     "ogStyle": "default-dark"

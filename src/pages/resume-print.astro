@@ -1,5 +1,6 @@
 ---
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
+import { SITE } from '@/content/site.config.ts'
 
 // layout
 import PageLayout from '@/components/resume/layout/PageLayout.astro'
@@ -8,15 +9,31 @@ import WebWrapper from '@/components/resume/layout/WebWrapper.astro'
 
 // sections
 import PrintHeader from '@/components/resume/sections/print/Header.astro'
-import PrintExperiences from '@/components/resume/sections/print/Experiences.astro'
-import PrintSkills from '@/components/resume/sections/print/Skills.astro'
-import PrintProjects from '@/components/resume/sections/print/Projects.astro'
-import PrintEducation from '@/components/resume/sections/print/Education.astro'
-import PrintInterests from '@/components/resume/sections/print/Interests.astro'
-import PrintActivity from '@/components/resume/sections/print/Activity.astro'
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
+
+import { getCollection } from 'astro:content'
+
+const experiences = (await getCollection('resumeExperiences')).filter(
+  (e) => e.data.visibility.resume_print,
+)
+const projects = (await getCollection('resumeProjects'))
+  .filter((p) => p.data.visibility.resume_print)
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+const activities = await getCollection('resumeActivities')
+const skills = await getCollection('resumeSkills')
+const educations = (await getCollection('resumeEducations')).filter(
+  (e) => e.data.visibility.resume_print,
+)
+const interestsEntries = await getCollection('resumeInterests')
+const interests = interestsEntries[0].data.items
 ---
 
-<BaseLayoutPrint title="ALTR's Resume" description="">
+<BaseLayoutPrint title={`${SITE.displayName}'s Resume`} description="">
   <WebWrapper className="flex min-h-screen flex-col justify-center">
     <PageLayout className="px-8 py-4 font-resumesans">
       <Content
@@ -27,15 +44,15 @@ import PrintActivity from '@/components/resume/sections/print/Activity.astro'
         </div>
 
         <div class="col-span-2 block space-y-1">
-          <PrintSkills />
-          <PrintActivity />
-          <PrintInterests />
+          <Skills data={skills} variant="print" />
+          <Activity data={activities} variant="print" />
+          <Interests items={interests} variant="print" />
         </div>
 
         <div class="col-span-5 block space-y-1">
-          <PrintExperiences />
-          <PrintProjects />
-          <PrintEducation />
+          <Experiences data={experiences} variant="print" />
+          <Projects data={projects} variant="print" />
+          <Education data={educations} variant="print" />
         </div>
       </Content>
     </PageLayout>

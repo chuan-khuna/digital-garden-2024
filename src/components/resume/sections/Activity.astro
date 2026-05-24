@@ -1,0 +1,31 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import Item from '@/components/resume/Item/Item.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  data: CollectionEntry<'resumeActivities'>[]
+  variant?: 'web' | 'print'
+}
+
+const { data, variant = 'web' } = Astro.props
+---
+
+<SectionBlock title="Activity" variant={variant}>
+  {
+    data.map((activity) => (
+      <div class="print:break-inside-avoid">
+        <Item
+          title={activity.data.title}
+          timeDescription={activity.data.time}
+          description={activity.data.description}
+          url={activity.data.url}
+          titleFontSize={variant === 'print' ? 'sm' : undefined}
+          variant={variant}
+        />
+        <UnorderedList items={activity.data.details} variant={variant} />
+      </div>
+    ))
+  }
+</SectionBlock>

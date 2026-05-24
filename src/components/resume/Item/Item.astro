@@ -1,43 +1,82 @@
 ---
+import ItemSeparator from './ItemSeparator.astro'
+
 interface Props {
   title: string
-  timeDescription: string
-  description: string
-  url: string
+  timeDescription?: string
+  description?: string
+  url?: string
+  variant?: 'web' | 'print'
+  inline?: boolean
+  titleFontSize?: string
 }
 
-const { title, timeDescription, description, url } = Astro.props
+const { title, timeDescription, description, url, variant = 'web', inline, titleFontSize } =
+  Astro.props
+
+// print-variant computed values
+const totalLength =
+  (title?.length || 0) + (timeDescription?.length || 0) + (description?.length || 0)
+const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
+const titleClass = titleFontSize
+  ? `text-${titleFontSize} font-resumesans font-medium`
+  : 'text-md font-resumesans font-medium'
+const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
 ---
 
-<div class="">
-  <text class="text-lg">
-    {title}
-  </text>
-  <div class="mt-1 md:flex">
-    {
-      description && (
-        <div class="w-full text-left">
-          <text class="text-sm">{description}</text>
-        </div>
-      )
-    }
-    {
-      timeDescription && (
-        <div class="w-full max-w-[24ch] pr-8 md:text-right">
-          <t class="text-sm">{timeDescription}</t>
-        </div>
-      )
-    }
-  </div>
-  {
-    url && (
-      <div class="md:flex">
-        <div class="w-full text-left">
-          <a href={url} class="text-sm hover:underline">
-            {url}
-          </a>
-        </div>
+{
+  variant === 'web' ? (
+    <div>
+      <span class="text-lg">{title}</span>
+      <div class="mt-1 md:flex">
+        {description && (
+          <div class="w-full text-left">
+            <span class="text-sm">{description}</span>
+          </div>
+        )}
+        {timeDescription && (
+          <div class="w-full max-w-[24ch] pr-8 md:text-right">
+            <span class="text-sm">{timeDescription}</span>
+          </div>
+        )}
       </div>
-    )
-  }
-</div>
+      {url && (
+        <div class="md:flex">
+          <div class="w-full text-left">
+            <a href={url} class="text-sm hover:underline">
+              {url}
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  ) : useInline ? (
+    <div class="flex items-center">
+      <div class={`flex-shrink-0 ${titleClass}`}>{title}</div>
+      {(timeDescription || description || url) && (
+        <div>
+          <div class="ml-2 flex-shrink-0 text-right text-sm">
+            {description && <span class={descriptionAndTimeClass}>{description}</span>}
+            {timeDescription && (
+              <span class={descriptionAndTimeClass}>{timeDescription}</span>
+            )}
+          </div>
+        </div>
+      )}
+      <ItemSeparator />
+    </div>
+  ) : (
+    <div class="mb-2">
+      <div class="flex items-center">
+        <div class={titleClass}>{title}</div>
+        <ItemSeparator />
+      </div>
+      {(description || timeDescription || url) && (
+        <div class="mt-0 flex flex-row gap-2 text-sm text-gray-600">
+          {description && <span>{description}</span>}
+          {timeDescription && <span class="pl-2">{timeDescription}</span>}
+        </div>
+      )}
+    </div>
+  )
+}

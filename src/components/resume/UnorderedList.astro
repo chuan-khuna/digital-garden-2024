@@ -2,15 +2,30 @@
 import ListItem from './ListItem.astro'
 
 interface Props {
-  ulClass: string
   items: string[]
+  ulClass?: string
+  variant?: 'web' | 'print'
 }
 
-const { ulClass, items } = Astro.props
+const { items, ulClass = '', variant = 'web' } = Astro.props
 ---
 
-<div class="">
-  <ul class={`${ulClass} my-2`}>
-    {items.map((item, index) => <ListItem>{item}</ListItem>)}
-  </ul>
-</div>
+{
+  variant === 'print' ? (
+    <div>
+      <ul class={`mb-1 mt-1 pl-3 text-sm ${ulClass} marker:text-gray-500`}>
+        {items.map((item) => (
+          <li class="mb-0 mt-0 font-resumesans text-sm">{item}</li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <div>
+      <ul class={`${ulClass} my-2`}>
+        {items.map((item) => (
+          <ListItem>{item}</ListItem>
+        ))}
+      </ul>
+    </div>
+  )
+}

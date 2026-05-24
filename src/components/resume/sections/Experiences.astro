@@ -1,0 +1,38 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import Item from '@/components/resume/Item/Item.astro'
+import ResumeMarkdownBulletWrapper from '@/components/resume/ResumeMarkdownBulletWrapper.astro'
+import { render } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  data: CollectionEntry<'resumeExperiences'>[]
+  variant?: 'web' | 'print'
+}
+
+const { data, variant = 'web' } = Astro.props
+const rendered = await Promise.all(
+  data.map(async (exp) => {
+    const { Content } = await render(exp)
+    return { exp, Content }
+  }),
+)
+---
+
+<SectionBlock title="Experience" variant={variant}>
+  {
+    rendered.map(({ exp, Content }) => (
+      <div class="print:break-inside-avoid">
+        <Item
+          title={exp.data.jobTitle}
+          timeDescription={exp.data.time}
+          description={exp.data.company}
+          variant={variant}
+        />
+        <ResumeMarkdownBulletWrapper variant={variant}>
+          <Content />
+        </ResumeMarkdownBulletWrapper>
+      </div>
+    ))
+  }
+</SectionBlock>

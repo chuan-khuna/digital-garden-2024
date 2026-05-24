@@ -1,4 +1,5 @@
 export const PORTFOLIO = {
+  displayName: 'ALTR',
   firstName: 'Phattharanat',
   name: 'Phattharanat Khunakornophat',
   nickname: 'Chuan',
@@ -13,9 +14,6 @@ export const PORTFOLIO = {
     '🏓 Table Tennis',
     '🎹 Sawano Hiroyuki music enjoyer ',
   ],
-  links: {
-    github: 'https://github.com/chuan-khuna',
-  },
   interests: [
     'Data Visualisation',
     'Functional Programming',

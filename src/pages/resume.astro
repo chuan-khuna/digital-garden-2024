@@ -1,19 +1,32 @@
 ---
 // import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
-// section
-import Experiences from '@/components/resume/sections/web/Experiences.astro'
-import Projects from '@/components/resume/sections/web/Projects.astro'
-import Activity from '@/components/resume/sections/web/Activity.astro'
-import Skills from '@/components/resume/sections/web/Skills.astro'
-import Education from '@/components/resume/sections/web/Education.astro'
-import Interests from '@/components/resume/sections/web/Interests.astro'
-import Now from '@/components/resume/sections/web/Now.astro'
+// sections
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Now from '@/components/resume/sections/Now.astro'
 
 import { getCollection } from 'astro:content'
+import { SITE } from '@/content/site.config.ts'
 
 const headerEntries = await getCollection('resumeHeader')
 const header = headerEntries[0].data
+
+const experiences = await getCollection('resumeExperiences')
+const projects = (await getCollection('resumeProjects')).sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0),
+)
+const activities = await getCollection('resumeActivities')
+const skills = await getCollection('resumeSkills')
+const educations = await getCollection('resumeEducations')
+const interestsEntries = await getCollection('resumeInterests')
+const interests = interestsEntries[0].data.items
+const nowEntries = await getCollection('resumeNow')
+const nowEntry = nowEntries[0]
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 
@@ -21,7 +34,7 @@ const ogImageSlug = 'resume'
 const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
 ---
 
-<BaseLayout title="ALTR's Resume" description="" ogImage={ogImageUrl}>
+<BaseLayout title={`${SITE.displayName}'s Resume`} description="" ogImage={ogImageUrl}>
   <div class="">
     <!-- resume layout -->
     <div
@@ -47,7 +60,7 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
               name="contact-info"
             >
               <p>
-                <text class="font-medium">Github</text>:
+                <span class="font-medium">Github</span>:
                 <a
                   href={header.github}
                   target="_blank"
@@ -58,10 +71,10 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
                 </a>
               </p>
               <p>
-                <text class="font-medium">Email</text>: {header.email}
+                <span class="font-medium">Email</span>: {header.email}
               </p>
               <p>
-                <text class="font-medium">Location</text>: {header.location}
+                <span class="font-medium">Location</span>: {header.location}
               </p>
             </div>
           </div>
@@ -69,15 +82,15 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
       </div>
       <!-- detail -->
       <div class="block space-y-2" name="detail-left">
-        <Experiences />
-        <Projects />
-        <Activity />
+        <Experiences data={experiences} />
+        <Projects data={projects} />
+        <Activity data={activities} />
       </div>
       <div class="block space-y-2" name="detail-right">
-        <Skills />
-        <Education />
-        <Interests />
-        <Now />
+        <Skills data={skills} />
+        <Education data={educations} />
+        <Interests items={interests} />
+        <Now data={nowEntry} />
         <div class="block border p-4">
           <a href="/resume-print" class="font-medium underline">
             Resume - Print version

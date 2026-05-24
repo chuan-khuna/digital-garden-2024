@@ -1,0 +1,15 @@
+---
+import SectionBlock from '@/components/resume/SectionBlock.astro'
+import UnorderedList from '@/components/resume/UnorderedList.astro'
+
+interface Props {
+  items: string[]
+  variant?: 'web' | 'print'
+}
+
+const { items, variant = 'web' } = Astro.props
+---
+
+<SectionBlock title="Interests" variant={variant}>
+  <UnorderedList ulClass="text-sm" items={items} variant={variant} />
+</SectionBlock>
