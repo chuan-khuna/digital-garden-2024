@@ -18,6 +18,12 @@ bunx astro check     # TypeScript diagnostics
 
 **Deploy:** Cloudflare Workers — see `.vault/astro-knowledge/notes/documents/Deployment.md`.
 
+**Install local skills to agent skill folder:**
+
+```bash
+bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p
+```
+
 ---
 
 ## Project Overview
@@ -89,6 +95,7 @@ Use React only for interactive UI, animations (Framer Motion), or browser-only f
 See the **`manage-content`** skill (`project-skills/manage-content/`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats.
 
 **Static data files:**
+
 - `src/content/portfolio.ts` — personal info, links, skills (bento homepage)
 - `src/content/site.config.ts` — site-wide config (display name, title, GitHub URL)
 
