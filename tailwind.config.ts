@@ -7,18 +7,18 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          'Lato',
+          'var(--font-lato)',
           'Metric',
           'MetricHPEXS',
           ...defaultTheme.fontFamily.sans,
         ],
         serif: [
-          'DM Serif Text',
-          'DM Serif Display',
+          'var(--font-dm-serif-text)',
+          'var(--font-dm-serif-display)',
           'Canela',
           ...defaultTheme.fontFamily.serif,
         ],
-        mono: ['Inconsolata', ...defaultTheme.fontFamily.mono],
+        mono: ['var(--font-inconsolata)', ...defaultTheme.fontFamily.mono],
         metric: [
           'Metric',
           'MetricHPEXS',
@@ -26,7 +26,7 @@ export default {
           'MetricHPEXS Bold',
         ],
         canela: ['Canela Deck', 'Canela'],
-        montez: ['Montez', 'cursive'],
+        montez: ['var(--font-montez)', 'cursive'],
         resumesans: [
           'Metric',
           'MetricHPEXS',
