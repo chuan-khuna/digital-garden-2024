@@ -158,48 +158,23 @@ src/
    - Serif: Canela, DM Serif Text
    - Mono: Inconsolata
 
-### React Components
-
-Use React only for interactive UI, animations (Framer Motion), or client-side-only features.
-
-```astro
----
-import { MyComponent } from '@/components/my-component'
----
-
-<MyComponent client:load />
-```
-
----
-
 ## Troubleshooting Display and Animation Issues
 
 When animations, visual effects, or interactive behavior don't work as expected, the cause is often Astro's default static rendering — React components render to HTML on the server and ship no JS unless a `client:*` directive is present.
 
 Reference: https://docs.astro.build/en/reference/directives-reference/#client-directives
 
-| Directive             | When JS loads                  | Use for                                                             |
-| --------------------- | ------------------------------ | ------------------------------------------------------------------- |
-| `client:load`         | Immediately on page load       | Above-the-fold interactive components                               |
-| `client:idle`         | When browser is idle           | Non-critical UI                                                     |
-| `client:visible`      | When component enters viewport | Below-the-fold animations/effects                                   |
-| `client:only="react"` | Immediately, skips SSR         | Components that break during SSR (e.g. use `window`, WebGL, canvas) |
-
-If an animation or effect works in isolation but breaks on the site, first check whether the component has the right `client:*` directive. `client:only` is the escape hatch for anything that relies on browser APIs unavailable during SSR.
-
----
-
 ## LLM-Generated Artifacts
 
-Artifacts produced during AI-assisted sessions (plans, research notes, design decisions, conversation summaries) are stored under:
+Artifacts produced during AI-assisted sessions (plans, research notes, design decisions, conversation summaries) are stored in the Obsidian vault under:
 
 ```
-docs/artifacts/<type>/yyyy-mm-dd-<topic>.md
+.vault/astro-knowledge/notes/llm-artifacts/<category>/yyyy-mm-dd-<topic>.md
 ```
 
-**Type subdirectories:**
+**Example of category subdirectories:**
 
-| Type       | Contents                                             |
+| Category   | Contents                                             |
 | ---------- | ---------------------------------------------------- |
 | `prd`      | Product requirement documents and feature specs      |
 | `plan`     | Implementation plans and architectural decisions     |
@@ -209,11 +184,11 @@ docs/artifacts/<type>/yyyy-mm-dd-<topic>.md
 **Example:**
 
 ```
-docs/artifacts/plan/2026-05-24-new-theme-plan.md
-docs/artifacts/research/2026-05-24-katex-alternatives.md
+.vault/astro-knowledge/notes/llm-artifacts/plan/2026-05-24-new-theme-plan.md
+.vault/astro-knowledge/notes/llm-artifacts/research/2026-05-24-katex-alternatives.md
 ```
 
-When producing an artifact during a session, save it to the appropriate subdirectory. Do not place artifacts directly in `docs/` root.
+When producing an artifact during a session, save it to the appropriate category subdirectory. Do not place artifacts directly in `notes/llm-artifacts/`.
 
 ---
 
