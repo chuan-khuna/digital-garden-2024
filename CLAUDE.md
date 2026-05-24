@@ -67,6 +67,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro'
 - **Tailwind v4:** use `@import 'tailwindcss'` (not `@tailwind base/components/utilities`)
 - **Colors:** oklch CSS variables per theme — never hardcode colors
 - **Fonts:** Sans (Lato, Metric) · Serif (Canela, DM Serif Text) · Mono (Inconsolata)
+- **Font loading:** Astro Font API (`astro.config.mjs` → `fonts[]` with `fontProviders.google()`) + `FontLoader.astro` component injected in `BaseLayout.astro` `<head>`. CSS variables follow `--font-<kebab-name>` convention (e.g. `--font-lato`). Do **not** add Google Fonts `@import` to CSS — configure new fonts in `astro.config.mjs` and add a `<Font cssVariable="..." />` entry in `src/components/FontLoader.astro` instead.
 
 ### React Components
 
