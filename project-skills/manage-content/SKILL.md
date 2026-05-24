@@ -4,8 +4,10 @@ description: >
   Reference skill for managing site content and keeping collection format docs
   up to date. Use this skill when the user asks to:
   - Add or edit a post, note, resume entry, nav item, or OG image
+  - Update the portfolio homepage (bento cards, personal info, grid layout)
   - Update a content collection schema (collection-definitions files)
   - Know the correct frontmatter or JSON format for any content type
+  - Add a new resume collection or scaffold a new resume section
   When a collection definition file changes, update the corresponding reference
   doc in this skill's references/ folder so it always reflects the live schema.
 ---
@@ -28,10 +30,11 @@ This skill has two jobs:
 |---------------|----------------|
 | Overview of all collections and schemas | [`references/content-architecture.md`](./references/content-architecture.md) |
 | Posts or notes (MDX/MD) | [`references/how-to-manage-posts.md`](./references/how-to-manage-posts.md) |
-| Any resume section | [`references/how-to-manage-resume.md`](./references/how-to-manage-resume.md) |
+| Any resume section, or adding a new resume collection | [`references/how-to-manage-resume.md`](./references/how-to-manage-resume.md) |
+| Portfolio homepage bento cards and layout | [`references/how-to-manage-portfolio.md`](./references/how-to-manage-portfolio.md) |
 | Navigation items | [`references/how-to-manage-nav.md`](./references/how-to-manage-nav.md) |
 | OG images | [`references/how-to-manage-og-images.md`](./references/how-to-manage-og-images.md) |
-| Site config / portfolio info | [`references/how-to-manage-site-config.md`](./references/how-to-manage-site-config.md) |
+| Site config / portfolio data file | [`references/how-to-manage-site-config.md`](./references/how-to-manage-site-config.md) |
 
 ---
 
@@ -49,7 +52,7 @@ When any content collection definition or site config file changes, update the m
 | `src/content/collection-definitions/resume.ts` | `references/how-to-manage-resume.md` |
 | `src/content/collection-definitions/nav.ts` | `references/how-to-manage-nav.md` |
 | `src/content/collection-definitions/og-images.ts` | `references/how-to-manage-og-images.md` |
-| `src/content/portfolio.ts` | `references/how-to-manage-site-config.md` |
+| `src/content/portfolio.ts` | `references/how-to-manage-site-config.md` and `references/how-to-manage-portfolio.md` |
 | `src/content/site.config.ts` | `references/how-to-manage-site-config.md` |
 
 If a new collection is added, create a new reference doc and add it to the table above.

@@ -176,3 +176,64 @@ visibility:
 ```
 
 To add a new project: create `src/content/resume/projects/<slug>.md`.
+
+---
+
+## Scaffolding a new resume collection
+
+If you need to add an entirely new collection (e.g. `resumeCertifications`):
+
+### 1. Add the collection definition in `src/content/collection-definitions/resume.ts`
+
+Use the Astro 6 `glob` or `file` loader API:
+
+```ts
+// For a JSON file (single source of truth):
+export const resumeCertificationsCollection = defineCollection({
+  loader: file('src/content/resume/certifications.json'),
+  schema: z.object({
+    title: z.string(),
+    issuer: z.string(),
+    time: z.string(),
+    visibility: visibilitySchema.default({ web: true, resume_print: true, cv_print: true }),
+  }),
+})
+
+// For one-file-per-entry (markdown with frontmatter):
+export const resumeCertificationsCollection = defineCollection({
+  loader: glob({ pattern: '*.md', base: 'src/content/resume/certifications' }),
+  schema: z.object({ ... }),
+})
+```
+
+### 2. Register it in `src/content.config.ts`
+
+```ts
+import { resumeCertificationsCollection } from './content/collection-definitions/resume'
+export const collections = {
+  ...existingCollections,
+  resumeCertifications: resumeCertificationsCollection,
+}
+```
+
+### 3. Fetch at the page level — not inside section components
+
+```astro
+---
+import { getCollection } from 'astro:content'
+const certifications = await getCollection('resumeCertifications')
+---
+<CertificationsSection certifications={certifications} />
+```
+
+Section components receive data as props; they never call `getCollection()` internally.
+
+### 4. Filter by visibility for print pages
+
+```astro
+// resume-print.astro or cv-print.astro
+const certifications = await getCollection('resumeCertifications')
+  .then(c => c.filter(x => x.data.visibility.resume_print))
+```
+
+Use `visibility.cv_print` for the CV print page.
