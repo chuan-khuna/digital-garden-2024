@@ -36,8 +36,8 @@ An **Astro-based digital garden and personal portfolio** combining a Zettelkaste
 ## Special Directories
 
 - **`_references/`** — Local reference repositories (gitignored, not part of the project)
-- **`.vault/astro-knowledge/`** — Obsidian vault for project notes and knowledge (do not modify programmatically)
-- **`skills/`** — Project-specific AI agent skills for managing and extending this site (see `skills/README.md`)
+- **`.vault/`** — Obsidian vault (`astro-knowledge/`) storing the project knowledge base: documentation, architecture notes, and LLM-generated artifacts. Do not modify vault files programmatically — edit through Obsidian or write new notes/artifacts as plain markdown files.
+- **`project-skills/`** — Project-specific AI agent skills for managing and extending this site. Skills are installable locally via `npx skills add <path>` and are auto-loaded by the AI agent when a request matches a skill's description. See `project-skills/README.md` for the full list.
 
 ---
 
@@ -45,7 +45,7 @@ An **Astro-based digital garden and personal portfolio** combining a Zettelkaste
 
 ### Content Collections (`src/content/`)
 
-Defined in `src/content.config.ts` using the Astro 6 `glob`/`file` loader API. For the full collections table, article schema, and static config files, see the **`manage-content`** skill (`skills/manage-content/references/content-architecture.md`).
+Defined in `src/content.config.ts` using the Astro 6 `glob`/`file` loader API. For the full collections table, article schema, and static config files, see the **`manage-content`** skill (`project-skills/manage-content/references/content-architecture.md`).
 
 ### Collection Definitions Structure
 
@@ -102,9 +102,29 @@ This applies to `.astro`, `.tsx`, `.ts` — all source files.
 
 ### File Organization
 
+**Repository root:**
+
+```
+.agents/          Global AI agent skills (managed by the skills CLI)
+.vault/           Obsidian vault (astro-knowledge/) — project docs and LLM artifacts
+_references/      Local reference repos (gitignored)
+project-skills/   Project-specific AI agent skills (installable via npx skills add)
+  add-theme/        SKILL.md — add a new visual theme
+  manage-content/   SKILL.md + references/ — content authoring and schema sync
+public/           Static files served at root (favicon, OG images, robots.txt)
+src/              Application source (see below)
+dist/             Production build output (gitignored)
+astro.config.mjs  Astro config (integrations, adapters, aliases)
+tailwind.config.ts Tailwind v4 config (fonts, typography)
+tsconfig.json     TypeScript config (@/ path alias)
+wrangler.jsonc    Cloudflare Workers deployment config
+```
+
+**`src/` tree:**
+
 ```
 src/
-  assets/         Static assets
+  assets/         Static assets (processed by Astro)
   components/
     bento/        Homepage bento grid
     resume/       Resume page components
@@ -199,12 +219,12 @@ When producing an artifact during a session, save it to the appropriate subdirec
 
 ## Documentation Maintenance
 
-The `skills/manage-content/` skill is the single source of truth for content formats in this project. Whenever you change any of the following, update the relevant files inside `skills/manage-content/` so the skill always reflects the live codebase:
+The `project-skills/manage-content/` skill is the single source of truth for content formats in this project. Whenever you change any of the following, update the relevant files inside `project-skills/manage-content/` so the skill always reflects the live codebase:
 
 - `src/content/collection-definitions/**` — any schema or collection definition change
 - `src/content/portfolio.ts` or `src/content/site.config.ts` — any field added, removed, or renamed
 
-**Rule:** read the changed source, find the matching reference doc in `skills/manage-content/references/`, and rewrite the affected schema block to match. A task is not complete until the skill is in sync with the code.
+**Rule:** read the changed source, find the matching reference doc in `project-skills/manage-content/references/`, and rewrite the affected schema block to match. A task is not complete until the skill is in sync with the code.
 
 ---
 
