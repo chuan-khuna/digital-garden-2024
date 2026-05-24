@@ -22,13 +22,13 @@ docker compose -f bun.compose.yml up -d  # Port 4322
 
 ## Project Overview
 
-An **Astro-based digital garden and personal portfolio** combining a Zettelkasten-style knowledge base with resume/CV pages. Built with Astro 5, React, Tailwind CSS 4, and bidirectional wiki-style linking between notes.
+An **Astro-based digital garden and personal portfolio** combining a Zettelkasten-style knowledge base with resume/CV pages. Built with Astro 6, React, Tailwind CSS 4, and bidirectional wiki-style linking between notes.
 
 **Key Architecture:**
 
-- **Framework:** Astro 5 with MDX, deployed on **Cloudflare Workers** via `@astrojs/cloudflare`
+- **Framework:** Astro 6 with MDX, deployed on **Cloudflare Workers** via `@astrojs/cloudflare`
 - **Styling:** Tailwind CSS 4 (Vite plugin) with CSS variables + multiple themes
-- **Content:** Astro Content Collections (Astro 5 `glob` loader API)
+- **Content:** Astro Content Collections (Astro 6 `glob` loader API)
 - **React:** Used selectively for interactive/animated components
 - **Path Aliases:** `@/*` → `src/*` (see `tsconfig.json`)
 - **Date Formatting:** Use UK format (DD/MM/YYYY)
@@ -45,7 +45,7 @@ An **Astro-based digital garden and personal portfolio** combining a Zettelkaste
 
 ### Content Collections (`src/content/`)
 
-Defined in `src/content.config.ts` using the Astro 5 `glob`/`file` loader API. For the full collections table, article schema, and static config files, see the **`manage-content`** skill (`skills/manage-content/references/content-architecture.md`).
+Defined in `src/content.config.ts` using the Astro 6 `glob`/`file` loader API. For the full collections table, article schema, and static config files, see the **`manage-content`** skill (`skills/manage-content/references/content-architecture.md`).
 
 ### Collection Definitions Structure
 
@@ -71,7 +71,7 @@ src/content/collection-definitions/
 ### Static Data Files
 
 - `src/content/portfolio.ts` — Personal info, links, skills for the bento homepage
-- `src/content/_resume.ts` — Legacy/shared resume data (check before adding new resume data)
+- `src/content/site.config.ts` — Site-wide config (display name, title, GitHub URL)
 
 ---
 
@@ -126,13 +126,24 @@ resume/
   ListItem.astro
   Divider.astro
   PrintPageBreak.astro
-  PrintSectionBlock.astro
-  PrintUnorderedList.astro
   ResumeMarkdownBulletWrapper.astro
+  Item/
+    Item.astro
+    ItemSeparator.astro
   sections/
-    web/     ← web-specific section components
-    print/   ← print-specific section components
-  layout/    ← layout wrappers for print vs web
+    Activity.astro
+    Education.astro
+    Experiences.astro
+    Interests.astro
+    Now.astro
+    Projects.astro
+    Skills.astro
+    print/   ← print-specific overrides
+      Header.astro
+  layout/
+    Content.astro
+    PageLayout.astro
+    WebWrapper.astro
 ```
 
 ---
