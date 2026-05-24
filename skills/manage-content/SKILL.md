@@ -24,8 +24,9 @@ This skill has two jobs:
 
 ## Reference docs
 
-| What changed / what you need | Reference file |
-|------------------------------|----------------|
+| What you need | Reference file |
+|---------------|----------------|
+| Overview of all collections and schemas | [`references/content-architecture.md`](./references/content-architecture.md) |
 | Posts or notes (MDX/MD) | [`references/how-to-manage-posts.md`](./references/how-to-manage-posts.md) |
 | Any resume section | [`references/how-to-manage-resume.md`](./references/how-to-manage-resume.md) |
 | Navigation items | [`references/how-to-manage-nav.md`](./references/how-to-manage-nav.md) |

@@ -37,6 +37,7 @@ An **Astro-based digital garden and personal portfolio** combining a Zettelkaste
 
 - **`_references/`** — Local reference repositories (gitignored, not part of the project)
 - **`.vault/astro-knowledge/`** — Obsidian vault for project notes and knowledge (do not modify programmatically)
+- **`skills/`** — Project-specific AI agent skills for managing and extending this site (see `skills/README.md`)
 
 ---
 
@@ -44,38 +45,7 @@ An **Astro-based digital garden and personal portfolio** combining a Zettelkaste
 
 ### Content Collections (`src/content/`)
 
-Defined in `src/content.config.ts` using the Astro 5 `glob` loader:
-
-| Collection          | Source                               | Description                                |
-| ------------------- | ------------------------------------ | ------------------------------------------ |
-| `posts`             | `src/content/posts/**/*.{md,mdx}`    | Digital garden notes with wiki-style links |
-| `notes`             | `src/content/notes/**/*.{md,mdx}`    | Shorter notes (same schema as posts)       |
-| `navItems`          | `src/content/nav-items.json`         | Navigation configuration                   |
-| `ogImages`          | `src/content/og-images.json`         | OG image configs                           |
-| `resumeSkills`      | `src/content/resume/skills.json`     | Resume skills                              |
-| `resumeProjects`    | `src/content/resume/projects/`       | Resume projects                            |
-| `resumeExperiences` | `src/content/resume/experiences/`    | Resume experience entries                  |
-| `resumeEducations`  | `src/content/resume/educations.json` | Resume education                           |
-| `resumeActivities`  | `src/content/resume/activities.json` | Resume activities                          |
-| `resumeInterests`   | `src/content/resume/interests.json`  | Resume interests                           |
-| `resumeNow`         | `src/content/resume/now.json`        | "What I'm doing now" section               |
-| `resumeHeader`      | `src/content/resume/header.json`     | Resume header/contact info                 |
-
-**Article schema** (shared by `posts` and `notes`, defined in `src/content/collection-definitions/common-fields/_article.ts`):
-
-```typescript
-{
-  title: string
-  description?: string
-  date?: string         // created date
-  updated?: string      // last updated date
-  aliases?: string[]    // alternative names for backlink matching
-  tags?: string[]
-  stage: 'seedling' | 'budding' | 'evergreen'
-  ogStyle: ...          // OG image style choice
-  llmAssisted?: boolean // default: false
-}
-```
+Defined in `src/content.config.ts` using the Astro 5 `glob`/`file` loader API. For the full collections table, article schema, and static config files, see the **`manage-content`** skill (`skills/manage-content/references/content-architecture.md`).
 
 ### Collection Definitions Structure
 
@@ -252,20 +222,7 @@ src/
 
 ### Content Writing
 
-**Post frontmatter:**
-
-```yaml
----
-title: 'Post Title'
-description: 'Optional description'
-date: '2024-12-10'
-tags: ['tag1', 'tag2']
-stage: 'seedling' # seedling | budding | evergreen
-aliases: ['alt-name'] # optional, for backlink matching
-ogStyle: 'default' # OG image style
-llmAssisted: false # mark if AI-assisted
----
-```
+For post/note frontmatter format, field descriptions, and examples, see the **`manage-content`** skill (`skills/manage-content/references/how-to-manage-posts.md`).
 
 Use `[[wiki-links]]` within post content. Math: inline `$...$`, block `$$...$$`.
 
