@@ -1,8 +1,24 @@
 # Digital Garden 2024 — AI Agent Instructions
 
-## Package Manager
+## Commands
 
-Use `bun` as the package manager.
+Use `bun` as the package manager (preferred). `npm` and `npx` are acceptable alternatives.
+
+```bash
+bun install          # install dependencies
+bun run dev          # dev server at localhost:4321
+bun run build        # production build to ./dist/
+bun run preview      # preview production build
+bun run format       # Prettier with cache
+bunx astro add ...   # add Astro integrations (e.g. tailwind, react)
+bunx astro check     # TypeScript diagnostics
+```
+
+**Docker (Bun-based):**
+
+```bash
+docker compose -f bun.compose.yml up -d  # Port 4322
+```
 
 ## Project Overview
 
@@ -60,6 +76,27 @@ Defined in `src/content.config.ts` using the Astro 5 `glob` loader:
   llmAssisted?: boolean // default: false
 }
 ```
+
+### Collection Definitions Structure
+
+Each collection is defined in its own file under `src/content/collection-definitions/` and imported into `src/content.config.ts`:
+
+```
+src/content/collection-definitions/
+  post.ts        # posts collection (MDX/MD digital garden notes)
+  note.ts        # notes collection (shorter MDX/MD notes)
+  resume.ts      # all resume-related collections (skills, projects, experiences, etc.)
+  nav.ts         # navigation items
+  og-images.ts   # OG image configs
+  common-fields/
+    _article.ts        # shared article Zod schema (used by post + note)
+    _og-styles.ts      # OG style enum
+    _evergreen-stages.ts # stage enum (seedling/budding/evergreen)
+```
+
+- Each file exports a named `defineCollection(...)` constant matching the collection key.
+- `src/content.config.ts` only imports those exports and re-exports them via `collections`.
+- When adding a new collection: create `src/content/collection-definitions/<entity>.ts`, export the collection, then add it to `collections` in `src/content.config.ts`.
 
 ### Static Data Files
 
@@ -146,12 +183,6 @@ bun run preview  # Preview production build
 bun run format   # Prettier with cache
 ```
 
-**Docker (Bun-based):**
-
-```bash
-docker compose -f bun.compose.yml up -d  # Port 4322
-```
-
 ### Deployment
 
 **Platform:** Cloudflare Workers (primary), also configured for Netlify and Vercel
@@ -168,13 +199,20 @@ docker compose -f bun.compose.yml up -d  # Port 4322
 
 ### Imports
 
-Always use `@/` alias for internal imports:
+Always use the `@/` alias instead of relative paths when importing files or components. The alias maps to `src/` and is configured in both `tsconfig.json` and `astro.config.mjs`.
 
 ```typescript
+// ✅ correct
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { PORTFOLIO } from '@/content/portfolio.ts'
 import { getCollection } from 'astro:content'
+
+// ❌ avoid
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { PORTFOLIO } from '../../../content/portfolio.ts'
 ```
+
+This applies to `.astro`, `.tsx`, `.ts` — all source files.
 
 ### File Organization
 
@@ -292,6 +330,65 @@ Configured in `astro.config.mjs`:
 ### Modify resume content
 
 Edit the relevant JSON file in `src/content/resume/` — changes apply to both web and print.
+
+---
+
+## Troubleshooting Display and Animation Issues
+
+When animations, visual effects, or interactive behavior don't work as expected, the cause is often Astro's default static rendering — React components render to HTML on the server and ship no JS unless a `client:*` directive is present.
+
+Reference: https://docs.astro.build/en/reference/directives-reference/#client-directives
+
+| Directive             | When JS loads                  | Use for                                                              |
+| --------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| `client:load`         | Immediately on page load       | Above-the-fold interactive components                                |
+| `client:idle`         | When browser is idle           | Non-critical UI                                                      |
+| `client:visible`      | When component enters viewport | Below-the-fold animations/effects                                    |
+| `client:only="react"` | Immediately, skips SSR         | Components that break during SSR (e.g. use `window`, WebGL, canvas) |
+
+If an animation or effect works in isolation but breaks on the site, first check whether the component has the right `client:*` directive. `client:only` is the escape hatch for anything that relies on browser APIs unavailable during SSR.
+
+---
+
+## LLM-Generated Artifacts
+
+Artifacts produced during AI-assisted sessions (plans, research notes, design decisions, conversation summaries) are stored under:
+
+```
+docs/artifacts/<type>/yyyy-mm-dd-<topic>.md
+```
+
+**Type subdirectories:**
+
+| Type       | Contents                                            |
+| ---------- | --------------------------------------------------- |
+| `prd`      | Product requirement documents and feature specs     |
+| `plan`     | Implementation plans and architectural decisions    |
+| `research` | Research notes, reference analysis, tech comparisons |
+| `design`   | Design decisions, UX notes, visual direction        |
+
+**Example:**
+
+```
+docs/artifacts/plan/2026-05-24-new-theme-plan.md
+docs/artifacts/research/2026-05-24-katex-alternatives.md
+```
+
+When producing an artifact during a session, save it to the appropriate subdirectory. Do not place artifacts directly in `docs/` root.
+
+---
+
+## Documentation Maintenance
+
+Whenever you edit or create files in `src/content/collection-definitions/` or `src/content/portfolio.ts`, update the corresponding documentation:
+
+| Source changed | Doc to update |
+| --- | --- |
+| `src/content/collection-definitions/<entity>.ts` | `docs/how-to-add-content/<entity>.md` (create if missing) |
+| `src/content/portfolio.ts` | `docs/how-to-config-site.md` |
+| `src/content/_resume.ts` or `src/content/resume/` | `docs/how-to-add-content/resume.md` (create if missing) |
+
+Keep docs accurate — if a field is added, removed, or renamed in the source, the doc must reflect that before the task is considered done.
 
 ---
 
