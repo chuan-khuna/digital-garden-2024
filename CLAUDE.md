@@ -339,11 +339,11 @@ When animations, visual effects, or interactive behavior don't work as expected,
 
 Reference: https://docs.astro.build/en/reference/directives-reference/#client-directives
 
-| Directive             | When JS loads                  | Use for                                                              |
-| --------------------- | ------------------------------ | -------------------------------------------------------------------- |
-| `client:load`         | Immediately on page load       | Above-the-fold interactive components                                |
-| `client:idle`         | When browser is idle           | Non-critical UI                                                      |
-| `client:visible`      | When component enters viewport | Below-the-fold animations/effects                                    |
+| Directive             | When JS loads                  | Use for                                                             |
+| --------------------- | ------------------------------ | ------------------------------------------------------------------- |
+| `client:load`         | Immediately on page load       | Above-the-fold interactive components                               |
+| `client:idle`         | When browser is idle           | Non-critical UI                                                     |
+| `client:visible`      | When component enters viewport | Below-the-fold animations/effects                                   |
 | `client:only="react"` | Immediately, skips SSR         | Components that break during SSR (e.g. use `window`, WebGL, canvas) |
 
 If an animation or effect works in isolation but breaks on the site, first check whether the component has the right `client:*` directive. `client:only` is the escape hatch for anything that relies on browser APIs unavailable during SSR.
@@ -360,12 +360,12 @@ docs/artifacts/<type>/yyyy-mm-dd-<topic>.md
 
 **Type subdirectories:**
 
-| Type       | Contents                                            |
-| ---------- | --------------------------------------------------- |
-| `prd`      | Product requirement documents and feature specs     |
-| `plan`     | Implementation plans and architectural decisions    |
+| Type       | Contents                                             |
+| ---------- | ---------------------------------------------------- |
+| `prd`      | Product requirement documents and feature specs      |
+| `plan`     | Implementation plans and architectural decisions     |
 | `research` | Research notes, reference analysis, tech comparisons |
-| `design`   | Design decisions, UX notes, visual direction        |
+| `design`   | Design decisions, UX notes, visual direction         |
 
 **Example:**
 
@@ -382,11 +382,11 @@ When producing an artifact during a session, save it to the appropriate subdirec
 
 Whenever you edit or create files in `src/content/collection-definitions/` or `src/content/portfolio.ts`, update the corresponding documentation:
 
-| Source changed | Doc to update |
-| --- | --- |
-| `src/content/collection-definitions/<entity>.ts` | `docs/how-to-add-content/<entity>.md` (create if missing) |
-| `src/content/portfolio.ts` | `docs/how-to-config-site.md` |
-| `src/content/_resume.ts` or `src/content/resume/` | `docs/how-to-add-content/resume.md` (create if missing) |
+| Source changed                                    | Doc to update                                             |
+| ------------------------------------------------- | --------------------------------------------------------- |
+| `src/content/collection-definitions/<entity>.ts`  | `docs/how-to-add-content/<entity>.md` (create if missing) |
+| `src/content/portfolio.ts`                        | `docs/how-to-config-site.md`                              |
+| `src/content/_resume.ts` or `src/content/resume/` | `docs/how-to-add-content/resume.md` (create if missing)   |
 
 Keep docs accurate — if a field is added, removed, or renamed in the source, the doc must reflect that before the task is considered done.
 
