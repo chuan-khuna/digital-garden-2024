@@ -2,27 +2,9 @@
 
 ## Commands
 
-Use `bun` as the package manager (preferred). `npm` and `npx` are acceptable alternatives.
+Use `bun` as the package manager. Deploy target: Cloudflare Workers.
 
-```bash
-bun install          # install dependencies
-bun run dev          # dev server at localhost:4321
-bun run build        # production build to ./dist/
-bun run preview      # preview production build
-bun run format       # Prettier with cache
-bunx astro add ...   # add Astro integrations
-bunx astro check     # TypeScript diagnostics
-```
-
-**Docker:** `docker compose -f bun.compose.yml up -d` (Port 4322)
-
-**Deploy:** Cloudflare Workers — see `.vault/astro-knowledge/notes/documents/Deployment.md`.
-
-**Install local skills to agent skill folder:**
-
-```bash
-bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p
-```
+**Install local skills:** `bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p`
 
 ---
 
