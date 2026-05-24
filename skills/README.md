@@ -11,6 +11,7 @@ Skills are picked up automatically by the AI agent — when your request matches
 | Skill                               | Description                                                                                                                        |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | [`add-theme`](./add-theme/SKILL.md) | Add a new visual theme — creates the CSS preset, imports it in `global.css`, and wires up the toggle button in `ThemeToggle.astro` |
+| [`manage-content`](./manage-content/SKILL.md) | Reference for content authoring formats (posts, notes, resume, nav, OG images, site config) and schema sync rule — update reference docs when collection definitions change |
 
 ---
 

@@ -126,12 +126,7 @@ src/content/collection-definitions/
 - **CSS Variables:** `src/styles/presets/nzk.css`, `nexus.css`, `dark.css` — oklch color variables
 - **Persistence:** localStorage → class on `<html>`
 
-**Adding a new theme:**
-
-1. Create `src/styles/presets/themename.css` with oklch CSS variables
-2. Import in `src/styles/global.css`
-3. Add to `themes` array in `ThemeToggle.astro`
-4. Add the toggle button with `id="themenameButton"`
+To add a new theme, use the **`add-theme`** skill (`skills/add-theme/SKILL.md`).
 
 ### 3. Bento Grid Homepage
 
@@ -317,9 +312,7 @@ Configured in `astro.config.mjs`:
 
 ### Add a new theme
 
-1. `src/styles/presets/themename.css` — define all CSS variables
-2. `@import './presets/themename.css'` in `src/styles/global.css`
-3. Add to `themes` array + button in `src/components/ThemeToggle.astro`
+Use the **`add-theme`** skill (`skills/add-theme/SKILL.md`) — it covers all four required changes with full CSS variable templates and a checklist.
 
 ### Add a bento card to homepage
 
@@ -380,15 +373,12 @@ When producing an artifact during a session, save it to the appropriate subdirec
 
 ## Documentation Maintenance
 
-Whenever you edit or create files in `src/content/collection-definitions/` or `src/content/portfolio.ts`, update the corresponding documentation:
+The `skills/manage-content/` skill is the single source of truth for content formats in this project. Whenever you change any of the following, update the relevant files inside `skills/manage-content/` so the skill always reflects the live codebase:
 
-| Source changed                                    | Doc to update                                             |
-| ------------------------------------------------- | --------------------------------------------------------- |
-| `src/content/collection-definitions/<entity>.ts`  | `docs/how-to-add-content/<entity>.md` (create if missing) |
-| `src/content/portfolio.ts`                        | `docs/how-to-config-site.md`                              |
-| `src/content/_resume.ts` or `src/content/resume/` | `docs/how-to-add-content/resume.md` (create if missing)   |
+- `src/content/collection-definitions/**` — any schema or collection definition change
+- `src/content/portfolio.ts` or `src/content/site.config.ts` — any field added, removed, or renamed
 
-Keep docs accurate — if a field is added, removed, or renamed in the source, the doc must reflect that before the task is considered done.
+**Rule:** read the changed source, find the matching reference doc in `skills/manage-content/references/`, and rewrite the affected schema block to match. A task is not complete until the skill is in sync with the code.
 
 ---
 
