@@ -203,15 +203,6 @@ The `project-skills/manage-content/` skill is the single source of truth for con
 
 ---
 
-## Testing & Debugging
-
-No formal test suite. Manual testing:
-
-1. `bun run dev` — check browser console
-2. Test theme switching persists across pages
-3. Verify `[[wiki-links]]` resolve correctly
-4. Check print styles at `/resume-print` and `/cv-print`
-
 **Common issues:**
 
 - **Missing backlinks:** Add `aliases` to frontmatter if the note is referenced by a different name
