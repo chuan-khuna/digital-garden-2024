@@ -38,7 +38,7 @@ An **Astro-based digital garden and personal portfolio** — Zettelkasten-style 
 .agents/           Global AI agent skills
 .vault/            Obsidian vault (astro-knowledge/) — docs and LLM artifacts
 _references/       Local reference repos (gitignored)
-project-skills/    Project-specific skills (npx skills add <path>)
+project-skills/    Project-specific skills (bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p)
 src/
   assets/          Static assets
   components/      bento/, resume/, post/, ui/, og/, aceternity/
