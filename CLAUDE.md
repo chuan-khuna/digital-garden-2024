@@ -2,9 +2,18 @@
 
 ## Commands
 
-Use `bun` as the package manager. Deploy target: Cloudflare Workers.
+Use `bun` as the package manager (preferred). `npm` and `npx` are acceptable alternatives.
 
-**Install local skills:** `bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p`
+```bash
+bun install          # install dependencies
+bun run dev          # dev server at localhost:4321
+```
+
+**Install local skills to agent skill folder:**
+
+```bash
+bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p
+```
 
 ---
 
