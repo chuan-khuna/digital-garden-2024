@@ -2,7 +2,7 @@
 @import './presets/nzk.css';
 @import './presets/dark.css';
 @import './presets/nexus.css';
-@import './global_print.css';
+@import './print.css';
 @import './obsidian_callout.css';
 @import './flexible_mark.css';
 
