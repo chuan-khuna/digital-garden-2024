@@ -4,7 +4,7 @@ import Card from '@/components/bento/card.astro'
 
 // portfolio sections
 import { PORTFOLIO } from '@/content/portfolio.ts'
-import { SITE } from '@/content/site.config.ts'
+import { site } from '@/content/site.config.ts'
 import IntroCard from '@/components/bento/portfolio-bento/IntroCard.astro'
 import AboutMe from '@/components/bento/portfolio-bento/AboutMe.astro'
 import Lorem from '@/components/bento/portfolio-bento/Lorem.astro'
@@ -16,7 +16,7 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
 ---
 
 <BaseLayout
-  title={SITE.displayName}
+  title={site.displayName}
   description="Hi, I'm Phattharanat. An ordinary Data Scientist who loves SAWANO Hiroyuki's music"
   ogImage={ogImageUrl}
 >

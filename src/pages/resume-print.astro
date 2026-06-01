@@ -1,6 +1,6 @@
 ---
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
-import { SITE } from '@/content/site.config.ts'
+import { site } from '@/content/site.config.ts'
 
 // layout
 import PageLayout from '@/components/resume/layout/PageLayout.astro'
@@ -33,7 +33,7 @@ const interestsEntries = await getCollection('resumeInterests')
 const interests = interestsEntries[0].data.items
 ---
 
-<BaseLayoutPrint title={`${SITE.displayName}'s Resume`} description="">
+<BaseLayoutPrint title={`${site.displayName}'s Resume`} description="">
   <WebWrapper className="flex min-h-screen flex-col justify-center">
     <PageLayout className="px-8 py-4 font-resumesans">
       <Content
