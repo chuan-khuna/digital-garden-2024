@@ -103,35 +103,35 @@ Add an `@import` line to `src/styles/global.css`:
 
 ---
 
-## Step 3 — Register in ThemeToggle
+## Step 3 — Register in `site.config.ts`
 
-Edit `src/components/ThemeToggle.astro`:
+All theme registration now lives in `src/data/site.config.ts`. Add an entry to the `themes` array:
 
-**1. Add to the themes array:**
-
-```astro
-const themes = [defaultTheme, 'nexus', 'dark', 'forest']
-```
-
-**2. Import an icon** (from `lucide-react`):
-
-```astro
-import { Moon, Sun, Flame, TreePine } from 'lucide-react'
+```ts
+export const themes = [
+  // ...existing themes
+  {
+    preset: 'forest',   // must match the CSS class name
+    name: 'Forest',     // display name
+    default: false,
+    syntaxTheme: 'catppuccin-latte',
+    icon: 'TreePine',   // PascalCase lucide-react export name
+  },
+]
 ```
 
 Browse icons at [lucide.dev](https://lucide.dev/).
 
-**3. Add a button** — the `id` must follow `<themeName>Button`:
+**Then add the named import to `ThemeToggle.astro`:**
 
-```astro
-<Button variant="ghost" size="icon" id="themeToggle">
-  <Sun   className={themeButtonCss} id={`${defaultTheme}Button`} />
-  <Flame className={themeButtonCss} id="nexusButton" />
-  <Moon  className={themeButtonCss} id="darkButton" />
-  <TreePine className={themeButtonCss} id="forestButton" />
-  <span class="sr-only">Toggle theme</span>
-</Button>
+```ts
+import { Sun, Moon, Flame, TreePine, type LucideIcon } from 'lucide-react'
+
+const ICON_MAP: Record<string, LucideIcon> = { Sun, Moon, Flame, TreePine }
 ```
+
+> [!info] Why named imports?
+> `import * as Icons from 'lucide-react'` breaks Astro's SSR renderer because the namespace includes non-component exports. Named imports + `ICON_MAP` is the correct pattern here.
 
 ---
 
@@ -166,12 +166,13 @@ All themes must define these variables:
 
 > [!warning] Theme not showing up
 > - Check the CSS file is imported in `global.css`
-> - Verify the class name in the CSS file matches the theme name exactly (e.g. `.forest` for `'forest'`)
-> - Ensure the name is in the `themes` array in `ThemeToggle.astro`
+> - Verify the class name in the CSS file matches `preset` exactly (e.g. `.forest` for `'forest'`)
+> - Ensure the entry is in the `themes` array in `src/data/site.config.ts`
 
 > [!warning] Theme button not appearing
-> - Check the button `id` follows the pattern `<themeName>Button`
-> - Verify the icon is imported from `lucide-react`
+> - Check the button `id` follows the pattern `<preset>Button` (auto-generated from `THEME_CONFIG`)
+> - Verify the `icon` string matches a PascalCase lucide export (e.g. `'TreePine'`, not `'tree-pine'`)
+> - Verify the icon is added to both the named import and `ICON_MAP` in `ThemeToggle.astro`
 > - Restart the dev server
 
 > [!bug] Colours look wrong
