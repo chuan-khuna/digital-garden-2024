@@ -47,11 +47,11 @@ For full field descriptions and authoring examples → [`how-to-manage-posts.md`
 
 ---
 
-## Static config files (not Astro collections)
+## Static config files (not Astro collections, live in `src/data/`)
 
 | File | Purpose |
 |------|---------|
-| `src/content/site.config.ts` | Global site metadata (`SITE.siteTitle`, etc.) |
-| `src/content/portfolio.ts` | Personal info for the bento homepage (`PORTFOLIO`) |
+| `src/data/site.config.ts` | Global site metadata (`SITE.siteTitle`, etc.) |
+| `src/data/portfolio.ts` | Personal info for the bento homepage (`PORTFOLIO`) |
 
 For field details → [`how-to-manage-site-config.md`](./how-to-manage-site-config.md)

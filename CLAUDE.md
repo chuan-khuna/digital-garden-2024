@@ -40,6 +40,7 @@ src/
   assets/          Static assets
   components/      bento/, resume/, post/, ui/, og/, aceternity/
   content/         collection-definitions/, posts/, notes/, resume/
+  data/            Static config files (site.config.ts, portfolio.ts)
   layouts/         BaseLayout, PostLayout, BaseLayoutPrint
   lib/             Browser utilities
   pages/           File-based routing
@@ -86,12 +87,12 @@ Use React only for interactive UI, animations (Framer Motion), or browser-only f
 
 See the **`manage-content`** skill (`project-skills/manage-content/`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats.
 
-**Static data files:**
+**Static data files** (in `src/data/`, imported directly — not Astro collections):
 
-- `src/content/portfolio.ts` — personal info, links, skills (bento homepage)
-- `src/content/site.config.ts` — site-wide config (display name, title, GitHub URL)
+- `src/data/portfolio.ts` — personal info, links, skills (bento homepage)
+- `src/data/site.config.ts` — site-wide config (display name, title, GitHub URL)
 
-**Documentation rule:** whenever you change `src/content/collection-definitions/**`, `portfolio.ts`, or `site.config.ts`, update the matching reference doc in `project-skills/manage-content/references/`. A task is not complete until the skill is in sync.
+**Documentation rule:** whenever you change `src/content/collection-definitions/**`, `src/data/portfolio.ts`, or `src/data/site.config.ts`, update the matching reference doc in `project-skills/manage-content/references/`. A task is not complete until the skill is in sync.
 
 ---
 

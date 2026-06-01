@@ -2,7 +2,7 @@ import type { APIContext } from 'astro'
 import { getCollection } from 'astro:content'
 
 import { generateOgImage } from '@/lib/generate-og-image'
-import { site } from '@/content/site.config'
+import { site } from '@/data/site.config'
 
 export const prerender = true
 

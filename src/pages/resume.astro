@@ -11,7 +11,7 @@ import Interests from '@/components/resume/sections/Interests.astro'
 import Now from '@/components/resume/sections/Now.astro'
 
 import { getCollection } from 'astro:content'
-import { site } from '@/content/site.config.ts'
+import { site } from '@/data/site.config'
 
 const headerEntries = await getCollection('resumeHeader')
 const header = headerEntries[0].data

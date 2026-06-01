@@ -1,10 +1,10 @@
 ---
-import { PORTFOLIO } from '@/content/portfolio.ts'
+import { portfolio } from '@/data/portfolio'
 ---
 
 <div class="animate-appear flex flex-col gap-2">
   <p class="text-md mb-1 font-medium">
-    {PORTFOLIO.headLine}
+    {portfolio.headLine}
   </p>
 
   <hr />
@@ -12,7 +12,7 @@ import { PORTFOLIO } from '@/content/portfolio.ts'
   <p class="text-sm font-light">I am currently interested in:</p>
   <ul class="list-inside list-disc">
     {
-      PORTFOLIO.interests.map((topic) => {
+      portfolio.interests.map((topic) => {
         return (
           <li>
             <span>{topic}</span>

@@ -1,15 +1,15 @@
 # How to Manage the Portfolio Page
 
-The portfolio homepage is a **12-column bento grid** built in `src/pages/index.astro`. Personal content is sourced from `src/content/portfolio.ts`; layout is controlled by `colSpan`/`rowSpan` props on each `<Card>`.
+The portfolio homepage is a **12-column bento grid** built in `src/pages/index.astro`. Personal content is sourced from `src/data/portfolio.ts`; layout is controlled by `colSpan`/`rowSpan` props on each `<Card>`.
 
 ---
 
-## Data file — `src/content/portfolio.ts`
+## Data file — `src/data/portfolio.ts`
 
 All personal content lives here. Edit this first for any content changes.
 
 ```ts
-export const PORTFOLIO = {
+export const portfolio = {
   displayName: string,      // short name for display (e.g. 'ALTR')
   firstName: string,
   name: string,             // full legal name
@@ -62,7 +62,7 @@ Card components live in `src/components/bento/portfolio-bento/`. Each component 
 1. Create `src/components/bento/portfolio-bento/YourCard.astro`
 2. Import `PORTFOLIO` if you need data:
    ```ts
-   import { PORTFOLIO } from '@/content/portfolio.ts'
+   import { portfolio } from '@/data/portfolio'
    ```
 3. In `src/pages/index.astro`, import and place inside a `<Card>` wrapper:
    ```astro

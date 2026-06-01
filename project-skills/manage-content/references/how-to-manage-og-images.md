@@ -20,20 +20,20 @@ OG image configs define the Open Graph preview cards for specific pages (e.g. ho
 ]
 ```
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | string | ✅ | Page title shown in OG card |
-| `description` | string | ✅ | Short description shown in OG card |
-| `slug` | string | ✅ | URL slug used to match the page (e.g. `index`, `resume`, `uses`) |
-| `ogStyle` | enum | optional | Visual style of the OG image. Default: `'default'` |
+| Field         | Type   | Required | Description                                                      |
+| ------------- | ------ | -------- | ---------------------------------------------------------------- |
+| `title`       | string | ✅       | Page title shown in OG card                                      |
+| `description` | string | ✅       | Short description shown in OG card                               |
+| `slug`        | string | ✅       | URL slug used to match the page (e.g. `index`, `resume`, `uses`) |
+| `ogStyle`     | enum   | optional | Visual style of the OG image. Default: `'default'`               |
 
 ### `ogStyle` options
 
-| Value | Description |
-|-------|-------------|
-| `default` | Light theme OG image |
-| `default-dark` | Dark theme OG image |
-| `particle` | Animated particle effect background |
+| Value          | Description                         |
+| -------------- | ----------------------------------- |
+| `default`      | Light theme OG image                |
+| `default-dark` | Dark theme OG image                 |
+| `particle`     | Animated particle effect background |
 
 ---
 
@@ -45,11 +45,11 @@ OG image configs define the Open Graph preview cards for specific pages (e.g. ho
 
 ## Current OG image configs
 
-| slug | title | ogStyle |
-|------|-------|---------|
-| `index` | `{{siteTitle}}` | `default-dark` |
-| `resume` | Resume | `default` |
-| `uses` | Uses | `particle` |
+| slug     | title           | ogStyle        |
+| -------- | --------------- | -------------- |
+| `index`  | `{{siteTitle}}` | `default-dark` |
+| `resume` | Resume          | `default`      |
+| `uses`   | Uses            | `particle`     |
 
 ---
 

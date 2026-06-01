@@ -4,12 +4,12 @@ Two TypeScript files control site-wide configuration. Neither is an Astro conten
 
 ---
 
-## `src/content/site.config.ts` — Global site metadata
+## `src/data/site.config.ts` — Global site metadata
 
 Used for the `<title>` tag, OG metadata, and any place the site's name/URL is referenced.
 
 ```typescript
-export const SITE = {
+export const site = {
   displayName: string,   // short display name (e.g. 'ALTR')
   siteTitle: string,     // full site title (e.g. "ALTR's Digital Garden")
   github: string,        // GitHub profile URL
@@ -20,12 +20,12 @@ export const SITE = {
 
 ---
 
-## `src/content/portfolio.ts` — Personal info for the homepage bento
+## `src/data/portfolio.ts` — Personal info for the homepage bento
 
 Used by the bento grid homepage (`src/pages/index.astro`) and bento card components under `src/components/bento/portfolio-bento/`.
 
 ```typescript
-export const PORTFOLIO = {
+export const portfolio = {
   displayName: string,      // short name shown in intro card
   firstName: string,
   name: string,             // full name

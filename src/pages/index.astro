@@ -3,8 +3,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 import Card from '@/components/bento/card.astro'
 
 // portfolio sections
-import { PORTFOLIO } from '@/content/portfolio.ts'
-import { site } from '@/content/site.config.ts'
+import { portfolio } from '@/data/portfolio'
+import { site } from '@/data/site.config'
 import IntroCard from '@/components/bento/portfolio-bento/IntroCard.astro'
 import AboutMe from '@/components/bento/portfolio-bento/AboutMe.astro'
 import Lorem from '@/components/bento/portfolio-bento/Lorem.astro'
@@ -59,7 +59,7 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
       rowSpan="md:row-span-1 lg:row-span-2"
       title="My time"
     >
-      <TimeZoneCard timezone={PORTFOLIO.timezone} />
+      <TimeZoneCard timezone={portfolio.timezone} />
     </Card>
 
     <Card

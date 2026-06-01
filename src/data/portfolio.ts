@@ -1,4 +1,4 @@
-export const PORTFOLIO = {
+export const portfolio = {
   displayName: 'ALTR',
   firstName: 'Phattharanat',
   name: 'Phattharanat Khunakornophat',
