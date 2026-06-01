@@ -1,19 +1,19 @@
 # How to Manage Themes
 
-Themes are CSS custom properties (OKLCH variables) toggled by a class on `<html>`. Theme registration is split between a CSS file, `src/styles/global.css`, and `src/data/site.config.ts`.
+Themes are CSS custom properties (OKLCH variables) toggled by a `data-color-preset` attribute on `<html>`. Theme registration is split between a CSS preset file, `src/styles/globals.css`, and `src/data/site.config.ts`.
 
 ---
 
 ## How the system works
 
 ```
-src/styles/theme_<name>.css   ← CSS variables scoped to .<name> class
+src/styles/presets/<name>.css     ← CSS variables scoped to :root[data-color-preset='<name>']
     ↓ imported by
-src/styles/global.css         ← loaded by all layouts
+src/styles/globals.css            ← loaded by all layouts
     ↓ registered in
-src/data/site.config.ts       ← themes array drives ThemeToggle
+src/data/site.config.ts           ← themes array drives ThemeToggle
     ↓ toggled by
-src/components/ThemeToggle.astro
+src/components/ThemeToggle.astro  ← sets data-color-preset on <html>, persists to localStorage
 ```
 
 ---
@@ -22,19 +22,19 @@ src/components/ThemeToggle.astro
 
 ### Step 1 — Create the CSS file
 
-Create `src/styles/theme_<name>.css`. The class name must match the `preset` value you'll register.
+Create `src/styles/presets/<name>.css`. The `data-color-preset` value must match the `preset` key you register.
 
-Copy `theme_nzk.css` (light) or `theme_dark.css` (dark) as a starting point and adjust the palette variables.
+Copy `presets/nzk.css` (light) or `presets/dark.css` (dark) as a starting point and adjust the values.
 
-Values are `lightness chroma hue` **without** the `oklch()` wrapper — `global.css` wraps them via `oklch(var(--variable))`.
+Values use the full `oklch()` wrapper, e.g. `oklch(0.977 0.0085 84.57)`.
 
-### Step 2 — Import in `global.css`
+### Step 2 — Import in `globals.css`
 
 ```css
-@import './theme_dark.css';
-@import './theme_nexus.css';
-@import './theme_nzk.css';
-@import './theme_forest.css';   /* ← add here */
+@import './presets/nzk.css';
+@import './presets/dark.css';
+@import './presets/nexus.css';
+@import './presets/forest.css';   /* ← add here */
 ```
 
 ### Step 3 — Register in `src/data/site.config.ts`
@@ -43,7 +43,7 @@ Values are `lightness chroma hue` **without** the `oklch()` wrapper — `global.
 export const themes = [
   // ...existing themes
   {
-    preset: 'forest',         // must match the CSS class name exactly
+    preset: 'forest',         // must match the data-color-preset value exactly
     name: 'Forest',           // display name in the toggle
     default: false,
     syntaxTheme: 'catppuccin-latte',  // or 'catppuccin-macchiato' for dark themes
@@ -105,6 +105,6 @@ Every theme must define all of these:
 
 ## Troubleshooting
 
-- **Theme not showing:** CSS class name must match `preset` exactly (e.g. `.forest` for `'forest'`). Check the `@import` is in `global.css`.
+- **Theme not showing:** The `data-color-preset` value in the CSS selector must match `preset` exactly (e.g. `data-color-preset='forest'` for `'forest'`). Check the `@import` is in `globals.css`.
 - **Toggle button missing:** Verify `icon` is a valid PascalCase lucide export and is added to both the named import and `ICON_MAP` in `ThemeToggle.astro`.
-- **Colours wrong:** Values must be `L C H` without `oklch()` wrapper. Order: lightness (0–1), chroma (0–0.4), hue (0–360).
+- **Colours wrong:** Values must use the full `oklch()` wrapper. Order: lightness (0–1), chroma (0–0.4), hue (0–360).
