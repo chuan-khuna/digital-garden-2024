@@ -1,27 +1,31 @@
 ---
-import { Moon, Sun, Leaf, Flame } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Sun, Moon, Flame, type LucideIcon } from 'lucide-react'
+import { THEMES as THEME_CONFIG } from '@/content/site.config'
 
-// theme list in `global.css`
-const DEFAULT_THEME = 'nzk'
-const THEMES = [DEFAULT_THEME, 'dark', 'nexus'] as const
+const ICON_MAP: Record<string, LucideIcon> = { Sun, Moon, Flame }
 
-// theme list in `astro.config.mjs`
-const SYNTAX_HIGHLIGHTER_THEMES = {
-  nzk: 'catppuccin-latte',
-  dark: 'catppuccin-macchiato',
-  nexus: 'catppuccin-macchiato',
-} as const
+const defaultConfig = THEME_CONFIG.find((t) => t.default) ?? THEME_CONFIG[0]
+const DEFAULT_THEME = defaultConfig.preset
+const THEMES = THEME_CONFIG.map((t) => t.preset)
+const SYNTAX_HIGHLIGHTER_THEMES = Object.fromEntries(
+  THEME_CONFIG.map((t) => [t.preset, t.syntaxTheme]),
+)
 
-const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
+const THEME_BUTTON_CSS = 'h-4 w-4 hidden'
 ---
 
-<Button variant="ghost" size="icon" id="themeToggle">
-  <Sun className={THEME_BUTTON_CSS} id={`${DEFAULT_THEME}Button`} />
-  <Flame className={THEME_BUTTON_CSS} id="nexusButton" />
-  <Moon className={THEME_BUTTON_CSS} id="darkButton" />
-  <span class="sr-only">Toggle theme</span>
-</Button>
+<button
+  id="themeToggle"
+  class="text-foreground/55 hover:text-foreground hover:bg-primary/10 flex h-full cursor-pointer items-center rounded-none border-b-[3px] border-transparent px-2 transition-colors"
+  aria-label="Toggle theme"
+>
+  {
+    THEME_CONFIG.map((t) => {
+      const Icon = ICON_MAP[t.icon]
+      return <Icon className={THEME_BUTTON_CSS} id={`${t.preset}Button`} />
+    })
+  }
+</button>
 
 <script
   is:inline
