@@ -129,11 +129,11 @@ Browse icons at [lucide.dev](https://lucide.dev/).
 ```ts
 import { Sun, Moon, Flame, TreePine, type LucideIcon } from 'lucide-react'
 
-const ICON_MAP: Record<string, LucideIcon> = { Sun, Moon, Flame, TreePine }
+const iconMap: Record<string, LucideIcon> = { Sun, Moon, Flame, TreePine }
 ```
 
 > [!info] Why named imports?
-> `import * as Icons from 'lucide-react'` breaks Astro's SSR renderer because the namespace includes non-component exports. Named imports + `ICON_MAP` is the correct pattern here.
+> `import * as Icons from 'lucide-react'` breaks Astro's SSR renderer because the namespace includes non-component exports. Named imports + `iconMap` is the correct pattern here.
 
 ---
 
@@ -172,9 +172,9 @@ All themes must define these variables:
 > - Ensure the entry is in the `themes` array in `src/data/site.config.ts`
 
 > [!warning] Theme button not appearing
-> - Check the button `id` follows the pattern `<preset>Button` (auto-generated from `THEME_CONFIG`)
+> - Check the button `id` follows the pattern `<preset>Button` (auto-generated from `themeConfig`)
 > - Verify the `icon` string matches a PascalCase lucide export (e.g. `'TreePine'`, not `'tree-pine'`)
-> - Verify the icon is added to both the named import and `ICON_MAP` in `ThemeToggle.astro`
+> - Verify the icon is added to both the named import and `iconMap` in `ThemeToggle.astro`
 > - Restart the dev server
 
 > [!bug] Colours look wrong

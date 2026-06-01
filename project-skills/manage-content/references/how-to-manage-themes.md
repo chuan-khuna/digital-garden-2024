@@ -57,10 +57,10 @@ Then add the icon to `ThemeToggle.astro`:
 ```ts
 import { Sun, Moon, Flame, TreePine, type LucideIcon } from 'lucide-react'
 
-const ICON_MAP: Record<string, LucideIcon> = { Sun, Moon, Flame, TreePine }
+const iconMap: Record<string, LucideIcon> = { Sun, Moon, Flame, TreePine }
 ```
 
-> **Why named imports?** `import * as Icons from 'lucide-react'` breaks Astro's SSR renderer. Named imports + `ICON_MAP` is the correct pattern.
+> **Why named imports?** `import * as Icons from 'lucide-react'` breaks Astro's SSR renderer. Named imports + `iconMap` is the correct pattern.
 
 Browse icon names at [lucide.dev](https://lucide.dev/).
 
