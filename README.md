@@ -16,6 +16,7 @@ An Astro-based digital garden and personal portfolio — Zettelkasten-style know
 bun install       # install dependencies
 bun run dev       # dev server at localhost:4321
 bun run build     # production build
+bunx wrangler dev
 ```
 
 > `npm` and `npx` are also supported if `bun` is not available.
