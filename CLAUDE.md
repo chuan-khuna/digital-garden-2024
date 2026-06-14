@@ -9,11 +9,19 @@ bun install          # install dependencies
 bun run dev          # dev server at localhost:4321
 ```
 
-**Install local skills to agent skill folder:**
+---
 
-```bash
-bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p
-```
+## Agents
+
+Two project agents live in `.claude/agents/` and read from the `docs/` knowledge base:
+
+- **`developer`** — content, schemas, and architecture. Owns data and collection
+  definitions; reads `docs/content/` and `docs/architecture/`.
+- **`web-master`** — themes and the visual layer. Owns CSS presets, `ThemeToggle`,
+  OG image styling, and bento layout; reads `docs/architecture/add-theme.md` and the visual
+  architecture docs.
+
+`docs/README.md` is the index for the knowledge base.
 
 ---
 
@@ -33,9 +41,9 @@ An **Astro-based digital garden and personal portfolio** — Zettelkasten-style 
 
 ```
 .agents/           Global AI agent skills
-.vault/            Obsidian vault (astro-knowledge/) — docs and LLM artifacts
+.claude/agents/    Project agents (developer, web-master)
+docs/              Knowledge base — architecture/, content/, artifacts/
 _references/       Local reference repos (gitignored)
-project-skills/    Project-specific skills (bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p)
 src/
   assets/          Static assets
   components/      bento/, resume/, post/, ui/, og/, aceternity/
@@ -85,31 +93,37 @@ Use React only for interactive UI, animations (Framer Motion), or browser-only f
 
 ## Content
 
-See the **`manage-content`** skill (`project-skills/manage-content/`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats.
+See **`docs/content/`** (start at `docs/content/content-architecture.md`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats. The **developer** agent owns this area.
 
 **Static data files** (in `src/data/`, imported directly — not Astro collections):
 
 - `src/data/portfolio.ts` — personal info, links, skills (bento homepage)
 - `src/data/site.config.ts` — site-wide config (display name, title, GitHub URL)
 
-**Documentation rule:** whenever you change `src/content/collection-definitions/**`, `src/data/portfolio.ts`, or `src/data/site.config.ts`, update the matching reference doc in `project-skills/manage-content/references/`. A task is not complete until the skill is in sync.
+**Documentation rule:** whenever you change `src/content/collection-definitions/**`, `src/data/portfolio.ts`, or `src/data/site.config.ts`, update the matching reference doc in `docs/content/`. A task is not complete until the docs are in sync.
 
 ---
 
 ## LLM-Generated Artifacts
 
-Save artifacts to the Obsidian vault:
+Save artifacts to the docs knowledge base:
 
 ```
-.vault/astro-knowledge/notes/llm-artifacts/<category>/yyyy-mm-dd-<topic>.md
+docs/artifacts/<category>/yyyy-mm-dd-<topic>.<md|html>
 ```
 
-| Category   | Contents                                             |
-| ---------- | ---------------------------------------------------- |
-| `prd`      | Product requirement documents and feature specs      |
-| `plan`     | Implementation plans and architectural decisions     |
-| `research` | Research notes, reference analysis, tech comparisons |
-| `design`   | Design decisions, UX notes, visual direction         |
+Files may be **Markdown (`.md`)** or **HTML (`.html`)**. For HTML, use the Anthropic
+visual style (ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings) —
+see `PLAN.html` for a reference.
+
+`<category>` is a free-form folder — create whatever fits the artifact. Common ones:
+
+- `prd` — product requirement documents and feature specs
+- `plan` — implementation plans and architectural decisions
+- `research` — research notes, reference analysis, tech comparisons
+- `design` — design decisions, UX notes, visual direction
+
+Add new category folders as needed; the list above is a starting set, not a closed set.
 
 ---
 
