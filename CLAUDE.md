@@ -114,7 +114,7 @@ docs/artifacts/<category>/yyyy-mm-dd-<topic>.<md|html>
 
 Files may be **Markdown (`.md`)** or **HTML (`.html`)**. For HTML, use the Anthropic
 visual style (ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings) —
-see `PLAN.html` for a reference.
+see `docs/artifacts/plan/2026-06-14-docs-restructure-plan.html` for a reference.
 
 `<category>` is a free-form folder — create whatever fits the artifact. Common ones:
 
