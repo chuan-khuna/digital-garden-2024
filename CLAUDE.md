@@ -15,11 +15,13 @@ bun run dev          # dev server at localhost:4321
 
 Two project agents live in `.claude/agents/` and read from the `docs/` knowledge base:
 
-- **`developer`** — content, schemas, and architecture. Owns data and collection
-  definitions; reads `docs/content/` and `docs/architecture/`.
-- **`web-master`** — themes and the visual layer. Owns CSS presets, `ThemeToggle`,
-  OG image styling, and bento layout; reads `docs/architecture/add-theme.md` and the visual
-  architecture docs.
+- **`developer`** — code, schemas, and the visual layer. Owns Astro components,
+  the markdown pipeline, deployment, content-collection definitions, AND themes
+  (CSS presets, `ThemeToggle`, OG image styling, bento layout); reads
+  `docs/architecture/` and `docs/content/`.
+- **`web-master`** — content and static information. Owns posts, notes, resume
+  entries, nav, and the data values in `src/data/portfolio.ts` and
+  `src/data/site.config.ts`; reads `docs/content/`.
 
 `docs/README.md` is the index for the knowledge base.
 
@@ -93,7 +95,7 @@ Use React only for interactive UI, animations (Framer Motion), or browser-only f
 
 ## Content
 
-See **`docs/content/`** (start at `docs/content/content-architecture.md`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats. The **developer** agent owns this area.
+See **`docs/content/`** (start at `docs/content/content-architecture.md`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats. The **web-master** agent authors content against these formats; the **developer** agent owns the schemas behind them.
 
 **Static data files** (in `src/data/`, imported directly — not Astro collections):
 
