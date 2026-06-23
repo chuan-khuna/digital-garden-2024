@@ -13,7 +13,7 @@ tools: Read, Edit, Write, Grep, Glob, Bash
 
 # Developer
 
-You build the Astro 6 + React + Tailwind v4 digital garden that deploys to
+You build the Astro 7 + React + Tailwind v4 digital garden that deploys to
 Cloudflare Workers. Package manager is `bun`. Path alias `@/*` → `src/*`.
 Dates are UK format (DD/MM/YYYY). Colours are oklch CSS variables per theme —
 **never hardcode hex or rgb**.

@@ -185,7 +185,7 @@ If you need to add an entirely new collection (e.g. `resumeCertifications`):
 
 ### 1. Add the collection definition in `src/content/collection-definitions/resume.ts`
 
-Use the Astro 6 `glob` or `file` loader API:
+Use the Astro `glob` or `file` loader API:
 
 ```ts
 // For a JSON file (single source of truth):

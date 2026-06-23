@@ -4,6 +4,8 @@ import react from '@astrojs/react'
 import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
 
+import { unified } from '@astrojs/markdown-remark'
+
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import remarkFlexibleMarkers from 'remark-flexible-markers'
@@ -89,28 +91,33 @@ export default defineConfig({
     },
   ],
 
+  // Astro 7 defaults to the Rust-based Sätteri Markdown pipeline. This garden
+  // depends on remark/rehype plugins (wiki-links, callouts, markers, math), so
+  // we opt back into the unified() processor from @astrojs/markdown-remark.
   markdown: {
-    syntaxHighlight: 'shiki',
-    gfm: true,
-    remarkPlugins: [
-      remarkMath,
-      remarkFlexibleMarkers,
-      remarkObsidianCallout,
-      [
-        wikiLinkPlugin,
-        {
-          hrefTemplate: (permalink) => `/posts/${permalink}`,
-        },
+    processor: unified({
+      syntaxHighlight: 'shiki',
+      gfm: true,
+      remarkPlugins: [
+        remarkMath,
+        remarkFlexibleMarkers,
+        remarkObsidianCallout,
+        [
+          wikiLinkPlugin,
+          {
+            hrefTemplate: (permalink) => `/posts/${permalink}`,
+          },
+        ],
       ],
-    ],
-    rehypePlugins: [
-      [
-        rehypeKatex,
-        {
-          // Katex plugin options
-        },
+      rehypePlugins: [
+        [
+          rehypeKatex,
+          {
+            // Katex plugin options
+          },
+        ],
       ],
-    ],
+    }),
   },
 
   integrations: [

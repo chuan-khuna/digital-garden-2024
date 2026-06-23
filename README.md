@@ -4,7 +4,7 @@ An Astro-based digital garden and personal portfolio — Zettelkasten-style know
 
 ## Tech Stack
 
-- **Framework:** [Astro 6](https://astro.build/) + MDX, deployed via `@astrojs/cloudflare`
+- **Framework:** [Astro 7](https://astro.build/) + MDX, deployed via `@astrojs/cloudflare`
 - **UI:** React (interactive components), Framer Motion (animations)
 - **Styling:** Tailwind CSS 4 (Vite plugin), oklch CSS variables, multiple themes
 - **Content:** Astro Content Collections with `glob` loader API

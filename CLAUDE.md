@@ -29,9 +29,9 @@ Two project agents live in `.claude/agents/` and read from the `docs/` knowledge
 
 ## Project Overview
 
-An **Astro-based digital garden and personal portfolio** — Zettelkasten-style knowledge base + resume/CV pages. Built with Astro 6, React, Tailwind CSS 4, and bidirectional wiki-style linking.
+An **Astro-based digital garden and personal portfolio** — Zettelkasten-style knowledge base + resume/CV pages. Built with Astro 7, React, Tailwind CSS 4, and bidirectional wiki-style linking.
 
-- **Framework:** Astro 6 + MDX → Cloudflare Workers (`@astrojs/cloudflare`)
+- **Framework:** Astro 7 + MDX → Cloudflare Workers (`@astrojs/cloudflare`)
 - **Styling:** Tailwind CSS 4 (Vite plugin), oklch CSS variables, multiple themes
 - **Content:** Astro Content Collections (`glob` loader API)
 - **Path Aliases:** `@/*` → `src/*`
