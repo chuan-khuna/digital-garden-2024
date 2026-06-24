@@ -3,7 +3,6 @@ import ThemeToggle from '@/components/ThemeToggle.astro'
 import { Button } from '@/components/ui/button'
 import { Menu, X as Close } from 'lucide-react'
 import { getCollection } from 'astro:content'
-import Logo from '@/components/Logo.astro'
 
 const navItems = await getCollection('navItems')
 const sortedNavItems = navItems.sort((a, b) => a.data.order - b.data.order)
@@ -12,26 +11,13 @@ const currentPath = Astro.url.pathname
 ---
 
 <header class="sticky top-0 z-50 w-full print:hidden">
-  <!-- FT top accent stripe -->
-  <!-- <div class="bg-foreground h-[3px] w-full"></div> -->
-
-  <!-- Main nav bar -->
+  <!-- Financial Times inspired: slim single-row nav, uppercase links -->
   <div class="border-border bg-background border-b">
     <div
-      class="mx-auto flex h-10 max-w-[1440px] items-stretch justify-between px-4"
+      class="mx-auto flex h-11 max-w-[1440px] items-stretch justify-end px-4 md:px-6"
     >
-      <!-- Logo -->
-      <!-- <div class="flex shrink-0 items-center pr-4">
-        <a href="/" class="flex items-center">
-          <Logo />
-        </a>
-      </div> -->
-
-      <!-- Desktop nav: items stretch full height, active gets colored bottom border -->
-      <nav
-        id="desktop-nav"
-        class="hidden flex-1 items-stretch justify-end md:flex"
-      >
+      <!-- Desktop nav: slim uppercase links, active gets a short underline -->
+      <nav id="desktop-nav" class="hidden items-stretch gap-x-5 md:flex">
         {
           sortedNavItems.map((item) => {
             const isActive =
@@ -42,7 +28,7 @@ const currentPath = Astro.url.pathname
               <a
                 href={item.data.link}
                 class={[
-                  'flex items-center border-b-[2px] px-2 text-xs font-bold uppercase tracking-[0.05em] transition-colors',
+                  'flex h-11 items-center border-b-2 text-[13px] font-normal uppercase tracking-[0.08em] transition-colors',
                   isActive
                     ? 'border-primary text-foreground'
                     : 'text-foreground/55 hover:text-foreground border-transparent',
@@ -56,8 +42,8 @@ const currentPath = Astro.url.pathname
       </nav>
 
       <!-- Right controls -->
-      <div class="flex shrink-0 items-center gap-1">
-        <div class="bg-border mx-2 hidden h-4 w-px md:block"></div>
+      <div class="flex shrink-0 items-center">
+        <div class="bg-border mx-3 hidden h-5 w-px md:block"></div>
         <ThemeToggle />
         <div id="mobile-nav-buttons" class="flex md:hidden">
           <Button variant="ghost" size="icon" id="mobile-nav">
@@ -85,9 +71,9 @@ const currentPath = Astro.url.pathname
             <a
               href={item.data.link}
               class={[
-                'border-border border-b px-4 py-3 text-xs font-bold uppercase tracking-[0.1em] last:border-b-0',
+                'border-border border-b px-4 py-3 text-[13px] font-normal uppercase tracking-[0.08em] last:border-b-0',
                 isActive
-                  ? 'text-foreground'
+                  ? 'text-primary'
                   : 'text-foreground/55 hover:text-foreground',
               ].join(' ')}
             >

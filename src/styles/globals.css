@@ -151,6 +151,9 @@
 
   html {
     @apply scroll-smooth;
+    /* Reserve scrollbar space so centered content doesn't shift between
+       pages that scroll (e.g. /garden) and pages that don't (e.g. /resume). */
+    scrollbar-gutter: stable;
   }
 
   body {
