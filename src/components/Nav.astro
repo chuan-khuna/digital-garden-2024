@@ -28,7 +28,7 @@ const currentPath = Astro.url.pathname
               <a
                 href={item.data.link}
                 class={[
-                  'flex h-11 items-center border-b-2 text-[13px] font-normal uppercase tracking-[0.08em] transition-colors',
+                  'flex h-11 items-center border-b-2 font-resumesans text-[13px] font-normal uppercase tracking-[0.08em] transition-colors',
                   isActive
                     ? 'border-primary text-foreground'
                     : 'text-foreground/55 hover:text-foreground border-transparent',
@@ -71,7 +71,7 @@ const currentPath = Astro.url.pathname
             <a
               href={item.data.link}
               class={[
-                'border-border border-b px-4 py-3 text-[13px] font-normal uppercase tracking-[0.08em] last:border-b-0',
+                'border-border border-b px-4 py-3 font-resumesans text-[13px] font-normal uppercase tracking-[0.08em] last:border-b-0',
                 isActive
                   ? 'text-primary'
                   : 'text-foreground/55 hover:text-foreground',
