@@ -1,10 +1,44 @@
 ---
-// this component represents a physical paper page
-// you can add the padding here for bleed or margins
+// A single A4 sheet.
+//
+// In PRINT this is just the plain padded page it has always been — the per-page
+// padding still arrives via `className` (e.g. `px-8 py-4`). Every "paper preview"
+// rule below is scoped to `@media screen`, so the printed output is unchanged.
+//
+// On SCREEN it becomes a true-to-A4 region (210×297mm), uniformly zoomed for
+// readability. It shares the page's own background — only an outline hints at
+// the A4 page boundary — so content keeps the site's normal theme colours.
 
 const { className = '' } = Astro.props
 ---
 
-<div class={className}>
+<div class:list={['resume-sheet', className]}>
   <slot />
 </div>
+
+<style>
+  @media screen {
+    .resume-sheet {
+      /* Uniform scale only — never widen the box, so line breaks and page-fit
+         stay identical to print. `zoom` (not transform) reserves layout space
+         and is declared here only, so print never sees it. The custom property
+         is set on the canvas by WebWrapper's fit-to-width script. */
+      zoom: var(--sheet-zoom, 1.25);
+
+      /* True A4: fixed size. Content that doesn't fit spills past the bottom
+         edge onto the canvas as a visible "won't fit one page" warning. */
+      width: 210mm;
+      height: 297mm;
+      overflow: visible;
+      box-sizing: border-box;
+      flex-shrink: 0;
+
+      /* Same background as the page — no fill. Only an outline hints at the A4
+         page boundary. `outline` (not border) delineates the sheet without
+         shrinking the content box, so line breaks stay identical to print. The
+         colour is derived from the theme foreground so it always contrasts in
+         both light and dark themes. */
+      outline: 1px solid color-mix(in oklch, var(--foreground) 35%, transparent);
+    }
+  }
+</style>

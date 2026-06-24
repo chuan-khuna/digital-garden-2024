@@ -1,9 +1,104 @@
 ---
-// this component represents just a div for wrap the print components to web layout
+// The "PDF preview" canvas that holds the A4 sheet(s).
+//
+// In PRINT it falls back to the plain centring wrapper it has always been — the
+// flex/min-h-screen classes still arrive via `className`, so printed output is
+// unchanged. Every preview rule below is scoped to `@media screen`.
+//
+// On SCREEN it becomes the gray backdrop behind the sheets and runs the
+// fit-to-width script that uniformly scales each sheet (see PageLayout).
 
 const { className = '' } = Astro.props
 ---
 
-<div class={className}>
+<div class:list={['resume-canvas', className]}>
+  <p class="resume-print-hint">
+    Press <kbd>Ctrl</kbd> + <kbd>P</kbd> to print or save as PDF
+  </p>
   <slot />
 </div>
+
+<style>
+  @media screen {
+    .resume-canvas {
+      /* Keep the page's own theme background — no gray backdrop. The sheets are
+         delineated by their own border (see PageLayout). Stack them, centred
+         horizontally, scrolling from the top so a tall (multi-sheet or
+         overflowing) preview is always reachable. */
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      padding: 2rem 1rem;
+    }
+  }
+
+  /* On-screen-only hint. Default-hidden so it never appears in print. */
+  .resume-print-hint {
+    display: none;
+  }
+
+  @media screen {
+    .resume-print-hint {
+      display: block;
+      margin: 0;
+      text-align: center;
+      font-size: 0.8125rem;
+      letter-spacing: 0.01em;
+      color: var(--foreground);
+      opacity: 0.55;
+    }
+
+    .resume-print-hint kbd {
+      font-family: var(--font-inconsolata, ui-monospace), monospace;
+      font-size: 0.75rem;
+      line-height: 1;
+      padding: 0.15em 0.4em;
+      border: 1px solid var(--border);
+      border-radius: 0.3rem;
+      background: color-mix(in oklch, var(--foreground) 8%, transparent);
+    }
+  }
+</style>
+
+<script is:inline>
+  // Fit-to-width: uniformly scale each A4 sheet up to a comfortable desktop size
+  // (~1.25×), shrinking it on narrow viewports so it never overflows
+  // horizontally. We only ever set the `--sheet-zoom` custom property here; the
+  // `zoom` itself lives under `@media screen` in PageLayout, so print is untouched.
+  ;(function () {
+    var MAX_SCALE = 1.25
+    var SHEET_PX = 793.7 // 210mm in CSS px @96dpi
+    var SHADOW_PAD = 32 // breathing room for the sheet's drop shadow
+
+    function fit(canvas) {
+      var styles = getComputedStyle(canvas)
+      var padX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight)
+      var avail = canvas.clientWidth - padX
+      var scale = Math.min(MAX_SCALE, (avail - SHADOW_PAD) / SHEET_PX)
+      if (!isFinite(scale) || scale <= 0) scale = MAX_SCALE
+      scale = Math.max(scale, 0.15)
+      canvas.style.setProperty('--sheet-zoom', String(scale))
+    }
+
+    function init() {
+      var canvases = document.querySelectorAll('.resume-canvas')
+      canvases.forEach(function (canvas) {
+        fit(canvas)
+        if (typeof ResizeObserver !== 'undefined') {
+          new ResizeObserver(function () {
+            fit(canvas)
+          }).observe(canvas)
+        }
+      })
+      window.addEventListener('resize', function () {
+        canvases.forEach(fit)
+      })
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init)
+    } else {
+      init()
+    }
+  })()
+</script>
