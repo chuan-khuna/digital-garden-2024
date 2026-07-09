@@ -9,19 +9,29 @@ bun install          # install dependencies
 bun run dev          # dev server at localhost:4321
 ```
 
-**Install local skills to agent skill folder:**
+---
 
-```bash
-bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p
-```
+## Agents
+
+Two project agents live in `.claude/agents/` and read from the `docs/` knowledge base:
+
+- **`developer`** — code, schemas, and the visual layer. Owns Astro components,
+  the markdown pipeline, deployment, content-collection definitions, AND themes
+  (CSS presets, `ThemeToggle`, OG image styling, bento layout); reads
+  `docs/architecture/` and `docs/content/`.
+- **`web-master`** — content and static information. Owns posts, notes, resume
+  entries, nav, and the data values in `src/data/portfolio.ts` and
+  `src/data/site.config.ts`; reads `docs/content/`.
+
+`docs/README.md` is the index for the knowledge base.
 
 ---
 
 ## Project Overview
 
-An **Astro-based digital garden and personal portfolio** — Zettelkasten-style knowledge base + resume/CV pages. Built with Astro 6, React, Tailwind CSS 4, and bidirectional wiki-style linking.
+An **Astro-based digital garden and personal portfolio** — Zettelkasten-style knowledge base + resume/CV pages. Built with Astro 7, React, Tailwind CSS 4, and bidirectional wiki-style linking.
 
-- **Framework:** Astro 6 + MDX → Cloudflare Workers (`@astrojs/cloudflare`)
+- **Framework:** Astro 7 + MDX → Cloudflare Workers (`@astrojs/cloudflare`)
 - **Styling:** Tailwind CSS 4 (Vite plugin), oklch CSS variables, multiple themes
 - **Content:** Astro Content Collections (`glob` loader API)
 - **Path Aliases:** `@/*` → `src/*`
@@ -33,13 +43,14 @@ An **Astro-based digital garden and personal portfolio** — Zettelkasten-style 
 
 ```
 .agents/           Global AI agent skills
-.vault/            Obsidian vault (astro-knowledge/) — docs and LLM artifacts
+.claude/agents/    Project agents (developer, web-master)
+docs/              Knowledge base — architecture/, content/, artifacts/
 _references/       Local reference repos (gitignored)
-project-skills/    Project-specific skills (bunx skills@1.5.0 add ./project-skills -a 'universal claude-code' -y -p)
 src/
   assets/          Static assets
   components/      bento/, resume/, post/, ui/, og/, aceternity/
   content/         collection-definitions/, posts/, notes/, resume/
+  data/            Static config files (site.config.ts, portfolio.ts)
   layouts/         BaseLayout, PostLayout, BaseLayoutPrint
   lib/             Browser utilities
   pages/           File-based routing
@@ -84,31 +95,37 @@ Use React only for interactive UI, animations (Framer Motion), or browser-only f
 
 ## Content
 
-See the **`manage-content`** skill (`project-skills/manage-content/`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats.
+See **`docs/content/`** (start at `docs/content/content-architecture.md`) for the full collections table, article schema, and static config details — it is the single source of truth for content formats. The **web-master** agent authors content against these formats; the **developer** agent owns the schemas behind them.
 
-**Static data files:**
+**Static data files** (in `src/data/`, imported directly — not Astro collections):
 
-- `src/content/portfolio.ts` — personal info, links, skills (bento homepage)
-- `src/content/site.config.ts` — site-wide config (display name, title, GitHub URL)
+- `src/data/portfolio.ts` — personal info, links, skills (bento homepage)
+- `src/data/site.config.ts` — site-wide config (display name, title, GitHub URL)
 
-**Documentation rule:** whenever you change `src/content/collection-definitions/**`, `portfolio.ts`, or `site.config.ts`, update the matching reference doc in `project-skills/manage-content/references/`. A task is not complete until the skill is in sync.
+**Documentation rule:** whenever you change `src/content/collection-definitions/**`, `src/data/portfolio.ts`, or `src/data/site.config.ts`, update the matching reference doc in `docs/content/`. A task is not complete until the docs are in sync.
 
 ---
 
 ## LLM-Generated Artifacts
 
-Save artifacts to the Obsidian vault:
+Save artifacts to the docs knowledge base:
 
 ```
-.vault/astro-knowledge/notes/llm-artifacts/<category>/yyyy-mm-dd-<topic>.md
+docs/artifacts/<category>/yyyy-mm-dd-<topic>.<md|html>
 ```
 
-| Category   | Contents                                             |
-| ---------- | ---------------------------------------------------- |
-| `prd`      | Product requirement documents and feature specs      |
-| `plan`     | Implementation plans and architectural decisions     |
-| `research` | Research notes, reference analysis, tech comparisons |
-| `design`   | Design decisions, UX notes, visual direction         |
+Files may be **Markdown (`.md`)** or **HTML (`.html`)**. For HTML, use the Anthropic
+visual style (ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings) —
+see `docs/artifacts/plan/2026-06-14-docs-restructure-plan.html` for a reference.
+
+`<category>` is a free-form folder — create whatever fits the artifact. Common ones:
+
+- `prd` — product requirement documents and feature specs
+- `plan` — implementation plans and architectural decisions
+- `research` — research notes, reference analysis, tech comparisons
+- `design` — design decisions, UX notes, visual direction
+
+Add new category folders as needed; the list above is a starting set, not a closed set.
 
 ---
 

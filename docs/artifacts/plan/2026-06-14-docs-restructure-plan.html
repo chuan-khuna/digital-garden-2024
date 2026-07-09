@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan — Simplify .vault → docs/ + Replace Skills with Agents</title>
+<style>
+  :root {
+    --bg: #F0EEE6;
+    --surface: #FAF9F5;
+    --ink: #1A1915;
+    --muted: #6B6862;
+    --line: #DAD7CC;
+    --clay: #CC785C;
+    --clay-soft: #E8D5CC;
+    --sky: #4A6FA5;
+    --green: #5B7A5B;
+    --code-bg: #F5F3EC;
+    --serif: "Georgia", "Tiempos", "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --mono: "SF Mono", "Cascadia Code", "Consolas", "Inconsolata", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 64px 28px 120px; }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 18px;
+  }
+  .lede {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 60ch;
+    margin: 0 0 14px;
+  }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 22px; padding-bottom: 30px;
+    border-bottom: 1px solid var(--line);
+  }
+  .chip {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 12px; color: var(--muted);
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin: 56px 0 6px;
+  }
+  h2 .num {
+    font-family: var(--mono); font-size: 14px; color: var(--clay);
+    margin-right: 12px; vertical-align: middle;
+  }
+  h3 {
+    font-family: var(--sans); font-weight: 650; font-size: 16px;
+    margin: 30px 0 10px; letter-spacing: 0.01em;
+  }
+  .section-sub { color: var(--muted); margin: 0 0 8px; max-width: 64ch; }
+  p { max-width: 68ch; }
+
+  code {
+    font-family: var(--mono); font-size: 0.88em;
+    background: var(--code-bg); border: 1px solid var(--line);
+    border-radius: 5px; padding: 1px 6px;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  pre code { background: none; border: none; padding: 0; }
+  .tree { color: var(--ink); }
+  .tree .c { color: var(--muted); }
+  .tree .new { color: var(--green); font-weight: 600; }
+  .tree .del { color: var(--clay); text-decoration: line-through; opacity: .7; }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 26px;
+    margin: 18px 0;
+  }
+  .card.accent { border-left: 3px solid var(--clay); }
+
+  /* Two-col before/after */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 680px){ .cols { grid-template-columns: 1fr; } }
+  .col-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 10px;
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+  td code { font-size: 12px; }
+  tbody tr:hover { background: rgba(204,120,92,0.04); }
+
+  .arrow { color: var(--clay); font-weight: 700; }
+
+  /* Agent cards */
+  .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 8px; }
+  @media (max-width: 680px){ .agent-grid { grid-template-columns: 1fr; } }
+  .agent {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 22px 24px;
+  }
+  .agent .badge {
+    display: inline-block; font-family: var(--mono); font-size: 11px;
+    padding: 4px 10px; border-radius: 6px; margin-bottom: 12px;
+    color: #fff; letter-spacing: .04em;
+  }
+  .agent.dev .badge { background: var(--sky); }
+  .agent.web .badge { background: var(--clay); }
+  .agent h3 { margin-top: 0; }
+  .agent ul { padding-left: 18px; margin: 10px 0; }
+  .agent li { margin: 5px 0; font-size: 14px; }
+  .kv { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+  .kv b { color: var(--ink); font-weight: 600; }
+
+  /* Checklist */
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li {
+    position: relative; padding: 14px 0 14px 46px;
+    border-bottom: 1px solid var(--line);
+  }
+  ol.steps > li::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 12px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--clay); color: #fff;
+    font-family: var(--mono); font-size: 13px; font-weight: 600;
+    display: grid; place-items: center;
+  }
+  ol.steps b { font-weight: 650; }
+  .hint { color: var(--muted); font-size: 14px; }
+
+  .note {
+    background: var(--clay-soft); border-radius: 10px;
+    padding: 14px 18px; font-size: 14px; margin: 16px 0;
+    border: 1px solid #E0C4B8;
+  }
+  .note b { color: #8A4A33; }
+
+  ul.clean { list-style: none; padding-left: 0; }
+  ul.clean li { padding: 6px 0 6px 26px; position: relative; }
+  ul.clean li::before {
+    content: "→"; position: absolute; left: 0; color: var(--clay); font-weight: 700;
+  }
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 13px; font-family: var(--mono);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Refactor Plan · Digital Garden 2024</p>
+  <h1>Flatten <code style="font-size:0.7em">.vault/</code> into <code style="font-size:0.7em">docs/</code> &amp; replace skills with two agents</h1>
+  <p class="lede">Collapse the nested Obsidian vault and the two project-skills into a single, flat <code>docs/&lt;category&gt;/</code> knowledge base — then wire that knowledge into two purpose-built subagents: <b>developer</b> and <b>web-master</b>.</p>
+
+  <div class="meta-row">
+    <span class="chip">scope: docs migration</span>
+    <span class="chip">2 agents</span>
+    <span class="chip">5 doc categories</span>
+    <span class="chip">non-breaking to src/</span>
+  </div>
+
+  <!-- ───────────────────────── GOALS ───────────────────────── -->
+  <h2><span class="num">01</span>What we're solving</h2>
+  <p class="section-sub">Three sources of truth exist today, each with its own nesting and tooling overhead:</p>
+  <div class="card">
+    <ul class="clean">
+      <li><code>.vault/astro-knowledge/</code> — an Obsidian vault <i>and</i> a nested git repo, carrying <code>.obsidian/</code>, <code>.git/</code>, <code>.claude/</code>, <code>.agents/</code> and <code>skills-lock.json</code> just to hold ~15 markdown notes.</li>
+      <li><code>project-skills/manage-content/</code> — a skill + 7 reference docs describing content/collection formats.</li>
+      <li><code>project-skills/add-theme/</code> — a skill describing the 4-file theme-add procedure.</li>
+    </ul>
+  </div>
+  <p>The goal: <b>one</b> plain-markdown <code>docs/</code> tree as the knowledge source, and the <i>procedural</i> parts of the skills promoted into two invokable agents that read from that tree.</p>
+
+  <!-- ───────────────────────── BEFORE / AFTER ───────────────────────── -->
+  <h2><span class="num">02</span>Before → after</h2>
+  <div class="cols">
+    <div class="card">
+      <p class="col-label">Before</p>
+<pre class="tree"><span class="c"># 3 nested knowledge stores</span>
+.vault/
+  README.md
+  astro-knowledge/
+    .obsidian/   <span class="c">obsidian config</span>
+    .git/        <span class="c">nested repo</span>
+    .claude/  .agents/
+    skills-lock.json
+    CLAUDE.md  README.md
+    notes/
+      documents/   <span class="c">9 arch docs</span>
+      issues/      <span class="c">3 analyses</span>
+      llm-artifacts/
+    daily-notes/
+project-skills/
+  manage-content/
+    SKILL.md
+    references/  <span class="c">7 docs</span>
+  add-theme/
+    SKILL.md</pre>
+    </div>
+    <div class="card accent">
+      <p class="col-label">After</p>
+<pre class="tree">docs/
+  <span class="new">README.md</span>      <span class="c">index</span>
+  <span class="new">architecture/</span>  <span class="c">how it works</span>
+  <span class="new">content/</span>       <span class="c">authoring formats</span>
+  <span class="new">theming/</span>       <span class="c">theme procedure</span>
+  <span class="new">artifacts/</span>     <span class="c">llm prd/plan/…</span>
+  <span class="new">notes/</span>        <span class="c">garden + issues</span>
+
+.claude/agents/
+  <span class="new">developer.md</span>
+  <span class="new">web-master.md</span>
+
+<span class="del">.vault/</span>
+<span class="del">project-skills/</span></pre>
+    </div>
+  </div>
+  <div class="note"><b>Heads-up:</b> <code>.vault/astro-knowledge/</code> is its own git repository. Before moving, decide whether its history matters — recommended path is to copy the <i>content</i> only and drop <code>.git/</code> + <code>.obsidian/</code>, since the notes become plain repo-tracked docs.</div>
+
+  <!-- ───────────────────────── FINAL TREE ───────────────────────── -->
+  <h2><span class="num">03</span>Proposed <code>docs/</code> structure</h2>
+  <p class="section-sub">Flat, five categories, one job each. Filenames lowercased &amp; kebab-cased (dropping the Obsidian-style spaces).</p>
+<pre class="tree">docs/
+├── README.md                       <span class="c">index — replaces both .vault READMEs</span>
+├── <span class="new">architecture/</span>                   <span class="c">how the system is built</span>
+│   ├── project-structure.md
+│   ├── markdown-pipeline.md
+│   ├── bidirectional-links.md
+│   ├── deployment.md
+│   ├── og-image-generator.md
+│   ├── resume-system.md
+│   ├── bento-grid.md
+│   └── site-configuration.md
+├── <span class="new">content/</span>                        <span class="c">← manage-content/references/</span>
+│   ├── content-architecture.md
+│   ├── posts.md
+│   ├── resume.md
+│   ├── nav.md
+│   ├── portfolio.md
+│   ├── site-config.md
+│   └── og-images.md
+├── <span class="new">theming/</span>                        <span class="c">← add-theme + how-to-manage-themes</span>
+│   ├── add-theme.md                <span class="c">the 4-file procedure</span>
+│   └── themes-reference.md
+├── <span class="new">artifacts/</span>                      <span class="c">← notes/llm-artifacts/ (CLAUDE.md target)</span>
+│   ├── prd/   ├── plan/
+│   ├── research/   └── design/
+└── <span class="new">notes/</span>                          <span class="c">garden misc</span>
+    ├── astro.md
+    ├── issues/                     <span class="c">← notes/issues/ (3 analyses)</span>
+    └── daily/                      <span class="c">← daily-notes/ (optional, or drop)</span></pre>
+
+  <!-- ───────────────────────── MAPPING ───────────────────────── -->
+  <h2><span class="num">04</span>File move map</h2>
+  <table>
+    <thead><tr><th>From</th><th></th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td><code>.vault/astro-knowledge/notes/documents/*.md</code></td><td class="arrow">→</td><td><code>docs/architecture/*.md</code></td></tr>
+      <tr><td><code>.vault/.../notes/documents/Adding a Theme.md</code></td><td class="arrow">→</td><td><code>docs/theming/themes-reference.md</code></td></tr>
+      <tr><td><code>project-skills/manage-content/references/how-to-manage-*.md</code></td><td class="arrow">→</td><td><code>docs/content/*.md</code></td></tr>
+      <tr><td><code>project-skills/manage-content/references/how-to-manage-themes.md</code></td><td class="arrow">→</td><td><code>docs/theming/themes-reference.md</code> (merge)</td></tr>
+      <tr><td><code>project-skills/add-theme/SKILL.md</code></td><td class="arrow">→</td><td><code>docs/theming/add-theme.md</code> (steps) + agent</td></tr>
+      <tr><td><code>.vault/.../notes/llm-artifacts/&lt;cat&gt;/</code></td><td class="arrow">→</td><td><code>docs/artifacts/&lt;cat&gt;/</code></td></tr>
+      <tr><td><code>.vault/.../notes/issues/</code></td><td class="arrow">→</td><td><code>docs/notes/issues/</code></td></tr>
+      <tr><td><code>.vault/.../notes/Astro.md</code>, <code>daily-notes/</code></td><td class="arrow">→</td><td><code>docs/notes/</code></td></tr>
+      <tr><td><code>.obsidian/ · .git/ · .claude/ · .agents/ · skills-lock.json</code></td><td class="arrow">✕</td><td>drop (tooling machinery)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ───────────────────────── AGENTS ───────────────────────── -->
+  <h2><span class="num">05</span>The two agents</h2>
+  <p class="section-sub">Skills auto-trigger on description match; agents are explicitly invoked and carry a focused remit. Each agent's <code>SKILL.md</code> body becomes its system prompt, pointing at the relevant <code>docs/</code> folders as its knowledge base. Stored as markdown in <code>.claude/agents/</code>.</p>
+
+  <div class="agent-grid">
+    <div class="agent dev">
+      <span class="badge">developer</span>
+      <h3>Builds &amp; authors</h3>
+      <p class="kv">Owns <b>data, schema, content &amp; system code</b>. Absorbs the <code>manage-content</code> skill.</p>
+      <ul>
+        <li>Add / edit posts, notes, resume, nav entries</li>
+        <li>Change collection-definition schemas <i>and</i> keep <code>docs/content/</code> in sync (the old schema-sync rule)</li>
+        <li>Markdown pipeline, bidirectional links, deployment, project structure</li>
+        <li>Site &amp; portfolio config data</li>
+      </ul>
+      <p class="kv"><b>Reads:</b> <code>docs/architecture/</code>, <code>docs/content/</code></p>
+      <p class="kv"><b>Tools:</b> Read, Edit, Write, Grep, Glob, Bash</p>
+    </div>
+
+    <div class="agent web">
+      <span class="badge">web-master</span>
+      <h3>Themes &amp; visual layer</h3>
+      <p class="kv">Owns <b>styling, themes &amp; visual presentation</b>. Absorbs the <code>add-theme</code> skill.</p>
+      <ul>
+        <li>Add / edit themes — CSS presets, <code>global.css</code> import, <code>ThemeToggle.astro</code> wiring, syntax-highlighter map</li>
+        <li>OG image styling, bento homepage layout</li>
+        <li>Tailwind v4 + oklch token conventions, design polish</li>
+        <li>Enforces the 4-file theme checklist</li>
+      </ul>
+      <p class="kv"><b>Reads:</b> <code>docs/theming/</code>, <code>docs/architecture/{og-image-generator,bento-grid}.md</code></p>
+      <p class="kv"><b>Tools:</b> Read, Edit, Write, Grep, Glob</p>
+    </div>
+  </div>
+
+  <div class="note"><b>Boundary rule:</b> where content and visuals overlap (OG images, portfolio) — <b>developer</b> owns the data/schema, <b>web-master</b> owns the CSS/render. Write this line into both agent prompts so they hand off cleanly.</div>
+
+  <!-- ───────────────────────── CLAUDE.md ───────────────────────── -->
+  <h2><span class="num">06</span>Knock-on edits</h2>
+  <p class="section-sub">Three references in the repo point at the old paths and must be updated in the same change:</p>
+  <table>
+    <thead><tr><th>File</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td><code>CLAUDE.md</code> · LLM-Artifacts rule</td><td>Repoint save path <code>.vault/astro-knowledge/notes/llm-artifacts/</code> → <code>docs/artifacts/</code></td></tr>
+      <tr><td><code>CLAUDE.md</code> · Documentation rule</td><td>"update <code>project-skills/manage-content/references/</code>" → "update <code>docs/content/</code>"; reference agents instead of skills</td></tr>
+      <tr><td><code>CLAUDE.md</code> · Project Structure + Commands</td><td>Replace <code>.vault/</code> &amp; <code>project-skills/</code> lines; drop the <code>bunx skills add</code> install command</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ───────────────────────── MIGRATION ───────────────────────── -->
+  <h2><span class="num">07</span>Migration steps</h2>
+  <ol class="steps">
+    <li><b>Scaffold</b> <code>docs/</code> with the five category folders. <span class="hint">No deletes yet.</span></li>
+    <li><b>Copy + rename</b> vault notes into <code>architecture/</code>, <code>theming/</code>, <code>artifacts/</code>, <code>notes/</code> (kebab-case, strip <code>[[wikilink]]</code> syntax → relative md links).</li>
+    <li><b>Copy</b> <code>manage-content/references/*</code> → <code>docs/content/</code>; merge <code>how-to-manage-themes.md</code> into <code>docs/theming/themes-reference.md</code>.</li>
+    <li><b>Author</b> <code>docs/theming/add-theme.md</code> from the <code>add-theme</code> SKILL body; write <code>docs/README.md</code> index.</li>
+    <li><b>Write agents</b> — <code>.claude/agents/developer.md</code> &amp; <code>web-master.md</code> with frontmatter (<code>name</code>, <code>description</code>, <code>tools</code>) + system prompt pointing at their <code>docs/</code> folders.</li>
+    <li><b>Patch</b> <code>CLAUDE.md</code> (the three edits in §06).</li>
+    <li><b>Delete</b> <code>.vault/</code> and <code>project-skills/</code> once the new tree is verified.</li>
+    <li><b>Verify</b> — <code>bun run dev</code> still builds (these are docs-only, no <code>src/</code> import touches them), and both agents resolve their doc paths.</li>
+  </ol>
+
+  <h2><span class="num">08</span>Open decisions for you</h2>
+  <ul class="clean">
+    <li><b>Vault git history</b> — drop it (recommended) or preserve via <code>git subtree</code>?</li>
+    <li><b>daily-notes/</b> — migrate to <code>docs/notes/daily/</code> or discard?</li>
+    <li><b>Keep Obsidian-compatible?</b> If you still open these in Obsidian, keep an <code>.obsidian/</code> at repo root pointed at <code>docs/</code> instead of inside it.</li>
+    <li><b>Agent granularity</b> — confirm the developer / web-master split, or add a third (e.g. <code>content-editor</code>) if authoring should be separate from system code.</li>
+  </ul>
+
+  <footer>docs/artifacts/plan/2026-06-14-docs-restructure-plan.html · digital-garden-2024 · branch feature/showcase</footer>
+
+</div>
+</body>
+</html>

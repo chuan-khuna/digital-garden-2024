@@ -1,48 +1,52 @@
 ---
-import { Moon, Sun, Leaf, Flame } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Sun, Moon, Flame, type LucideIcon } from 'lucide-react'
+import { themes as themeConfig } from '@/data/site.config'
 
-// theme list in `global.css`
-const DEFAULT_THEME = 'nzk'
-const THEMES = [DEFAULT_THEME, 'dark', 'nexus'] as const
+const iconMap: Record<string, LucideIcon> = { Sun, Moon, Flame }
 
-// theme list in `astro.config.mjs`
-const SYNTAX_HIGHLIGHTER_THEMES = {
-  nzk: 'catppuccin-latte',
-  dark: 'catppuccin-macchiato',
-  nexus: 'catppuccin-macchiato',
-} as const
+const defaultConfig = themeConfig.find((t) => t.default) ?? themeConfig[0]
+const defaultTheme = defaultConfig.preset
+const themes = themeConfig.map((t) => t.preset)
+const syntaxHighlighterThemes = Object.fromEntries(
+  themeConfig.map((t) => [t.preset, t.syntaxTheme]),
+)
 
-const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
+const themeButtonCss = 'h-4 w-4 hidden'
 ---
 
-<Button variant="ghost" size="icon" id="themeToggle">
-  <Sun className={THEME_BUTTON_CSS} id={`${DEFAULT_THEME}Button`} />
-  <Flame className={THEME_BUTTON_CSS} id="nexusButton" />
-  <Moon className={THEME_BUTTON_CSS} id="darkButton" />
-  <span class="sr-only">Toggle theme</span>
-</Button>
+<button
+  id="themeToggle"
+  class="text-foreground/55 hover:bg-primary/90 hover:text-primary-foreground flex h-8 w-8 cursor-pointer items-center justify-center rounded-none transition-colors"
+  aria-label="Toggle theme"
+>
+  {
+    themeConfig.map((t) => {
+      const Icon = iconMap[t.icon]
+      return <Icon className={themeButtonCss} id={`${t.preset}Button`} />
+    })
+  }
+</button>
 
 <script
   is:inline
-  define:vars={{ THEMES, DEFAULT_THEME, SYNTAX_HIGHLIGHTER_THEMES }}
+  define:vars={{ themes, defaultTheme, syntaxHighlighterThemes }}
 >
   // Get stored theme or return default
   function getStoredTheme() {
     try {
       if (typeof localStorage === 'undefined') {
-        return DEFAULT_THEME
+        return defaultTheme
       }
 
       const storedTheme = localStorage.getItem('theme')
 
-      if (storedTheme && THEMES.includes(storedTheme)) {
+      if (storedTheme && themes.includes(storedTheme)) {
         return storedTheme
       }
 
-      return DEFAULT_THEME
+      return defaultTheme
     } catch (error) {
-      return DEFAULT_THEME
+      return defaultTheme
     }
   }
 
@@ -63,14 +67,14 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
   // Set syntax highlighter theme via data attribute
   function applySyntaxHighlighterTheme(themeName) {
     const syntaxTheme =
-      SYNTAX_HIGHLIGHTER_THEMES[themeName] ||
-      SYNTAX_HIGHLIGHTER_THEMES[DEFAULT_THEME]
+      syntaxHighlighterThemes[themeName] ||
+      syntaxHighlighterThemes[defaultTheme]
     document.documentElement.setAttribute('data-theme', syntaxTheme)
   }
 
   // Show specific theme button, hide others
   function updateThemeButton(themeName) {
-    THEMES.forEach((theme) => {
+    themes.forEach((theme) => {
       const button = document.getElementById(`${theme}Button`)
       if (!button) return
 
@@ -86,10 +90,10 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
 
   // Get next theme in rotation
   function getNextTheme(currentTheme) {
-    const currentIndex = THEMES.indexOf(currentTheme)
+    const currentIndex = themes.indexOf(currentTheme)
     const validIndex = currentIndex === -1 ? 0 : currentIndex
-    const nextIndex = (validIndex + 1) % THEMES.length
-    return THEMES[nextIndex]
+    const nextIndex = (validIndex + 1) % themes.length
+    return themes[nextIndex]
   }
 
   // Replace old color preset with new one
@@ -107,20 +111,20 @@ const THEME_BUTTON_CSS = 'h-5 w-5 hidden'
       saveTheme(theme)
     } catch (error) {
       // Fallback to default on any error
-      applyColorPreset(DEFAULT_THEME)
-      applySyntaxHighlighterTheme(DEFAULT_THEME)
-      updateThemeButton(DEFAULT_THEME)
-      saveTheme(DEFAULT_THEME)
+      applyColorPreset(defaultTheme)
+      applySyntaxHighlighterTheme(defaultTheme)
+      updateThemeButton(defaultTheme)
+      saveTheme(defaultTheme)
     }
   }
 
   // Reset to default theme (fallback handler)
   function resetToDefaultTheme() {
     try {
-      applyColorPreset(DEFAULT_THEME)
-      applySyntaxHighlighterTheme(DEFAULT_THEME)
-      updateThemeButton(DEFAULT_THEME)
-      saveTheme(DEFAULT_THEME)
+      applyColorPreset(defaultTheme)
+      applySyntaxHighlighterTheme(defaultTheme)
+      updateThemeButton(defaultTheme)
+      saveTheme(defaultTheme)
     } catch (error) {
       // Silent fail - we've done our best
     }
