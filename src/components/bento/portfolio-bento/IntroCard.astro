@@ -16,7 +16,7 @@ var origAvatarClass =
   <div class="flex flex-col justify-between gap-4 md:max-h-[300px]">
     <div class="flex h-full flex-col">
       <p class="m-0 text-xl font-light">
-        Hi, I'm
+        Hi, I'm {' '}
         <b class="font-bold">{portfolio.firstName}</b>.
       </p>
 
@@ -35,11 +35,7 @@ var origAvatarClass =
       </ul>
     </div>
     <div class="flex gap-4">
-      <a
-        href={site.github}
-        aria-label="github profile"
-        target="_blank"
-      >
+      <a href={site.github} aria-label="github profile" target="_blank">
         <Button aria-label="github profile" variant="ghost">
           <Github />
           <span class="sr-only">GitHub Profile</span>
