@@ -4,16 +4,23 @@ import PostCard from './PostCard.astro'
 
 interface Props {
   articles: (CollectionEntry<'posts'> | CollectionEntry<'notes'>)[]
-  maxColumns?: number
+  maxColumns?: keyof typeof columnClasses
 }
+
+// Every breakpoint is spelled out so Tailwind's scanner sees the class names.
+// An inline `column-count` style would beat the responsive utilities and force
+// the same column count on every viewport.
+const columnClasses = {
+  1: 'columns-1',
+  2: 'columns-1 sm:columns-2',
+  3: 'columns-1 sm:columns-2 lg:columns-3',
+  4: 'columns-1 sm:columns-2 lg:columns-4',
+} as const
 
 const { articles, maxColumns = 3 } = Astro.props
 ---
 
-<div
-  class="columns-1 gap-4 sm:columns-2 lg:gap-4"
-  style={`column-count: ${maxColumns};`}
->
+<div class:list={['gap-4', columnClasses[maxColumns]]}>
   {
     articles.map((article) => (
       <div class="mb-4 break-inside-avoid">
