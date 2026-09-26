@@ -55,35 +55,38 @@ export const PORTFOLIO = {
 
 ## 3. `src/content/resume/` — Resume Content Collections
 
-Structured data for the resume pages (`/resume`, `/resume-print`, `/cv-print`). Uses **Astro Content Collections** (JSON files + markdown entries).
+Structured data for the resume pages (`/resume`, `/resume-print`, `/cv-print`, and the per-version `/resume-print/<version>`, `/cv-print/<version>`). Uses **Astro Content Collections** (JSON files + markdown entries), organised into one folder per **Resume Version**. `index` is the Default Version; see `docs/architecture/resume-system.md` and `docs/content/resume.md`.
 
 ```
 src/content/resume/
-  header.json          ← name, contact info, location
-  skills.json          ← skill groups
-  interests.json       ← interest list
-  now.json             ← "what I'm doing now" (web-only section)
-  activities.json      ← activities / volunteering
-  educations.json      ← degrees
-  experiences/         ← job entries (.md files with frontmatter)
-  projects/            ← project entries (.md files with frontmatter)
+  index/                 ← Default Version
+    header.json          ← name, contact info, location
+    skills.json          ← skill groups
+    interests.json       ← interest list
+    now.json             ← "what I'm doing now" (web-only; Default Version only)
+    activities.json      ← activities / volunteering
+    educations.json      ← degrees
+    experiences/         ← job entries (.md files with frontmatter)
+    projects/            ← project entries (.md files with frontmatter)
+  <version>/             ← a Resume Version: only the Sections it overrides
 ```
 
-Each entry supports a `visibility` field to control which pages include it:
+Projects, experiences and educations support a `visibility` field to control which pages include them:
 
 ```json
 {
   "visibility": {
-    "resume_web": true,
-    "resume_print": true
+    "web": true,
+    "resume_print": true,
+    "cv_print": true
   }
 }
 ```
 
-**Used by:**
-- `src/pages/resume.astro` — filters by `visibility.resume_web`
-- `src/pages/resume-print.astro` — filters by `visibility.resume_print`
-- `src/pages/cv-print.astro` — same filter as `resume_print`
+**Used by** (all read through `getResume()` in `src/lib/resume.ts`):
+- `src/pages/resume.astro` — Default Version; no visibility filter
+- `src/pages/resume-print.astro`, `src/pages/resume-print/[version].astro` — filter by `visibility.resume_print`
+- `src/pages/cv-print.astro`, `src/pages/cv-print/[version].astro` — filter by `visibility.cv_print`
 
 **Rule:** Any content that belongs on the resume (professional history, education, projects) lives here, not in `portfolio.ts`.
 
@@ -108,6 +111,6 @@ Each entry supports a `visibility` field to control which pages include it:
 |---|---|
 | Change the site title or GitHub link | `site.config.ts` |
 | Update homepage intro, skills tag cloud, avatar | `portfolio.ts` |
-| Add a new job or project to the resume | `src/content/resume/experiences/` or `projects/` |
+| Add a new job or project to the resume | `src/content/resume/index/experiences/` or `index/projects/` |
 | Hide a resume entry from print | Set `visibility.resume_print: false` in the entry |
 | Add a new resume section entirely | Add JSON/collection, create a section component in `sections/`, update the 3 resume pages |

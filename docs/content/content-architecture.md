@@ -12,16 +12,18 @@ All content lives in `src/content/`. Collections are defined in `src/content.con
 | `notes` | `src/content/notes/**/*.{md,mdx}` | Shorter notes (same schema as posts) |
 | `navItems` | `src/content/nav-items.json` | Navigation configuration |
 | `ogImages` | `src/content/og-images.json` | OG image configs |
-| `resumeSkills` | `src/content/resume/skills.json` | Resume skills |
-| `resumeProjects` | `src/content/resume/projects/*.md` | Resume projects |
-| `resumeExperiences` | `src/content/resume/experiences/*.md` | Resume experience entries |
-| `resumeEducations` | `src/content/resume/educations.json` | Resume education |
-| `resumeActivities` | `src/content/resume/activities.json` | Resume activities |
-| `resumeInterests` | `src/content/resume/interests.json` | Resume interests |
-| `resumeNow` | `src/content/resume/now.json` | "What I'm doing now" section |
-| `resumeHeader` | `src/content/resume/header.json` | Resume header/contact info |
+| `resumeSkills` | `src/content/resume/*/skills.json` | Resume skills |
+| `resumeProjects` | `src/content/resume/*/projects/*.md` | Resume projects |
+| `resumeExperiences` | `src/content/resume/*/experiences/*.md` | Resume experience entries |
+| `resumeEducations` | `src/content/resume/*/educations.json` | Resume education |
+| `resumeActivities` | `src/content/resume/*/activities.json` | Resume activities |
+| `resumeInterests` | `src/content/resume/*/interests.json` | Resume interests |
+| `resumeNow` | `src/content/resume/index/now.json` | "What I'm doing now" section (Default Version only) |
+| `resumeHeader` | `src/content/resume/*/header.json` | Resume header/contact info |
 
 Schema definitions: `src/content/collection-definitions/`
+
+Resume collections span every Resume Version folder (`src/content/resume/<version>/`, `*` above); `index` is the Default Version. Read them through `getResume()` in `src/lib/resume.ts`, never via `getCollection` directly. See `docs/content/resume.md`.
 
 ---
 
