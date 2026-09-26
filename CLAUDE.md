@@ -44,7 +44,7 @@ An **Astro-based digital garden and personal portfolio** — Zettelkasten-style 
 ```
 .agents/           Global AI agent skills
 .claude/agents/    Project agents (developer, web-master)
-docs/              Knowledge base — architecture/, content/, artifacts/
+docs/              Knowledge base — architecture/, content/, adr/, plus artifact folders (research/, handoff/, …)
 _references/       Local reference repos (gitignored)
 src/
   assets/          Static assets
@@ -111,21 +111,22 @@ See **`docs/content/`** (start at `docs/content/content-architecture.md`) for th
 Save artifacts to the docs knowledge base:
 
 ```
-docs/artifacts/<category>/yyyy-mm-dd-<topic>.<md|html>
+docs/<category>/yyyy-mm-dd-<topic>.<md|html>
 ```
 
 Files may be **Markdown (`.md`)** or **HTML (`.html`)**. For HTML, use the Anthropic
-visual style (ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings) —
-see `docs/artifacts/plan/2026-06-14-docs-restructure-plan.html` for a reference.
+visual style (ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings).
 
-`<category>` is a free-form folder — create whatever fits the artifact. Common ones:
+`<category>` is a free-form folder directly under `docs/` — create whatever fits the
+artifact. Common ones:
 
-- `prd` — product requirement documents and feature specs
-- `plan` — implementation plans and architectural decisions
 - `research` — research notes, reference analysis, tech comparisons
+- `handoff` — handoff briefs for another agent to pick up
 - `design` — design decisions, UX notes, visual direction
 
 Add new category folders as needed; the list above is a starting set, not a closed set.
+Don't put artifacts in `architecture/`, `content/`, or `adr/` — those hold the
+maintained reference docs and decision records.
 
 ---
 

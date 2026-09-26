@@ -8,7 +8,11 @@ Knowledge base for the Digital Garden 2024 site. Plain markdown, one job per fol
 | ----------------- | ----------------------------------------------------------------------------------------- |
 | `architecture/`   | How the system is built — project structure, markdown pipeline, links, deployment, OG images, resume, bento, site config, theme-add procedure |
 | `content/`        | Authoring formats for every content collection (posts, resume, nav, portfolio, site config, OG images) + the schema-sync rule |
-| `artifacts/`      | LLM-generated PRDs, plans, research/analyses, and design notes (see CLAUDE.md → LLM-Generated Artifacts) |
+| `adr/`            | Architecture decision records                                                             |
+| `research/`       | LLM-generated research notes and analyses (see CLAUDE.md → LLM-Generated Artifacts)       |
+| `handoff/`        | LLM-generated handoff briefs for another agent to pick up                                 |
+
+Other LLM-generated artifacts go in their own `docs/<category>/` folder (see CLAUDE.md → LLM-Generated Artifacts).
 
 ## Agent → docs map
 

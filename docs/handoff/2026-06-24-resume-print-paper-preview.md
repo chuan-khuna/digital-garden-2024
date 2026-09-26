@@ -2,7 +2,6 @@
 
 - **Date:** 2026-06-24
 - **For:** `developer` agent (owns Astro components, layout, themes, print)
-- **PRD:** `docs/artifacts/prd/2026-06-24-resume-print-paper-preview.md`
 - **Status:** Ready to implement. Design fully agreed; no code written yet.
 
 ---

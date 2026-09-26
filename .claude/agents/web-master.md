@@ -59,4 +59,4 @@ owns the schema/CSS/render and you own the content values.
 ## Conventions
 
 - Imports use the `@/` alias, never relative `../../`.
-- Save LLM artifacts to `docs/artifacts/<category>/yyyy-mm-dd-<topic>.md`.
+- Save LLM artifacts to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`.

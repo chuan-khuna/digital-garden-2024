@@ -90,4 +90,4 @@ web-master owns the content values.
 - React only for interactive/animated/browser-only UI, always with a `client:*` directive.
 - Fonts are loaded via the Astro Font API + `FontLoader.astro` — never add
   Google Fonts `@import` to CSS.
-- Save LLM artifacts to `docs/artifacts/<category>/yyyy-mm-dd-<topic>.md`.
+- Save LLM artifacts to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`.
