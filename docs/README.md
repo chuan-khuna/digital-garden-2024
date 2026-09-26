@@ -17,4 +17,4 @@ Other LLM-generated artifacts go in their own `docs/<category>/` folder (see CLA
 ## Agent → docs map
 
 - **developer** → `architecture/`, `content/`
-- **web-master** → `architecture/add-theme.md`, `architecture/og-image-generator.md`, `architecture/bento-grid.md`
+- **web-master** → `content/`, plus `CONTEXT.md` for resume work

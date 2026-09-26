@@ -23,16 +23,17 @@ src/
   content/
     collection-definitions/  Zod schemas + collection configs
     posts/        Digital garden posts (.md, .mdx)
-    notes/        Shorter notes (.md, .mdx)
-    resume/       Resume data (JSON files)
+    notes/        Shorter notes (.md, .mdx; folder created on first note)
+    resume/       Resume data, one folder per Resume Version (<version>/*.json, experiences/, projects/)
+  data/           Static site data (site.config.ts, portfolio.ts)
   layouts/        BaseLayout, PostLayout, BaseLayoutPrint
-  lib/            Browser utilities (browser-timezone, og-image generation)
+  lib/            Shared helpers — resume.ts (Resume Version resolution), generate-og-image.ts, browser-timezone.ts
   pages/          File-based routing (maps to URL paths 1:1)
   styles/
     presets/      Per-theme CSS variable files (nzk.css, nexus.css, dark.css)
     fonts.css
-    global.css
-    global_print.css
+    globals.css
+    print.css
     flexible_mark.css
     obsidian_callout.css
     expressive_code.css
@@ -46,10 +47,11 @@ src/
 | Path | Purpose |
 |---|---|
 | `src/pages/index.astro` | Homepage (bento grid) |
-| `src/pages/posts/[...slug].astro` | Individual post pages |
-| `src/pages/resume.astro` | Web resume |
+| `src/pages/posts/[...slug]/index.astro` | Individual post pages |
+| `src/pages/resume.astro` | Web resume (Default Version) |
+| `src/pages/resume-print.astro`, `cv-print.astro` (+ `[version].astro`) | Print Pages |
 | `src/content.config.ts` | All content collection registrations |
-| `src/styles/global.css` | Root stylesheet — imports all theme presets |
+| `src/styles/globals.css` | Root stylesheet — imports all theme presets |
 | `astro.config.mjs` | Astro config — plugins, integrations, adapter |
 
 ---

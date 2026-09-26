@@ -45,7 +45,7 @@ Used by both `posts` and `notes`. Defined in `src/content/collection-definitions
 }
 ```
 
-For full field descriptions and authoring examples → [`how-to-manage-posts.md`](./how-to-manage-posts.md)
+For full field descriptions and authoring examples → [`posts.md`](./posts.md)
 
 ---
 
@@ -56,4 +56,21 @@ For full field descriptions and authoring examples → [`how-to-manage-posts.md`
 | `src/data/site.config.ts` | Global site metadata (`SITE.siteTitle`, etc.) |
 | `src/data/portfolio.ts` | Personal info for the bento homepage (`PORTFOLIO`) |
 
-For field details → [`how-to-manage-site-config.md`](./how-to-manage-site-config.md)
+For field details → [`site-config.md`](./site-config.md) and [`portfolio.md`](./portfolio.md)
+
+---
+
+## Schema-sync table
+
+Changing a source below means updating its doc in the same task (see `CLAUDE.md` → Content and schema sync). A new collection gets a new doc in `docs/content/` and a row here.
+
+| Source path | Reference doc |
+|---|---|
+| `src/content/collection-definitions/post.ts`, `note.ts` | `posts.md` |
+| `src/content/collection-definitions/common-fields/_article.ts`, `_evergreen-stages.ts` | `posts.md` |
+| `src/content/collection-definitions/common-fields/_og-styles.ts` | `posts.md` + `og-images.md` |
+| `src/content/collection-definitions/resume.ts`, `resume-loaders.ts` | `resume.md` + `docs/architecture/resume-system.md` |
+| `src/content/collection-definitions/nav.ts` | `nav.md` |
+| `src/content/collection-definitions/og-images.ts` | `og-images.md` |
+| `src/data/portfolio.ts` | `portfolio.md` + `site-config.md` |
+| `src/data/site.config.ts` | `site-config.md` |
