@@ -1,7 +1,15 @@
 import { defineCollection } from 'astro:content'
 import { z } from 'astro/zod'
-import { file, glob } from 'astro/loaders'
-import type { Visibility } from '@/content/resume'
+import {
+  versionedResumeGlob,
+  versionedResumeJson,
+} from '@/content/collection-definitions/resume-loaders'
+
+// Every resume collection spans all Resume Version folders
+// (src/content/resume/<version>/). The loader injects `version` (the folder name)
+// into each entry and prefixes ids with `<version>/`. Read resume data through
+// `getResume()` in `@/lib/resume` rather than calling getCollection directly.
+const versionSchema = z.string()
 
 // Zod schema for the shared Visibility type
 const visibilitySchema = z.object({
@@ -11,8 +19,9 @@ const visibilitySchema = z.object({
 })
 
 export const resumeSkillsCollection = defineCollection({
-  loader: file('src/content/resume/skills.json'),
+  loader: versionedResumeJson('skills.json'),
   schema: z.object({
+    version: versionSchema,
     category: z.string(),
     // list of jargons/keywords
     details: z.array(z.string()),
@@ -20,8 +29,9 @@ export const resumeSkillsCollection = defineCollection({
 })
 
 export const resumeProjectsCollection = defineCollection({
-  loader: glob({ pattern: '*.md', base: 'src/content/resume/projects' }),
+  loader: versionedResumeGlob('projects'),
   schema: z.object({
+    version: versionSchema,
     title: z.string(),
     time: z.string(),
     description: z.string(),
@@ -36,8 +46,9 @@ export const resumeProjectsCollection = defineCollection({
 })
 
 export const resumeExperiencesCollection = defineCollection({
-  loader: glob({ pattern: '*.md', base: 'src/content/resume/experiences' }),
+  loader: versionedResumeGlob('experiences'),
   schema: z.object({
+    version: versionSchema,
     jobTitle: z.string(),
     company: z.string(),
     time: z.string(),
@@ -50,8 +61,9 @@ export const resumeExperiencesCollection = defineCollection({
 })
 
 export const resumeEducationsCollection = defineCollection({
-  loader: file('src/content/resume/educations.json'),
+  loader: versionedResumeJson('educations.json'),
   schema: z.object({
+    version: versionSchema,
     degree: z.string(),
     institution: z.string(),
     time: z.string(),
@@ -65,8 +77,9 @@ export const resumeEducationsCollection = defineCollection({
 })
 
 export const resumeActivitiesCollection = defineCollection({
-  loader: file('src/content/resume/activities.json'),
+  loader: versionedResumeJson('activities.json'),
   schema: z.object({
+    version: versionSchema,
     title: z.string(),
     time: z.string(),
     description: z.string(),
@@ -76,15 +89,19 @@ export const resumeActivitiesCollection = defineCollection({
 })
 
 export const resumeInterestsCollection = defineCollection({
-  loader: file('src/content/resume/interests.json'),
+  loader: versionedResumeJson('interests.json'),
   schema: z.object({
+    version: versionSchema,
     items: z.array(z.string()),
   }),
 })
 
+// The `now` Section belongs only to the Default Version (`index`);
+// a now.json inside any other version folder is ignored.
 export const resumeNowCollection = defineCollection({
-  loader: file('src/content/resume/now.json'),
+  loader: versionedResumeJson('now.json', { defaultVersionOnly: true }),
   schema: z.object({
+    version: versionSchema,
     lastUpdated: z.string(),
     intro: z.string(),
     paragraphs: z.array(z.string()),
@@ -92,8 +109,9 @@ export const resumeNowCollection = defineCollection({
 })
 
 export const resumeHeaderCollection = defineCollection({
-  loader: file('src/content/resume/header.json'),
+  loader: versionedResumeJson('header.json'),
   schema: z.object({
+    version: versionSchema,
     name: z.string(),
     jobTitle: z.string(),
     email: z.string().email(),

@@ -1,8 +1,11 @@
 ---
-import { getCollection } from 'astro:content'
+import type { Resume } from '@/lib/resume'
 
-const headerEntries = await getCollection('resumeHeader')
-const header = headerEntries[0].data
+interface Props {
+  header: Resume['header']
+}
+
+const { header } = Astro.props
 ---
 
 <div class="border-b-1 relative border-gray-100 p-2">

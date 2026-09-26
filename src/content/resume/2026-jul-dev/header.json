@@ -1,0 +1,12 @@
+[
+  {
+    "id": "header",
+    "name": "Mock Person",
+    "jobTitle": "Mock Developer",
+    "email": "mock@example.com",
+    "github": "https://github.com/example",
+    "githubName": "example",
+    "introduction": "Mock introduction for testing Resume Versions. This text is placeholder content and does not describe a real person.",
+    "location": "Mock City, Mockland"
+  }
+]

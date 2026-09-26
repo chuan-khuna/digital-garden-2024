@@ -1,0 +1,66 @@
+---
+// One-page Resume Print Page. Rendered for the Default Version at /resume-print
+// and for every other Resume Version at /resume-print/<version>.
+import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
+import { site } from '@/data/site.config'
+import type { Resume } from '@/lib/resume'
+
+// layout
+import PageLayout from '@/components/resume/layout/PageLayout.astro'
+import Content from '@/components/resume/layout/Content.astro'
+import WebWrapper from '@/components/resume/layout/WebWrapper.astro'
+
+// sections
+import PrintHeader from '@/components/resume/sections/print/Header.astro'
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
+
+interface Props {
+  resume: Resume
+  noindex?: boolean
+}
+
+const { resume, noindex = false } = Astro.props
+
+const experiences = resume.experiences.filter(
+  (e) => e.data.visibility.resume_print,
+)
+const projects = resume.projects.filter((p) => p.data.visibility.resume_print)
+const educations = resume.educations.filter(
+  (e) => e.data.visibility.resume_print,
+)
+---
+
+<BaseLayoutPrint
+  title={`${site.displayName}'s Resume`}
+  description=""
+  noindex={noindex}
+>
+  <WebWrapper className="flex min-h-screen flex-col justify-center">
+    <PageLayout className="px-8 py-4 font-resumesans">
+      <Content
+        className="mx-auto grid max-w-[1200px] grid-cols-1 grid-cols-7 gap-4"
+      >
+        <div class="col-span-7">
+          <PrintHeader header={resume.header} />
+        </div>
+
+        <div class="col-span-2 block space-y-1">
+          <Skills data={resume.skills} variant="print" />
+          <Activity data={resume.activities} variant="print" />
+          <Interests items={resume.interests} variant="print" />
+        </div>
+
+        <div class="col-span-5 block space-y-1">
+          <Experiences data={experiences} variant="print" />
+          <Projects data={projects} variant="print" />
+          <Education data={educations} variant="print" />
+        </div>
+      </Content>
+    </PageLayout>
+  </WebWrapper>
+</BaseLayoutPrint>
