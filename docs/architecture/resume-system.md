@@ -34,9 +34,9 @@ src/
 │
 ├── pages/
 │   ├── resume.astro                     ← web version (/resume), always `index`
-│   ├── resume-print.astro               ← print resume, Default Version (/resume-print)
+│   ├── resume-print/index.astro         ← print resume, Default Version (/resume-print)
 │   ├── resume-print/[version].astro     ← print resume, other versions (/resume-print/<version>)
-│   ├── cv-print.astro                   ← print CV, Default Version (/cv-print)
+│   ├── cv-print/index.astro             ← print CV, Default Version (/cv-print)
 │   └── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
 │
 ├── components/resume/
@@ -259,9 +259,9 @@ Data fetching happens in `resume.astro` via `getResume()`. Section components re
 
 | URL | File | Resume Version |
 |---|---|---|
-| `/resume-print` | `src/pages/resume-print.astro` | `index` |
+| `/resume-print` | `src/pages/resume-print/index.astro` | `index` |
 | `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
-| `/cv-print` | `src/pages/cv-print.astro` | `index` |
+| `/cv-print` | `src/pages/cv-print/index.astro` | `index` |
 | `/cv-print/<version>` | `src/pages/cv-print/[version].astro` | `<version>` |
 
 The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
@@ -457,7 +457,7 @@ Content files (src/content/resume/<version>/ JSON / .md)
         ↓  Astro Content Collections (versionedResumeJson / versionedResumeGlob loaders)
 getResume(surface, version)  ← src/lib/resume.ts → resolveResume() in resume-resolve.ts: whole-Section override, fallback to `index`, visibility filter
         ↓
-resume.astro / resume-print(.astro|/[version].astro) / cv-print(.astro|/[version].astro)
+resume.astro / resume-print/(index|[version]).astro / cv-print/(index|[version]).astro
         ↓  ResumePrintPage / CvPrintPage (render only)
 Section components (sections/*.astro)  ← receive typed data[] + variant as props
         ↓  compose using SectionBlock + Item + UnorderedList / ResumeMarkdownBulletWrapper
