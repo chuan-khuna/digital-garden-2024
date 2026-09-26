@@ -27,7 +27,7 @@ src/
     resume/       Resume data, one folder per Resume Version (<version>/*.json, experiences/, projects/)
   data/           Static site data (site.config.ts, portfolio.ts)
   layouts/        BaseLayout, PostLayout, BaseLayoutPrint
-  lib/            Shared helpers — resume.ts (Resume Version resolution), generate-og-image.ts, browser-timezone.ts
+  lib/            Shared helpers — resume.ts (Resume data adapter) + resume-resolve.ts (pure Resume Version rules, tested), generate-og-image.ts, browser-timezone.ts
   pages/          File-based routing (maps to URL paths 1:1)
   styles/
     presets/      Per-theme CSS variable files (nzk.css, nexus.css, dark.css)
