@@ -83,10 +83,10 @@ Projects, experiences and educations support a `visibility` field to control whi
 }
 ```
 
-**Used by** (all read through `getResume()` in `src/lib/resume.ts`):
-- `src/pages/resume.astro` — Default Version; no visibility filter
-- `src/pages/resume-print.astro`, `src/pages/resume-print/[version].astro` — filter by `visibility.resume_print`
-- `src/pages/cv-print.astro`, `src/pages/cv-print/[version].astro` — filter by `visibility.cv_print`
+**Used by** (all read through `getResume(surface, version)` in `src/lib/resume.ts`, which applies the filter):
+- `src/pages/resume.astro` — Default Version; `visibility.web`
+- `src/pages/resume-print.astro`, `src/pages/resume-print/[version].astro` — `visibility.resume_print`
+- `src/pages/cv-print.astro`, `src/pages/cv-print/[version].astro` — `visibility.cv_print`
 
 **Rule:** Any content that belongs on the resume (professional history, education, projects) lives here, not in `portfolio.ts`.
 

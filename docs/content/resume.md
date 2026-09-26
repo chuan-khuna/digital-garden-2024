@@ -88,11 +88,11 @@ Projects, experiences and educations have a `visibility` object that controls wh
 }
 ```
 
-Default is `true` for all three. Set to `false` to hide from a specific layout.
+Default is `true` for all three. Set to `false` to hide the entry on that Surface. Each key is a **Surface**; `getResume(surface, version)` applies the filter, so pages never filter themselves.
 
-| Page | Filters on |
+| Page | Surface (filters on) |
 |---|---|
-| `/resume` | none (renders every entry) |
+| `/resume` | `web` |
 | `/resume-print`, `/resume-print/<version>` | `resume_print` |
 | `/cv-print`, `/cv-print/<version>` | `cv_print` |
 
@@ -297,14 +297,4 @@ export const collections = {
 
 ### 3. Resolve it in `getResume()` — not in pages or section components
 
-Add the collection to `loadAllSections()` in `src/lib/resume.ts` and a resolved field to the `Resume` interface using `resolveSection(entries, version)`, so it follows the whole-Section fallback rule. Pages and section components never call `getCollection('resume*')`; section components receive data as props.
-
-### 4. Filter by visibility in the print page bodies
-
-```astro
-// components/resume/pages/ResumePrintPage.astro
-const certifications = resume.certifications.filter((c) => c.data.visibility.resume_print)
-
-// components/resume/pages/CvPrintPage.astro
-const certifications = resume.certifications.filter((c) => c.data.visibility.cv_print)
-```
+Add the collection to `loadAllSections()` in `src/lib/resume.ts` and a resolved field to the `Resume` interface using `resolveSection(entries, version)`, so it follows the whole-Section fallback rule. If the Section has a `visibility` field, wrap it in `visibleOn(…, surface)` there too — the Print Pages and `/resume` then receive it already filtered. Pages and section components never call `getCollection('resume*')` or filter by `visibility`; section components receive data as props.

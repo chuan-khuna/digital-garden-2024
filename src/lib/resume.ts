@@ -7,6 +7,9 @@
  * entries for it; otherwise the whole Section comes from the Default Version
  * (`index`). There is no per-entry merging and no inheritance between versions.
  * The `now` Section is always read from `index`.
+ *
+ * Visibility rule: experiences, projects and educations are filtered by the
+ * entry's `visibility[surface]`, so pages receive only what they should show.
  */
 import { getCollection, type CollectionEntry } from 'astro:content'
 import {
@@ -16,13 +19,22 @@ import {
 
 export { DEFAULT_RESUME_VERSION }
 
+/**
+ * Where a Resume Version is shown: the web resume, the Resume Print Page or the
+ * CV Print Page. Values match the keys of an entry's `visibility`.
+ */
+export type Surface = 'web' | 'resume_print' | 'cv_print'
+
 export interface Resume {
   version: string
+  surface: Surface
   header: CollectionEntry<'resumeHeader'>['data']
   skills: CollectionEntry<'resumeSkills'>[]
+  /** Only entries visible on `surface`. */
   experiences: CollectionEntry<'resumeExperiences'>[]
-  /** Sorted by `order` (ascending). */
+  /** Only entries visible on `surface`, sorted by `order` (ascending). */
   projects: CollectionEntry<'resumeProjects'>[]
+  /** Only entries visible on `surface`. */
   educations: CollectionEntry<'resumeEducations'>[]
   activities: CollectionEntry<'resumeActivities'>[]
   interests: string[]
@@ -40,6 +52,12 @@ function resolveSection<T extends VersionedEntry>(
   const own = entries.filter((e) => e.data.version === version)
   if (own.length > 0) return own
   return entries.filter((e) => e.data.version === DEFAULT_RESUME_VERSION)
+}
+
+type VisibleEntry = { data: { visibility: Record<Surface, boolean> } }
+
+function visibleOn<T extends VisibleEntry>(entries: T[], surface: Surface): T[] {
+  return entries.filter((e) => e.data.visibility[surface])
 }
 
 async function loadAllSections() {
@@ -89,8 +107,12 @@ export async function getResumeVersions(): Promise<string[]> {
   return [...versions].sort()
 }
 
-/** All Sections resolved for `version` (defaults to the Default Version). */
+/**
+ * All Sections resolved for `version` (defaults to the Default Version) and
+ * filtered to what `surface` shows.
+ */
 export async function getResume(
+  surface: Surface,
   version: string = DEFAULT_RESUME_VERSION,
 ): Promise<Resume> {
   assertValidResumeVersion(version)
@@ -113,13 +135,17 @@ export async function getResume(
 
   return {
     version,
+    surface,
     header: header.data,
     skills: resolveSection(sections.skills, version),
-    experiences: resolveSection(sections.experiences, version),
-    projects: resolveSection(sections.projects, version).sort(
+    experiences: visibleOn(
+      resolveSection(sections.experiences, version),
+      surface,
+    ),
+    projects: visibleOn(resolveSection(sections.projects, version), surface).sort(
       (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0),
     ),
-    educations: resolveSection(sections.educations, version),
+    educations: visibleOn(resolveSection(sections.educations, version), surface),
     activities: resolveSection(sections.activities, version),
     interests: resolveSection(sections.interests, version)[0]?.data.items ?? [],
     now,

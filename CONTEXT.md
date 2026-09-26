@@ -18,6 +18,10 @@ _Avoid_: Block, part
 The Resume Version named `index`; the one shown when no version is requested.
 _Avoid_: Main resume, base resume
 
+**Surface**:
+Where a Resume Version is shown — the web resume (`web`), the Resume Print Page (`resume_print`) or the CV Print Page (`cv_print`). An entry's **Visibility** says, per Surface, whether it appears there; the Resume is always resolved for exactly one Surface.
+_Avoid_: Target, layout, output
+
 **Print Page**:
 A print-to-PDF rendering of a Resume Version — either the **Resume** (one page) or the **CV** (multi-page).
 _Avoid_: PDF page, export

@@ -28,7 +28,7 @@ src/
 │       └── resume-loaders.ts            ← versioned loaders + version-name validation
 │
 ├── lib/
-│   └── resume.ts                        ← getResume(version) / getResumeVersions()
+│   └── resume.ts                        ← getResume(surface, version) / getResumeVersions()
 │
 ├── pages/
 │   ├── resume.astro                     ← web version (/resume), always `index`
@@ -103,7 +103,7 @@ Every entry also carries a `version` field (the folder it came from), injected b
 
 Pages never call `getCollection('resume*')` directly, because that would mix entries from every version. They go through:
 
-- **`getResume(version = 'index')`** returns a `Resume` object with every Section resolved for that version: `header` (data), `skills`, `experiences`, `projects` (sorted by `order`), `educations`, `activities`, `interests` (`string[]`) and `now`.
+- **`getResume(surface, version = 'index')`** returns a `Resume` object with every Section resolved for that version: `header` (data), `skills`, `experiences`, `projects` (sorted by `order`), `educations`, `activities`, `interests` (`string[]`) and `now`. `surface` is required (`'web' | 'resume_print' | 'cv_print'`); experiences, projects and educations come back already filtered to entries visible on it.
 - **`getResumeVersions()`** returns every distinct version found in the content, **excluding `index`**, sorted. The `[version]` pages use it in `getStaticPaths`.
 
 **Fallback rule (whole-Section override):**
@@ -113,7 +113,7 @@ Pages never call `getCollection('resume*')` directly, because that would mix ent
 3. There is no per-entry merging and no inheritance between versions. The fallback is always `index`.
 4. `now` is always read from `index`.
 
-Visibility filtering happens **after** resolution, inside the page body. So a version whose projects are all `resume_print: false` still overrides the projects Section (and shows no projects on `/resume-print/<version>`). It does not fall back to `index`.
+Visibility filtering happens **after** resolution, inside `getResume()`. So a version whose projects are all `resume_print: false` still overrides the projects Section (and shows no projects on `/resume-print/<version>`). It does not fall back to `index`.
 
 Components never query resume collections themselves either: `PrintHeader` (`sections/print/Header.astro`) receives `header` as a prop.
 
@@ -129,11 +129,11 @@ Projects, experiences, and educations have a `visibility` object to control whic
 }
 ```
 
-Set a flag to `false` to hide an entry from that specific page without deleting it.
+Set a flag to `false` to hide an entry from that specific page without deleting it. Each key is a **Surface**; the page passes its Surface to `getResume()`, which does the filtering.
 
 | Page | Filters on |
 |---|---|
-| `/resume` | none (renders every entry) |
+| `/resume` | `visibility.web` |
 | `/resume-print`, `/resume-print/<version>` | `visibility.resume_print` |
 | `/cv-print`, `/cv-print/<version>` | `visibility.cv_print` |
 
@@ -231,7 +231,7 @@ Edit `src/content/resume/index/skills.json` — each entry is a category with a 
 
 **File:** `src/pages/resume.astro`
 
-Uses `BaseLayout` (full site layout with nav/footer). The page always shows the Default Version: it calls `getResume()` once at the top level and passes the resolved Sections down as props to each section component:
+Uses `BaseLayout` (full site layout with nav/footer). The page always shows the Default Version: it calls `getResume('web')` once at the top level and passes the resolved Sections down as props to each section component:
 
 ```
 ┌─────────────────────────────────────┐
@@ -395,22 +395,20 @@ This component exists because Astro's scoped `<style>` cannot reach `<slot>` con
 
 ## How a Section Component Works (Experiences example)
 
-The **page** resolves the Resume Version (via `getResume()`) and the **page body** filters by visibility. The **section component** only renders.
+The **route** resolves the Resume Version for its Surface (via `getResume()`, which also filters by visibility). The **page body** and the **section component** only render.
 
 ```astro
 ---
-// resume-print/[version].astro (route) — resolves the version
-const resume = await getResume(Astro.params.version)
+// resume-print/[version].astro (route) — resolves the version for a Surface
+const resume = await getResume('resume_print', Astro.params.version)
 ---
 <ResumePrintPage resume={resume} noindex />
 ```
 
 ```astro
 ---
-// components/resume/pages/ResumePrintPage.astro (page body) — filters
-const experiences = resume.experiences.filter(
-  (e) => e.data.visibility.resume_print,
-)
+// components/resume/pages/ResumePrintPage.astro (page body) — already filtered
+const { experiences, projects, educations } = resume
 ---
 <Experiences data={experiences} variant="print" />
 ```
@@ -455,10 +453,10 @@ For JSON-based sections (skills, educations, activities), the pattern is simpler
 ```
 Content files (src/content/resume/<version>/ JSON / .md)
         ↓  Astro Content Collections (versionedResumeJson / versionedResumeGlob loaders)
-getResume(version)  ← src/lib/resume.ts: whole-Section override, fallback to `index`
+getResume(surface, version)  ← src/lib/resume.ts: whole-Section override, fallback to `index`, visibility filter
         ↓
 resume.astro / resume-print(.astro|/[version].astro) / cv-print(.astro|/[version].astro)
-        ↓  ResumePrintPage / CvPrintPage: .filter(visibility)
+        ↓  ResumePrintPage / CvPrintPage (render only)
 Section components (sections/*.astro)  ← receive typed data[] + variant as props
         ↓  compose using SectionBlock + Item + UnorderedList / ResumeMarkdownBulletWrapper
         ↓  wrapped in BaseLayout / BaseLayoutPrint

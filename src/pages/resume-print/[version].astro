@@ -12,7 +12,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths
 
 const { version } = Astro.params
-const resume = await getResume(version)
+const resume = await getResume('resume_print', version)
 ---
 
 <ResumePrintPage resume={resume} noindex />

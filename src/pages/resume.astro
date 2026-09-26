@@ -13,7 +13,7 @@ import Now from '@/components/resume/sections/Now.astro'
 import { getResume } from '@/lib/resume'
 import { site } from '@/data/site.config'
 
-// The web resume always shows the Default Version (`index`).
+// The web resume always shows the Default Version (`index`) on the `web` Surface.
 const {
   header,
   experiences,
@@ -23,7 +23,7 @@ const {
   educations,
   interests,
   now: nowEntry,
-} = await getResume()
+} = await getResume('web')
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 

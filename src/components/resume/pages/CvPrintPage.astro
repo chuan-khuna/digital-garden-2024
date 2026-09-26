@@ -28,9 +28,7 @@ interface Props {
 
 const { resume, noindex = false } = Astro.props
 
-const experiences = resume.experiences.filter((e) => e.data.visibility.cv_print)
-const projects = resume.projects.filter((p) => p.data.visibility.cv_print)
-const educations = resume.educations.filter((e) => e.data.visibility.cv_print)
+const { experiences, projects, educations } = resume
 
 const pageSettingClass = 'px-12 py-4 font-resumesans'
 ---

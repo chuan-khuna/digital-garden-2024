@@ -3,7 +3,7 @@
 import CvPrintPage from '@/components/resume/pages/CvPrintPage.astro'
 import { getResume } from '@/lib/resume'
 
-const resume = await getResume()
+const resume = await getResume('cv_print')
 ---
 
 <CvPrintPage resume={resume} />

@@ -26,13 +26,7 @@ interface Props {
 
 const { resume, noindex = false } = Astro.props
 
-const experiences = resume.experiences.filter(
-  (e) => e.data.visibility.resume_print,
-)
-const projects = resume.projects.filter((p) => p.data.visibility.resume_print)
-const educations = resume.educations.filter(
-  (e) => e.data.visibility.resume_print,
-)
+const { experiences, projects, educations } = resume
 ---
 
 <BaseLayoutPrint
