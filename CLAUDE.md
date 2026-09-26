@@ -135,3 +135,19 @@ Add new category folders as needed; the list above is a starting set, not a clos
 - **Theme not persisting:** Check browser localStorage is enabled
 - **Import errors:** Verify `@/` alias in `tsconfig.json` `paths`
 - **Cloudflare build failures:** Ensure `wrangler.jsonc` `compatibility_date` is current
+
+---
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs live as local markdown files under `.scratch/<feature-slug>/` (no remote tracker, no PR triage). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context — one root `CONTEXT.md` + `docs/adr/`, created lazily. See `docs/agents/domain.md`.
