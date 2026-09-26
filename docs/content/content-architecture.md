@@ -23,7 +23,7 @@ All content lives in `src/content/`. Collections are defined in `src/content.con
 
 Schema definitions: `src/content/collection-definitions/`
 
-Resume collections span every Resume Version folder (`src/content/resume/<version>/`, `*` above); `index` is the Default Version. Read them through `getResume()` in `src/lib/resume.ts`, never via `getCollection` directly. See `docs/content/resume.md`.
+Resume collections span every Resume Version folder (`src/content/resume/<version>/`, `*` above); `index` is the Default Version. Read them through `getResume()` in `src/lib/resume/index.ts`, never via `getCollection` directly. See `docs/content/resume.md`.
 
 ---
 

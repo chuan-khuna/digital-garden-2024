@@ -4,7 +4,7 @@
  * will mix entries from every Resume Version.
  *
  * This module is the Astro content adapter: it loads the collections and hands
- * them to the pure rules in `@/lib/resume-resolve` (fallback, visibility,
+ * them to the pure rules in `@/lib/resume/resolve` (fallback, visibility,
  * ordering), which is where tests exercise them.
  */
 import { getCollection } from 'astro:content'
@@ -15,7 +15,7 @@ import {
   type Resume,
   type ResumeEntries,
   type Surface,
-} from '@/lib/resume-resolve'
+} from '@/lib/resume/resolve'
 
 export { DEFAULT_RESUME_VERSION }
 export type { Resume, Surface }

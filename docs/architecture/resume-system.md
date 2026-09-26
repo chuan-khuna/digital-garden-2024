@@ -28,9 +28,10 @@ src/
 │       └── resume-loaders.ts            ← versioned loaders + version-name validation
 │
 ├── lib/
-│   ├── resume.ts                        ← getResume(surface, version) / getResumeVersions() — Astro content adapter
-│   ├── resume-resolve.ts                ← resolveResume(): fallback, visibility, ordering (pure)
-│   └── resume-resolve.test.ts           ← Vitest tests for the rules above
+│   └── resume/
+│       ├── index.ts                     ← getResume(surface, version) / getResumeVersions() — Astro content adapter
+│       ├── resolve.ts                   ← resolveResume(): fallback, visibility, ordering (pure)
+│       └── resolve.test.ts              ← Vitest tests for the rules above
 │
 ├── pages/
 │   ├── resume.astro                     ← web version (/resume), always `index`
@@ -101,9 +102,9 @@ Every entry also carries a `version` field (the folder it came from), injected b
 - **`defaultVersionOnly: true`** (used by `resumeNow`) reads only `index/<fileName>`. The same file inside any other version is silently ignored.
 - **Version-name validation:** every folder name other than `index` must be a lowercase kebab-case slug (`/^[a-z0-9]+(?:-[a-z0-9]+)*$/`). Anything else fails the build with an `[resume] Invalid Resume Version folder …` error.
 
-### Resolving a Version: `getResume()` (`src/lib/resume.ts`)
+### Resolving a Version: `getResume()` (`src/lib/resume/index.ts`)
 
-Pages never call `getCollection('resume*')` directly, because that would mix entries from every version. They go through `src/lib/resume.ts`, a thin adapter that loads the eight collections and passes them to the pure `resolveResume(entries, surface, version)` in `src/lib/resume-resolve.ts`. Every rule below lives in `resume-resolve.ts` and is covered by `resume-resolve.test.ts` (`bun run test`), which feeds it fixture entries instead of content:
+Pages never call `getCollection('resume*')` directly, because that would mix entries from every version. They go through `src/lib/resume/index.ts`, a thin adapter that loads the eight collections and passes them to the pure `resolveResume(entries, surface, version)` in `src/lib/resume/resolve.ts`. Every rule below lives in `resolve.ts` and is covered by `resume/resolve.test.ts` (`bun run test`), which feeds it fixture entries instead of content:
 
 - **`getResume(surface, version = 'index')`** returns a `Resume` object with every Section resolved for that version: `header` (data), `skills`, `experiences`, `projects` (sorted by `order`), `educations`, `activities`, `interests` (`string[]`) and `now`. `surface` is required (`'web' | 'resume_print' | 'cv_print'`); experiences, projects and educations come back already filtered to entries visible on it.
 - **`getResumeVersions()`** returns every distinct version found in the content, **excluding `index`**, sorted. The `[version]` pages use it in `getStaticPaths`.
@@ -455,7 +456,7 @@ For JSON-based sections (skills, educations, activities), the pattern is simpler
 ```
 Content files (src/content/resume/<version>/ JSON / .md)
         ↓  Astro Content Collections (versionedResumeJson / versionedResumeGlob loaders)
-getResume(surface, version)  ← src/lib/resume.ts → resolveResume() in resume-resolve.ts: whole-Section override, fallback to `index`, visibility filter
+getResume(surface, version)  ← src/lib/resume/index.ts → resolveResume() in resume/resolve.ts: whole-Section override, fallback to `index`, visibility filter
         ↓
 resume.astro / resume-print/(index|[version]).astro / cv-print/(index|[version]).astro
         ↓  ResumePrintPage / CvPrintPage (render only)

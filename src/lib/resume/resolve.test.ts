@@ -3,7 +3,7 @@ import {
   resolveResume,
   resumeVersionsIn,
   type ResumeEntries,
-} from '@/lib/resume-resolve'
+} from '@/lib/resume/resolve'
 
 // Fixture adapter: builds the entries `getResume()` would load from content.
 // Only the fields the resolution rules read are filled in.

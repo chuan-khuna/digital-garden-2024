@@ -17,7 +17,7 @@ bun run format       # prettier
 bun run test         # vitest — unit tests for pure modules (src/**/*.test.ts)
 ```
 
-`bun run test` and `bun run build` both passing is the bar for a code change. Tests cannot import `astro:content`; put logic worth testing in a pure module behind the Astro adapter (e.g. `src/lib/resume-resolve.ts` behind `src/lib/resume.ts`).
+`bun run test` and `bun run build` both passing is the bar for a code change. Tests cannot import `astro:content`; put logic worth testing in a pure module behind the Astro adapter (e.g. `src/lib/resume/resolve.ts` behind `src/lib/resume/index.ts`).
 
 ## Where knowledge lives
 

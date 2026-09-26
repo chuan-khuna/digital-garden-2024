@@ -83,7 +83,7 @@ Projects, experiences and educations support a `visibility` field to control whi
 }
 ```
 
-**Used by** (all read through `getResume(surface, version)` in `src/lib/resume.ts`, which applies the filter):
+**Used by** (all read through `getResume(surface, version)` in `src/lib/resume/index.ts`, which applies the filter):
 - `src/pages/resume.astro` — Default Version; `visibility.web`
 - `src/pages/resume-print/index.astro`, `src/pages/resume-print/[version].astro` — `visibility.resume_print`
 - `src/pages/cv-print/index.astro`, `src/pages/cv-print/[version].astro` — `visibility.cv_print`

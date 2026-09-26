@@ -5,7 +5,7 @@ All resume data lives in `src/content/resume/<version>/`, one folder per **Resum
 - `src/content/resume/index/` is the **Default Version**. It backs the web resume (`/resume`) and the default print pages (`/resume-print`, `/cv-print`).
 - Any other folder, e.g. `src/content/resume/2026-jul-dev/`, is a Resume Version tailored for a specific job application. It is rendered only at `/resume-print/<version>` and `/cv-print/<version>`.
 
-Schema definitions: `src/content/collection-definitions/resume.ts` (loaders: `resume-loaders.ts`; resolution rules: `src/lib/resume-resolve.ts`, loaded through `src/lib/resume.ts`). Architecture: `docs/architecture/resume-system.md`.
+Schema definitions: `src/content/collection-definitions/resume.ts` (loaders: `resume-loaders.ts`; resolution rules: `src/lib/resume/resolve.ts`, loaded through `src/lib/resume/index.ts`). Architecture: `docs/architecture/resume-system.md`.
 
 ```
 src/content/resume/
@@ -297,4 +297,4 @@ export const collections = {
 
 ### 3. Resolve it in `getResume()` — not in pages or section components
 
-Add the collection to `loadAllSections()` in `src/lib/resume.ts`, then to `ResumeEntries`, the `Resume` interface and `resolveResume()` in `src/lib/resume-resolve.ts` using `resolveSection(entries, version)`, so it follows the whole-Section fallback rule — and add a case to `resume-resolve.test.ts`. If the Section has a `visibility` field, wrap it in `visibleOn(…, surface)` there too — the Print Pages and `/resume` then receive it already filtered. Pages and section components never call `getCollection('resume*')` or filter by `visibility`; section components receive data as props.
+Add the collection to `loadAllSections()` in `src/lib/resume/index.ts`, then to `ResumeEntries`, the `Resume` interface and `resolveResume()` in `src/lib/resume/resolve.ts` using `resolveSection(entries, version)`, so it follows the whole-Section fallback rule — and add a case to `resume/resolve.test.ts`. If the Section has a `visibility` field, wrap it in `visibleOn(…, surface)` there too — the Print Pages and `/resume` then receive it already filtered. Pages and section components never call `getCollection('resume*')` or filter by `visibility`; section components receive data as props.
