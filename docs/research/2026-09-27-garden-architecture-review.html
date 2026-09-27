@@ -27,6 +27,7 @@
   <p class="lbl clay">Architecture review · 2026-09-27 · branch feature/resume-print-versioning</p>
   <h1 class="text-4xl">digital-garden-2024</h1>
   <p class="text-sm text-stone-600 max-w-2xl">Resume Versions were reviewed yesterday (<code>docs/research/2026-09-26-resume-architecture-review.md</code>); candidates 1 and 2 from that review have shipped. This review looks mostly at the garden: posts, wiki links, OG images, display helpers and theming.</p>
+  <p class="text-sm"><span class="px-2 py-0.5 rounded bg-stone-800 text-white text-xs">Progress</span> Candidate 2 done (2026-09-27), plus two of the quick deletions. Candidates 1, 3, 4, 5 and 6 are still open.</p>
   <div class="flex flex-wrap gap-4 text-xs text-stone-700">
     <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 border border-stone-500 bg-white"></span>module</span>
     <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 seam"></span>seam</span>
@@ -41,7 +42,7 @@
     <thead><tr class="text-left lbl text-stone-500"><th class="py-1">#</th><th>Candidate</th><th>Strength</th></tr></thead>
     <tbody class="divide-y divide-stone-200">
       <tr><td class="py-2">1</td><td><a class="underline" href="#c1">Deepen the wiki-link graph into one module</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td></tr>
-      <tr><td class="py-2">2</td><td><a class="underline" href="#c2">One OG image module: route, URL, style</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td></tr>
+      <tr class="text-stone-500"><td class="py-2">2</td><td><a class="underline line-through" href="#c2">One OG image module: route, URL, style</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span> <span class="px-2 py-0.5 rounded bg-stone-800 text-white text-xs">✓ Done</span></td></tr>
       <tr><td class="py-2">3</td><td><a class="underline" href="#c3">Article registry for posts and notes</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td></tr>
       <tr><td class="py-2">4</td><td><a class="underline" href="#c4">Garden display module: dates and stage</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td></tr>
       <tr><td class="py-2">5</td><td><a class="underline" href="#c5">Resume Section registry</a></td><td><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span></td></tr>
@@ -117,6 +118,18 @@ flowchart TB
     <h2 class="text-2xl mr-2">2 · One OG image module: route, URL, style</h2>
     <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span>
     <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+    <span class="px-2 py-0.5 rounded bg-stone-800 text-white text-xs">✓ Done 2026-09-27</span>
+  </div>
+  <div class="rounded-lg border-l-4 border-emerald-600 bg-emerald-50 p-4 text-sm space-y-2">
+    <p><strong>Completed.</strong> <code>src/lib/og-image/</code> now holds the OG image module: <code>index.ts</code> (adapter), <code>resolve.ts</code> (pure, tested), <code>render.ts</code> (satori → sharp).</p>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>Pages call <code>pageOgImage(slug)</code> / <code>articleOgImage(collection, id)</code>. A slug missing from <code>og-images.json</code> fails the build. Page OG images are still customised in the JSON.</li>
+      <li>Routes return <code>ogImageResponse(data)</code>. <code>posts_/</code> was deleted, so each post image is rendered once.</li>
+      <li>Styles are typed end to end: <code>OgStyle</code> + <code>Record&lt;OgStyle, Theme&gt;</code>, no fallback.</li>
+      <li>Not done: font path fix. <code>import.meta.url</code> points into the bundled chunk in <code>dist/</code>, so fonts stay project-root-relative.</li>
+    </ul>
+    <p class="font-mono text-xs text-stone-600">2a13b9e fix(og) · bc774d7 refactor(og) · 05ddc5f test(og) · af54225 docs(og)</p>
+    <p class="text-xs text-stone-600">Details: <code>docs/research/2026-09-27-og-image-module.md</code> · <code>docs/handoff/2026-09-27-og-image-plan.md</code> · <code>docs/architecture/og-image-generator.md</code></p>
   </div>
   <ul class="font-mono text-sm text-stone-700">
     <li>src/pages/og/[articleType]/[...slug].png.ts · og/pages/[...slug].png.ts · og/posts_/[...slug].png.ts</li>
@@ -340,11 +353,12 @@ flowchart TB
 <section class="rounded-2xl border border-stone-300 bg-stone-50 p-6 space-y-3">
   <h2 class="text-xl">Not architecture, just deletions</h2>
   <ul class="text-sm list-disc pl-5 space-y-1">
-    <li><code>src/pages/og/posts_/</code>: stale duplicate route, still built (also covered in candidate 2).</li>
+    <li class="text-stone-500"><span class="line-through"><code>src/pages/og/posts_/</code>: stale duplicate route, still built (also covered in candidate 2).</span> ✓ deleted in <code>2a13b9e</code></li>
     <li><code>src/lib/utils.ts</code> and <code>src/utils/cn.ts</code> are byte-identical. <code>components.json</code> points at the one with 0 callers.</li>
     <li><code>src/lib/browser-timezone.ts</code>: one-line pass-through with 1 caller. Fails the deletion test.</li>
     <li><code>src/data/portfolio.ts</code>: <code>displayName</code>, <code>nickname</code> and <code>skills</code> have 0 readers.</li>
-    <li><code>src/pages/_deprecated/garden.astro</code> and <code>src/pages/og/README.md</code> (describes an endpoint that doesn't exist).</li>
+    <li><code>src/pages/_deprecated/garden.astro</code>.</li>
+    <li class="text-stone-500"><span class="line-through"><code>src/pages/og/README.md</code> (describes an endpoint that doesn't exist; was published as <code>/og/README/</code>).</span> ✓ deleted in <code>2a13b9e</code></li>
   </ul>
 </section>
 
