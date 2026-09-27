@@ -55,7 +55,7 @@ export const PORTFOLIO = {
 
 ## 3. `src/content/resume/` — Resume Content Collections
 
-Structured data for the resume pages (`/resume`, `/resume-print`, `/cv-print`, and the per-version `/resume-print/<version>`, `/cv-print/<version>`). Uses **Astro Content Collections** (JSON files + markdown entries), organised into one folder per **Resume Version**. `index` is the Default Version; see `docs/architecture/resume-system.md` and `docs/content/resume.md`.
+Structured data for the resume pages (`/resume`, `/resume-print`, `/cv-print`, and the per-version `/resume-print/<version>`, `/cv-print/<version>`). Uses **Astro Content Collections** (JSON files + markdown entries), organised into one folder per **Resume Version**. `index` is the Default Version; see `docs/architecture/resume-system.md` and `docs/content-formats/resume.md`.
 
 ```
 src/content/resume/

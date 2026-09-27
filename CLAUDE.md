@@ -23,7 +23,7 @@ bun run test         # vitest — unit tests for pure modules (src/**/*.test.ts)
 
 - `CONTEXT.md` — domain vocabulary (Resume Version, Section, Default Version, Print Page). Name code and docs after it.
 - `docs/adr/` — decisions that constrain the code. Read the ones for the area you touch before changing it.
-- `docs/README.md` — index of the knowledge base: `architecture/` (how the system works, incl. `project-structure.md`) and `content/` (every content format).
+- `docs/README.md` — index of the knowledge base: `architecture/` (how the system works, incl. `project-structure.md`) and `content-formats/` (every content format).
 
 Two project agents in `.claude/agents/` split the work: **developer** (code, schemas, visual layer) and **web-master** (content and data values).
 
@@ -38,13 +38,13 @@ Two project agents in `.claude/agents/` split the work: **developer** (code, sch
 
 ## Content and schema sync
 
-`docs/content/` is the single source of truth for content formats (start at `docs/content/content-architecture.md`). Static site data lives in `src/data/portfolio.ts` and `src/data/site.config.ts` (imported directly, not collections).
+`docs/content-formats/` is the single source of truth for content formats (start at `docs/content-formats/content-architecture.md`). Static site data lives in `src/data/portfolio.ts` and `src/data/site.config.ts` (imported directly, not collections).
 
-**Schema-sync rule:** changing `src/content/collection-definitions/**`, `src/data/portfolio.ts` or `src/data/site.config.ts` means updating the matching doc in the same task — the source → doc table is in `docs/content/content-architecture.md`. The task is not complete until the docs match the live schema.
+**Schema-sync rule:** changing `src/content/collection-definitions/**`, `src/data/portfolio.ts` or `src/data/site.config.ts` means updating the matching doc in the same task — the source → doc table is in `docs/content-formats/content-architecture.md`. The task is not complete until the docs match the live schema.
 
 ## LLM-generated artifacts
 
-Save to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`, where `<category>` is a free-form folder directly under `docs/` — e.g. `research`, `handoff`, `design`; add new ones as needed. `architecture/`, `content/` and `adr/` are reserved for maintained reference docs and decision records.
+Save to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`, where `<category>` is a free-form folder directly under `docs/` — e.g. `research`, `handoff`, `design`; add new ones as needed. `architecture/`, `content-formats/` and `adr/` are reserved for maintained reference docs and decision records.
 
 HTML artifacts use the Anthropic visual style: ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings.
 

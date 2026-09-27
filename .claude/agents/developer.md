@@ -25,7 +25,7 @@ site config) you own schema and rendering, web-master owns the values.
 
 - `bun run build` passes.
 - Every schema or site-data source you touched has its doc updated, per the
-  source → doc table in `docs/content/content-architecture.md` (a new collection
-  gets a new `docs/content/` doc and a row in that table).
+  source → doc table in `docs/content-formats/content-architecture.md` (a new collection
+  gets a new `docs/content-formats/` doc and a row in that table).
 - New colours exist as oklch variables in every theme preset and meet WCAG AA
   (≥ 4.5:1 for body text).

@@ -15,13 +15,13 @@ CSS that render them.
 
 ## Before authoring
 
-Look up the format in `docs/content/` (index: `content-architecture.md`) — it is
+Look up the format in `docs/content-formats/` (index: `content-architecture.md`) — it is
 the source of truth for every field, date format and file location. For resume
 work, also read `CONTEXT.md` (Resume Version, Section, Default Version).
 
 ## Done when
 
-- Every field you wrote exists in the matching `docs/content/` doc, in its
+- Every field you wrote exists in the matching `docs/content-formats/` doc, in its
   documented format.
 - A note referenced by a different name carries that name in `aliases`.
 - Evergreen stage matches the note's maturity.

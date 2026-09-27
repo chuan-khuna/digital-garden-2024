@@ -68,7 +68,7 @@ export async function GET({ props }: APIContext) {
 
 - One image per entry in `src/content/og-images.json` (the `ogImages` collection)
 - URL: `/og/pages/<slug>.png`
-- For pages that are not content entries (home, resume, uses, …). Each page's title, description and style are **customised in the JSON**, see [`docs/content/og-images.md`](../content/og-images.md)
+- For pages that are not content entries (home, resume, uses, …). Each page's title, description and style are **customised in the JSON**, see [`docs/content-formats/og-images.md`](../content-formats/og-images.md)
 
 Both routes use `export const prerender = true`, so images are generated at build time into `dist/.../og/...`.
 
@@ -177,5 +177,5 @@ bun run dev
 ## Related
 
 - [Adding a Theme](./add-theme.md) — site colour themes (a separate concept from OG styles)
-- [`docs/content/og-images.md`](../content/og-images.md) — the page OG config format
+- [`docs/content-formats/og-images.md`](../content-formats/og-images.md) — the page OG config format
 - Blog post with a simple walkthrough: `src/content/posts/opengraph/index.mdx`

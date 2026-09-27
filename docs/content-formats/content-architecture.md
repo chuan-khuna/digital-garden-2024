@@ -23,7 +23,7 @@ All content lives in `src/content/`. Collections are defined in `src/content.con
 
 Schema definitions: `src/content/collection-definitions/`
 
-Resume collections span every Resume Version folder (`src/content/resume/<version>/`, `*` above); `index` is the Default Version. Read them through `getResume()` in `src/lib/resume/index.ts`, never via `getCollection` directly. See `docs/content/resume.md`.
+Resume collections span every Resume Version folder (`src/content/resume/<version>/`, `*` above); `index` is the Default Version. Read them through `getResume()` in `src/lib/resume/index.ts`, never via `getCollection` directly. See `docs/content-formats/resume.md`.
 
 ---
 
@@ -62,7 +62,7 @@ For field details → [`site-config.md`](./site-config.md) and [`portfolio.md`](
 
 ## Schema-sync table
 
-Changing a source below means updating its doc in the same task (see `CLAUDE.md` → Content and schema sync). A new collection gets a new doc in `docs/content/` and a row here.
+Changing a source below means updating its doc in the same task (see `CLAUDE.md` → Content and schema sync). A new collection gets a new doc in `docs/content-formats/` and a row here.
 
 | Source path | Reference doc |
 |---|---|

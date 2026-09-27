@@ -146,7 +146,7 @@ Set a flag to `false` to hide an entry from that specific page without deleting 
 
 ## How to Update Resume Content
 
-Paths below are for the Default Version (`index`). To change a Resume Version instead, use `src/content/resume/<version>/…`. The full authoring reference, including how to create a new Resume Version, is in `docs/content/resume.md`.
+Paths below are for the Default Version (`index`). To change a Resume Version instead, use `src/content/resume/<version>/…`. The full authoring reference, including how to create a new Resume Version, is in `docs/content-formats/resume.md`.
 
 ### Header / Contact Info
 
