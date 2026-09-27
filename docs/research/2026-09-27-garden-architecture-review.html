@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Architecture review for digital-garden-2024</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  body { background:#F0EEE6; }
+  h1,h2,h3 { font-family: Georgia, 'Times New Roman', serif; }
+  .clay { color:#CC785C; } .bg-clay { background:#CC785C; }
+  .seam { border-left: 2px dashed #CC785C; }
+  .deep { background: linear-gradient(135deg,#1c1917,#292524); color:#f5f5f4; }
+  .lbl { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; }
+  .leak { color:#dc2626; }
+  .diagram { min-height: 300px; }
+</style>
+</head>
+<body class="text-stone-900 font-sans">
+<main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-14">
+
+<header class="space-y-4">
+  <p class="lbl clay">Architecture review · 2026-09-27 · branch feature/resume-print-versioning</p>
+  <h1 class="text-4xl">digital-garden-2024</h1>
+  <p class="text-sm text-stone-600 max-w-2xl">Resume Versions were reviewed yesterday (<code>docs/research/2026-09-26-resume-architecture-review.md</code>); candidates 1 and 2 from that review have shipped. This review looks mostly at the garden: posts, wiki links, OG images, display helpers and theming.</p>
+  <div class="flex flex-wrap gap-4 text-xs text-stone-700">
+    <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 border border-stone-500 bg-white"></span>module</span>
+    <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 seam"></span>seam</span>
+    <span class="flex items-center gap-2"><span class="leak font-bold">→</span>leakage / disagreement</span>
+    <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 deep"></span>deep module</span>
+  </div>
+</header>
+
+<!-- Summary -->
+<section class="rounded-xl bg-white/70 border border-stone-300 p-5">
+  <table class="w-full text-sm">
+    <thead><tr class="text-left lbl text-stone-500"><th class="py-1">#</th><th>Candidate</th><th>Strength</th></tr></thead>
+    <tbody class="divide-y divide-stone-200">
+      <tr><td class="py-2">1</td><td><a class="underline" href="#c1">Deepen the wiki-link graph into one module</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td></tr>
+      <tr><td class="py-2">2</td><td><a class="underline" href="#c2">One OG image module: route, URL, style</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td></tr>
+      <tr><td class="py-2">3</td><td><a class="underline" href="#c3">Article registry for posts and notes</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td></tr>
+      <tr><td class="py-2">4</td><td><a class="underline" href="#c4">Garden display module: dates and stage</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td></tr>
+      <tr><td class="py-2">5</td><td><a class="underline" href="#c5">Resume Section registry</a></td><td><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span></td></tr>
+      <tr><td class="py-2">6</td><td><a class="underline" href="#c6">Theme preset as one record</a></td><td><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="candidates" class="space-y-12">
+
+<!-- 1 -->
+<article id="c1" class="rounded-2xl bg-white border border-stone-300 p-6 space-y-5 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="text-2xl mr-2">1 · Deepen the wiki-link graph into one module</h2>
+    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span>
+    <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+  </div>
+  <ul class="font-mono text-sm text-stone-700">
+    <li>astro.config.mjs:105-110 (remark-wiki-link hrefTemplate)</li>
+    <li>src/utils/bidirectional-link.ts</li>
+    <li>src/pages/posts/[...slug]/index.astro:25-36</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-stone-200 p-4 diagram">
+      <p class="lbl text-stone-500 mb-2">Before: two resolvers, two answers</p>
+      <pre class="mermaid">
+flowchart TB
+  L["[[Zettelkasten]]"]
+  L --> R["remark-wiki-link<br/>lowercase permalink"]
+  L --> B["bidirectional-link.ts<br/>fs.readFileSync × N<br/>match id / title / alias"]
+  L --> P["posts page<br/>inline id / title / alias match"]
+  R -->|"/posts/zettelkasten"| X["404"]
+  B -->|no match| Y["missing backlink"]
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#dc2626;
+  class X,Y leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-stone-200 p-4 diagram flex flex-col gap-3">
+      <p class="lbl text-stone-500">After: one link graph, three read-only callers</p>
+      <div class="flex gap-2 text-xs">
+        <div class="flex-1 border border-stone-400 rounded p-2 text-center">remark hrefTemplate</div>
+        <div class="flex-1 border border-stone-400 rounded p-2 text-center">posts page</div>
+        <div class="flex-1 border border-stone-400 rounded p-2 text-center">backlink panel</div>
+      </div>
+      <div class="seam pl-3 text-xs text-stone-500">interface: <code>resolve(target) · incoming(id) · outgoing(id) · unresolved</code></div>
+      <div class="deep rounded-lg p-4 flex-1">
+        <p class="lbl text-stone-300">link-graph (pure)</p>
+        <div class="mt-3 grid grid-cols-2 gap-2 text-xs opacity-70">
+          <div class="border border-stone-500 rounded p-1">extract links (skip code fences)</div>
+          <div class="border border-stone-500 rounded p-1">id / title / alias index</div>
+          <div class="border border-stone-500 rounded p-1">incoming map, built once</div>
+          <div class="border border-stone-500 rounded p-1">unresolved list → build warning</div>
+        </div>
+      </div>
+      <div class="text-xs text-stone-500">Adapter: <code>getCollection</code> → <code>{id, title, aliases, body}[]</code>. Tests pass fixture arrays.</div>
+    </div>
+  </div>
+  <p><strong>Problem.</strong> The rendered link and the backlink panel use different resolution rules, so <code>[[Zettelkasten]]</code> in <code>zettelkasten-note-types</code> renders as a 404 and nothing reports it. The backlink module reads every post from disk on every page (O(N²)), ignores <code>notes</code>, and its regex matches examples inside code fences.</p>
+  <p><strong>Solution.</strong> A pure link-graph module built once from content entries. The remark plugin's resolver, the posts page and the backlink panel all query it.</p>
+  <ul class="text-sm list-disc pl-5 space-y-1">
+    <li>Locality: one resolution rule</li>
+    <li>Broken links fail the build</li>
+    <li>Removes the fs path-guessing</li>
+    <li>First real garden test surface</li>
+    <li>Deletes 3 copies of the match logic</li>
+  </ul>
+  <p class="text-xs text-stone-500">Caveat: the remark plugin runs at markdown-processing time, before <code>getCollection</code> is available. The graph's adapter for remark may need to read the post index itself (glob + frontmatter). That is a second adapter, which confirms the seam is real.</p>
+</article>
+
+<!-- 2 -->
+<article id="c2" class="rounded-2xl bg-white border border-stone-300 p-6 space-y-5 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="text-2xl mr-2">2 · One OG image module: route, URL, style</h2>
+    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span>
+    <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+  </div>
+  <ul class="font-mono text-sm text-stone-700">
+    <li>src/pages/og/[articleType]/[...slug].png.ts · og/pages/[...slug].png.ts · og/posts_/[...slug].png.ts</li>
+    <li>src/lib/generate-og-image.ts · src/components/og/og-template.tsx</li>
+    <li>index.astro · resume.astro · uses.astro · posts/[...slug]/index.astro (hand-built OG URLs)</li>
+    <li>src/content/og-images.json · common-fields/_og-styles.ts</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-stone-200 p-4 diagram">
+      <p class="lbl text-stone-500 mb-2">Before: knowledge scattered across 10 files</p>
+      <div class="space-y-2 text-xs">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="border border-stone-400 rounded p-2">route [articleType]<br/><span class="text-stone-500">generate + Response</span></div>
+          <div class="border border-stone-400 rounded p-2">route pages<br/><span class="text-stone-500">generate + Response</span></div>
+          <div class="border border-red-500 rounded p-2 leak">route posts_<br/>stale copy, still built</div>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          <div class="border border-stone-400 rounded p-1 text-center">index</div>
+          <div class="border border-stone-400 rounded p-1 text-center">resume</div>
+          <div class="border border-stone-400 rounded p-1 text-center">uses</div>
+          <div class="border border-stone-400 rounded p-1 text-center">post</div>
+        </div>
+        <p class="leak">↑ each builds <code>new URL('og/pages/…')</code> with a magic slug that must match og-images.json</p>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="border border-stone-400 rounded p-2">_og-styles.ts enum</div>
+          <div class="border border-stone-400 rounded p-2">og-template.tsx re-keys it</div>
+        </div>
+        <p class="leak">↑ <code>style: string</code> between them; a typo falls back silently</p>
+      </div>
+    </div>
+    <div class="rounded-lg border border-stone-200 p-4 diagram flex flex-col gap-3">
+      <p class="lbl text-stone-500">After</p>
+      <div class="flex gap-2 text-xs">
+        <div class="flex-1 border border-stone-400 rounded p-2 text-center">2 thin routes</div>
+        <div class="flex-1 border border-stone-400 rounded p-2 text-center">4 pages</div>
+      </div>
+      <div class="seam pl-3 text-xs text-stone-500">interface: <code>ogImageUrl(kind, slug)</code> · <code>ogImageResponse(meta)</code></div>
+      <div class="deep rounded-lg p-4 flex-1">
+        <p class="lbl text-stone-300">og-image module</p>
+        <div class="mt-3 space-y-2 text-xs opacity-70">
+          <div class="border border-stone-500 rounded p-1">slug checked against og-images.json</div>
+          <div class="border border-stone-500 rounded p-1"><code>Record&lt;OgStyle, Template&gt;</code> from the Zod enum</div>
+          <div class="border border-stone-500 rounded p-1">fonts, satori, PNG response</div>
+          <div class="border border-stone-500 rounded p-1">title/text helpers (already pure)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem.</strong> The <code>posts_/</code> route (Astro only ignores a <em>leading</em> underscore) renders every post image twice. The generate-and-respond code is copied 3×, OG URLs are hand-built in 4 pages with unchecked slugs, and style names cross a <code>string</code> seam.</p>
+  <p><strong>Solution.</strong> Delete <code>posts_/</code>. Move URL building, slug validation, style lookup and response creation into one module that routes and pages call.</p>
+  <ul class="text-sm list-disc pl-5 space-y-1">
+    <li>Halves post OG build work</li>
+    <li>Leverage: one interface, 6 callers</li>
+    <li>Bad slug or style fails build</li>
+    <li>Text helpers become testable surface</li>
+  </ul>
+</article>
+
+<!-- 3 -->
+<article id="c3" class="rounded-2xl bg-white border border-stone-300 p-6 space-y-5 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="text-2xl mr-2">3 · Article registry for posts and notes</h2>
+    <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span>
+    <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+  </div>
+  <ul class="font-mono text-sm text-stone-700">
+    <li>src/pages/garden.astro:7 · og/[articleType]/[...slug].png.ts:20 · posts/[...slug]/index.astro:6</li>
+    <li>PostMasonry.astro:6,26 · PostCard.astro:5,37 · og route:59-61</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-stone-200 p-4 diagram">
+      <p class="lbl text-stone-500 mb-2">Before</p>
+      <pre class="mermaid">
+flowchart LR
+  G[garden.astro] -->|"['posts','notes']"| C[(collections)]
+  O[og route] -->|"['posts','notes']"| C
+  M[PostMasonry] -->|"/notes/id"| N["no /notes route"]
+  W[wiki links] -->|"/posts/ only"| C
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#dc2626;
+  class N leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-stone-200 p-4 diagram flex flex-col gap-3">
+      <p class="lbl text-stone-500">After</p>
+      <div class="grid grid-cols-4 gap-2 text-xs">
+        <div class="border border-stone-400 rounded p-1 text-center">garden</div>
+        <div class="border border-stone-400 rounded p-1 text-center">og</div>
+        <div class="border border-stone-400 rounded p-1 text-center">cards</div>
+        <div class="border border-stone-400 rounded p-1 text-center">link graph</div>
+      </div>
+      <div class="seam pl-3 text-xs text-stone-500">interface: <code>getAllArticles()</code> · <code>articleUrl(a)</code> · <code>ogUrl(a)</code> · <code>Article</code> type</div>
+      <div class="deep rounded-lg p-4 flex-1">
+        <p class="lbl text-stone-300">articles module</p>
+        <p class="text-xs opacity-70 mt-2">collection list, union type, URL scheme, sort key</p>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem.</strong> The list of article collections, the <code>posts | notes</code> union and the URL scheme are spread across ~7 files. Notes are half-wired: the garden links to <code>/notes/…</code>, a route that doesn't exist.</p>
+  <p><strong>Solution.</strong> One articles module that owns which collections are articles, their shared type, and where each one lives.</p>
+  <ul class="text-sm list-disc pl-5 space-y-1">
+    <li>Locality: adding notes is one edit</li>
+    <li>Feeds candidates 1 and 2</li>
+  </ul>
+  <p class="text-xs text-stone-500">YAGNI check: <code>src/content/notes/</code> doesn't exist yet. Worth doing when notes land, or fold it into candidate 1.</p>
+</article>
+
+<!-- 4 -->
+<article id="c4" class="rounded-2xl bg-white border border-stone-300 p-6 space-y-5 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="text-2xl mr-2">4 · Garden display module: dates and stage</h2>
+    <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span>
+    <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+  </div>
+  <ul class="font-mono text-sm text-stone-700">
+    <li>PostCard.astro:12-31 · PostItem.astro:13-29 · PostMetadata.astro:28,42</li>
+    <li>back-reference.tsx:21-36 · nowtime.tsx:27-40 · common-fields/_evergreen-stages.ts</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-stone-200 p-4 diagram">
+      <p class="lbl text-stone-500 mb-3">Before: mass diagram, 5 copies</p>
+      <div class="flex items-end gap-3 h-48">
+        <div class="flex flex-col items-center gap-1"><div class="w-10 h-24 bg-stone-300"></div><span class="text-[10px]">PostCard<br/>en-UK short</span></div>
+        <div class="flex flex-col items-center gap-1"><div class="w-10 h-24 bg-stone-300"></div><span class="text-[10px]">PostItem<br/>en-UK short</span></div>
+        <div class="flex flex-col items-center gap-1"><div class="w-10 h-16 bg-stone-300"></div><span class="text-[10px]">Metadata<br/>en-UK long</span></div>
+        <div class="flex flex-col items-center gap-1"><div class="w-10 h-24 bg-red-300"></div><span class="text-[10px] leak">backref<br/>en-US</span></div>
+        <div class="flex flex-col items-center gap-1"><div class="w-10 h-12 bg-stone-300"></div><span class="text-[10px]">nowtime<br/>en-GB</span></div>
+      </div>
+      <p class="text-xs text-stone-500 mt-3">None produce the DD/MM/YYYY that CLAUDE.md specifies. 🌱🌿🌲 map copied 3×.</p>
+    </div>
+    <div class="rounded-lg border border-stone-200 p-4 diagram flex flex-col gap-3">
+      <p class="lbl text-stone-500">After</p>
+      <div class="seam pl-3 text-xs text-stone-500">interface: <code>formatDisplayDate(d)</code> · <code>stageMeta[stage]</code></div>
+      <div class="deep rounded-lg p-4 flex-1">
+        <p class="lbl text-stone-300">display module (pure)</p>
+        <p class="text-xs opacity-70 mt-2">one locale rule · stage emoji/label next to the Zod enum · truncation · sort key</p>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem.</strong> The date convention is copied in 5 places with 3 locales (<code>'en-UK'</code> isn't a real tag), so the backlink panel shows US dates.</p>
+  <p><strong>Solution.</strong> One pure module for display formatting and stage metadata, imported by every card.</p>
+  <ul class="text-sm list-disc pl-5 space-y-1">
+    <li>Locality: date rule lives once</li>
+    <li>Cheap tests, no Astro needed</li>
+  </ul>
+  <p class="text-xs text-stone-500">Small, but it's shallow-module <em>consolidation</em> more than deepening. Good warm-up task.</p>
+</article>
+
+<!-- 5 -->
+<article id="c5" class="rounded-2xl bg-white border border-stone-300 p-6 space-y-5 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="text-2xl mr-2">5 · Resume Section registry</h2>
+    <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span>
+    <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+  </div>
+  <ul class="font-mono text-sm text-stone-700">
+    <li>collection-definitions/resume.ts · content.config.ts:5-30</li>
+    <li>lib/resume/index.ts:24-52 · lib/resume/resolve.ts:28-37,113-126</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-stone-200 p-4 diagram">
+      <p class="lbl text-stone-500 mb-3">Before: cross-section, 4 places per Section</p>
+      <div class="space-y-1 text-xs">
+        <div class="h-10 border-l-4 border-stone-400 bg-stone-100 pl-2 flex items-center">resume.ts: defineCollection ×8</div>
+        <div class="h-10 border-l-4 border-stone-400 bg-stone-100 pl-2 flex items-center">content.config.ts: import + key ×8</div>
+        <div class="h-10 border-l-4 border-stone-400 bg-stone-100 pl-2 flex items-center">index.ts: getCollection ×8</div>
+        <div class="h-10 border-l-4 border-stone-400 bg-stone-100 pl-2 flex items-center">resolve.ts: ResumeEntries + output ×8</div>
+        <div class="h-10 border-l-4 border-red-400 bg-red-50 pl-2 flex items-center leak">visibilitySchema.default(...) ×3, version ×8</div>
+      </div>
+    </div>
+    <div class="rounded-lg border border-stone-200 p-4 diagram flex flex-col gap-3">
+      <p class="lbl text-stone-500">After</p>
+      <div class="deep rounded-lg p-4 h-24 flex items-center"><span class="lbl text-stone-300">SECTIONS table: source, schema, shape, visibility, defaultOnly</span></div>
+      <p class="text-xs text-stone-500">Collections, <code>ResumeEntries</code> and the loader loop are derived from it.</p>
+    </div>
+  </div>
+  <p><strong>Problem.</strong> Adding a Section still touches four files; this is candidate 3 of yesterday's review, still open.</p>
+  <p><strong>Solution.</strong> One table of Sections that everything else iterates.</p>
+  <p class="text-xs text-stone-500">Why speculative: 8 Sections, rarely change, and a generic table may weaken <code>CollectionEntry&lt;…&gt;</code> inference. The resume modules are already in good shape after <code>resolveResume</code>; low leverage now.</p>
+</article>
+
+<!-- 6 -->
+<article id="c6" class="rounded-2xl bg-white border border-stone-300 p-6 space-y-5 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h2 class="text-2xl mr-2">6 · Theme preset as one record</h2>
+    <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span>
+    <span class="px-2 py-0.5 rounded border border-stone-300 text-xs">in-process</span>
+  </div>
+  <ul class="font-mono text-sm text-stone-700">
+    <li>src/data/site.config.ts:7-29 · src/styles/presets/*.css · globals.css:2-4</li>
+    <li>ThemeToggle.astro:5,30-156 · astro.config.mjs:133</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-stone-200 p-4 diagram">
+      <p class="lbl text-stone-500 mb-2">Before</p>
+      <pre class="mermaid">
+flowchart TB
+  T[themes in site.config] -.no link.-> CSS[preset .css + @import]
+  T -.no link.-> I[iconMap in ThemeToggle]
+  T -.no link.-> E[expressiveCode themes]
+  S["inline script:<br/>getNextTheme, applyColorPreset<br/>+ duplicate replaceColorPreset"]
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class S leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-stone-200 p-4 diagram flex flex-col gap-3">
+      <p class="lbl text-stone-500">After</p>
+      <div class="deep rounded-lg p-4 flex-1">
+        <p class="lbl text-stone-300">theme module</p>
+        <p class="text-xs opacity-70 mt-2">typed icon key · syntax themes derived for astro.config · pure cycle logic imported by a small head script</p>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem.</strong> A preset lives in 4 places with no type link; the cycle logic is trapped in an <code>is:inline</code> script mounted in the body (flash of wrong theme risk).</p>
+  <p><strong>Solution.</strong> Derive icons and syntax themes from <code>themes</code>; move cycle logic into a pure module.</p>
+  <p class="text-xs text-stone-500">Presets change rarely. Only worth it if you're adding themes soon.</p>
+</article>
+
+</section>
+
+<!-- Quick fixes -->
+<section class="rounded-2xl border border-stone-300 bg-stone-50 p-6 space-y-3">
+  <h2 class="text-xl">Not architecture, just deletions</h2>
+  <ul class="text-sm list-disc pl-5 space-y-1">
+    <li><code>src/pages/og/posts_/</code>: stale duplicate route, still built (also covered in candidate 2).</li>
+    <li><code>src/lib/utils.ts</code> and <code>src/utils/cn.ts</code> are byte-identical. <code>components.json</code> points at the one with 0 callers.</li>
+    <li><code>src/lib/browser-timezone.ts</code>: one-line pass-through with 1 caller. Fails the deletion test.</li>
+    <li><code>src/data/portfolio.ts</code>: <code>displayName</code>, <code>nickname</code> and <code>skills</code> have 0 readers.</li>
+    <li><code>src/pages/_deprecated/garden.astro</code> and <code>src/pages/og/README.md</code> (describes an endpoint that doesn't exist).</li>
+  </ul>
+</section>
+
+<section id="top-recommendation" class="rounded-2xl bg-clay text-white p-8 space-y-3">
+  <p class="lbl opacity-80">Top recommendation</p>
+  <h2 class="text-3xl"><a href="#c1" class="underline decoration-white/50">1 · Deepen the wiki-link graph into one module</a></h2>
+  <p class="max-w-2xl">Bidirectional links are the core of the garden, and today the rendered link and the backlink panel disagree. The result is a live 404 that nothing reports. One pure link-graph module fixes the bug, removes the O(N²) disk reads, and gives the garden its first test surface.</p>
+</section>
+
+</main>
+</body>
+</html>
