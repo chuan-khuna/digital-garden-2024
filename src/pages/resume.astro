@@ -10,31 +10,32 @@ import Education from '@/components/resume/sections/Education.astro'
 import Interests from '@/components/resume/sections/Interests.astro'
 import Now from '@/components/resume/sections/Now.astro'
 
-import { getCollection } from 'astro:content'
+import { getResume } from '@/lib/resume'
 import { site } from '@/data/site.config'
+import { pageOgImage } from '@/lib/og-image'
 
-const headerEntries = await getCollection('resumeHeader')
-const header = headerEntries[0].data
-
-const experiences = await getCollection('resumeExperiences')
-const projects = (await getCollection('resumeProjects')).sort(
-  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0),
-)
-const activities = await getCollection('resumeActivities')
-const skills = await getCollection('resumeSkills')
-const educations = await getCollection('resumeEducations')
-const interestsEntries = await getCollection('resumeInterests')
-const interests = interestsEntries[0].data.items
-const nowEntries = await getCollection('resumeNow')
-const nowEntry = nowEntries[0]
+// The web resume always shows the Default Version (`index`) on the `web` Surface.
+const {
+  header,
+  experiences,
+  projects,
+  activities,
+  skills,
+  educations,
+  interests,
+  now: nowEntry,
+} = await getResume('web')
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 
-const ogImageSlug = 'resume'
-const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
+const ogImageUrl = await pageOgImage('resume')
 ---
 
-<BaseLayout title={`${site.displayName}'s Resume`} description="" ogImage={ogImageUrl}>
+<BaseLayout
+  title={`${site.displayName}'s Resume`}
+  description=""
+  ogImage={ogImageUrl}
+>
   <div class="">
     <!-- resume layout -->
     <div

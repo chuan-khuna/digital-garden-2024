@@ -11,17 +11,19 @@ interface Props {
   title?: string | undefined
   description?: string | undefined
   ogImage?: URL | undefined
+  /** Emit `<meta name="robots" content="noindex">` (used by Resume Version pages). */
+  noindex?: boolean | undefined
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
 // title and description for og image
-const { title, description, ogImage } = Astro.props
+const { title, description, ogImage, noindex = false } = Astro.props
 ---
 
 <html lang="en">
   <head>
-    <HeadSEO title={title} description={description} />
+    <HeadSEO title={title} description={description} noindex={noindex} />
 
     <OpenGraph
       title={title}

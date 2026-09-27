@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en" data-color-preset="nzk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Garden Design System</title>
+<meta name="description" content="The design system for the digital garden's web pages, built on the site's existing nzk, dark and nexus presets. Print Pages are out of scope and frozen." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Lato:wght@400;700&family=Inconsolata:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+/* Hallmark · macrostructure: Component Playground · tone: minimal-editorial · anchor hue: indigo 269 + orange 36 + teal 186
+ * theme: custom (vibe: "the site's own presets, used quietly")
+ *   colours: src/styles/presets/{nzk,dark,nexus}.css, unchanged · DM Serif Display + Lato (+ Inconsolata)
+ *   axes: light / high-contrast-serif / multi (indigo · orange · teal) · nav: N3 side-rail · footer: Ft2 inline
+ * Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V4
+ */
+
+/* ───────────── Presets: copied verbatim from src/styles/presets/*.css ─────────────
+   On the site these are scoped to :root[data-color-preset=…]. Here the :root is
+   dropped so a single table cell can preview another preset. */
+[data-color-preset='nzk'] {
+  --background: oklch(0.977 0.0085 84.57);
+  --foreground: oklch(0.307 0 0);
+  --card: oklch(0.967 0.0085 84.57);
+  --primary: oklch(0.3261 0.0984 268.87);
+  --primary-foreground: oklch(0.977 0.0085 84.57);
+  --secondary: oklch(0.713 0.1834 36.43);
+  --muted: oklch(0.6346 0.0212 210.11);
+  --accent: oklch(0.713 0.1525 36.43);
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.977 0.0085 84.57);
+  --border: oklch(0.9254 0.0211 88.78);
+  --ring: oklch(0.5838 0.0211 257.6);
+  --radius: 0.5rem;
+  --theme-bg: oklch(0.977 0.0085 84.57);
+  --theme-link: oklch(0.5544 0.0431 185.69);
+  --theme-text: oklch(0.2699 0.0096 235.05);
+  --theme-accent: oklch(0.713 0.1834 36.43);
+  --theme-accent-2: oklch(0.3261 0.0984 268.87);
+  --theme-quote: oklch(0.5544 0.0431 185.69);
+}
+[data-color-preset='dark'] {
+  --background: oklch(0.0791 0.0178 254.43);
+  --foreground: oklch(0.8354 0.0032 264.54);
+  --card: oklch(0.0791 0.0178 254.43);
+  --primary: oklch(0.9838 0.0035 247.86);
+  --primary-foreground: oklch(0.0791 0.0178 254.43);
+  --secondary: oklch(0.28 0.0369 259.97);
+  --muted: oklch(0.28 0.0369 259.97);
+  --accent: oklch(0.7091 0.1415 163.79);
+  --destructive: oklch(0.3959 0.1331 25.72);
+  --destructive-foreground: oklch(0.9838 0.0035 247.86);
+  --border: oklch(0.28 0.0369 259.97);
+  --ring: oklch(0.9838 0.0035 247.86);
+  --radius: 0.5rem;
+  --theme-bg: oklch(0.0791 0.0178 254.43);
+  --theme-link: oklch(0.7044 0.1133 349.04);
+  --theme-text: oklch(0.8354 0.0032 264.54);
+  --theme-accent: oklch(0.7091 0.1415 163.79);
+  --theme-accent-2: oklch(0.8087 0.1067 222.35);
+  --theme-quote: oklch(0.948 0.1067 136.49);
+}
+[data-color-preset='nexus'] {
+  --background: oklch(0.1727 0.0161 261.53);
+  --foreground: oklch(0.9216 0.0058 308.39);
+  --card: oklch(0.1727 0.0161 261.53);
+  --primary: oklch(0.5885 0.1542 291.11);
+  --primary-foreground: oklch(0.9216 0.0058 308.39);
+  --secondary: oklch(0.7128 0.1836 36.41);
+  --muted: oklch(0.28 0.0369 259.97);
+  --accent: oklch(0.7128 0.1836 36.41);
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.9216 0.0058 308.39);
+  --border: oklch(0.28 0.0369 259.97);
+  --ring: oklch(0.5885 0.1542 291.11);
+  --radius: 0.5rem;
+  --theme-bg: oklch(0.1727 0.0161 261.53);
+  --theme-link: oklch(0.5885 0.1542 291.11);
+  --theme-text: oklch(0.9216 0.0058 308.39);
+  --theme-accent: oklch(0.7128 0.1836 36.41);
+  --theme-accent-2: oklch(0.5885 0.1542 291.11);
+  --theme-quote: oklch(0.5885 0.1542 291.11);
+}
+
+/* ───────────── Roles: names only, no new colour values ───────────── */
+[data-color-preset] {
+  --dg-paper:       var(--background);
+  --dg-surface:     var(--card);
+  --dg-rule:        var(--border);
+  --dg-ink:         var(--theme-text);
+  --dg-ink-2:       color-mix(in oklab, var(--theme-text) 72%, var(--background));
+  --dg-ink-3:       color-mix(in oklab, var(--theme-text) 60%, var(--background));
+  --dg-heading:     var(--theme-accent-2);
+  --dg-primary:     var(--primary);
+  --dg-on-primary:  var(--primary-foreground);
+  --dg-accent:      var(--theme-accent);
+  --dg-accent-text: color-mix(in oklab, var(--theme-accent) 70%, var(--theme-text));
+  --dg-link:        var(--theme-link);
+  --dg-quote:       var(--theme-quote);
+  --dg-muted:       var(--muted);
+  --dg-focus:       var(--ring);
+  --dg-danger:      var(--destructive);
+  --dg-on-danger:   var(--destructive-foreground);
+  --dg-line:        color-mix(in oklab, var(--theme-text) 22%, var(--background));
+}
+
+/* ───────────── Non-colour tokens ───────────── */
+:root {
+  --dg-font-display: "DM Serif Display", Georgia, serif;
+  --dg-font-body:    "Lato", system-ui, sans-serif;
+  --dg-font-mono:    "Inconsolata", ui-monospace, monospace;
+
+  --dg-text-xs: 0.75rem;   --dg-text-sm: 0.875rem;  --dg-text-base: 1.0625rem;
+  --dg-text-lg: 1.25rem;   --dg-text-xl: 1.5625rem; --dg-text-2xl: 1.953rem;
+  --dg-text-3xl: 2.441rem; --dg-text-display: clamp(2.4rem, 4vw + 1rem, 4.25rem);
+
+  --dg-space-3xs: 4px;  --dg-space-2xs: 8px;  --dg-space-xs: 12px; --dg-space-sm: 16px;
+  --dg-space-md: 24px;  --dg-space-lg: 32px;  --dg-space-xl: 48px; --dg-space-2xl: 64px;
+  --dg-space-3xl: 96px;
+
+  --dg-radius:    var(--radius);                 /* 8px, from the presets */
+  --dg-radius-md: calc(var(--radius) - 2px);     /* 6px */
+  --dg-radius-sm: calc(var(--radius) - 4px);     /* 4px */
+
+  --dg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dg-dur-fast: 150ms; --dg-dur-base: 200ms;
+
+  --doc-rail: 200px;
+  --doc-measure: 66ch;
+  --doc-gutter: clamp(16px, 4vw, 48px);
+}
+
+/* ───────────── Base ───────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--dg-space-lg); }
+body {
+  margin: 0;
+  background: var(--dg-paper);
+  color: var(--dg-ink);
+  font-family: var(--dg-font-body);
+  font-size: var(--dg-text-base);
+  line-height: 1.65;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--dg-dur-base), color var(--dg-dur-base);
+}
+h1, h2, h3, h4 {
+  font-family: var(--dg-font-display);
+  font-weight: 400; font-style: normal;
+  line-height: 1.12; letter-spacing: -0.01em;
+  margin: 0; overflow-wrap: anywhere; min-width: 0;
+}
+h2, h3 { color: var(--dg-heading); }
+p { margin: 0; }
+a { color: var(--dg-link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--dg-accent); }
+:focus-visible { outline: 2px solid var(--dg-focus); outline-offset: 2px; border-radius: var(--dg-radius-sm); }
+code { font-family: var(--dg-font-mono); font-size: 0.95em; }
+
+/* ───────────── Doc shell: N3 side-rail ───────────── */
+.shell { display: grid; grid-template-columns: var(--doc-rail) minmax(0, 1fr); min-height: 100vh; }
+.rail {
+  position: sticky; top: 0; align-self: start; height: 100vh;
+  padding: var(--dg-space-lg) var(--dg-space-md);
+  border-right: 1px solid var(--dg-rule);
+  display: flex; flex-direction: column; gap: var(--dg-space-lg);
+}
+.wordmark { font-family: var(--dg-font-display); font-size: var(--dg-text-xl); color: var(--dg-ink); text-decoration: none; white-space: nowrap; }
+.wordmark span { color: var(--dg-accent); }
+.rail nav ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.rail nav a {
+  display: block; white-space: nowrap; padding: 4px 0;
+  font-size: var(--dg-text-sm); color: var(--dg-ink-3); text-decoration: none;
+  transition: color var(--dg-dur-fast);
+}
+.rail nav a:hover { color: var(--dg-ink); }
+.rail nav a[aria-current="true"] { color: var(--dg-ink); font-weight: 700; }
+.rail-foot { margin-top: auto; display: grid; gap: 4px; font-size: var(--dg-text-xs); color: var(--dg-ink-3); }
+
+main { padding: var(--dg-space-2xl) var(--doc-gutter) var(--dg-space-xl); min-width: 0; }
+.section { max-width: 1040px; padding-block: var(--dg-space-2xl); border-top: 1px solid var(--dg-rule); }
+.section > h2 { font-size: var(--dg-text-3xl); margin-bottom: var(--dg-space-sm); }
+.lede { max-width: var(--doc-measure); color: var(--dg-ink-2); font-size: var(--dg-text-lg); line-height: 1.55; }
+.sub { font-size: var(--dg-text-xl); margin: var(--dg-space-xl) 0 var(--dg-space-sm); }
+.note { max-width: var(--doc-measure); color: var(--dg-ink-2); font-size: var(--dg-text-sm); margin-top: var(--dg-space-sm); }
+
+/* ───────────── Hero ───────────── */
+.hero { max-width: 1040px; padding-bottom: var(--dg-space-2xl); }
+.hero h1 { font-size: var(--dg-text-display); line-height: 1.02; letter-spacing: -0.02em; color: var(--dg-ink); max-width: 14ch; }
+.hero .lede { margin-top: var(--dg-space-md); }
+.presets { margin-top: var(--dg-space-lg); display: flex; flex-wrap: wrap; align-items: center; gap: var(--dg-space-xs); font-size: var(--dg-text-sm); color: var(--dg-ink-3); }
+.seg { display: inline-flex; border: 1px solid var(--dg-line); border-radius: var(--dg-radius); padding: 2px; }
+.seg button {
+  font: 700 var(--dg-text-sm)/1 var(--dg-font-body); color: var(--dg-ink-2); white-space: nowrap;
+  background: transparent; border: 0; border-radius: var(--dg-radius-md); padding: 8px 14px; cursor: pointer;
+  transition: background-color var(--dg-dur-fast), color var(--dg-dur-fast);
+}
+.seg button:hover { color: var(--dg-ink); }
+.seg button[aria-pressed="true"] { background: var(--dg-primary); color: var(--dg-on-primary); }
+
+/* ───────────── Principles ───────────── */
+.principles { margin: var(--dg-space-lg) 0 0; display: grid; }
+.principles div { display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); gap: var(--dg-space-md); padding: var(--dg-space-sm) 0; border-top: 1px solid var(--dg-rule); }
+.principles div:last-child { border-bottom: 1px solid var(--dg-rule); }
+.principles dt { font-family: var(--dg-font-display); font-size: var(--dg-text-lg); line-height: 1.3; }
+.principles dd { margin: 0; color: var(--dg-ink-2); max-width: 60ch; }
+
+/* ───────────── Colour table ───────────── */
+.ctable { width: 100%; border-collapse: collapse; margin-top: var(--dg-space-lg); font-size: var(--dg-text-sm); table-layout: fixed; }
+.ctable th { text-align: left; font-weight: 700; color: var(--dg-ink-3); padding: 0 0 var(--dg-space-2xs); border-bottom: 1px solid var(--dg-line); }
+.ctable th:not(:first-child) { width: 18%; padding-left: var(--dg-space-xs); }
+.ctable td { padding: var(--dg-space-xs) 0; border-bottom: 1px solid var(--dg-rule); vertical-align: middle; }
+.ctable td:not(:first-child) { padding-left: var(--dg-space-xs); }
+.ctable .role { font-weight: 700; color: var(--dg-ink); }
+.ctable .src { display: block; color: var(--dg-ink-3); font-family: var(--dg-font-mono); font-size: var(--dg-text-xs); overflow-wrap: anywhere; }
+.ctable .use { display: block; color: var(--dg-ink-2); margin-top: 2px; }
+.ctable .group td { padding-top: var(--dg-space-md); font-weight: 700; color: var(--dg-ink-3); border-bottom: 0; }
+.sw { display: block; font-style: normal; height: 32px; border-radius: var(--dg-radius-sm); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--theme-text) 14%, transparent); }
+.sw--text { display: grid; place-items: center; font-family: var(--dg-font-display); font-size: var(--dg-text-lg); background: var(--background); }
+
+/* ───────────── Type ───────────── */
+.faces { margin-top: var(--dg-space-lg); display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: var(--dg-space-md); }
+.face { border-top: 1px solid var(--dg-line); padding-top: var(--dg-space-sm); }
+.face .name { font-weight: 700; font-size: var(--dg-text-sm); }
+.face .big { font-size: var(--dg-text-3xl); line-height: 1.1; margin: var(--dg-space-xs) 0; color: var(--dg-ink); }
+.face p { font-size: var(--dg-text-sm); color: var(--dg-ink-2); }
+.scale { margin-top: var(--dg-space-xl); }
+.scale-row { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--dg-space-md); align-items: baseline; padding: var(--dg-space-sm) 0; border-top: 1px solid var(--dg-rule); }
+.scale-row .meta { font-family: var(--dg-font-mono); font-size: var(--dg-text-xs); color: var(--dg-ink-3); line-height: 1.4; }
+.scale-row .sample { min-width: 0; overflow-wrap: anywhere; }
+
+/* ───────────── Space & shape ───────────── */
+.spacebars { margin-top: var(--dg-space-lg); display: grid; gap: 6px; }
+.spacebar { display: grid; grid-template-columns: 120px 40px minmax(0, 1fr); gap: var(--dg-space-sm); align-items: center; font-size: var(--dg-text-sm); }
+.spacebar code { color: var(--dg-ink-2); }
+.spacebar .n { font-family: var(--dg-font-mono); color: var(--dg-ink-3); font-size: var(--dg-text-xs); }
+.spacebar i { display: block; height: 8px; border-radius: 2px; background: var(--dg-muted); }
+.shapes { margin-top: var(--dg-space-xl); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dg-space-md); max-width: 560px; }
+.shape { display: grid; gap: var(--dg-space-2xs); font-size: var(--dg-text-sm); color: var(--dg-ink-2); }
+.shape i { display: block; height: 64px; border: 1px solid var(--dg-line); }
+
+/* ───────────── Playground frame ───────────── */
+.play { margin-top: var(--dg-space-xl); }
+.play-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--dg-space-sm); padding-bottom: var(--dg-space-xs); }
+.play-head h3 { font-size: var(--dg-text-xl); }
+.play-head p { color: var(--dg-ink-3); font-size: var(--dg-text-sm); }
+.preview { padding: var(--dg-space-lg); border: 1px solid var(--dg-rule); border-radius: var(--dg-radius) var(--dg-radius) 0 0; }
+.code { position: relative; background: var(--dg-surface); border: 1px solid var(--dg-rule); border-top: 0; border-radius: 0 0 var(--dg-radius) var(--dg-radius); }
+.code--solo { border-top: 1px solid var(--dg-rule); border-radius: var(--dg-radius); }
+.code pre { margin: 0; padding: var(--dg-space-md); padding-right: 88px; overflow-x: auto; font: var(--dg-text-sm)/1.6 var(--dg-font-mono); color: var(--dg-ink-2); tab-size: 2; }
+.copy {
+  position: absolute; top: var(--dg-space-xs); right: var(--dg-space-xs);
+  padding: 5px 10px; border-radius: var(--dg-radius-sm); border: 1px solid var(--dg-rule); background: var(--dg-paper);
+  font: 700 var(--dg-text-xs)/1 var(--dg-font-body); color: var(--dg-ink-2); white-space: nowrap; cursor: pointer;
+  transition: color var(--dg-dur-fast), border-color var(--dg-dur-fast);
+}
+.copy:hover { color: var(--dg-ink); border-color: var(--dg-line); }
+.copy[data-state="done"] { color: var(--dg-link); border-color: var(--dg-link); }
+.copy[data-state="error"] { color: var(--dg-danger); border-color: var(--dg-danger); }
+
+/* ───────────── Component · button ───────────── */
+.dg-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  height: 40px; padding: 0 16px; border: 1px solid transparent; border-radius: var(--dg-radius);
+  font: 700 var(--dg-text-sm)/1 var(--dg-font-body); white-space: nowrap; cursor: pointer;
+  background: var(--dg-primary); color: var(--dg-on-primary);
+  transition: background-color var(--dg-dur-fast) var(--dg-ease-out), border-color var(--dg-dur-fast), color var(--dg-dur-fast);
+}
+.dg-btn:hover, .dg-btn.is-hover { background: color-mix(in oklab, var(--dg-primary) 84%, var(--dg-paper)); }
+.dg-btn:active, .dg-btn.is-active { transform: translateY(1px); }
+.dg-btn:focus-visible, .dg-btn.is-focus { outline: 2px solid var(--dg-focus); outline-offset: 2px; }
+.dg-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.dg-btn[data-state="loading"] { cursor: progress; }
+.dg-btn[data-state="loading"]::before { content: ""; width: 0.9em; height: 0.9em; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin 700ms linear infinite; }
+.dg-btn[data-state="error"] { background: var(--dg-danger); color: var(--dg-on-danger); }
+.dg-btn[data-state="success"] { background: transparent; color: var(--dg-link); border-color: var(--dg-link); }
+.dg-btn--secondary { background: transparent; color: var(--dg-ink); border-color: var(--dg-line); }
+.dg-btn--secondary:hover, .dg-btn--secondary.is-hover { background: var(--dg-surface); border-color: color-mix(in oklab, var(--dg-ink) 40%, var(--dg-paper)); }
+.dg-btn--text { background: transparent; color: var(--dg-link); padding: 0 2px; height: auto; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.dg-btn--text:hover, .dg-btn--text.is-hover { background: transparent; text-decoration-color: var(--dg-accent); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.states { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--dg-space-lg) var(--dg-space-md); }
+.state { display: grid; gap: var(--dg-space-2xs); justify-items: start; }
+.state .lab { font-family: var(--dg-font-mono); font-size: var(--dg-text-xs); color: var(--dg-ink-3); }
+.variants { display: flex; flex-wrap: wrap; gap: var(--dg-space-md); align-items: center; margin-top: var(--dg-space-lg); padding-top: var(--dg-space-lg); border-top: 1px solid var(--dg-rule); }
+
+/* ───────────── Component · tag ───────────── */
+.dg-tag {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px;
+  border: 1px solid var(--dg-rule); border-radius: var(--dg-radius-sm);
+  font: 700 var(--dg-text-xs)/1.6 var(--dg-font-body); color: var(--dg-ink-2); white-space: nowrap; text-decoration: none;
+  transition: border-color var(--dg-dur-fast), color var(--dg-dur-fast);
+}
+a.dg-tag:hover { color: var(--dg-ink); border-color: var(--dg-line); }
+.dg-tag--note::before, .dg-tag--post::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+.dg-tag--note::before { background: var(--dg-accent); }
+.dg-tag--post::before { background: var(--dg-link); }
+.tagrow { display: flex; flex-wrap: wrap; gap: var(--dg-space-2xs); }
+
+/* ───────────── Component · post index ───────────── */
+.dg-index { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--dg-line); }
+.dg-index li { border-bottom: 1px solid var(--dg-rule); }
+.dg-index a { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; gap: var(--dg-space-md); align-items: baseline; padding: var(--dg-space-sm) 0; color: var(--dg-ink); text-decoration: none; }
+.dg-index time { font-family: var(--dg-font-mono); font-size: var(--dg-text-sm); color: var(--dg-ink-3); }
+.dg-index .t { font-family: var(--dg-font-display); font-size: var(--dg-text-lg); line-height: 1.3; min-width: 0; overflow-wrap: anywhere; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 5px; transition: text-decoration-color var(--dg-dur-fast); }
+.dg-index a:hover .t { text-decoration-color: var(--dg-accent); }
+
+/* ───────────── Component · bento card ───────────── */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--dg-space-sm); }
+.dg-card { position: relative; min-width: 0; padding: var(--dg-space-md); background: var(--dg-surface); border: 1px solid var(--dg-rule); border-radius: var(--dg-radius); display: flex; flex-direction: column; gap: var(--dg-space-2xs); }
+.dg-card .label { font-size: var(--dg-text-xs); font-weight: 700; color: var(--dg-ink-3); }
+.dg-card h4 { font-size: var(--dg-text-xl); color: var(--dg-ink); }
+.dg-card p { font-size: var(--dg-text-sm); color: var(--dg-ink-2); }
+a.dg-card { color: inherit; text-decoration: none; transition: border-color var(--dg-dur-fast); }
+a.dg-card:hover { border-color: var(--dg-line); }
+a.dg-card .go { position: absolute; top: var(--dg-space-md); right: var(--dg-space-md); color: var(--dg-ink-3); transition: transform var(--dg-dur-fast) var(--dg-ease-out), color var(--dg-dur-fast); }
+a.dg-card:hover .go { transform: translate(2px, -2px); color: var(--dg-accent); }
+.dg-card--intro h4 { font-size: var(--dg-text-2xl); line-height: 1.1; }
+.span-4 { grid-column: span 4; } .span-3 { grid-column: span 3; } .span-2 { grid-column: span 2; }
+
+/* ───────────── Component · callout, quote, code ───────────── */
+.stack { display: grid; gap: var(--dg-space-md); max-width: var(--doc-measure); }
+.dg-callout { padding: var(--dg-space-sm) var(--dg-space-md); border: 1px solid var(--dg-rule); border-radius: var(--dg-radius); background: var(--dg-surface); }
+.dg-callout strong { display: block; font-size: var(--dg-text-sm); color: var(--dg-link); margin-bottom: 2px; }
+.dg-callout--warn strong { color: var(--dg-accent-text); }
+.dg-callout p { font-size: var(--dg-text-sm); color: var(--dg-ink-2); }
+.dg-quote { margin: 0; padding-left: var(--dg-space-md); font-family: var(--dg-font-display); font-size: var(--dg-text-lg); line-height: 1.45; color: var(--dg-quote); }
+.dg-quote cite { display: block; margin-top: var(--dg-space-2xs); font: 400 var(--dg-text-sm)/1.4 var(--dg-font-body); font-style: normal; color: var(--dg-ink-3); }
+.dg-codeblock { margin: 0; }
+.dg-codeblock figcaption { display: flex; justify-content: space-between; padding-bottom: 6px; font-family: var(--dg-font-mono); font-size: var(--dg-text-xs); color: var(--dg-ink-3); }
+.dg-codeblock pre { margin: 0; padding: var(--dg-space-sm); background: var(--dg-surface); border: 1px solid var(--dg-rule); border-radius: var(--dg-radius-md); font: var(--dg-text-sm)/1.55 var(--dg-font-mono); overflow-x: auto; }
+
+/* ───────────── Component · site nav ───────────── */
+.dg-nav { display: flex; justify-content: flex-end; align-items: stretch; gap: var(--dg-space-md); height: 44px; padding: 0 var(--dg-space-sm); border-bottom: 1px solid var(--dg-rule); overflow-x: auto; }
+.dg-nav a { display: flex; align-items: center; font: 400 13px/1 var(--dg-font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--dg-ink-3); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; transition: color var(--dg-dur-fast); }
+.dg-nav a:hover { color: var(--dg-ink); }
+.dg-nav a[aria-current="page"] { color: var(--dg-ink); border-bottom-color: var(--dg-primary); }
+
+/* ───────────── Tables & steps ───────────── */
+.table-wrap { overflow-x: auto; }
+.mtable { width: 100%; border-collapse: collapse; margin-top: var(--dg-space-lg); font-size: var(--dg-text-sm); }
+.mtable th, .mtable td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--dg-rule); vertical-align: top; }
+.mtable th { font-weight: 700; color: var(--dg-ink-3); border-bottom-color: var(--dg-line); }
+.mtable td:first-child { font-weight: 700; white-space: nowrap; }
+.mtable code { color: var(--dg-ink-2); }
+.fence { margin-top: var(--dg-space-lg); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--dg-space-md); }
+.fence-box { padding: var(--dg-space-md); border: 1px solid var(--dg-rule); border-radius: var(--dg-radius); }
+.fence-box--frozen { border-color: var(--dg-line); }
+.fence-box h3 { font-size: var(--dg-text-lg); margin-bottom: var(--dg-space-xs); }
+.fence-box ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: var(--dg-text-sm); color: var(--dg-ink-2); }
+.fence-box code { color: var(--dg-ink); overflow-wrap: anywhere; }
+.steps { margin: var(--dg-space-lg) 0 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: var(--dg-space-md); max-width: var(--doc-measure); }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: var(--dg-space-sm); }
+.steps li::before { content: counter(s); font-family: var(--dg-font-display); font-size: var(--dg-text-xl); line-height: 1.1; color: var(--dg-accent-text); }
+.steps strong { display: block; }
+.steps p { color: var(--dg-ink-2); font-size: var(--dg-text-sm); }
+
+/* ───────────── Footer · Ft2 inline ───────────── */
+.foot { max-width: 1040px; padding-top: var(--dg-space-lg); border-top: 1px solid var(--dg-rule); display: flex; flex-wrap: wrap; gap: var(--dg-space-2xs) var(--dg-space-md); font-size: var(--dg-text-xs); color: var(--dg-ink-3); }
+
+/* ───────────── Responsive ───────────── */
+@media (max-width: 960px) {
+  .states { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .faces { grid-template-columns: minmax(0, 1fr); }
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .span-4, .span-3 { grid-column: span 2; } .span-2 { grid-column: span 1; }
+}
+@media (max-width: 820px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: sticky; top: 0; z-index: 10; height: auto; flex-direction: row; align-items: center; gap: var(--dg-space-md); padding: var(--dg-space-xs) var(--doc-gutter); background: var(--dg-paper); border-right: 0; border-bottom: 1px solid var(--dg-rule); }
+  .rail nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .rail nav ol { display: flex; gap: var(--dg-space-sm); }
+  .rail-foot { display: none; }
+  .wordmark { font-size: var(--dg-text-lg); }
+  main { padding-top: var(--dg-space-xl); }
+}
+@media (max-width: 640px) {
+  .principles div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .fence { grid-template-columns: minmax(0, 1fr); }
+  .ctable th:not(:first-child) { width: 20%; }
+  .ctable .use { display: none; }
+  .scale-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .spacebar { grid-template-columns: 100px 32px minmax(0, 1fr); }
+  .dg-index a { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .dg-index .tagrow { display: none; }
+  .preview { padding: var(--dg-space-md); }
+  .bento { grid-template-columns: minmax(0, 1fr); }
+  .span-4, .span-3, .span-2 { grid-column: auto; }
+  .play-head { flex-direction: column; gap: 2px; }
+  .shapes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dg-space-sm); }
+}
+@media (max-width: 400px) { .states { grid-template-columns: minmax(0, 1fr); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+  html { scroll-behavior: auto; }
+  .dg-btn:active, a.dg-card:hover .go { transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="rail">
+    <a class="wordmark" href="#top" aria-label="Digital garden design system, back to top">garden<span>.</span></a>
+    <nav aria-label="Sections">
+      <ol>
+        <li><a href="#principles">Principles</a></li>
+        <li><a href="#colour">Colour</a></li>
+        <li><a href="#type">Type</a></li>
+        <li><a href="#space">Space &amp; shape</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#motion">Motion</a></li>
+        <li><a href="#print">Print fence</a></li>
+        <li><a href="#adopt">Adopting it</a></li>
+      </ol>
+    </nav>
+    <div class="rail-foot">
+      <span>v2 · minimal</span>
+      <span>Updated 26/09/2026</span>
+    </div>
+  </aside>
+
+  <main id="top">
+
+    <header class="hero">
+      <h1>Warm paper, careful type.</h1>
+      <p class="lede">The design system for the garden's web pages. The colours are the site's own presets (<code>nzk</code>, <code>dark</code>, <code>nexus</code>) and stay exactly as they are. This page defines how they're used: which role each colour plays, how type carries the hierarchy, and how little the interface needs to move.</p>
+      <div class="presets">
+        <span>Preview in</span>
+        <div class="seg" role="group" aria-label="Colour preset">
+          <button type="button" data-preset="nzk" aria-pressed="true">nzk</button>
+          <button type="button" data-preset="dark" aria-pressed="false">dark</button>
+          <button type="button" data-preset="nexus" aria-pressed="false">nexus</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═════════════ Principles ═════════════ -->
+    <section class="section" id="principles">
+      <h2>Principles</h2>
+      <dl class="principles">
+        <div><dt>Colour comes from the presets</dt><dd>The system adds no colour values. It gives the existing preset variables role names, so switching between nzk, dark and nexus re-themes every component.</dd></div>
+        <div><dt>Lines, not boxes</dt><dd>Hierarchy comes from 1px rules and whitespace. No drop shadows, and no filled panels behind reading text.</dd></div>
+        <div><dt>Type does the emphasis</dt><dd>DM Serif Display for titles, Lato for everything else. Headings stay upright. Emphasis comes from weight or colour.</dd></div>
+        <div><dt>Each colour has one job</dt><dd>Indigo for actions and headings, teal for links, orange for "you are here". There's never more than one orange mark in view.</dd></div>
+        <div><dt>Motion answers the hand</dt><dd>Nothing moves on its own. Hover and press get quick colour changes and a 1–2px nudge at most.</dd></div>
+      </dl>
+    </section>
+
+    <!-- ═════════════ Colour ═════════════ -->
+    <section class="section" id="colour">
+      <h2>Colour</h2>
+      <p class="lede">Every role is a <code>--dg-*</code> name that points at a variable already in <code>src/styles/presets/</code>. Three roles are mixed from two existing colours for text contrast. They add no new hue.</p>
+
+      <table class="ctable">
+        <thead><tr><th>Role</th><th>nzk</th><th>dark</th><th>nexus</th></tr></thead>
+        <tbody>
+          <tr class="group"><td colspan="4">Ground</td></tr>
+          <tr><td><span class="role">--dg-paper</span><span class="src">var(--background)</span><span class="use">Page background</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-paper)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-paper)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-paper)"></i></td></tr>
+          <tr><td><span class="role">--dg-surface</span><span class="src">var(--card)</span><span class="use">Cards, code, callouts</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-surface)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-surface)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-surface)"></i></td></tr>
+          <tr><td><span class="role">--dg-rule</span><span class="src">var(--border)</span><span class="use">Hairlines between rows, card outlines</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-rule)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-rule)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-rule)"></i></td></tr>
+          <tr><td><span class="role">--dg-line</span><span class="src">mix(--theme-text 22%, --background)</span><span class="use">The stronger rule that opens a list, secondary button border</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-line)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-line)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-line)"></i></td></tr>
+
+          <tr class="group"><td colspan="4">Text</td></tr>
+          <tr><td><span class="role">--dg-ink</span><span class="src">var(--theme-text)</span><span class="use">Body and titles</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-ink)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-ink)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-ink)">Aa</i></td></tr>
+          <tr><td><span class="role">--dg-ink-2</span><span class="src">mix(--theme-text 72%, --background)</span><span class="use">Ledes, descriptions</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-ink-2)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-ink-2)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-ink-2)">Aa</i></td></tr>
+          <tr><td><span class="role">--dg-ink-3</span><span class="src">mix(--theme-text 60%, --background)</span><span class="use">Dates, captions, labels</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-ink-3)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-ink-3)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-ink-3)">Aa</i></td></tr>
+          <tr><td><span class="role">--dg-heading</span><span class="src">var(--theme-accent-2)</span><span class="use">h2 and h3, as prose does today</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-heading)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-heading)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-heading)">Aa</i></td></tr>
+          <tr><td><span class="role">--dg-link</span><span class="src">var(--theme-link)</span><span class="use">Links in running text</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-link)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-link)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-link)">Aa</i></td></tr>
+          <tr><td><span class="role">--dg-quote</span><span class="src">var(--theme-quote)</span><span class="use">Blockquotes</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-quote)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-quote)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-quote)">Aa</i></td></tr>
+
+          <tr class="group"><td colspan="4">Action &amp; accent</td></tr>
+          <tr><td><span class="role">--dg-primary</span><span class="src">var(--primary)</span><span class="use">Primary button, active nav rule</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-primary)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-primary)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-primary)"></i></td></tr>
+          <tr><td><span class="role">--dg-accent</span><span class="src">var(--theme-accent)</span><span class="use">Markers only: hover underline, note dot, the wordmark dot. Not for text.</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-accent)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-accent)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-accent)"></i></td></tr>
+          <tr><td><span class="role">--dg-accent-text</span><span class="src">mix(--theme-accent 70%, --theme-text)</span><span class="use">When the accent has to be text: step numbers, warning label</span></td><td><i data-color-preset="nzk" class="sw sw--text" style="color:var(--dg-accent-text)">Aa</i></td><td><i data-color-preset="dark" class="sw sw--text" style="color:var(--dg-accent-text)">Aa</i></td><td><i data-color-preset="nexus" class="sw sw--text" style="color:var(--dg-accent-text)">Aa</i></td></tr>
+          <tr><td><span class="role">--dg-muted</span><span class="src">var(--muted)</span><span class="use">Non-text fills: scrollbar, progress, the space bars below</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-muted)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-muted)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-muted)"></i></td></tr>
+          <tr><td><span class="role">--dg-focus</span><span class="src">var(--ring)</span><span class="use">Focus ring</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-focus)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-focus)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-focus)"></i></td></tr>
+          <tr><td><span class="role">--dg-danger</span><span class="src">var(--destructive)</span><span class="use">Errors only</span></td><td><i data-color-preset="nzk" class="sw" style="background:var(--dg-danger)"></i></td><td><i data-color-preset="dark" class="sw" style="background:var(--dg-danger)"></i></td><td><i data-color-preset="nexus" class="sw" style="background:var(--dg-danger)"></i></td></tr>
+        </tbody>
+      </table>
+      <p class="note">In <code>nzk</code>, raw <code>--muted</code> and <code>--theme-accent</code> are too light for small text on the cream background. That's why the mixed <code>-2</code>, <code>-3</code> and <code>-text</code> roles exist. The preset files themselves don't change.</p>
+    </section>
+
+    <!-- ═════════════ Type ═════════════ -->
+    <section class="section" id="type">
+      <h2>Type</h2>
+      <p class="lede">The three faces <code>FontLoader.astro</code> already loads. No new font.</p>
+      <div class="faces">
+        <div class="face"><span class="name">Display · DM Serif Display</span><div class="big" style="font-family:var(--dg-font-display)">Garden</div><p>Page titles, post titles, card titles. Regular weight, upright only.</p></div>
+        <div class="face"><span class="name">Body · Lato</span><div class="big" style="font-family:var(--dg-font-body);font-weight:700">Garden</div><p>Prose at 400. Buttons, labels and table heads at 700.</p></div>
+        <div class="face"><span class="name">Mono · Inconsolata</span><div class="big" style="font-family:var(--dg-font-mono)">26/09/2026</div><p>Code, and dates in lists.</p></div>
+      </div>
+      <div class="scale">
+        <div class="scale-row"><span class="meta">display<br>2.4–4.25rem</span><span class="sample" style="font:var(--dg-text-display)/1.02 var(--dg-font-display);letter-spacing:-0.02em">Warm paper.</span></div>
+        <div class="scale-row"><span class="meta">3xl · 2.441rem<br>page title</span><span class="sample" style="font:var(--dg-text-3xl)/1.1 var(--dg-font-display)">Note types in Zettelkasten</span></div>
+        <div class="scale-row"><span class="meta">2xl · 1.953rem<br>h2</span><span class="sample" style="font:var(--dg-text-2xl)/1.15 var(--dg-font-display);color:var(--dg-heading)">Fleeting, literature, permanent</span></div>
+        <div class="scale-row"><span class="meta">lg · 1.25rem<br>h3, list title</span><span class="sample" style="font:var(--dg-text-lg)/1.3 var(--dg-font-display);color:var(--dg-heading)">Obsidian Flavoured Markdown</span></div>
+        <div class="scale-row"><span class="meta">base · 1.0625rem<br>body, lh 1.65</span><span class="sample">Body copy is 17px Lato with a measure of about 66 characters. <a href="#type">Links are teal with a thin underline</a> that turns orange on hover.</span></div>
+        <div class="scale-row"><span class="meta">sm · 0.875rem<br>UI</span><span class="sample" style="font-size:var(--dg-text-sm);color:var(--dg-ink-2)">Descriptions, card bodies, table cells.</span></div>
+        <div class="scale-row"><span class="meta">xs · 0.75rem<br>meta</span><span class="sample" style="font-size:var(--dg-text-xs);font-weight:700;color:var(--dg-ink-3)">Updated 26/09/2026 · 6 min read</span></div>
+      </div>
+      <p class="note">The scale ratio is 1.25. Dates show as DD/MM/YYYY with <code>tabular-nums</code>, so they line up in lists.</p>
+    </section>
+
+    <!-- ═════════════ Space & shape ═════════════ -->
+    <section class="section" id="space">
+      <h2>Space &amp; shape</h2>
+      <p class="lede">A 4-point scale. Reading areas get <code>xl</code> and up; controls use <code>2xs</code> to <code>sm</code>.</p>
+      <div class="spacebars">
+        <div class="spacebar"><code>--dg-space-3xs</code><span class="n">4</span><i style="width:var(--dg-space-3xs)"></i></div>
+        <div class="spacebar"><code>--dg-space-2xs</code><span class="n">8</span><i style="width:var(--dg-space-2xs)"></i></div>
+        <div class="spacebar"><code>--dg-space-xs</code><span class="n">12</span><i style="width:var(--dg-space-xs)"></i></div>
+        <div class="spacebar"><code>--dg-space-sm</code><span class="n">16</span><i style="width:var(--dg-space-sm)"></i></div>
+        <div class="spacebar"><code>--dg-space-md</code><span class="n">24</span><i style="width:var(--dg-space-md)"></i></div>
+        <div class="spacebar"><code>--dg-space-lg</code><span class="n">32</span><i style="width:var(--dg-space-lg)"></i></div>
+        <div class="spacebar"><code>--dg-space-xl</code><span class="n">48</span><i style="width:var(--dg-space-xl)"></i></div>
+        <div class="spacebar"><code>--dg-space-2xl</code><span class="n">64</span><i style="width:var(--dg-space-2xl)"></i></div>
+        <div class="spacebar"><code>--dg-space-3xl</code><span class="n">96</span><i style="width:var(--dg-space-3xl)"></i></div>
+      </div>
+      <div class="shapes">
+        <div class="shape"><i style="border-radius:var(--dg-radius)"></i><code>--dg-radius</code> 8px</div>
+        <div class="shape"><i style="border-radius:var(--dg-radius-md)"></i><code>--dg-radius-md</code> 6px</div>
+        <div class="shape"><i style="border-radius:var(--dg-radius-sm)"></i><code>--dg-radius-sm</code> 4px</div>
+      </div>
+      <p class="note">The radii come from the preset's <code>--radius</code> (0.5rem), the same values Tailwind's <code>rounded-lg/md/sm</code> use today. No pills, no shadows.</p>
+    </section>
+
+    <!-- ═════════════ Components ═════════════ -->
+    <section class="section" id="components">
+      <h2>Components</h2>
+      <p class="lede">Each block shows the component live, then the CSS behind it. Try the preset switch at the top: every component follows it.</p>
+
+      <div class="play">
+        <div class="play-head"><h3>Button</h3><p>Primary · secondary · text. All eight states.</p></div>
+        <div class="preview">
+          <div class="states">
+            <div class="state"><span class="lab">default</span><button class="dg-btn" type="button">Read post</button></div>
+            <div class="state"><span class="lab">hover</span><button class="dg-btn is-hover" type="button">Read post</button></div>
+            <div class="state"><span class="lab">focus-visible</span><button class="dg-btn is-focus" type="button">Read post</button></div>
+            <div class="state"><span class="lab">active</span><button class="dg-btn is-active" type="button">Read post</button></div>
+            <div class="state"><span class="lab">disabled</span><button class="dg-btn" type="button" disabled>Read post</button></div>
+            <div class="state"><span class="lab">loading</span><button class="dg-btn" type="button" data-state="loading" aria-busy="true">Loading</button></div>
+            <div class="state"><span class="lab">error</span><button class="dg-btn" type="button" data-state="error">Try again</button></div>
+            <div class="state"><span class="lab">success</span><button class="dg-btn" type="button" data-state="success">Copied</button></div>
+          </div>
+          <div class="variants">
+            <button class="dg-btn" type="button">Download PDF</button>
+            <button class="dg-btn dg-btn--secondary" type="button">All notes</button>
+            <button class="dg-btn dg-btn--text" type="button">Back to garden</button>
+          </div>
+        </div>
+        <div class="code">
+          <button class="copy" type="button">Copy</button>
+<pre><code>.dg-btn { height: 40px; padding: 0 16px; border-radius: var(--dg-radius);
+          background: var(--dg-primary); color: var(--dg-on-primary); }
+.dg-btn:hover  { background: color-mix(in oklab, var(--dg-primary) 84%, var(--dg-paper)); }
+.dg-btn:active { transform: translateY(1px); }
+.dg-btn:focus-visible { outline: 2px solid var(--dg-focus); outline-offset: 2px; }
+.dg-btn--secondary { background: transparent; color: var(--dg-ink); border-color: var(--dg-line); }
+.dg-btn--text      { background: transparent; color: var(--dg-link); text-decoration: underline; }</code></pre>
+        </div>
+        <p class="note">One primary button per view. Keep labels short and on one line. The hover mixes toward the paper colour, so it lightens indigo in nzk and dims the white button in dark.</p>
+      </div>
+
+      <div class="play">
+        <div class="play-head"><h3>Tag</h3><p>Note type and topic, from post frontmatter.</p></div>
+        <div class="preview">
+          <div class="tagrow">
+            <a class="dg-tag dg-tag--note" href="#components">note</a>
+            <a class="dg-tag dg-tag--post" href="#components">post</a>
+            <a class="dg-tag" href="#components">astro</a>
+            <a class="dg-tag" href="#components">satori</a>
+            <a class="dg-tag" href="#components">sharp</a>
+          </div>
+        </div>
+        <div class="code">
+          <button class="copy" type="button">Copy</button>
+<pre><code>.dg-tag { border: 1px solid var(--dg-rule); border-radius: var(--dg-radius-sm);
+          color: var(--dg-ink-2); }
+.dg-tag--note::before { background: var(--dg-accent); }   /* 6px dot, the only colour */
+.dg-tag--post::before { background: var(--dg-link); }</code></pre>
+        </div>
+      </div>
+
+      <div class="play">
+        <div class="play-head"><h3>Post index</h3><p>The garden list.</p></div>
+        <div class="preview">
+          <ol class="dg-index">
+            <li><a href="#components"><time datetime="2026-01-18">18/01/2026</time><span class="t">Cloudflare Tunnel Setup Guide: Fixed Domain &amp; Multiple Services</span><span class="tagrow"><span class="dg-tag dg-tag--post">post</span></span></a></li>
+            <li><a href="#components"><time datetime="2025-12-19">19/12/2025</time><span class="t">Dynamic Open Graph Image Generation in This Digital Garden</span><span class="tagrow"><span class="dg-tag dg-tag--post">post</span></span></a></li>
+            <li><a href="#components"><time datetime="2025-12-12">12/12/2025</time><span class="t">Obsidian Flavoured Markdown</span><span class="tagrow"><span class="dg-tag dg-tag--note">note</span></span></a></li>
+            <li><a href="#components"><time datetime="2025-05-11">11/05/2025</time><span class="t">Note types in Zettelkasten</span><span class="tagrow"><span class="dg-tag dg-tag--note">note</span></span></a></li>
+          </ol>
+        </div>
+        <div class="code">
+          <button class="copy" type="button">Copy</button>
+<pre><code>.dg-index          { border-top: 1px solid var(--dg-line); }
+.dg-index li       { border-bottom: 1px solid var(--dg-rule); }
+.dg-index .t       { font-family: var(--dg-font-display);
+                     text-decoration: underline; text-decoration-color: transparent; }
+.dg-index a:hover .t { text-decoration-color: var(--dg-accent); }  /* the one orange mark */</code></pre>
+        </div>
+      </div>
+
+      <div class="play">
+        <div class="play-head"><h3>Bento card</h3><p>Home page tiles. Linked tiles only change their border.</p></div>
+        <div class="preview">
+          <div class="bento">
+            <div class="dg-card dg-card--intro span-4"><span class="label">Hello</span><h4>Hi, I'm Phattharanat.</h4><p>An ordinary Data Scientist who loves SAWANO Hiroyuki's music.</p></div>
+            <a class="dg-card span-2" href="#components"><span class="go" aria-hidden="true">↗</span><span class="label">Garden</span><h4>Posts &amp; notes</h4><p>The border darkens and the arrow nudges.</p></a>
+            <div class="dg-card span-3"><span class="label">My time</span><h4>—</h4><p>Static tile, no hover.</p></div>
+            <a class="dg-card span-3" href="#components"><span class="go" aria-hidden="true">↗</span><span class="label">Resume</span><h4>Read the resume</h4><p>Same card, same rule.</p></a>
+          </div>
+        </div>
+        <div class="code">
+          <button class="copy" type="button">Copy</button>
+<pre><code>.dg-card        { background: var(--dg-surface); border: 1px solid var(--dg-rule);
+                  border-radius: var(--dg-radius); }          /* no shadow */
+a.dg-card:hover { border-color: var(--dg-line); }
+a.dg-card:hover .go { transform: translate(2px, -2px); color: var(--dg-accent); }</code></pre>
+        </div>
+      </div>
+
+      <div class="play">
+        <div class="play-head"><h3>Callout, quote &amp; code</h3><p>Obsidian callouts, blockquotes and Expressive Code.</p></div>
+        <div class="preview">
+          <div class="stack">
+            <div class="dg-callout"><strong>Note</strong><p>Wiki links like <code>[[zettelkasten-note-types]]</code> resolve to a post and add a back-reference on the other side.</p></div>
+            <div class="dg-callout dg-callout--warn"><strong>Warning</strong><p>Keep <code>wrangler.jsonc</code> <code>compatibility_date</code> current or the Cloudflare build fails.</p></div>
+            <blockquote class="dg-quote">Blockquotes can also be nested...<cite>from the Markdown post</cite></blockquote>
+            <figure class="dg-codeblock"><figcaption><span>astro.config.mjs</span><span>js</span></figcaption><pre><code>fonts: [{ provider: fontProviders.google(), name: 'Lato', cssVariable: '--font-lato' }]</code></pre></figure>
+          </div>
+        </div>
+        <div class="code">
+          <button class="copy" type="button">Copy</button>
+<pre><code>.dg-callout        { border: 1px solid var(--dg-rule); border-radius: var(--dg-radius);
+                     background: var(--dg-surface); }
+.dg-callout strong { color: var(--dg-link); }                   /* the type colour is the label */
+.dg-callout--warn strong { color: var(--dg-accent-text); }
+.dg-quote          { font-family: var(--dg-font-display); color: var(--dg-quote); }</code></pre>
+        </div>
+        <p class="note">No coloured stripe on the side of a callout or quote. The label colour says what kind it is.</p>
+      </div>
+
+      <div class="play">
+        <div class="play-head"><h3>Site nav</h3><p>Today's slim uppercase row, unchanged in shape.</p></div>
+        <div class="preview">
+          <nav class="dg-nav" aria-label="Example site nav">
+            <a href="#components" aria-current="page">Home</a>
+            <a href="#components">Garden</a>
+            <a href="#components">Resume</a>
+            <a href="#components">Uses</a>
+          </nav>
+        </div>
+        <div class="code">
+          <button class="copy" type="button">Copy</button>
+<pre><code>.dg-nav a                      { text-transform: uppercase; letter-spacing: 0.08em; color: var(--dg-ink-3); }
+.dg-nav a[aria-current="page"] { color: var(--dg-ink); border-bottom: 2px solid var(--dg-primary); }</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ Motion ═════════════ -->
+    <section class="section" id="motion">
+      <h2>Motion</h2>
+      <p class="lede">Colour changes do almost all the work. Only <code>transform</code> and colour properties animate, and nothing moves unless the reader touches it.</p>
+      <div class="table-wrap">
+        <table class="mtable">
+          <thead><tr><th>Element</th><th>Response</th><th>Timing</th></tr></thead>
+          <tbody>
+            <tr><td>Button</td><td>Background lightens on hover and the button drops 1px on press</td><td><code>--dg-dur-fast</code> · <code>--dg-ease-out</code></td></tr>
+            <tr><td>Linked card</td><td>Border darkens and the arrow moves 2px</td><td><code>--dg-dur-fast</code></td></tr>
+            <tr><td>List row, link</td><td>Underline fades in orange</td><td><code>--dg-dur-fast</code></td></tr>
+            <tr><td>Preset switch</td><td>Background and text crossfade</td><td><code>--dg-dur-base</code></td></tr>
+            <tr><td>Focus ring</td><td>Appears instantly</td><td>0ms</td></tr>
+            <tr><td>Everything else</td><td>None. No scroll reveals, no idle animation.</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">With <code>prefers-reduced-motion: reduce</code>, transitions become instant and nothing translates.</p>
+    </section>
+
+    <!-- ═════════════ Print fence ═════════════ -->
+    <section class="section" id="print">
+      <h2>The print fence</h2>
+      <p class="lede">The Resume and CV Print Pages must render exactly as they do today. <code>BaseLayoutPrint.astro</code> imports the same <code>globals.css</code> as the web layouts, and the theme toggle sets <code>data-color-preset</code> on the print page too. So the system must never edit anything those pages read.</p>
+      <div class="fence">
+        <div class="fence-box fence-box--frozen">
+          <h3>Frozen: do not edit</h3>
+          <ul>
+            <li><code>src/styles/presets/*.css</code> and the <code>:root</code> values in <code>globals.css</code>. These are the colour source for both web and print.</li>
+            <li><code>src/layouts/BaseLayoutPrint.astro</code>, <code>src/styles/print.css</code></li>
+            <li><code>src/pages/resume-print/**</code>, <code>src/pages/cv-print/**</code></li>
+            <li><code>src/components/resume/**</code>. The sections are shared with the web resume.</li>
+            <li><code>tailwind.config.ts</code> <code>fontFamily</code>: <code>sans</code>, <code>serif</code>, <code>mono</code>, <code>metric</code>, <code>canela</code>, <code>resumesans</code>, <code>resumeserif</code></li>
+          </ul>
+        </div>
+        <div class="fence-box">
+          <h3>Why the system can't leak</h3>
+          <ul>
+            <li>It defines no colour values, only <code>--dg-*</code> names that read the preset variables</li>
+            <li>Those names are declared under <code>[data-surface="web"]</code>, set on <code>&lt;body&gt;</code> in <code>BaseLayout.astro</code> only (<code>PostLayout</code> wraps it)</li>
+            <li>Components use <code>.dg-*</code> classes, which print markup never has</li>
+            <li>The web <code>/resume</code> is restyled only through <code>WebWrapper.astro</code></li>
+          </ul>
+        </div>
+      </div>
+      <h3 class="sub">Proving it didn't change</h3>
+      <ol class="steps">
+        <li><div><strong>Snapshot before</strong><p>On <code>main</code>: <code>bun run build &amp;&amp; bun run preview</code>, then print <code>/resume-print/</code>, <code>/cv-print/</code> and each Resume Version with headless Chrome (<code>--print-to-pdf --no-pdf-header-footer</code>).</p></div></li>
+        <li><div><strong>Snapshot after</strong><p>The same pages on the adoption branch, with the same Chrome.</p></div></li>
+        <li><div><strong>Compare pixels</strong><p><code>pdftoppm -r 150 -png</code>, then <code>magick compare -metric AE</code> page by page. Anything above 0 blocks the merge.</p></div></li>
+        <li><div><strong>Check the frozen paths</strong><p><code>git diff --stat main -- src/styles/presets src/layouts/BaseLayoutPrint.astro src/styles/print.css src/components/resume src/pages/resume-print src/pages/cv-print</code> prints nothing.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- ═════════════ Adopt ═════════════ -->
+    <section class="section" id="adopt">
+      <h2>Adopting it</h2>
+      <p class="lede">One new stylesheet of role names, one attribute on one layout. Most roles already have a Tailwind utility (<code>bg-background</code>, <code>border-border</code>, <code>text-primary</code>), so only the mixed ones need new keys.</p>
+
+      <div class="play">
+        <div class="play-head"><h3>src/styles/system.css</h3><p>Imported in <code>globals.css</code> after the presets.</p></div>
+        <div class="code code--solo">
+          <button class="copy" type="button">Copy</button>
+<pre><code>/* Roles over the existing presets. No colour values live here. */
+[data-surface='web'] {
+  --dg-paper: var(--background);        --dg-surface: var(--card);
+  --dg-rule: var(--border);
+  --dg-line: color-mix(in oklab, var(--theme-text) 22%, var(--background));
+  --dg-ink: var(--theme-text);
+  --dg-ink-2: color-mix(in oklab, var(--theme-text) 72%, var(--background));
+  --dg-ink-3: color-mix(in oklab, var(--theme-text) 60%, var(--background));
+  --dg-heading: var(--theme-accent-2);   --dg-link: var(--theme-link);
+  --dg-quote: var(--theme-quote);
+  --dg-primary: var(--primary);          --dg-on-primary: var(--primary-foreground);
+  --dg-accent: var(--theme-accent);
+  --dg-accent-text: color-mix(in oklab, var(--theme-accent) 70%, var(--theme-text));
+  --dg-muted: var(--muted);              --dg-focus: var(--ring);
+  --dg-danger: var(--destructive);       --dg-on-danger: var(--destructive-foreground);
+
+  --dg-font-display: var(--font-dm-serif-display), Georgia, serif;
+  --dg-font-body: var(--font-lato), system-ui, sans-serif;
+  --dg-font-mono: var(--font-inconsolata), ui-monospace, monospace;
+  --dg-radius: var(--radius);
+  --dg-radius-md: calc(var(--radius) - 2px);
+  --dg-radius-sm: calc(var(--radius) - 4px);
+  --dg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dg-dur-fast: 150ms; --dg-dur-base: 200ms;
+  /* + --dg-space-* and --dg-text-* as listed in Space and Type */
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="play">
+        <div class="play-head"><h3>Layout &amp; Tailwind</h3><p>New keys only. Nothing is renamed.</p></div>
+        <div class="code code--solo">
+          <button class="copy" type="button">Copy</button>
+<pre><code>&lt;!-- src/layouts/BaseLayout.astro only. BaseLayoutPrint must NOT get this --&gt;
+&lt;body data-surface="web" class="min-h-screen bg-background font-sans antialiased"&gt;
+
+/* src/styles/globals.css → @theme inline */
+--color-ink-2:       var(--dg-ink-2);
+--color-ink-3:       var(--dg-ink-3);
+--color-line:        var(--dg-line);
+--color-accent-text: var(--dg-accent-text);
+--font-display:      var(--dg-font-display);</code></pre>
+        </div>
+      </div>
+
+      <h3 class="sub">Order of work</h3>
+      <ol class="steps">
+        <li><div><strong>Take the print snapshot first</strong><p>Before any code change, so there's a baseline.</p></div></li>
+        <li><div><strong>Add the roles and the attribute</strong><p>Nothing looks different yet. Components opt in one by one.</p></div></li>
+        <li><div><strong>One component per commit</strong><p>Nav → bento card → post index → tags → callouts and code. Check each in all three presets at 320, 375, 414 and 768px.</p></div></li>
+        <li><div><strong>Update the docs</strong><p>Point <code>docs/architecture/add-theme.md</code> here. A new preset only needs to supply the same variables; the roles follow.</p></div></li>
+      </ol>
+    </section>
+
+    <footer class="foot">
+      <span>digital-garden-2024 · DESIGN.html</span>
+      <span>v2 · minimal, on the existing presets</span>
+      <span>Scope: web surface only. Print Pages frozen.</span>
+      <span>Updated 26/09/2026</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // copy buttons: silent success, label flips for 1.2s
+  document.querySelectorAll('.copy').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.parentElement.querySelector('pre');
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        btn.dataset.state = 'done'; btn.textContent = 'Copied';
+      } catch (e) {
+        btn.dataset.state = 'error'; btn.textContent = 'Copy failed';
+      }
+      setTimeout(() => { delete btn.dataset.state; btn.textContent = 'Copy'; }, 1200);
+    });
+  });
+
+  // preset switch, same attribute the site's ThemeToggle writes
+  const root = document.documentElement;
+  const seg = document.querySelectorAll('.seg button');
+  const setPreset = (name) => {
+    root.setAttribute('data-color-preset', name);
+    seg.forEach((o) => o.setAttribute('aria-pressed', String(o.dataset.preset === name)));
+  };
+  seg.forEach((b) => b.addEventListener('click', () => setPreset(b.dataset.preset)));
+  const fromUrl = new URLSearchParams(location.search).get('preset');
+  if (['nzk', 'dark', 'nexus'].includes(fromUrl)) setPreset(fromUrl);
+
+  // rail: mark the section in view
+  const links = [...document.querySelectorAll('.rail nav a')];
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      links.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + e.target.id)));
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  document.querySelectorAll('main .section').forEach((s) => io.observe(s));
+</script>
+</body>
+</html>

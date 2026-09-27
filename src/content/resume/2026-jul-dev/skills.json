@@ -1,0 +1,12 @@
+[
+  {
+    "id": "mock-languages",
+    "category": "Mock Languages",
+    "details": ["MockLang", "FakeScript", "PlaceholderQL"]
+  },
+  {
+    "id": "mock-tools",
+    "category": "Mock Tools",
+    "details": ["Mock Tool A", "Mock Tool B"]
+  }
+]

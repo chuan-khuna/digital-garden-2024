@@ -1,6 +1,8 @@
 # Resume System
 
-The resume is built from **Astro Content Collections** — structured data files that are queried at build time and rendered into two variants: an interactive web page and a print-optimised PDF page.
+The resume is built from **Astro Content Collections** — structured data files that are queried at build time and rendered into an interactive web page and print-optimised PDF pages (**Print Pages**: the one-page Resume and the multi-page CV).
+
+Resume content is organised into **Resume Versions** (glossary: `CONTEXT.md`; decision record: `docs/adr/0001-versioned-resume-collections.md`). The **Default Version** is the folder named `index`; any other folder is a Resume Version tailored for a specific job application, rendered only on its own unlisted, noindexed print URLs.
 
 ---
 
@@ -9,25 +11,39 @@ The resume is built from **Astro Content Collections** — structured data files
 ```
 src/
 ├── content/
-│   ├── resume/                          ← all resume data lives here
-│   │   ├── header.json                  ← name, job title, contact info
-│   │   ├── skills.json                  ← skill categories + keyword lists
-│   │   ├── projects.json                ← project entries (with visibility)
-│   │   ├── educations.json              ← education entries
-│   │   ├── activities.json              ← activity / side-project entries
-│   │   ├── interests.json               ← interests list
-│   │   ├── now.json                     ← "what I'm doing now" section
-│   │   └── experiences/                 ← one .md file per job role
-│   │       └── themather-datascientist.md
+│   ├── resume/                          ← one folder per Resume Version
+│   │   ├── index/                       ← Default Version (backs /resume, /resume-print, /cv-print)
+│   │   │   ├── header.json              ← name, job title, contact info
+│   │   │   ├── skills.json              ← skill categories + keyword lists
+│   │   │   ├── educations.json          ← education entries
+│   │   │   ├── activities.json          ← activity / side-project entries
+│   │   │   ├── interests.json           ← interests list
+│   │   │   ├── now.json                 ← "what I'm doing now" (Default Version only)
+│   │   │   ├── experiences/             ← one .md file per job role
+│   │   │   └── projects/                ← one .md file per project
+│   │   └── 2026-jul-dev/                ← example Resume Version (mock data)
+│   │       └── …                        ← only the Sections it overrides
 │   └── collection-definitions/
-│       └── resume.ts                    ← Zod schemas + collection registrations
+│       ├── resume.ts                    ← Zod schemas + collection registrations
+│       └── resume-loaders.ts            ← versioned loaders + version-name validation
+│
+├── lib/
+│   └── resume/
+│       ├── index.ts                     ← getResume(surface, version) / getResumeVersions() — Astro content adapter
+│       ├── resolve.ts                   ← resolveResume(): fallback, visibility, ordering (pure)
+│       └── resolve.test.ts              ← Vitest tests for the rules above
 │
 ├── pages/
-│   ├── resume.astro                     ← web version (/resume)
-│   ├── resume-print.astro               ← print resume (/resume-print)
-│   └── cv-print.astro                   ← print CV (/cv-print)
+│   ├── resume.astro                     ← web version (/resume), always `index`
+│   ├── resume-print/index.astro         ← print resume, Default Version (/resume-print)
+│   ├── resume-print/[version].astro     ← print resume, other versions (/resume-print/<version>)
+│   ├── cv-print/index.astro             ← print CV, Default Version (/cv-print)
+│   └── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
 │
 ├── components/resume/
+│   ├── pages/
+│   │   ├── ResumePrintPage.astro        ← shared body of /resume-print and /resume-print/<version>
+│   │   └── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
 │   ├── layout/                          ← print layout wrappers
 │   │   ├── WebWrapper.astro
 │   │   ├── PageLayout.astro
@@ -41,7 +57,7 @@ src/
 │   │   ├── Interests.astro
 │   │   ├── Now.astro                    ← web-only (no print equivalent)
 │   │   └── print/
-│   │       └── Header.astro             ← print-only resume header
+│   │       └── Header.astro             ← print-only resume header (receives `header` prop)
 │   ├── Item/
 │   │   ├── Item.astro                   ← unified: web stacked / print inline-auto
 │   │   └── ItemSeparator.astro          ← dashed line separator (used in print)
@@ -53,27 +69,56 @@ src/
 │   └── PrintPageBreak.astro             ← visible divider + CSS page-break
 │
 └── layouts/
-    └── BaseLayoutPrint.astro            ← print layout (hides nav/footer on print)
+    └── BaseLayoutPrint.astro            ← print layout (hides nav/footer on print; `noindex` prop)
 ```
 
 ---
 
 ## Content Collections
 
-All resume data is registered in `src/content/collection-definitions/resume.ts` and exported to `src/content.config.ts`.
+All resume data is registered in `src/content/collection-definitions/resume.ts` and exported to `src/content.config.ts`. There is **one collection per data type**, and each collection's loader spans **every** version folder (`src/content/resume/*/…`).
 
 ### Collections Overview
 
+File paths are relative to `src/content/resume/<version>/`.
+
 | Collection | Loader | File | Key fields |
 |---|---|---|---|
-| `resumeHeader` | `file()` | `header.json` | `name`, `jobTitle`, `email`, `github`, `githubName`, `introduction`, `location` |
-| `resumeExperiences` | `glob()` | `experiences/*.md` | `jobTitle`, `company`, `time`, `visibility` — bullets in MD body |
-| `resumeProjects` | `file()` | `projects.json` | `title`, `time`, `description`, `url`, `details[]`, `visibility` |
-| `resumeSkills` | `file()` | `skills.json` | `category`, `details[]` |
-| `resumeEducations` | `file()` | `educations.json` | `degree`, `institution`, `time`, `details[]`, `visibility` |
-| `resumeActivities` | `file()` | `activities.json` | `title`, `time`, `description`, `url`, `details[]` |
-| `resumeInterests` | `file()` | `interests.json` | `items[]` |
-| `resumeNow` | `file()` | `now.json` | `lastUpdated`, `intro`, `paragraphs[]` |
+| `resumeHeader` | `versionedResumeJson()` | `header.json` | `name`, `jobTitle`, `email`, `github`, `githubName`, `introduction`, `location` |
+| `resumeExperiences` | `versionedResumeGlob()` | `experiences/*.md` | `jobTitle`, `company`, `time`, `visibility` — bullets in MD body |
+| `resumeProjects` | `versionedResumeGlob()` | `projects/*.md` | `title`, `time`, `description`, `url`, `order`, `visibility` — bullets in MD body |
+| `resumeSkills` | `versionedResumeJson()` | `skills.json` | `category`, `details[]` |
+| `resumeEducations` | `versionedResumeJson()` | `educations.json` | `degree`, `institution`, `time`, `details[]`, `visibility` |
+| `resumeActivities` | `versionedResumeJson()` | `activities.json` | `title`, `time`, `description`, `url`, `details[]` |
+| `resumeInterests` | `versionedResumeJson()` | `interests.json` | `items[]` |
+| `resumeNow` | `versionedResumeJson(…, { defaultVersionOnly: true })` | `index/now.json` only | `lastUpdated`, `intro`, `paragraphs[]` |
+
+Every entry also carries a `version` field (the folder it came from), injected by the loader, and its id is prefixed with `<version>/` so ids are unique across versions.
+
+### Versioned Loaders (`resume-loaders.ts`)
+
+- **`versionedResumeGlob(section)`** wraps Astro's `glob()` with the pattern `*/<section>/*.md` (base `src/content/resume`). It sets each id to `<version>/<file-slug>` and wraps `parseData` to inject `version`. Because it delegates to `glob()`, markdown rendering, digests and dev-server file watching work unchanged.
+- **`versionedResumeJson(fileName)`** replaces `file()`, which can only read one file. It reads `src/content/resume/<version>/<fileName>` for every version folder, parses the JSON array (items keep their existing `id` field), and stores each item as `<version>/<id>` with `version` injected, validated by the collection schema. In dev it watches `src/content/resume/` and re-syncs whenever a matching file is added, changed or removed.
+- **`defaultVersionOnly: true`** (used by `resumeNow`) reads only `index/<fileName>`. The same file inside any other version is silently ignored.
+- **Version-name validation:** every folder name other than `index` must be a lowercase kebab-case slug (`/^[a-z0-9]+(?:-[a-z0-9]+)*$/`). Anything else fails the build with an `[resume] Invalid Resume Version folder …` error.
+
+### Resolving a Version: `getResume()` (`src/lib/resume/index.ts`)
+
+Pages never call `getCollection('resume*')` directly, because that would mix entries from every version. They go through `src/lib/resume/index.ts`, a thin adapter that loads the eight collections and passes them to the pure `resolveResume(entries, surface, version)` in `src/lib/resume/resolve.ts`. Every rule below lives in `resolve.ts` and is covered by `resume/resolve.test.ts` (`bun run test`), which feeds it fixture entries instead of content:
+
+- **`getResume(surface, version = 'index')`** returns a `Resume` object with every Section resolved for that version: `header` (data), `skills`, `experiences`, `projects` (sorted by `order`), `educations`, `activities`, `interests` (`string[]`) and `now`. `surface` is required (`'web' | 'resume_print' | 'cv_print'`); experiences, projects and educations come back already filtered to entries visible on it.
+- **`getResumeVersions()`** returns every distinct version found in the content, **excluding `index`**, sorted. The `[version]` pages use it in `getStaticPaths`.
+
+**Fallback rule (whole-Section override):**
+
+1. If the requested version has **any** entries for a Section, that whole Section comes from the version.
+2. Otherwise the whole Section comes from `index`.
+3. There is no per-entry merging and no inheritance between versions. The fallback is always `index`.
+4. `now` is always read from `index`.
+
+Visibility filtering happens **after** resolution, inside `getResume()`. So a version whose projects are all `resume_print: false` still overrides the projects Section (and shows no projects on `/resume-print/<version>`). It does not fall back to `index`.
+
+Components never query resume collections themselves either: `PrintHeader` (`sections/print/Header.astro`) receives `header` as a prop.
 
 ### Visibility Flags
 
@@ -87,34 +132,47 @@ Projects, experiences, and educations have a `visibility` object to control whic
 }
 ```
 
-Set a flag to `false` to hide an entry from that specific page without deleting it.
+Set a flag to `false` to hide an entry from that specific page without deleting it. Each key is a **Surface**; the page passes its Surface to `getResume()`, which does the filtering.
+
+| Page | Filters on |
+|---|---|
+| `/resume` | `visibility.web` |
+| `/resume-print`, `/resume-print/<version>` | `visibility.resume_print` |
+| `/cv-print`, `/cv-print/<version>` | `visibility.cv_print` |
+
+> **Note:** before Resume Versions were introduced, `/cv-print` mistakenly filtered on `resume_print`. It now uses `cv_print`.
 
 ---
 
 ## How to Update Resume Content
 
+Paths below are for the Default Version (`index`). To change a Resume Version instead, use `src/content/resume/<version>/…`. The full authoring reference, including how to create a new Resume Version, is in `docs/content-formats/resume.md`.
+
 ### Header / Contact Info
 
-Edit `src/content/resume/header.json`:
+Edit `src/content/resume/index/header.json`:
 
 ```json
-{
-  "name": "Your Name",
-  "jobTitle": "Your Title",
-  "email": "you@email.com",
-  "github": "https://github.com/handle",
-  "githubName": "handle",
-  "introduction": "A short bio...",
-  "location": "City, Country"
-}
+[
+  {
+    "id": "header",
+    "name": "Your Name",
+    "jobTitle": "Your Title",
+    "email": "you@email.com",
+    "github": "https://github.com/handle",
+    "githubName": "handle",
+    "introduction": "A short bio...",
+    "location": "City, Country"
+  }
+]
 ```
 
 ### Adding a New Job Experience
 
-Create a new file in `src/content/resume/experiences/`:
+Create a new file in `src/content/resume/index/experiences/`:
 
 ```
-src/content/resume/experiences/companyname-jobtitle.md
+src/content/resume/index/experiences/companyname-jobtitle.md
 ```
 
 **Frontmatter** holds the metadata; the **markdown body** holds the bullet points:
@@ -136,33 +194,35 @@ visibility:
 ```
 
 > **Tip — Markdown in bullets**
-> Experiences use markdown bodies so you can use `**bold**`, `*italic*`, inline `code`, etc. in bullet points. Other collections (projects, educations) still use plain string arrays.
+> Experiences and projects use markdown bodies so you can use `**bold**`, `*italic*`, inline `code`, etc. in bullet points. Educations and activities still use plain string arrays.
 
 > **Note — File ordering**
 > The glob loader sorts files alphabetically. If order matters, prefix filenames with a number: `01-latest-job.md`, `02-previous-job.md`.
 
 ### Adding a Project
 
-Add an entry to `src/content/resume/projects.json`:
+Projects are markdown files, one per project (there is no `projects.json`). Create `src/content/resume/index/projects/<slug>.md`:
 
-```json
-{
-  "id": "my-project-slug",
-  "title": "My Project",
-  "time": "Mar 2025",
-  "description": "Short description",
-  "url": "https://github.com/...",
-  "details": [
-    "What I built and why it matters",
-    "Key technologies or techniques used"
-  ],
-  "visibility": { "web": true, "resume_print": true, "cv_print": true }
-}
+```markdown
+---
+title: 'My Project'
+time: '2025'
+description: 'Personal project'
+url: 'https://github.com/...'   # or null
+order: 5                        # optional; lower = earlier
+visibility:
+  web: true
+  resume_print: true
+  cv_print: true
+---
+
+- What I built and why it matters
+- Key technologies or techniques used
 ```
 
 ### Updating Skills
 
-Edit `src/content/resume/skills.json` — each entry is a category with a keyword list:
+Edit `src/content/resume/index/skills.json` — each entry is a category with a keyword list:
 
 ```json
 { "id": "languages", "category": "Languages", "details": ["Python", "Go", "Elixir"] }
@@ -174,7 +234,7 @@ Edit `src/content/resume/skills.json` — each entry is a category with a keywor
 
 **File:** `src/pages/resume.astro`
 
-Uses `BaseLayout` (full site layout with nav/footer). The page fetches **all** collection data at the top level and passes it down as props to each section component:
+Uses `BaseLayout` (full site layout with nav/footer). The page always shows the Default Version: it calls `getResume('web')` once at the top level and passes the resolved Sections down as props to each section component:
 
 ```
 ┌─────────────────────────────────────┐
@@ -190,11 +250,31 @@ Uses `BaseLayout` (full site layout with nav/footer). The page fetches **all** c
   md:grid-cols-2
 ```
 
-All `getCollection()` calls happen in `resume.astro`. Section components receive typed `data` props and a `variant` prop — they are purely presentational.
+Data fetching happens in `resume.astro` via `getResume()`. Section components receive typed `data` props and a `variant` prop — they are purely presentational.
 
 ---
 
 ## Print Pages (`/resume-print`, `/cv-print`)
+
+### Routes
+
+| URL | File | Resume Version |
+|---|---|---|
+| `/resume-print` | `src/pages/resume-print/index.astro` | `index` |
+| `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
+| `/cv-print` | `src/pages/cv-print/index.astro` | `index` |
+| `/cv-print/<version>` | `src/pages/cv-print/[version].astro` | `<version>` |
+
+The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
+
+Resume Version pages:
+
+- pass `noindex` to `BaseLayoutPrint`, which forwards it to `HeadSEO` and emits `<meta name="robots" content="noindex">` (and the same for `googlebot`) instead of `index, follow`;
+- are excluded from the sitemap (the `filter` on `sitemap()` in `astro.config.mjs`);
+- are not linked from anywhere on the site;
+- keep the same `<title>` as the Default Version (`<displayName>'s Resume`), so the printed PDF doesn't reveal the version name.
+
+### Layout
 
 Both pages use `BaseLayoutPrint` which hides the nav and footer when printing via `print:hidden` Tailwind classes, and removes padding/margins from the container.
 
@@ -318,13 +398,20 @@ This component exists because Astro's scoped `<style>` cannot reach `<slot>` con
 
 ## How a Section Component Works (Experiences example)
 
-The **page** owns data fetching and filtering. The **section component** only renders.
+The **route** resolves the Resume Version for its Surface (via `getResume()`, which also filters by visibility). The **page body** and the **section component** only render.
 
 ```astro
 ---
-// resume-print.astro (page) — fetches and filters
-const experiences = (await getCollection('resumeExperiences'))
-  .filter((e) => e.data.visibility.resume_print)
+// resume-print/[version].astro (route) — resolves the version for a Surface
+const resume = await getResume('resume_print', Astro.params.version)
+---
+<ResumePrintPage resume={resume} noindex />
+```
+
+```astro
+---
+// components/resume/pages/ResumePrintPage.astro (page body) — already filtered
+const { experiences, projects, educations } = resume
 ---
 <Experiences data={experiences} variant="print" />
 ```
@@ -360,17 +447,19 @@ const rendered = await Promise.all(
 </SectionBlock>
 ```
 
-For JSON-based sections (projects, skills), the pattern is simpler — no `render()` needed, just pass `items={entry.data.details}` to `UnorderedList`.
+For JSON-based sections (skills, educations, activities), the pattern is simpler — no `render()` needed, just pass `items={entry.data.details}` to `UnorderedList`. Projects, like experiences, are markdown and use `render()`.
 
 ---
 
 ## Rendering Pipeline
 
 ```
-Content files (JSON / .md)
-        ↓  Astro Content Collections (glob / file loaders)
-resume.astro / resume-print.astro / cv-print.astro
-        ↓  getCollection() + .filter(visibility) — pages own all data fetching
+Content files (src/content/resume/<version>/ JSON / .md)
+        ↓  Astro Content Collections (versionedResumeJson / versionedResumeGlob loaders)
+getResume(surface, version)  ← src/lib/resume/index.ts → resolveResume() in resume/resolve.ts: whole-Section override, fallback to `index`, visibility filter
+        ↓
+resume.astro / resume-print/(index|[version]).astro / cv-print/(index|[version]).astro
+        ↓  ResumePrintPage / CvPrintPage (render only)
 Section components (sections/*.astro)  ← receive typed data[] + variant as props
         ↓  compose using SectionBlock + Item + UnorderedList / ResumeMarkdownBulletWrapper
         ↓  wrapped in BaseLayout / BaseLayoutPrint

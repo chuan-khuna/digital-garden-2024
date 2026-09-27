@@ -2,16 +2,19 @@
 interface Props {
   title?: string | undefined
   description?: string | undefined
+  /** Ask search engines not to index this page. */
+  noindex?: boolean | undefined
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-const { title, description } = Astro.props
+const { title, description, noindex = false } = Astro.props
+const robots = noindex ? 'noindex' : 'index, follow'
 ---
 
 <meta charset="utf-8" />
-<meta name="robots" content="index, follow" />
-<meta name="googlebot" content="index, follow" />
+<meta name="robots" content={robots} />
+<meta name="googlebot" content={robots} />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 <link rel="canonical" href={canonicalURL} />

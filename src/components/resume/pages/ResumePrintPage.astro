@@ -1,6 +1,9 @@
 ---
+// One-page Resume Print Page. Rendered for the Default Version at /resume-print
+// and for every other Resume Version at /resume-print/<version>.
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 import { site } from '@/data/site.config'
+import type { Resume } from '@/lib/resume'
 
 // layout
 import PageLayout from '@/components/resume/layout/PageLayout.astro'
@@ -16,37 +19,34 @@ import Education from '@/components/resume/sections/Education.astro'
 import Interests from '@/components/resume/sections/Interests.astro'
 import Activity from '@/components/resume/sections/Activity.astro'
 
-import { getCollection } from 'astro:content'
+interface Props {
+  resume: Resume
+  noindex?: boolean
+}
 
-const experiences = (await getCollection('resumeExperiences')).filter(
-  (e) => e.data.visibility.resume_print,
-)
-const projects = (await getCollection('resumeProjects'))
-  .filter((p) => p.data.visibility.resume_print)
-  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
-const activities = await getCollection('resumeActivities')
-const skills = await getCollection('resumeSkills')
-const educations = (await getCollection('resumeEducations')).filter(
-  (e) => e.data.visibility.resume_print,
-)
-const interestsEntries = await getCollection('resumeInterests')
-const interests = interestsEntries[0].data.items
+const { resume, noindex = false } = Astro.props
+
+const { experiences, projects, educations } = resume
 ---
 
-<BaseLayoutPrint title={`${site.displayName}'s Resume`} description="">
+<BaseLayoutPrint
+  title={`${site.displayName}'s Resume`}
+  description=""
+  noindex={noindex}
+>
   <WebWrapper className="flex min-h-screen flex-col justify-center">
     <PageLayout className="px-8 py-4 font-resumesans">
       <Content
         className="mx-auto grid max-w-[1200px] grid-cols-1 grid-cols-7 gap-4"
       >
         <div class="col-span-7">
-          <PrintHeader />
+          <PrintHeader header={resume.header} />
         </div>
 
         <div class="col-span-2 block space-y-1">
-          <Skills data={skills} variant="print" />
-          <Activity data={activities} variant="print" />
-          <Interests items={interests} variant="print" />
+          <Skills data={resume.skills} variant="print" />
+          <Activity data={resume.activities} variant="print" />
+          <Interests items={resume.interests} variant="print" />
         </div>
 
         <div class="col-span-5 block space-y-1">

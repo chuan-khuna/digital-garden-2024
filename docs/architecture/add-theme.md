@@ -183,6 +183,17 @@ Every theme must define all of these:
 
 ---
 
+## Checklist (before finishing a theme)
+
+- [ ] `src/styles/presets/<name>.css` exists with **all** required CSS variables in `oklch()`.
+- [ ] `data-color-preset='<name>'` selector matches the registered `preset` exactly.
+- [ ] `@import './presets/<name>.css'` added to `src/styles/globals.css`.
+- [ ] Entry added to the `themes` array in `src/data/site.config.ts`.
+- [ ] Icon added to **both** the named import and `iconMap` in `ThemeToggle.astro` (PascalCase lucide export).
+- [ ] Body text meets WCAG AA contrast (≥ 4.5:1).
+
+---
+
 ## Related
 
 - [og-image-generator.md](./og-image-generator.md) — OG image themes are a separate concept from site colour themes.

@@ -3,7 +3,7 @@
 **Source file:** `src/content/og-images.json`  
 **Schema definition:** `src/content/collection-definitions/og-images.ts`
 
-OG image configs define the Open Graph preview cards for specific pages (e.g. homepage, resume, uses). Pages not listed here use a default OG image.
+OG image configs define — and customise — the Open Graph preview card of each page that is not a content entry (e.g. homepage, resume, uses). Each entry generates `/og/pages/<slug>.png`. Posts and notes do not need an entry; their OG image comes from their own frontmatter. How the images are generated: [`docs/architecture/og-image-generator.md`](../architecture/og-image-generator.md).
 
 ---
 
@@ -24,7 +24,7 @@ OG image configs define the Open Graph preview cards for specific pages (e.g. ho
 | ------------- | ------ | -------- | ---------------------------------------------------------------- |
 | `title`       | string | ✅       | Page title shown in OG card                                      |
 | `description` | string | ✅       | Short description shown in OG card                               |
-| `slug`        | string | ✅       | URL slug used to match the page (e.g. `index`, `resume`, `uses`) |
+| `slug`        | string | ✅       | Name the page asks for with `pageOgImage(slug)` (e.g. `index`, `resume`, `uses`) |
 | `ogStyle`     | enum   | optional | Visual style of the OG image. Default: `'default'`               |
 
 ### `ogStyle` options
@@ -39,7 +39,7 @@ OG image configs define the Open Graph preview cards for specific pages (e.g. ho
 
 ## Special values
 
-- `{{siteTitle}}` — Template token in `title`; replaced at build time with the value from `SITE.siteTitle` in `src/content/site.config.ts`.
+- `{{siteTitle}}` — Template token in `title`; replaced at build time (every occurrence) with `site.siteTitle` from `src/data/site.config.ts`.
 
 ---
 
@@ -55,4 +55,15 @@ OG image configs define the Open Graph preview cards for specific pages (e.g. ho
 
 ## Adding a new OG image config
 
-Add an entry to `src/content/og-images.json`. The `slug` should match the page's route (without leading `/`).
+1. Add an entry to `src/content/og-images.json`. By convention the `slug` matches the page's route without the leading `/` (`index` for the homepage).
+2. In the page, ask for it by slug and pass it to the layout:
+
+   ```astro
+   ---
+   import { pageOgImage } from '@/lib/og-image'
+   const ogImageUrl = await pageOgImage('my-page')
+   ---
+   <BaseLayout title="…" ogImage={ogImageUrl}>
+   ```
+
+If the page asks for a `slug` that has no entry, the build fails with `[og] No OG image for page "…"`. Pages that don't pass `ogImage` have no OG image.

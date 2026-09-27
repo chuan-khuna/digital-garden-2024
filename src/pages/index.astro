@@ -5,14 +5,14 @@ import Card from '@/components/bento/card.astro'
 // portfolio sections
 import { portfolio } from '@/data/portfolio'
 import { site } from '@/data/site.config'
+import { pageOgImage } from '@/lib/og-image'
 import IntroCard from '@/components/bento/portfolio-bento/IntroCard.astro'
 import AboutMe from '@/components/bento/portfolio-bento/AboutMe.astro'
 import Lorem from '@/components/bento/portfolio-bento/Lorem.astro'
 import LoremSm from '@/components/bento/portfolio-bento/LoremSm.astro'
 import TimeZoneCard from '@/components/bento/portfolio-bento/TimeZoneCard.astro'
 
-const ogImageSlug = 'index'
-const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
+const ogImageUrl = await pageOgImage('index')
 ---
 
 <BaseLayout
@@ -92,7 +92,7 @@ const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
         >, deployed on Cloudflare Pages.
       </p>
       <p class="my-2">
-        The domain name <code class="border px-2 text-accent">altr f</code> is come
+        The domain name <code class="text-accent border px-2">altr f</code> is come
         from an anime character "Alicetaria February".
       </p>
 

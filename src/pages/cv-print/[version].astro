@@ -1,0 +1,18 @@
+---
+// CV Print Page for a non-default Resume Version: /cv-print/<version>.
+// The Default Version (`index`) lives at /cv-print and is excluded here.
+// Version pages are noindexed and not linked from anywhere.
+import type { GetStaticPaths } from 'astro'
+import CvPrintPage from '@/components/resume/pages/CvPrintPage.astro'
+import { getResume, getResumeVersions } from '@/lib/resume'
+
+export const getStaticPaths = (async () => {
+  const versions = await getResumeVersions()
+  return versions.map((version) => ({ params: { version } }))
+}) satisfies GetStaticPaths
+
+const { version } = Astro.params
+const resume = await getResume('cv_print', version)
+---
+
+<CvPrintPage resume={resume} noindex />
