@@ -12,6 +12,7 @@ import Now from '@/components/resume/sections/Now.astro'
 
 import { getResume } from '@/lib/resume'
 import { site } from '@/data/site.config'
+import { pageOgImage } from '@/lib/og-image'
 
 // The web resume always shows the Default Version (`index`) on the `web` Surface.
 const {
@@ -27,11 +28,14 @@ const {
 
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 
-const ogImageSlug = 'resume'
-const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
+const ogImageUrl = await pageOgImage('resume')
 ---
 
-<BaseLayout title={`${site.displayName}'s Resume`} description="" ogImage={ogImageUrl}>
+<BaseLayout
+  title={`${site.displayName}'s Resume`}
+  description=""
+  ogImage={ogImageUrl}
+>
   <div class="">
     <!-- resume layout -->
     <div

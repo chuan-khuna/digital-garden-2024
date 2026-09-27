@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { site } from '@/data/site.config'
+import { pageOgImage } from '@/lib/og-image'
 
 import SectionBlock from '@/components/resume/SectionBlock.astro'
 import UnorderedList from '@/components/resume/UnorderedList.astro'
 
-const ogImageSlug = 'uses'
-const ogImageUrl = new URL(`og/pages/${ogImageSlug}.png`, Astro.site)
+const ogImageUrl = await pageOgImage('uses')
 ---
 
 <BaseLayout title={site.displayName} description="" ogImage={ogImageUrl}>

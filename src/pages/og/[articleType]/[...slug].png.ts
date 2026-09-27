@@ -1,79 +1,31 @@
 /**
- * Dynamic Open Graph (OG) image generator for article-derived collections
- * eg posts, notes, essays, etc
- *
- * /og/posts/<post-slug>
- * /og/notes/<note-slug>
- * /og/<articleType>/<slug>
- *
+ * OG images for article collections: /og/<collection>/<id>.png,
+ * e.g. /og/posts/<post-id>.png. Title, description and style come from the
+ * article's frontmatter. Pages link here via `articleOgImage()`.
  */
-
 import type { APIContext } from 'astro'
-import { getCollection } from 'astro:content'
-import type { CollectionEntry } from 'astro:content'
-
-import { generateOgImage } from '@/lib/generate-og-image'
+import { getCollection, type CollectionEntry } from 'astro:content'
+import { OG_ARTICLE_COLLECTIONS, ogImageResponse } from '@/lib/og-image'
 
 export const prerender = true
 
-// Define valid article types
-const VALID_ARTICLE_TYPES = ['posts', 'notes'] as const
-type ArticleType = (typeof VALID_ARTICLE_TYPES)[number]
-
 export async function getStaticPaths() {
   const paths = []
-
-  // Generate paths for each article type
-  for (const articleType of VALID_ARTICLE_TYPES) {
+  for (const articleType of OG_ARTICLE_COLLECTIONS) {
     const articles = await getCollection(articleType)
-
     for (const article of articles) {
       paths.push({
-        params: {
-          articleType,
-          slug: article.id,
-        },
-        props: {
-          article,
-          articleType,
-        },
+        params: { articleType, slug: article.id },
+        props: { article },
       })
     }
   }
-
   return paths
 }
 
-export async function GET(ctx: APIContext) {
-  const { articleType, slug } = ctx.params
-
-  // Validate article type
-  if (
-    !articleType ||
-    !VALID_ARTICLE_TYPES.includes(articleType as ArticleType)
-  ) {
-    return new Response('Invalid article type', { status: 400 })
+export async function GET({ props }: APIContext) {
+  const { article } = props as {
+    article: CollectionEntry<'posts'> | CollectionEntry<'notes'>
   }
-
-  // Get the article from props (passed from getStaticPaths)
-  const article = ctx.props.article as
-    | CollectionEntry<'posts'>
-    | CollectionEntry<'notes'>
-
-  if (!article) {
-    return new Response('Not Found', { status: 404 })
-  }
-
-  const ogImage = await generateOgImage(
-    article.data.title,
-    article.data.description || '',
-    article.data.ogStyle || 'default',
-  )
-
-  return new Response(ogImage, {
-    status: 200,
-    headers: {
-      'Content-Type': 'image/png',
-    },
-  })
+  return ogImageResponse(article.data)
 }

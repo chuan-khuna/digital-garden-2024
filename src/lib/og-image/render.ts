@@ -1,28 +1,25 @@
+/**
+ * Renders an OG image (1200×630 PNG): React theme → satori (SVG) → sharp (PNG).
+ * Runs at build time only (the OG routes are prerendered).
+ */
 import { OgImageTemplate } from '@/components/og/og-template'
+import type { OgStyle } from '@/content/collection-definitions/common-fields/_og-styles'
 import satori, { type SatoriOptions } from 'satori'
 import sharp from 'sharp'
 import fs from 'fs/promises'
 
-async function getFontData(url: string) {
-  const fontResponse = await fetch(url)
-  return await fontResponse.arrayBuffer()
-}
-
-async function getFontDataFromFile(path: string) {
-  return await fs.readFile(path)
-}
-
+// Paths are relative to the project root: `astro build` must run from there.
 const [VictorMono, VictorMonoLight, VictorMonoBold] = await Promise.all([
-  getFontDataFromFile('./src/assets/fonts/VictorMono-Regular.ttf'),
-  getFontDataFromFile('./src/assets/fonts/VictorMono-Light.ttf'),
-  getFontDataFromFile('./src/assets/fonts/VictorMono-Bold.ttf'),
+  fs.readFile('./src/assets/fonts/VictorMono-Regular.ttf'),
+  fs.readFile('./src/assets/fonts/VictorMono-Light.ttf'),
+  fs.readFile('./src/assets/fonts/VictorMono-Bold.ttf'),
 ])
 
-export async function generateOgImage(
+export async function renderOgImage(
   title: string,
   description: string,
-  style: string = 'default',
-) {
+  style: OgStyle,
+): Promise<Buffer> {
   const satoriOption: SatoriOptions = {
     width: 1200,
     height: 630,
