@@ -1,245 +1,174 @@
 # OG Image Generator
 
-The OG image system generates custom social media preview images (1200×630px PNG) for posts and pages. When you share a link on Twitter, Discord, or Slack, these appear as rich previews.
+The OG image system generates social media preview images (1200×630 PNG) for posts and pages at build time. When you share a link on LINE, X, Discord or Slack, these appear as the preview card.
 
 **Technology stack:**
 - **Satori** — converts React components to SVG
 - **Sharp** — converts SVG to optimised PNG
-- **Astro API Routes** — serves images as static endpoints
+- **Astro API routes** — prerendered endpoints that emit the PNGs
 
 ---
 
-## Three Implementations
+## The OG image module
 
-There are three OG route implementations in the project. All produce identical image quality and use the same [generation pipeline](#core-generation-pipeline).
+Everything about OG images goes through one module, `src/lib/og-image/`. Pages and routes never build `og/...` paths or call Satori themselves.
 
-### Simple Version — Single Collection
-
-**File:** `src/pages/og/posts_/[...slug].png.ts`
-
-- Generates OG images for **one collection** (`posts`) only
-- Hardcoded collection name, minimal boilerplate
-- Good starting point; easy to understand
-
-### Dynamic Version — Multiple Collections
-
-**File:** `src/pages/og/[articleType]/[...slug].png.ts`
-
-- Generates OG images for **multiple collections** (`posts`, `notes`, …)
-- Validates collection type from URL
-- Recommended when you have or expect multiple content types
-
-### Pages Version — Static Pages
-
-**File:** `src/pages/og/pages/[...slug].png.ts`
-
-- Generates OG images for **non-content pages** (homepage, resume, uses, etc.)
-- Driven by `src/content/og-images.json` — the `ogImages` collection
-- Each entry has `title`, `description`, `slug`, and optional `ogStyle`
-- Add new entries to the JSON to generate OG images for new static pages
-
-```json
-{ "title": "My Page", "description": "...", "slug": "my-page", "ogStyle": "default-dark" }
+```
+          pages (.astro)                     OG routes (.png.ts)
+               │                                     │
+  pageOgImage(slug) / articleOgImage(c, id)   ogImageResponse(data)
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌
+  src/lib/og-image/
+    index.ts    adapter: reads the ogImages collection + site URL
+    resolve.ts  pure rules: URL shape, page slug check, {{siteTitle}}   (tested)
+    render.ts   fonts → OgImageTemplate → satori → sharp
 ```
 
-> **Tip — Which should I use?**
-> - **pages route** — for top-level pages (index, resume, uses)
-> - **simple route** — for a single content collection with minimal setup
-> - **dynamic route** — for multiple content collections
+| File | Role |
+|---|---|
+| `src/lib/og-image/index.ts` | Astro adapter. Interface: `pageOgImage`, `articleOgImage`, `ogImageResponse`, `OG_ARTICLE_COLLECTIONS` |
+| `src/lib/og-image/resolve.ts` | Pure rules, no `astro:content`. Tested in `resolve.test.ts` |
+| `src/lib/og-image/render.ts` | `renderOgImage(title, description, style)` → PNG `Buffer` |
+| `src/components/og/og-template.tsx` | Picks the theme for an `OgStyle` |
+| `src/components/og/_components/` | Theme components and text helpers |
+| `src/content/collection-definitions/common-fields/_og-styles.ts` | `ogStyles` enum and `OgStyle` type |
+
+### Interface
+
+```typescript
+// For pages — returns an absolute URL for `og:image`
+pageOgImage(slug: string): Promise<URL>                        // og/pages/<slug>.png
+articleOgImage(collection: 'posts' | 'notes', id: string): URL  // og/<collection>/<id>.png
+
+// For OG routes
+ogImageResponse({ title, description?, ogStyle }): Promise<Response>  // image/png
+```
+
+- `pageOgImage` **fails the build** if `slug` has no entry in `src/content/og-images.json`, so a page can never point `og:image` at an image that isn't generated.
+- `ogImageResponse` fills `{{siteTitle}}` in the title, defaults a missing description to `''`, renders, and wraps the PNG in a `Response`.
+- The site origin comes from `import.meta.env.SITE` (`site` in `astro.config.mjs`).
 
 ---
 
-## How the Simple Version Works
+## Two routes
 
-**1. Load collection once at module level**
+### Articles — `src/pages/og/[articleType]/[...slug].png.ts`
 
-```typescript
-const posts = await getCollection('posts')
-```
-
-**2. Generate static paths at build time**
+- One image per entry in every collection in `OG_ARTICLE_COLLECTIONS` (`posts`, `notes`)
+- URL: `/og/<collection>/<id>.png`
+- Title, description and style come from the article's frontmatter
 
 ```typescript
-export async function getStaticPaths() {
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }))
+export async function GET({ props }: APIContext) {
+  return ogImageResponse(props.article.data)
 }
 ```
 
-**3. Handle GET request**
+### Pages — `src/pages/og/pages/[...slug].png.ts`
 
-```typescript
-export async function GET(ctx: APIContext) {
-  const post = posts.find((p) => p.id === ctx.params.slug)
-  if (!post) return new Response('Not Found', { status: 404 })
+- One image per entry in `src/content/og-images.json` (the `ogImages` collection)
+- URL: `/og/pages/<slug>.png`
+- For pages that are not content entries (home, resume, uses, …). Each page's title, description and style are **customised in the JSON**, see [`docs/content/og-images.md`](../content/og-images.md)
 
-  const ogImage = await generateOgImage(
-    post.data.title,
-    post.data.description || '',
-    post.data.ogStyle || 'default',
-  )
-
-  return new Response(ogImage, {
-    status: 200,
-    headers: { 'Content-Type': 'image/png' },
-  })
-}
-```
+Both routes use `export const prerender = true`, so images are generated at build time into `dist/.../og/...`.
 
 ---
 
-## How the Dynamic Version Works
+## Using an OG image on a page
 
-**1. Define valid article types**
-
-```typescript
-const VALID_ARTICLE_TYPES = ['posts', 'notes'] as const
-type ArticleType = (typeof VALID_ARTICLE_TYPES)[number]
+```astro
+---
+// A page configured in og-images.json
+import { pageOgImage } from '@/lib/og-image'
+const ogImageUrl = await pageOgImage('resume')
+---
+<BaseLayout title="…" ogImage={ogImageUrl}>
 ```
 
-**2. Generate paths for all collections**
-
-```typescript
-export async function getStaticPaths() {
-  const paths = []
-  for (const articleType of VALID_ARTICLE_TYPES) {
-    const articles = await getCollection(articleType)
-    for (const article of articles) {
-      paths.push({ params: { articleType, slug: article.id }, props: { article, articleType } })
-    }
-  }
-  return paths
-}
+```astro
+---
+// An article page
+import { articleOgImage } from '@/lib/og-image'
+const ogImageUrl = articleOgImage('posts', Astro.params.slug!)
+---
 ```
 
-**3. Validate and handle request**
+### Adding OG image to a new page
 
-```typescript
-export async function GET(ctx: APIContext) {
-  const { articleType, slug } = ctx.params
-  if (!VALID_ARTICLE_TYPES.includes(articleType as ArticleType)) {
-    return new Response('Invalid article type', { status: 400 })
-  }
-  // ...generate image
-}
-```
+1. Add an entry to `src/content/og-images.json` with the page's `slug`, `title`, `description` and optional `ogStyle`
+2. In the page: `const ogImageUrl = await pageOgImage('<slug>')` and pass it to the layout's `ogImage` prop
 
-### Adding a New Collection
+If you skip step 1 the build fails with `[og] No OG image for page "<slug>"…`.
 
-To add a `projects` collection, only one line change is needed:
+### Adding a new article collection
 
-```typescript
-const VALID_ARTICLE_TYPES = ['posts', 'notes', 'projects'] as const
-```
-
-The system then automatically generates OG images for all `projects` entries.
+Add it to `OG_ARTICLE_COLLECTIONS` in `src/lib/og-image/resolve.ts`. The collection's schema must include `title`, `description` and `ogStyle` (use `articleSchema` from `common-fields/_article.ts`).
 
 ---
 
-## Core Generation Pipeline
+## Rendering pipeline
 
-Both versions call the same function:
+`renderOgImage(title, description, style)` in `src/lib/og-image/render.ts`:
 
-**File:** `src/lib/generate-og-image.ts`
-
-```typescript
-export async function generateOgImage(
-  title: string,
-  description: string,
-  style: string = 'default',
-): Promise<Buffer>
-```
-
-**Steps:**
-1. Load three VictorMono font weights (Regular 400, Light 300, Bold 700) as `.ttf` — cached at module level via top-level `await`
-2. Render React component → SVG via Satori
+1. Load three VictorMono weights (Regular 400, Light 300, Bold 700) from `src/assets/fonts/` — once, at module load via top-level `await`. Paths are relative to the project root, so `astro build` must run from there.
+2. Render `OgImageTemplate` → SVG via Satori
 3. Convert SVG → PNG via Sharp (compression level 9, adaptive filtering, palette mode)
-4. Return PNG as `Buffer`
+4. Return the PNG `Buffer`
 
-### OG Templates
+### Styles and themes
 
-**File:** `src/components/og/og-template.tsx` — export: `OgImageTemplate`
+`src/components/og/og-template.tsx` maps each style to a theme:
 
 ```typescript
-const themeComponents = {
+const themeComponents: Record<OgStyle, typeof OgDefaultTheme> = {
   default: OgDefaultTheme,
   'default-dark': OgDefaultDarkTheme,
   particle: OgParticleTheme,
 }
 ```
 
-Theme components live in `src/components/og/_components/`. They must use **inline styles only** (Satori limitation — no CSS classes).
+`OgStyle` is inferred from the `ogStyles` Zod enum, so adding a style to the enum without a theme here **fails typecheck**, and a mistyped `ogStyle` in content fails schema validation. There is no silent fallback. Theme components must use **inline styles only** (Satori limitation — no CSS classes). To add one: add the value to `ogStyles`, then a theme component in `src/components/og/_components/` and its entry in `themeComponents`.
 
----
-
-## Frontmatter Integration
-
-Posts control their OG style via frontmatter:
+### Frontmatter
 
 ```yaml
 ---
 title: My Post
 description: Short description for social media
-ogStyle: 'particle'   # 'default' | 'default-dark' | 'particle'
+ogStyle: 'particle'   # 'default' | 'default-dark' | 'particle'; default: 'default'
 ---
 ```
 
 ---
 
-## Build Process
+## Testing
 
-All three versions use `export const prerender = true`. Astro generates all images at build time:
-
-1. `getStaticPaths()` creates the list of all image URLs
-2. `GET()` is called for each URL
-3. PNGs are saved to `dist/og/...`
-
----
-
-## Comparison
-
-| Feature | Simple | Dynamic | Pages |
-|---|---|---|---|
-| File | `og/posts_/[...slug].png.ts` | `og/[articleType]/[...slug].png.ts` | `og/pages/[...slug].png.ts` |
-| Data source | `posts` collection | `posts` + `notes` collections | `og-images.json` |
-| URL pattern | `/og/posts_/{slug}.png` | `/og/{collection}/{slug}.png` | `/og/pages/{slug}.png` |
-| Use case | Single content collection | Multiple content collections | Static pages |
-| Validation | None | Type-checked `articleType` | None |
-| Extensibility | Duplicate code | Add one entry to array | Add row to JSON |
-| Complexity | Low | Medium | Low |
-
----
-
-## Testing Locally
+- `bun run test` — `src/lib/og-image/resolve.test.ts` covers URL shape, the page slug check and `{{siteTitle}}`. Rendering is not unit-tested (slow, needs image snapshots).
+- `bun run build` — renders every image; a missing page entry or bad `ogStyle` fails here.
+- Locally:
 
 ```bash
 bun run dev
-
-# Pages route:    http://localhost:4321/og/pages/index.png
-# Simple route:   http://localhost:4321/og/posts_/my-post.png
-# Dynamic route:  http://localhost:4321/og/posts/my-post.png
+# Pages:    http://localhost:4321/og/pages/index.png
+# Articles: http://localhost:4321/og/posts/my-post.png
 ```
 
 **Social media validators:**
-- Twitter: https://cards-dev.twitter.com/validator
 - Facebook: https://developers.facebook.com/tools/debug/
 - LinkedIn: https://www.linkedin.com/post-inspector/
 
 ---
 
-## Common Issues
+## Common issues
 
-> **Warning — Image not found (404)**
-> - **Simple:** check that the post ID matches the slug exactly
-> - **Dynamic:** check that `articleType` is in `VALID_ARTICLE_TYPES` and the URL is `/og/{collection}/{slug}.png`
+> **Build error `[og] No OG image for page "…"`**
+> The page calls `pageOgImage(slug)` but `og-images.json` has no entry with that `slug`. Add one (or fix the typo).
 
-> **Warning — Wrong style applied**
-> Check the `ogStyle` frontmatter field — the value must match a key in `themeComponents`.
+> **Image 404 for an article**
+> Check the collection is in `OG_ARTICLE_COLLECTIONS` and the URL is `/og/<collection>/<id>.png`.
 
-> **Bug — Build errors**
-> - *Font loading fails* → verify all three `.ttf` files exist: `src/assets/fonts/VictorMono-Regular.ttf`, `VictorMono-Light.ttf`, `VictorMono-Bold.ttf`
+> **Build errors in rendering**
+> - *Font loading fails* → verify the three `.ttf` files exist in `src/assets/fonts/` and the build runs from the project root
 > - *Satori errors* → ensure only inline styles are used in theme components
 > - *Sharp errors* → check image dimensions are valid (must be 1200×630)
 
@@ -247,5 +176,6 @@ bun run dev
 
 ## Related
 
-- [Adding a Theme](./add-theme.md) — how to create new OG visual themes
-- Full OG post: `src/content/posts/opengraph/index.mdx`
+- [Adding a Theme](./add-theme.md) — site colour themes (a separate concept from OG styles)
+- [`docs/content/og-images.md`](../content/og-images.md) — the page OG config format
+- Blog post with a simple walkthrough: `src/content/posts/opengraph/index.mdx`

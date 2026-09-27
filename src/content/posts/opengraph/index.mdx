@@ -1,8 +1,8 @@
 ---
 title: Dynamic Open Graph Image Generation in This Digital Garden
-description: How this project generates beautiful Open Graph images using Astro, Satori, and Sharp - from React components to PNG images.
+description: A simple example of generating Open Graph images in Astro with Satori and Sharp — from a React component to a PNG at build time.
 date: '2025-12-19'
-updated: '2025-12-19'
+updated: '2026-09-27'
 ogStyle: 'particle'
 tags: ['astro', 'satori', 'sharp']
 llmAssisted: true
@@ -10,407 +10,146 @@ llmAssisted: true
 
 ## Overview
 
-This digital garden implements a sophisticated Open Graph (OG) image generation system that creates beautiful social media preview images dynamically. When you share a link to any post or page, platforms like Twitter, Facebook, and LinkedIn display a custom-generated preview image.
+When you share a link on LINE, X, Facebook or Slack, the platform shows a preview image: the Open Graph (OG) image. This site generates one for every post at build time, from a React component:
 
-The system converts React components to SVG (using Satori), then to optimized PNG images (using Sharp) - all at build time.
-
-## Architecture
-
-The OG image generation system consists of four main parts:
-
-### 1. Image Generation Library (`src/lib/generate-og-image.ts`)
-
-The core engine that orchestrates the conversion pipeline:
-
-```typescript
-// Simplified flow
-React Component → Satori (SVG) → Sharp (PNG) → Buffer
+```
+React component → Satori (SVG) → Sharp (PNG) → /og/posts/<id>.png
 ```
 
-**Key features:**
+This post walks through the smallest version that works, then shows how this site organises the same idea.
 
-- Loads custom fonts (VictorMono) for consistent typography
-- Configures Satori with dimensions (1200x630 - the standard OG size)
-- Optimizes PNG output with Sharp (compression, adaptive filtering)
-- Returns image as Buffer for Astro API routes
+## A simple example
 
-**Function signature:**
+Three pieces: a function that renders the image, a route that emits one PNG per post, and a `<meta>` tag that points to it.
 
-```typescript
-generateOgImage(
-  title: string,
-  description: string,
-  style: string = 'default'
-) => Promise<Buffer>
-```
-
-### 2. SEO Header Component (`src/components/seo/OpenGraph.astro`)
-
-Astro component that injects OpenGraph and Twitter Card meta tags into page `<head>`:
-
-```html
-<meta property="og:image" content="{ogImage}" />
-<meta property="twitter:card" content="summary_large_image" />
-```
-
-**Props:**
-
-- `title` - Page title for social preview
-- `description` - Short description for social preview
-- `image` - Path to OG image (defaults to fallback if not provided)
-
-**Usage in layouts:**
-
-```astro
-<OpenGraph
-  title="My Post Title"
-  description="Post description"
-  image="/og/posts/my-post.png"
-/>
-```
-
-### 3. Dynamic Route Handlers (`src/pages/og/`)
-
-Astro API routes that generate OG images at build time. This project has two implementations:
-
-#### Simple Version: Single Collection (`og/posts_/[...slug].png.ts`)
-
-Generates OG images for one collection only (`posts`):
-
-```typescript
-// Load collection at module level
-const posts = await getCollection('posts')
-
-export async function getStaticPaths() {
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }))
-}
-
-export async function GET(ctx: APIContext) {
-  const post = posts.find((p) => p.id === ctx.params.slug)
-  const ogImage = await generateOgImage(
-    post.data.title,
-    post.data.description || '',
-    post.data.ogStyle || 'default',
-  )
-  return new Response(ogImage, {
-    headers: { 'Content-Type': 'image/png' },
-  })
-}
-```
-
-**URL Pattern:** `/og/posts_/my-post-slug.png`
-
-**Pros:** Simple, straightforward, minimal boilerplate
-**Cons:** Only works for one collection, requires duplication for additional content types
-
-#### Dynamic Version: Multiple Collections (`og/[articleType]/[...slug].png.ts`)
-
-Generates OG images for multiple collections (`posts`, `notes`, etc.):
-
-```typescript
-const VALID_ARTICLE_TYPES = ['posts', 'notes'] as const
-
-export async function getStaticPaths() {
-  const paths = []
-  for (const articleType of VALID_ARTICLE_TYPES) {
-    const articles = await getCollection(articleType)
-    for (const article of articles) {
-      paths.push({
-        params: { articleType, slug: article.id },
-        props: { article, articleType },
-      })
-    }
-  }
-  return paths
-}
-
-export async function GET(ctx: APIContext) {
-  const { articleType } = ctx.params
-
-  // Validate article type
-  if (!VALID_ARTICLE_TYPES.includes(articleType as ArticleType)) {
-    return new Response('Invalid article type', { status: 400 })
-  }
-
-  const article = ctx.props.article
-  const ogImage = await generateOgImage(
-    article.data.title,
-    article.data.description || '',
-    article.data.ogStyle || 'default',
-  )
-  return new Response(ogImage, {
-    headers: { 'Content-Type': 'image/png' },
-  })
-}
-```
-
-**URL Pattern:** `/og/posts/my-post-slug.png`, `/og/notes/my-note-slug.png`
-
-**Pros:** Works with multiple collections, easy to extend (add to array), type-safe validation
-**Cons:** Slightly more complex, extra validation overhead
-
-**Adding new collections:** Simply add to the `VALID_ARTICLE_TYPES` array:
-
-```typescript
-const VALID_ARTICLE_TYPES = ['posts', 'notes', 'projects'] as const
-```
-
-For detailed comparison and usage guide, see `_docs/how-og-image-generator-work.md`.
-
-### 4. OG Image Templates (`src/components/og/`)
-
-React components that define the visual design of OG images:
-
-#### Template Structure
-
-**Main Template** (`og-template.tsx`)
-
-- Router component that selects theme based on `style` prop
-- Available styles: `default`, `default-dark`, `particle`
-
-**Theme Components** (`_components/`)
-
-- `og-default-theme.tsx` - Light theme with border
-- `og-default-dark-theme.tsx` - Dark theme variant
-- `og-particle-theme.tsx` - Animated particle background effect
-- `og-logo.tsx` - Reusable logo component
-- `og-particle.tsx` - Particle animation component
-- `utils.tsx` - Text truncation and font sizing utilities
-
-**Design Constraints:**
-
-- Must use inline styles (Satori doesn't support CSS classes)
-- Dimensions: 1200x630px (OpenGraph standard)
-- Limited CSS support (subset of Flexbox)
-- No external images (must use SVG or inline data)
-
-**Example theme structure:**
+### 1. Render a PNG
 
 ```tsx
-export function OgDefaultTheme({ title, description }) {
-  return (
+// src/lib/render-og-image.tsx
+import satori from 'satori'
+import sharp from 'sharp'
+import fs from 'node:fs/promises'
+
+const font = await fs.readFile('./src/assets/fonts/VictorMono-Regular.ttf')
+
+export async function renderOgImage(title: string, description: string) {
+  const svg = await satori(
     <div
       style={{
         width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#f7f8f9',
+        justifyContent: 'center',
         padding: '80px',
+        backgroundColor: '#f7f8f9',
       }}
     >
-      <h1 style={{ fontSize: '72px' }}>{title}</h1>
+      <h1 style={{ fontSize: '64px' }}>{title}</h1>
       <p style={{ fontSize: '32px' }}>{description}</p>
-    </div>
+    </div>,
+    {
+      width: 1200,
+      height: 630,
+      fonts: [{ name: 'VictorMono', data: font, weight: 400 }],
+    },
   )
+  return sharp(Buffer.from(svg)).png().toBuffer()
 }
 ```
 
-### 5. Frontmatter Integration
+Satori only understands **inline styles** and a subset of Flexbox. No CSS classes, no Tailwind.
 
-Posts and notes can specify their OG style preference in frontmatter:
+### 2. One route, one PNG per post
 
-```yaml
----
-title: My Post
-description: Post description for social media
-ogStyle: 'particle' # or 'default', 'default-dark'
----
+```typescript
+// src/pages/og/posts/[...slug].png.ts
+import type { APIContext } from 'astro'
+import { getCollection } from 'astro:content'
+import { renderOgImage } from '@/lib/render-og-image'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts')
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }))
+}
+
+export async function GET({ props }: APIContext) {
+  const { title, description = '' } = props.post.data
+  const png = await renderOgImage(title, description)
+  return new Response(png, { headers: { 'Content-Type': 'image/png' } })
+}
 ```
 
-The route handler reads this field and passes it to `generateOgImage()`, allowing per-article customization of the OG image theme.
+`prerender = true` makes Astro call `GET` once per path at build time and write the PNGs into `dist/`, so there is no image work at request time.
 
-## How It Works: Complete Flow
+### 3. Point the page at it
 
-1. **Build time**: Astro calls `getStaticPaths()` in OG route handlers
-2. **Route handler** loads content from collections (posts or ogImages)
-3. **For each item**, creates a static route (e.g., `/og/posts/my-slug.png`)
-4. **When accessed**, the `GET` handler:
-   - Retrieves post/page data by slug
-   - Calls `generateOgImage()` with title, description, style
-   - Returns PNG buffer with proper headers
-5. **In page layouts**, `OpenGraph.astro` component references the OG image URL
-6. **Social platforms** fetch the image when the page is shared
+```astro
+---
+// src/pages/posts/[...slug].astro
+const ogImage = new URL(`og/posts/${Astro.params.slug}.png`, Astro.site)
+---
 
-## Content Collections Integration
+<meta property="og:image" content={ogImage} />
+<meta property="twitter:card" content="summary_large_image" />
+```
 
-### Posts Collection
+That's all it takes. Run `bun run dev` and open `http://localhost:4321/og/posts/<your-post>.png` to see the image.
 
-OG images auto-generate for all posts. Each post gets:
+## How this site does it
 
-- **URL**: `/og/posts/{post-id}.png`
-- **Data**: Pulled from frontmatter (`title`, `description`, `ogStyle`)
+The simple example has two weak spots once a site grows:
 
-### OG Images Collection
+- **Pages build the image URL themselves.** If a page asks for a URL that no route generates (a typo in a slug), the build still passes and the preview is silently missing.
+- **Styles are strings.** Pick a style name that has no theme and you quietly get the default.
 
-Custom OG images for non-post pages defined in `src/content/og-images.json`:
+So this site puts everything behind one module, `src/lib/og-image/`:
 
-```json
-[
+```typescript
+// in a page
+import { pageOgImage, articleOgImage } from '@/lib/og-image'
+const ogImageUrl = await pageOgImage('resume') // fails the build if 'resume' isn't configured
+const postImageUrl = articleOgImage('posts', Astro.params.slug!)
+
+// in an OG route
+return ogImageResponse(article.data) // renders + wraps the PNG in a Response
+```
+
+- **Posts and notes** get `/og/<collection>/<id>.png` from their frontmatter:
+
+  ```yaml
+  ---
+  title: My Post
+  description: Post description for social media
+  ogStyle: 'particle' # 'default' | 'default-dark' | 'particle'
+  ---
+  ```
+
+- **Ordinary pages** (home, resume, uses) are customised in `src/content/og-images.json`: one entry per page with its own title, description and style. `{{siteTitle}}` in a title is filled in at build time.
+
+  ```json
   {
-    "title": "My Digital Garden",
-    "description": "A collection of interconnected notes and ideas",
-    "slug": "home",
+    "slug": "uses",
+    "title": "Uses",
+    "description": "The items/tools I am using",
     "ogStyle": "particle"
   }
-]
-```
+  ```
 
-**Schema** (from `collection-definitions/og-images.ts`):
+- **Styles are typed.** The style list is a Zod enum, and the theme map is `Record<OgStyle, Theme>`. Add a style without a theme and TypeScript refuses to compile. Put an unknown `ogStyle` in frontmatter and the content schema rejects it.
 
-```typescript
-z.object({
-  title: z.string(),
-  description: z.string(),
-  slug: z.string(),
-  ogStyle: ogStyleChoices, // 'default' | 'default-dark' | 'particle'
-})
-```
+The pure parts (URL shape, the page-slug check, `{{siteTitle}}`) are unit-tested with Vitest. The rendering itself is checked by the build.
 
-## Adding a New OG Theme
+## Tips
 
-1. **Create theme component** in `src/components/og/_components/`:
-
-```tsx
-// og-gradient-theme.tsx
-export function OgGradientTheme({ title, description }) {
-  return (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        // ... rest of your design
-      }}
-    >
-      <h1>{title}</h1>
-      <p>{description}</p>
-    </div>
-  )
-}
-```
-
-2. **Register in template router** (`og-template.tsx`):
-
-```tsx
-import { OgGradientTheme } from './_components/og-gradient-theme'
-
-const themeComponents = {
-  default: OgDefaultTheme,
-  'default-dark': OgDefaultDarkTheme,
-  particle: OgParticleTheme,
-  gradient: OgGradientTheme, // Add here
-}
-```
-
-3. **Update style choices** (`collection-definitions/_og-styles.ts` if exists):
-
-```typescript
-export const ogStyleChoices = z.enum([
-  'default',
-  'default-dark',
-  'particle',
-  'gradient', // Add here
-])
-```
-
-4. **Use in posts**:
-
-```yaml
----
-title: My Post
-ogStyle: 'gradient'
----
-```
-
-## Utilities & Helpers
-
-The `og/_components/utils.tsx` provides text formatting utilities:
-
-```typescript
-// Smart title truncation (max 60 chars)
-truncateTitle(title: string) => string
-
-// Description truncation (max 120 chars)
-truncateDescription(desc: string) => string
-
-// Dynamic font sizing based on title length
-getTitleFontSizePx(title: string) => number
-
-// Responsive description sizing
-getDescriptionFontSizePx(titleSize: number) => number
-```
-
-These ensure text always fits within the 1200x630 canvas.
-
-## Technical Stack
-
-- **Satori** - Converts React JSX to SVG (works with limited HTML/CSS subset)
-- **Sharp** - High-performance image processing (SVG → PNG optimization)
-- **VictorMono** - Custom monospace font loaded from `src/assets/fonts/`
-- **Astro API Routes** - Server-side image generation with static prerendering
-
-## Performance Optimization
-
-The system includes several optimizations:
-
-1. **Prerendering**: `export const prerender = true` - All OG images generated at build time
-2. **PNG Compression**: Sharp configured with maximum compression (level 9)
-3. **Palette Optimization**: Converts to palette-based PNG for smaller file sizes
-4. **Adaptive Filtering**: Smart compression based on image content
-5. **Font Loading**: Fonts loaded once at build time, cached in memory
-
-## Testing OG Images
-
-**Local development:**
-
-```bash title=""
-npm run dev
-
-# visit http://localhost:4321/og/posts/your-slug.png
-```
-
-**Verify social previews:**
-
-- [Twitter Card Validator](https://cards-dev.twitter.com/validator)
-- [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
-- [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
-
-## Common Issues & Solutions
-
-**Image not updating after changes:**
-
-- Clear build cache: `rm -rf dist/`
-- Rebuild: `npm run build`
-
-**Fonts not rendering:**
-
-- Verify font file exists at `src/assets/fonts/VictorMono-Regular.woff`
-- Check font loading in `generate-og-image.ts`
-
-**Text overflow:**
-
-- Use utility functions: `truncateTitle()`, `truncateDescription()`
-- Test with long titles/descriptions
-
-**Satori errors:**
-
-- Ensure only inline styles (no CSS classes)
-- Use supported CSS properties (mostly Flexbox)
-- Avoid external images
-
-## Future Enhancements
-
-Potential improvements to consider:
-
-- [ ] Add more theme variations
-- [ ] Support custom fonts per theme
-- [ ] Add date/author information to templates
-- [ ] Implement tag-based color schemes
-- [ ] Generate multiple sizes (Twitter, Facebook, LinkedIn optimized)
-- [ ] Add watermarks or branding elements
-- [ ] Cache-busting for updated images
+- Keep text inside the 1200×630 canvas: truncate long titles and shrink the font size for long ones.
+- Load fonts once at module level. Satori needs the raw font file (`.ttf`/`.otf`), not `.woff2`.
+- Check the result with the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) or [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/).
 
 ## References
 

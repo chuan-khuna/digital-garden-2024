@@ -27,7 +27,7 @@ src/
     resume/       Resume data, one folder per Resume Version (<version>/*.json, experiences/, projects/)
   data/           Static site data (site.config.ts, portfolio.ts)
   layouts/        BaseLayout, PostLayout, BaseLayoutPrint
-  lib/            Shared helpers — resume/ (index.ts: Resume data adapter; resolve.ts: pure Resume Version rules, tested), generate-og-image.ts, browser-timezone.ts
+  lib/            Shared helpers — resume/ (index.ts: Resume data adapter; resolve.ts: pure Resume Version rules, tested), og-image/ (index.ts: OG image adapter; resolve.ts: pure URL and page-slug rules, tested; render.ts: satori → sharp), browser-timezone.ts
   pages/          File-based routing (maps to URL paths 1:1)
   styles/
     presets/      Per-theme CSS variable files (nzk.css, nexus.css, dark.css)
@@ -73,4 +73,4 @@ import BaseLayout from '../../../layouts/BaseLayout.astro'
 
 - [[Resume System]] — detailed breakdown of `src/components/resume/`
 - [[Adding a Theme]] — detailed breakdown of `src/styles/presets/`
-- [[OG Image Generator]] — `src/components/og/` and `src/lib/`
+- [[OG Image Generator]] — `src/components/og/` and `src/lib/og-image/`
