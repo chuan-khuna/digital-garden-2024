@@ -18,7 +18,7 @@ src/content/resume/
 │   ├── now.json            ← only read from index
 │   ├── experiences/*.md
 │   └── projects/*.md
-└── 2026-jul-dev/           ← a Resume Version: only the Sections it overrides
+└── <version>/              ← a Resume Version (e.g. 2026-jul-dev): only the Sections it overrides
     ├── header.json
     ├── experiences/*.md
     └── …
@@ -72,8 +72,6 @@ To keep an `index` entry in a version that overrides that Section, copy the entr
 ### Visibility of version pages
 
 Version pages carry `<meta name="robots" content="noindex">`, are excluded from the sitemap, and are not linked from the site (only from the unlisted `/resume-print/versions` and `/cv-print/versions` pages). Share the URL directly. The page `<title>` is the same as the Default Version's (`<displayName>'s Resume`).
-
-`src/content/resume/2026-jul-dev/` is a **mock** version filled with obviously fake data (e.g. "Mock Person"), kept for testing.
 
 ---
 

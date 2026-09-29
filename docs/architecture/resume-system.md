@@ -21,7 +21,7 @@ src/
 │   │   │   ├── now.json                 ← "what I'm doing now" (Default Version only)
 │   │   │   ├── experiences/             ← one .md file per job role
 │   │   │   └── projects/                ← one .md file per project
-│   │   └── 2026-jul-dev/                ← example Resume Version (mock data)
+│   │   └── <version>/                   ← a Resume Version, e.g. 2026-jul-dev (none committed yet)
 │   │       └── …                        ← only the Sections it overrides
 │   └── collection-definitions/
 │       ├── resume.ts                    ← Zod schemas + collection registrations
