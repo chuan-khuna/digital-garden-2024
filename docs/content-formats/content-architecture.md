@@ -69,7 +69,7 @@ Changing a source below means updating its doc in the same task (see `CLAUDE.md`
 | `src/content/collection-definitions/post.ts`, `note.ts` | `posts.md` |
 | `src/content/collection-definitions/common-fields/_article.ts`, `_evergreen-stages.ts` | `posts.md` |
 | `src/content/collection-definitions/common-fields/_og-styles.ts` | `posts.md` + `og-images.md` |
-| `src/content/collection-definitions/resume.ts`, `resume-loaders.ts` | `resume.md` + `docs/architecture/resume-system.md` |
+| `src/content/collection-definitions/resume.ts`, `resume-loaders.ts`, `resume-sections.ts` | `resume.md` + `docs/architecture/resume-system.md` |
 | `src/content/collection-definitions/nav.ts` | `nav.md` |
 | `src/content/collection-definitions/og-images.ts` | `og-images.md` |
 | `src/data/portfolio.ts` | `portfolio.md` + `site-config.md` |

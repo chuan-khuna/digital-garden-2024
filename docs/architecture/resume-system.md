@@ -25,7 +25,8 @@ src/
 │   │       └── …                        ← only the Sections it overrides
 │   └── collection-definitions/
 │       ├── resume.ts                    ← Zod schemas + collection registrations
-│       └── resume-loaders.ts            ← versioned loaders + version-name validation
+│       ├── resume-loaders.ts            ← versioned loaders + version-name validation
+│       └── resume-sections.ts           ← Section → collection registry (import-free)
 │
 ├── lib/
 │   └── resume/
