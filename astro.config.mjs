@@ -143,6 +143,17 @@ export default defineConfig({
     resolve: {
       dedupe: ['react', 'react-dom'],
     },
+    // Dev runs the server in workerd, which has no `require`. @astrojs/react's
+    // server imports a nested CommonJS copy of picomatch (via
+    // @astrojs/internal-helpers) that the Cloudflare adapter doesn't pre-bundle,
+    // so list it here; the adapter merges this into the worker's optimizeDeps.
+    // Pre-bundling the entrypoint too avoids the mid-startup re-optimize reload.
+    optimizeDeps: {
+      include: [
+        '@astrojs/react > @astrojs/internal-helpers > picomatch',
+        '@astrojs/cloudflare/entrypoints/server',
+      ],
+    },
   },
 
   adapter: cloudflare({ imageService: 'compile', prerenderEnvironment: 'node' }),

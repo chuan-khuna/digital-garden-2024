@@ -21,11 +21,12 @@ src/
 │   │   │   ├── now.json                 ← "what I'm doing now" (Default Version only)
 │   │   │   ├── experiences/             ← one .md file per job role
 │   │   │   └── projects/                ← one .md file per project
-│   │   └── 2026-jul-dev/                ← example Resume Version (mock data)
+│   │   └── <version>/                   ← a Resume Version, e.g. 2026-jul-dev (none committed yet)
 │   │       └── …                        ← only the Sections it overrides
 │   └── collection-definitions/
 │       ├── resume.ts                    ← Zod schemas + collection registrations
-│       └── resume-loaders.ts            ← versioned loaders + version-name validation
+│       ├── resume-loaders.ts            ← versioned loaders + version-name validation
+│       └── resume-sections.ts           ← Section → collection registry (import-free)
 │
 ├── lib/
 │   └── resume/
@@ -37,13 +38,16 @@ src/
 │   ├── resume.astro                     ← web version (/resume), always `index`
 │   ├── resume-print/index.astro         ← print resume, Default Version (/resume-print)
 │   ├── resume-print/[version].astro     ← print resume, other versions (/resume-print/<version>)
+│   ├── resume-print/versions.astro      ← list of every version (/resume-print/versions)
 │   ├── cv-print/index.astro             ← print CV, Default Version (/cv-print)
-│   └── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
+│   ├── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
+│   └── cv-print/versions.astro          ← list of every version (/cv-print/versions)
 │
 ├── components/resume/
 │   ├── pages/
 │   │   ├── ResumePrintPage.astro        ← shared body of /resume-print and /resume-print/<version>
-│   │   └── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
+│   │   ├── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
+│   │   └── ResumeVersionsPage.astro     ← shared body of /resume-print/versions and /cv-print/versions
 │   ├── layout/                          ← print layout wrappers
 │   │   ├── WebWrapper.astro
 │   │   ├── PageLayout.astro
@@ -252,6 +256,8 @@ Uses `BaseLayout` (full site layout with nav/footer). The page always shows the 
 
 Data fetching happens in `resume.astro` via `getResume()`. Section components receive typed `data` props and a `variant` prop — they are purely presentational.
 
+**Print links** are an untitled `SectionBlock` (hidden with `print:hidden`) styled like the Projects list: two rows split by a dashed divider, each an underlined link with a small muted note on the right: **Print resume** → `/resume-print` ("1 page") and **Print CV** → `/cv-print` ("Full, multi-page"). They always point at the Default Version. Wording follows US usage: a resume is the short document, a CV the full one.
+
 ---
 
 ## Print Pages (`/resume-print`, `/cv-print`)
@@ -264,14 +270,15 @@ Data fetching happens in `resume.astro` via `getResume()`. Section components re
 | `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
 | `/cv-print` | `src/pages/cv-print/index.astro` | `index` |
 | `/cv-print/<version>` | `src/pages/cv-print/[version].astro` | `<version>` |
+| `/resume-print/versions`, `/cv-print/versions` | `src/pages/{resume-print,cv-print}/versions.astro` | all (list) |
 
-The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
+The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. `versions` is also a reserved folder name, so the static `versions.astro` routes never collide with a Resume Version. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
 
 Resume Version pages:
 
 - pass `noindex` to `BaseLayoutPrint`, which forwards it to `HeadSEO` and emits `<meta name="robots" content="noindex">` (and the same for `googlebot`) instead of `index, follow`;
 - are excluded from the sitemap (the `filter` on `sitemap()` in `astro.config.mjs`);
-- are not linked from anywhere on the site;
+- are not linked from the site; the only links to them are on `/resume-print/versions` and `/cv-print/versions`, which are themselves noindexed, out of the sitemap and unlinked;
 - keep the same `<title>` as the Default Version (`<displayName>'s Resume`), so the printed PDF doesn't reveal the version name.
 
 ### Layout

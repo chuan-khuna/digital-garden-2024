@@ -11,6 +11,7 @@ import Interests from '@/components/resume/sections/Interests.astro'
 import Now from '@/components/resume/sections/Now.astro'
 
 import { getResume } from '@/lib/resume'
+import SectionBlock from '@/components/resume/SectionBlock.astro'
 import { site } from '@/data/site.config'
 import { pageOgImage } from '@/lib/og-image'
 
@@ -92,14 +93,27 @@ const ogImageUrl = await pageOgImage('resume')
         <Education data={educations} />
         <Interests items={interests} />
         <Now data={nowEntry} />
-        <div class="block border p-4">
-          <a href="/resume-print" class="font-medium underline">
-            Resume - Print version
-          </a>
-          <br />
-          <a href="/cv-print" class="font-medium underline">
-            CV - Print version
-          </a>
+        <div class="print:hidden">
+          <SectionBlock title="">
+            <ul class="not-prose">
+              <li
+                class="flex items-baseline justify-between gap-4 border-b border-dashed pb-3"
+              >
+                <a href="/resume-print" class="underline hover:text-primary">
+                  Print resume
+                </a>
+                <span class="text-sm text-muted-foreground">1 page</span>
+              </li>
+              <li class="flex items-baseline justify-between gap-4 pt-3">
+                <a href="/cv-print" class="underline hover:text-primary">
+                  Print CV
+                </a>
+                <span class="text-sm text-muted-foreground">
+                  Full, multi-page
+                </span>
+              </li>
+            </ul>
+          </SectionBlock>
         </div>
       </div>
     </div>

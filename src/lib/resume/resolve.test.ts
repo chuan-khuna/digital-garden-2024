@@ -131,6 +131,12 @@ describe('resolveResume — now and header', () => {
       /Invalid Resume Version/,
     )
   })
+
+  it('rejects the reserved version name "versions"', () => {
+    expect(() => resolveResume(entries(), 'web', 'versions')).toThrow(
+      /reserved/,
+    )
+  })
 })
 
 describe('resolveResume — Visibility per Surface', () => {
