@@ -38,13 +38,16 @@ src/
 │   ├── resume.astro                     ← web version (/resume), always `index`
 │   ├── resume-print/index.astro         ← print resume, Default Version (/resume-print)
 │   ├── resume-print/[version].astro     ← print resume, other versions (/resume-print/<version>)
+│   ├── resume-print/versions.astro      ← list of every version (/resume-print/versions)
 │   ├── cv-print/index.astro             ← print CV, Default Version (/cv-print)
-│   └── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
+│   ├── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
+│   └── cv-print/versions.astro          ← list of every version (/cv-print/versions)
 │
 ├── components/resume/
 │   ├── pages/
 │   │   ├── ResumePrintPage.astro        ← shared body of /resume-print and /resume-print/<version>
-│   │   └── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
+│   │   ├── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
+│   │   └── ResumeVersionsPage.astro     ← shared body of /resume-print/versions and /cv-print/versions
 │   ├── layout/                          ← print layout wrappers
 │   │   ├── WebWrapper.astro
 │   │   ├── PageLayout.astro
@@ -265,8 +268,9 @@ Data fetching happens in `resume.astro` via `getResume()`. Section components re
 | `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
 | `/cv-print` | `src/pages/cv-print/index.astro` | `index` |
 | `/cv-print/<version>` | `src/pages/cv-print/[version].astro` | `<version>` |
+| `/resume-print/versions`, `/cv-print/versions` | `src/pages/{resume-print,cv-print}/versions.astro` | all (list) |
 
-The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
+The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. `versions` is also a reserved folder name, so the static `versions.astro` routes never collide with a Resume Version. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
 
 Resume Version pages:
 

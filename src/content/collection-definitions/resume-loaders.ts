@@ -20,6 +20,9 @@ export const DEFAULT_RESUME_VERSION = 'index'
 /** Lowercase kebab-case, URL-safe slug, e.g. `2026-jul-dev`. */
 const RESUME_VERSION_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
+/** Folder names taken by static Print Page routes (`/resume-print/versions`). */
+const RESERVED_RESUME_VERSIONS = ['versions']
+
 /**
  * Throws a descriptive error (failing the build) if `version` is not a valid
  * Resume Version folder name.
@@ -31,6 +34,12 @@ export function assertValidResumeVersion(version: string): void {
       `[resume] Invalid Resume Version folder "${RESUME_CONTENT_BASE}/${version}/". ` +
         `Version names must be lowercase kebab-case slugs (a-z, 0-9, single hyphens), e.g. "2026-jul-dev". ` +
         `"${DEFAULT_RESUME_VERSION}" is reserved for the Default Version.`,
+    )
+  }
+  if (RESERVED_RESUME_VERSIONS.includes(version)) {
+    throw new Error(
+      `[resume] Invalid Resume Version folder "${RESUME_CONTENT_BASE}/${version}/". ` +
+        `"${version}" is reserved: /resume-print/${version} and /cv-print/${version} list every Resume Version.`,
     )
   }
 }

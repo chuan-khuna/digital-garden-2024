@@ -66,6 +66,7 @@ To keep an `index` entry in a version that overrides that Section, copy the entr
 
 - Version folder names must be **lowercase kebab-case slugs**: `a-z`, `0-9`, single hyphens (e.g. `2026-jul-dev`, `acme-backend`). Anything else fails the build with an `[resume] Invalid Resume Version folder …` error.
 - `index` is **reserved** for the Default Version. There is no `/resume-print/index` page.
+- `versions` is **reserved**: `/resume-print/versions` and `/cv-print/versions` list every Resume Version (Default Version first) with its header `jobTitle`, linking to each Print Page. Like the version pages, they are noindexed, excluded from the sitemap and not linked from the site.
 - Naming versions `yyyy-mmm-role` (e.g. `2026-jul-dev`) is a **convention only**; it is not enforced.
 
 ### Visibility of version pages
