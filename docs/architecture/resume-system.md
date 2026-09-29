@@ -256,6 +256,8 @@ Uses `BaseLayout` (full site layout with nav/footer). The page always shows the 
 
 Data fetching happens in `resume.astro` via `getResume()`. Section components receive typed `data` props and a `variant` prop — they are purely presentational.
 
+**Print links** are an untitled `SectionBlock` (hidden with `print:hidden`) styled like the Projects list: two rows split by a dashed divider, each an underlined link with a small muted note on the right: **Print resume** → `/resume-print` ("1 page") and **Print CV** → `/cv-print` ("Full, multi-page"). They always point at the Default Version. Wording follows US usage: a resume is the short document, a CV the full one.
+
 ---
 
 ## Print Pages (`/resume-print`, `/cv-print`)
@@ -276,7 +278,7 @@ Resume Version pages:
 
 - pass `noindex` to `BaseLayoutPrint`, which forwards it to `HeadSEO` and emits `<meta name="robots" content="noindex">` (and the same for `googlebot`) instead of `index, follow`;
 - are excluded from the sitemap (the `filter` on `sitemap()` in `astro.config.mjs`);
-- are not linked from anywhere on the site;
+- are not linked from the site; the only links to them are on `/resume-print/versions` and `/cv-print/versions`, which are themselves noindexed, out of the sitemap and unlinked;
 - keep the same `<title>` as the Default Version (`<displayName>'s Resume`), so the printed PDF doesn't reveal the version name.
 
 ### Layout
