@@ -37,6 +37,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.344.0",
+    "mermaid": "^12.0.0",
     "mini-svg-data-uri": "^1.4.4",
     "moment-timezone": "^0.5.48",
     "react": "^18.3.1",

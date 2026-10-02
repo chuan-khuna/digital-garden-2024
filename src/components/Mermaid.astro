@@ -1,0 +1,226 @@
+---
+/**
+ * A Mermaid diagram in an MDX post. Rendered in the browser (mermaid is
+ * dynamically imported, so pages without a diagram never load it) and
+ * re-rendered when the theme toggle switches between light and dark.
+ *
+ * The diagram fills the column and can be panned (drag) and zoomed
+ * (Ctrl/⌘ + wheel, pinch, or the buttons); plain wheel still scrolls the page.
+ *
+ *   import Mermaid from '@/components/Mermaid.astro'
+ *   <Mermaid code={`flowchart LR
+ *     A --> B`} />
+ */
+interface Props {
+  code: string
+}
+
+const { code } = Astro.props
+
+const buttonCss =
+  'flex h-7 w-7 items-center justify-center rounded border border-border bg-card text-sm text-card-foreground hover:bg-background'
+---
+
+<figure
+  class="mermaid-diagram not-prose border-border bg-card relative my-6 rounded-md border"
+>
+  <div
+    data-mermaid-viewport
+    class="relative flex min-h-64 cursor-grab touch-none select-none items-center justify-center overflow-hidden active:cursor-grabbing"
+  >
+    <div data-mermaid-canvas class="w-full origin-top-left p-4">
+      <pre class="text-sm" data-mermaid-source={code}>{code}</pre>
+    </div>
+  </div>
+  <figcaption
+    class="pointer-events-none absolute bottom-2 left-3 text-xs opacity-60"
+  >
+    Drag to pan · Ctrl/⌘ + scroll or pinch to zoom
+  </figcaption>
+  <div class="absolute right-2 top-2 flex gap-1">
+    <button
+      type="button"
+      data-mermaid-zoom="in"
+      title="Zoom in"
+      class={buttonCss}>+</button
+    >
+    <button
+      type="button"
+      data-mermaid-zoom="out"
+      title="Zoom out"
+      class={buttonCss}>−</button
+    >
+    <button
+      type="button"
+      data-mermaid-zoom="reset"
+      title="Reset view"
+      class={buttonCss}>⟲</button
+    >
+    <button
+      type="button"
+      data-mermaid-zoom="fullscreen"
+      title="Fullscreen"
+      class={buttonCss}>⛶</button
+    >
+  </div>
+</figure>
+
+<script>
+  const DARK_SYNTAX_THEMES = ['catppuccin-macchiato']
+  const MIN_SCALE = 0.5
+  const MAX_SCALE = 8
+  const STEP = 1.25
+
+  /** Drag to pan, Ctrl/⌘ + wheel or pinch to zoom around the pointer. */
+  function enablePanZoom(figure: HTMLElement) {
+    const viewport = figure.querySelector<HTMLElement>(
+      '[data-mermaid-viewport]',
+    )!
+    const canvas = figure.querySelector<HTMLElement>('[data-mermaid-canvas]')!
+    let scale = 1
+    let x = 0
+    let y = 0
+
+    const apply = () => {
+      canvas.style.transform = `translate(${x}px, ${y}px) scale(${scale})`
+    }
+    // Zoom by `factor`, keeping the viewport point (cx, cy) fixed.
+    const zoomAt = (factor: number, vx: number, vy: number) => {
+      // The canvas is centred in the viewport; work in its own coordinates.
+      const cx = vx - canvas.offsetLeft
+      const cy = vy - canvas.offsetTop
+      const next = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * factor))
+      x = cx - ((cx - x) * next) / scale
+      y = cy - ((cy - y) * next) / scale
+      scale = next
+      apply()
+    }
+    const reset = () => {
+      scale = 1
+      x = 0
+      y = 0
+      apply()
+    }
+    const center = () => {
+      const r = viewport.getBoundingClientRect()
+      return [r.width / 2, r.height / 2] as const
+    }
+
+    viewport.addEventListener(
+      'wheel',
+      (e) => {
+        if (!e.ctrlKey && !e.metaKey) return
+        e.preventDefault()
+        const r = viewport.getBoundingClientRect()
+        zoomAt(
+          e.deltaY < 0 ? 1.1 : 1 / 1.1,
+          e.clientX - r.left,
+          e.clientY - r.top,
+        )
+      },
+      { passive: false },
+    )
+
+    const pointers = new Map<number, { x: number; y: number }>()
+    let pinchDistance = 0
+    viewport.addEventListener('pointerdown', (e) => {
+      viewport.setPointerCapture(e.pointerId)
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    })
+    viewport.addEventListener('pointermove', (e) => {
+      const prev = pointers.get(e.pointerId)
+      if (!prev) return
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (pointers.size === 1) {
+        x += e.clientX - prev.x
+        y += e.clientY - prev.y
+        apply()
+      } else if (pointers.size === 2) {
+        const [a, b] = [...pointers.values()]
+        const distance = Math.hypot(a.x - b.x, a.y - b.y)
+        if (pinchDistance) {
+          const r = viewport.getBoundingClientRect()
+          zoomAt(
+            distance / pinchDistance,
+            (a.x + b.x) / 2 - r.left,
+            (a.y + b.y) / 2 - r.top,
+          )
+        }
+        pinchDistance = distance
+      }
+    })
+    const release = (e: PointerEvent) => {
+      pointers.delete(e.pointerId)
+      pinchDistance = 0
+    }
+    viewport.addEventListener('pointerup', release)
+    viewport.addEventListener('pointercancel', release)
+
+    figure
+      .querySelectorAll<HTMLButtonElement>('[data-mermaid-zoom]')
+      .forEach((button) =>
+        button.addEventListener('click', () => {
+          const action = button.dataset.mermaidZoom
+          if (action === 'in') zoomAt(STEP, ...center())
+          else if (action === 'out') zoomAt(1 / STEP, ...center())
+          else if (action === 'reset') reset()
+          else if (action === 'fullscreen') {
+            if (document.fullscreenElement) document.exitFullscreen()
+            else figure.requestFullscreen()
+          }
+        }),
+      )
+    figure.addEventListener('fullscreenchange', reset)
+    return reset
+  }
+
+  const resets = new Map<HTMLElement, () => void>()
+
+  async function renderAll() {
+    const sources = document.querySelectorAll<HTMLElement>(
+      '[data-mermaid-source]',
+    )
+    if (sources.length === 0) return
+
+    const { default: mermaid } = await import('mermaid')
+    const syntaxTheme = document.documentElement.getAttribute('data-theme')
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: DARK_SYNTAX_THEMES.includes(syntaxTheme ?? '')
+        ? 'dark'
+        : 'neutral',
+    })
+
+    for (const [i, el] of sources.entries()) {
+      const { svg } = await mermaid.render(
+        `mermaid-${i}`,
+        el.dataset.mermaidSource!,
+      )
+      el.innerHTML = svg
+      // Mermaid caps the SVG at its natural width; let it fill the column.
+      const svgEl = el.querySelector('svg')
+      svgEl?.style.removeProperty('max-width')
+      svgEl?.setAttribute('width', '100%')
+      svgEl?.removeAttribute('height')
+
+      const figure = el.closest<HTMLElement>('.mermaid-diagram')!
+      if (!resets.has(figure)) resets.set(figure, enablePanZoom(figure))
+      resets.get(figure)!()
+    }
+  }
+
+  renderAll()
+  new MutationObserver(renderAll).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
+</script>
+
+<style>
+  .mermaid-diagram:fullscreen [data-mermaid-viewport] {
+    height: 100%;
+  }
+  .mermaid-diagram:fullscreen [data-mermaid-canvas] {
+    max-height: 100%;
+  }
+</style>
