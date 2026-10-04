@@ -6,6 +6,8 @@
  *
  * The diagram fills the column and can be panned (drag) and zoomed
  * (Ctrl/⌘ + wheel, pinch, or the buttons); plain wheel still scrolls the page.
+ * The expand button opens it over the whole page, fitted to the window
+ * (Esc or the button again closes it).
  *
  *   import Mermaid from '@/components/Mermaid.astro'
  *   <Mermaid code={`flowchart LR
@@ -58,8 +60,9 @@ const buttonCss =
     >
     <button
       type="button"
-      data-mermaid-zoom="fullscreen"
-      title="Fullscreen"
+      data-mermaid-zoom="expand"
+      title="View full page"
+      aria-pressed="false"
       class={buttonCss}>⛶</button
     >
   </div>
@@ -164,13 +167,29 @@ const buttonCss =
           if (action === 'in') zoomAt(STEP, ...center())
           else if (action === 'out') zoomAt(1 / STEP, ...center())
           else if (action === 'reset') reset()
-          else if (action === 'fullscreen') {
-            if (document.fullscreenElement) document.exitFullscreen()
-            else figure.requestFullscreen()
-          }
+          else if (action === 'expand')
+            setExpanded(!('expanded' in figure.dataset))
         }),
       )
-    figure.addEventListener('fullscreenchange', reset)
+
+    // Full page is a fixed overlay rather than the Fullscreen API, which
+    // iPhone Safari does not support for non-video elements.
+    const expandButton = figure.querySelector<HTMLButtonElement>(
+      '[data-mermaid-zoom="expand"]',
+    )!
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpanded(false)
+    }
+    function setExpanded(expanded: boolean) {
+      figure.toggleAttribute('data-expanded', expanded)
+      document.documentElement.style.overflow = expanded ? 'hidden' : ''
+      expandButton.setAttribute('aria-pressed', String(expanded))
+      expandButton.title = expanded ? 'Close full page' : 'View full page'
+      expandButton.textContent = expanded ? '✕' : '⛶'
+      if (expanded) document.addEventListener('keydown', onKeydown)
+      else document.removeEventListener('keydown', onKeydown)
+      reset()
+    }
     return reset
   }
 
@@ -217,10 +236,18 @@ const buttonCss =
 </script>
 
 <style>
-  .mermaid-diagram:fullscreen [data-mermaid-viewport] {
-    height: 100%;
+  .mermaid-diagram[data-expanded] {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    margin: 0;
+    border-radius: 0;
   }
-  .mermaid-diagram:fullscreen [data-mermaid-canvas] {
-    max-height: 100%;
+  /* Fit the whole diagram in the window; the SVG keeps its viewBox aspect. */
+  .mermaid-diagram[data-expanded] [data-mermaid-viewport],
+  .mermaid-diagram[data-expanded] [data-mermaid-canvas],
+  .mermaid-diagram[data-expanded] pre,
+  .mermaid-diagram[data-expanded] pre :global(svg) {
+    height: 100%;
   }
 </style>
