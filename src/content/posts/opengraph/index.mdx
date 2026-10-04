@@ -2,11 +2,13 @@
 title: Dynamic Open Graph Image Generation in This Digital Garden
 description: A simple example of generating Open Graph images in Astro with Satori and Sharp — from a React component to a PNG at build time.
 date: '2025-12-19'
-updated: '2026-09-27'
+updated: '2026-10-02'
 ogStyle: 'particle'
 tags: ['astro', 'satori', 'sharp']
 llmAssisted: true
 ---
+
+import Mermaid from '@/components/Mermaid.astro'
 
 ## Overview
 
@@ -108,42 +110,96 @@ The simple example has two weak spots once a site grows:
 - **Pages build the image URL themselves.** If a page asks for a URL that no route generates (a typo in a slug), the build still passes and the preview is silently missing.
 - **Styles are strings.** Pick a style name that has no theme and you quietly get the default.
 
-So this site puts everything behind one module, `src/lib/og-image/`:
+So this site puts everything behind one module, `src/lib/og-image/`, and two prerendered routes:
 
-```typescript
-// in a page
-import { pageOgImage, articleOgImage } from '@/lib/og-image'
-const ogImageUrl = await pageOgImage('resume') // fails the build if 'resume' isn't configured
-const postImageUrl = articleOgImage('posts', Astro.params.slug!)
+<Mermaid
+  code={`flowchart LR
+  subgraph sources["Sources"]
+    fm["posts / notes<br/>frontmatter"]
+    json["src/content/og-images.json<br/>(ogImages collection)"]
+  end
 
-// in an OG route
-return ogImageResponse(article.data) // renders + wraps the PNG in a Response
-```
+subgraph routes["Prerendered routes (build time)"]
+ar["og/[articleType]/[...slug].png.ts<br/>one path per post and note"]
+pr["og/pages/[...slug].png.ts<br/>one path per og-images.json entry"]
+end
 
-- **Posts and notes** get `/og/<collection>/<id>.png` from their frontmatter:
+subgraph lib["src/lib/og-image"]
+resp["ogImageResponse()<br/>fills {{siteTitle}}"]
+render["renderOgImage()<br/>render.ts"]
+end
+
+tpl["OgImageTemplate<br/>Record#lt;OgStyle, Theme#gt;"]
+satori["satori<br/>JSX → SVG<br/>VictorMono 300/400/700"]
+sharp["sharp<br/>SVG → palette PNG"]
+png[("dist/og/<br/>posts | notes | pages<br/>/#lt;slug#gt;.png")]
+
+fm --> ar
+json --> pr
+ar --> resp
+pr --> resp
+resp --> render
+render --> tpl --> satori --> sharp --> png`}
+/>
+
+### Rendering
+
+- **Two routes, one renderer.** `og/[articleType]/[...slug].png.ts` loops over `OG_ARTICLE_COLLECTIONS` (`posts`, `notes`) and emits `/og/<collection>/<id>.png` from each entry's frontmatter. `og/pages/[...slug].png.ts` emits `/og/pages/<slug>.png` for every entry in `src/content/og-images.json`. Both are `prerender = true` and just `return ogImageResponse(entry.data)`.
+- **`ogImageResponse()`** replaces `{{siteTitle}}` in the title with `site.siteTitle`, renders the PNG and wraps it in a `Response` with `Content-Type: image/png`.
+- **`renderOgImage()`** (`render.ts`) loads the three VictorMono weights (300, 400, 700) once at module level, picks the theme for the style from `OgImageTemplate`, runs Satori at 1200×630, then Sharp writes a palette-based PNG at compression level 9 to keep the files small.
+
+The content looks like this:
+
+- **Posts and notes** take title, description and style from frontmatter:
 
   ```yaml
   ---
   title: My Post
   description: Post description for social media
-  ogStyle: 'particle' # 'default' | 'default-dark' | 'particle'
+  ogStyle: 'particle' # 'default' | 'default-dark' | 'particle'; defaults to 'default'
   ---
   ```
 
-- **Ordinary pages** (home, resume, uses) are customised in `src/content/og-images.json`: one entry per page with its own title, description and style. `{{siteTitle}}` in a title is filled in at build time.
+- **Ordinary pages** (home, resume, uses) get one entry each in `src/content/og-images.json`, with their own title, description and style:
 
   ```json
   {
-    "slug": "uses",
-    "title": "Uses",
-    "description": "The items/tools I am using",
-    "ogStyle": "particle"
+    "title": "{{siteTitle}}",
+    "description": "A collection of thoughts, ideas, and knowledge",
+    "slug": "index",
+    "ogStyle": "default-dark"
   }
   ```
 
-- **Styles are typed.** The style list is a Zod enum, and the theme map is `Record<OgStyle, Theme>`. Add a style without a theme and TypeScript refuses to compile. Put an unknown `ogStyle` in frontmatter and the content schema rejects it.
+- **Styles are typed.** The style list is a Zod enum in `_og-styles.ts`, and the theme map in `og-template.tsx` is `Record<OgStyle, Theme>`. Add a style without a theme and TypeScript refuses to compile. Put an unknown `ogStyle` in frontmatter or JSON and the content schema rejects it.
 
-The pure parts (URL shape, the page-slug check, `{{siteTitle}}`) are unit-tested with Vitest. The rendering itself is checked by the build.
+### Linking a page to its image
+
+Pages never write `og/...` paths themselves. They ask the module for a URL, and the layout turns it into meta tags:
+
+<Mermaid
+  code={`flowchart LR
+  idx["index.astro<br/>resume.astro<br/>uses.astro"] -- "pageOgImage(slug)" --> check{"slug in<br/>og-images.json?"}
+  check -- no --> fail["build fails<br/>with the known slugs"]
+  check -- yes --> url["absolute URL<br/>og/pages/#lt;slug#gt;.png"]
+  post["posts/[...slug]/index.astro"] -- "articleOgImage('posts', id)" --> url2["absolute URL<br/>og/posts/#lt;id#gt;.png"]
+  url --> layout["BaseLayout<br/>ogImage prop"]
+  url2 --> layout
+  layout --> meta["OpenGraph.astro<br/>og:image + twitter:image<br/>(fallback: lucy.jpg)"]`}
+/>
+
+```typescript
+// in a page
+import { pageOgImage, articleOgImage } from '@/lib/og-image'
+const ogImageUrl = await pageOgImage('resume') // fails the build if 'resume' isn't in og-images.json
+const postImageUrl = articleOgImage('posts', Astro.params.slug!)
+```
+
+`pageOgImage()` is async because it reads the `ogImages` collection to check the slug. `articleOgImage()` doesn't need to: every post and note gets an image, so the URL can't point at nothing. A page that passes no `ogImage` falls back to `lucy.jpg`.
+
+### Testing
+
+`src/lib/og-image/` is split in two so the rules can be unit-tested. `resolve.ts` holds the pure rules (URL shape, the page-slug check, `{{siteTitle}}`), and Vitest tests it directly. `index.ts` is the Astro adapter that reads `astro:content`, which tests can't import. The rendering itself is checked by the build.
 
 ## Tips
 
