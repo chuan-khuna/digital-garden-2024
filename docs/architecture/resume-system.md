@@ -39,13 +39,15 @@ src/
 │   ├── resume-print/index.astro         ← print resume, Default Version (/resume-print)
 │   ├── resume-print/[version].astro     ← print resume, other versions (/resume-print/<version>)
 │   ├── resume-print/versions.astro      ← list of every version (/resume-print/versions)
+│   ├── resume-print-single-column/index.astro     ← single-column print resume, Default Version
+│   ├── resume-print-single-column/[version].astro ← single-column print resume, other versions
 │   ├── cv-print/index.astro             ← print CV, Default Version (/cv-print)
 │   ├── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
 │   └── cv-print/versions.astro          ← list of every version (/cv-print/versions)
 │
 ├── components/resume/
 │   ├── pages/
-│   │   ├── ResumePrintPage.astro        ← shared body of /resume-print and /resume-print/<version>
+│   │   ├── ResumePrintPage.astro        ← shared body of /resume-print(-single-column) and their /<version> pages
 │   │   ├── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
 │   │   └── ResumeVersionsPage.astro     ← shared body of /resume-print/versions and /cv-print/versions
 │   ├── layout/                          ← print layout wrappers
@@ -141,7 +143,7 @@ Set a flag to `false` to hide an entry from that specific page without deleting 
 | Page | Filters on |
 |---|---|
 | `/resume` | `visibility.web` |
-| `/resume-print`, `/resume-print/<version>` | `visibility.resume_print` |
+| `/resume-print`, `/resume-print-single-column` (and their `/<version>` pages) | `visibility.resume_print` |
 | `/cv-print`, `/cv-print/<version>` | `visibility.cv_print` |
 
 > **Note:** before Resume Versions were introduced, `/cv-print` mistakenly filtered on `resume_print`. It now uses `cv_print`.
@@ -268,6 +270,8 @@ Data fetching happens in `resume.astro` via `getResume()`. Section components re
 |---|---|---|
 | `/resume-print` | `src/pages/resume-print/index.astro` | `index` |
 | `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
+| `/resume-print-single-column` | `src/pages/resume-print-single-column/index.astro` | `index` |
+| `/resume-print-single-column/<version>` | `src/pages/resume-print-single-column/[version].astro` | `<version>` |
 | `/cv-print` | `src/pages/cv-print/index.astro` | `index` |
 | `/cv-print/<version>` | `src/pages/cv-print/[version].astro` | `<version>` |
 | `/resume-print/versions`, `/cv-print/versions` | `src/pages/{resume-print,cv-print}/versions.astro` | all (list) |

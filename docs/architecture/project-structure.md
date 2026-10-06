@@ -50,6 +50,7 @@ src/
 | `src/pages/posts/[...slug]/index.astro` | Individual post pages |
 | `src/pages/resume.astro` | Web resume (Default Version) |
 | `src/pages/resume-print/`, `cv-print/` (`index.astro` + `[version].astro` + `versions.astro`) | Print Pages, plus an unlisted index of every Resume Version |
+| `src/pages/resume-print-single-column/` (`index.astro` + `[version].astro`) | Single-column variant of the resume Print Page |
 | `src/content.config.ts` | All content collection registrations |
 | `src/styles/globals.css` | Root stylesheet — imports all theme presets |
 | `astro.config.mjs` | Astro config — plugins, integrations, adapter |
