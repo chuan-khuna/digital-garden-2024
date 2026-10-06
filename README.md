@@ -21,6 +21,14 @@ bunx wrangler dev
 
 > `npm` and `npx` are also supported if `bun` is not available.
 
+### Agent skills
+
+Install [Matt Pocock's skills](https://github.com/mattpocock/skills) (pinned to `v1.3.1`) into `.agents/skills/`:
+
+```bash
+npx skills add mattpocock/skills#v1.3.1
+```
+
 ## Project Structure
 
 ```
