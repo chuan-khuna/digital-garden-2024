@@ -1,6 +1,6 @@
 # Resume System
 
-The resume is built from **Astro Content Collections** — structured data files that are queried at build time and rendered into an interactive web page and print-optimised PDF pages (**Print Pages**: the one-page Resume and the multi-page CV).
+The resume is built from **Astro Content Collections** — structured data files that are queried at build time and rendered into an interactive web page and print-optimised PDF pages (the **Print Page**, with three **Print Layouts**: the one-page Resume in two columns or one, and the multi-page CV).
 
 Resume content is organised into **Resume Versions** (glossary: `GLOSSARY.md`; decision record: `docs/adr/0001-versioned-resume-collections.md`). The **Default Version** is the folder named `index`; any other folder is a Resume Version tailored for a specific job application, rendered only on its own unlisted, noindexed print URLs.
 
@@ -12,7 +12,7 @@ Resume content is organised into **Resume Versions** (glossary: `GLOSSARY.md`; d
 src/
 ├── content/
 │   ├── resume/                          ← one folder per Resume Version
-│   │   ├── index/                       ← Default Version (backs /resume, /resume-print, /cv-print)
+│   │   ├── index/                       ← Default Version (backs /resume, /resume-print)
 │   │   │   ├── header.json              ← name, job title, contact info
 │   │   │   ├── skills.json              ← skill categories + keyword lists
 │   │   │   ├── educations.json          ← education entries
@@ -36,20 +36,13 @@ src/
 │
 ├── pages/
 │   ├── resume.astro                     ← web version (/resume), always `index`
-│   ├── resume-print/index.astro         ← print resume, Default Version (/resume-print)
-│   ├── resume-print/[version].astro     ← print resume, other versions (/resume-print/<version>)
-│   ├── resume-print/versions.astro      ← list of every version (/resume-print/versions)
-│   ├── resume-print-single-column/index.astro     ← single-column print resume, Default Version
-│   ├── resume-print-single-column/[version].astro ← single-column print resume, other versions
-│   ├── cv-print/index.astro             ← print CV, Default Version (/cv-print)
-│   ├── cv-print/[version].astro         ← print CV, other versions (/cv-print/<version>)
-│   └── cv-print/versions.astro          ← list of every version (/cv-print/versions)
+│   ├── resume-print/index.astro         ← Print Page, Default Version (/resume-print)
+│   ├── resume-print/[version].astro     ← Print Page, other versions (/resume-print/<version>)
+│   └── resume-print/versions.astro      ← list of every version (/resume-print/versions)
 │
 ├── components/resume/
 │   ├── pages/
-│   │   ├── ResumePrintPage.astro        ← shared body of /resume-print(-single-column) and their /<version> pages
-│   │   ├── CvPrintPage.astro            ← shared body of /cv-print and /cv-print/<version>
-│   │   └── ResumeVersionsPage.astro     ← shared body of /resume-print/versions and /cv-print/versions
+│   │   └── ResumePrintPage.astro        ← body of /resume-print and /resume-print/<version>: every Print Layout + selector
 │   ├── layout/                          ← print layout wrappers
 │   │   ├── WebWrapper.astro
 │   │   ├── PageLayout.astro
@@ -143,10 +136,10 @@ Set a flag to `false` to hide an entry from that specific page without deleting 
 | Page | Filters on |
 |---|---|
 | `/resume` | `visibility.web` |
-| `/resume-print`, `/resume-print-single-column` (and their `/<version>` pages) | `visibility.resume_print` |
-| `/cv-print`, `/cv-print/<version>` | `visibility.cv_print` |
+| `/resume-print` (and `/<version>`), layouts `resume-two-cols`, `resume-one-col` | `visibility.resume_print` |
+| `/resume-print` (and `/<version>`), layout `cv` | `visibility.cv_print` |
 
-> **Note:** before Resume Versions were introduced, `/cv-print` mistakenly filtered on `resume_print`. It now uses `cv_print`.
+The Print Page resolves the version twice — once per print Surface — and hands the `resume_print` result to the two Resume layouts and the `cv_print` result to the CV layout.
 
 ---
 
@@ -258,11 +251,11 @@ Uses `BaseLayout` (full site layout with nav/footer). The page always shows the 
 
 Data fetching happens in `resume.astro` via `getResume()`. Section components receive typed `data` props and a `variant` prop — they are purely presentational.
 
-**Print links** are an untitled `SectionBlock` (hidden with `print:hidden`) styled like the Projects list: two rows split by a dashed divider, each an underlined link with a small muted note on the right: **Print resume** → `/resume-print` ("1 page") and **Print CV** → `/cv-print` ("Full, multi-page"). They always point at the Default Version. Wording follows US usage: a resume is the short document, a CV the full one.
+**Print links** are an untitled `SectionBlock` (hidden with `print:hidden`) styled like the Projects list: two rows split by a dashed divider, each an underlined link with a small muted note on the right: **Print resume** → `/resume-print` ("1 page") and **Print CV** → `/resume-print?layout=cv` ("Full, multi-page"). They always point at the Default Version. Wording follows US usage: a resume is the short document, a CV the full one.
 
 ---
 
-## Print Pages (`/resume-print`, `/cv-print`)
+## Print Page (`/resume-print`)
 
 ### Routes
 
@@ -270,26 +263,30 @@ Data fetching happens in `resume.astro` via `getResume()`. Section components re
 |---|---|---|
 | `/resume-print` | `src/pages/resume-print/index.astro` | `index` |
 | `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
-| `/resume-print-single-column` | `src/pages/resume-print-single-column/index.astro` | `index` |
-| `/resume-print-single-column/<version>` | `src/pages/resume-print-single-column/[version].astro` | `<version>` |
-| `/cv-print` | `src/pages/cv-print/index.astro` | `index` |
-| `/cv-print/<version>` | `src/pages/cv-print/[version].astro` | `<version>` |
-| `/resume-print/versions`, `/cv-print/versions` | `src/pages/{resume-print,cv-print}/versions.astro` | all (list) |
+| `/resume-print/versions` | `src/pages/resume-print/versions.astro` | all (list) |
 
-The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index` or `/cv-print/index`. `versions` is also a reserved folder name, so the static `versions.astro` routes never collide with a Resume Version. The page markup lives once in `components/resume/pages/ResumePrintPage.astro` and `CvPrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop from `getResume()`.
+The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index`. `versions` is also a reserved folder name, so the static `versions.astro` route never collides with a Resume Version. The page markup lives once in `components/resume/pages/ResumePrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop (`getResume('resume_print', …)`) and a `cv` prop (`getResume('cv_print', …)`).
 
 Resume Version pages:
 
 - pass `noindex` to `BaseLayoutPrint`, which forwards it to `HeadSEO` and emits `<meta name="robots" content="noindex">` (and the same for `googlebot`) instead of `index, follow`;
 - are excluded from the sitemap (the `filter` on `sitemap()` in `astro.config.mjs`);
-- are not linked from the site; the only links to them are on `/resume-print/versions` and `/cv-print/versions`, which are themselves noindexed, out of the sitemap and unlinked;
+- are not linked from the site; the only links to them are on `/resume-print/versions`, which is itself noindexed, out of the sitemap and unlinked;
 - keep the same `<title>` as the Default Version (`<displayName>'s Resume`), so the printed PDF doesn't reveal the version name.
 
-### Layout
+### Print Layouts
 
-Both pages use `BaseLayoutPrint` which hides the nav and footer when printing via `print:hidden` Tailwind classes, and removes padding/margins from the container.
+Every page renders all three Print Layouts. An on-screen selector (`print:hidden`) shows one and sets `hidden` on the others, so only the shown layout prints. The choice is kept in the `?layout=` query parameter, so a layout can be linked directly; an unknown or missing value — or no JS — falls back to the default.
 
-### `resume-print` — 2-column layout
+| `?layout=` | Surface | Shape |
+|---|---|---|
+| `resume-two-cols` (default) | `resume_print` | one page, two columns |
+| `resume-one-col` | `resume_print` | one page, one column |
+| `cv` | `cv_print` | two pages, one column |
+
+The page uses `BaseLayoutPrint`, which hides the nav and footer when printing via `print:hidden` Tailwind classes, and removes padding/margins from the container.
+
+### `resume-two-cols`
 
 ```
 ┌───────────────────────────────────────────────────┐
@@ -303,7 +300,21 @@ Both pages use `BaseLayoutPrint` which hides the nav and footer when printing vi
   7-column grid total
 ```
 
-### `cv-print` — single column + page break
+### `resume-one-col`
+
+```
+┌──────────────────┐
+│ PrintHeader      │
+│ Skills           │
+│ Experiences      │
+│ Projects         │
+│ Education        │
+│ Activity         │
+│ Interests        │
+└──────────────────┘
+```
+
+### `cv` — single column + page break
 
 ```
 Page 1:                    Page 2:
@@ -415,8 +426,9 @@ The **route** resolves the Resume Version for its Surface (via `getResume()`, wh
 ---
 // resume-print/[version].astro (route) — resolves the version for a Surface
 const resume = await getResume('resume_print', Astro.params.version)
+const cv = await getResume('cv_print', Astro.params.version)
 ---
-<ResumePrintPage resume={resume} noindex />
+<ResumePrintPage resume={resume} cv={cv} noindex />
 ```
 
 ```astro
@@ -469,8 +481,8 @@ Content files (src/content/resume/<version>/ JSON / .md)
         ↓  Astro Content Collections (versionedResumeJson / versionedResumeGlob loaders)
 getResume(surface, version)  ← src/lib/resume/index.ts → resolveResume() in resume/resolve.ts: whole-Section override, fallback to `index`, visibility filter
         ↓
-resume.astro / resume-print/(index|[version]).astro / cv-print/(index|[version]).astro
-        ↓  ResumePrintPage / CvPrintPage (render only)
+resume.astro / resume-print/(index|[version]).astro
+        ↓  ResumePrintPage (render only)
 Section components (sections/*.astro)  ← receive typed data[] + variant as props
         ↓  compose using SectionBlock + Item + UnorderedList / ResumeMarkdownBulletWrapper
         ↓  wrapped in BaseLayout / BaseLayoutPrint

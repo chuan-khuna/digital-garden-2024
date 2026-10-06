@@ -7,4 +7,4 @@ We chose this so that adding a Resume Version means adding a folder — no code 
 ## Consequences
 
 - Components must not call `getCollection('resume*')` themselves (e.g. the print header); they receive version-resolved data as props, otherwise they silently show the wrong version.
-- `index` is a reserved version name: it backs `/resume-print` and `/cv-print`, and no `/resume-print/index` route is generated.
+- `index` is a reserved version name: it backs `/resume-print`, and no `/resume-print/index` route is generated.

@@ -121,14 +121,11 @@ export default defineConfig({
   },
 
   integrations: [
-    // Resume Version print pages (/resume-print/<version>, /cv-print/<version>,
-    // /resume-print-single-column/<version>) are noindexed and unlisted, so
-    // keep them out of the sitemap.
+    // Resume Version print pages (/resume-print/<version>) are noindexed and
+    // unlisted, so keep them out of the sitemap.
     sitemap({
       filter: (page) =>
-        !/\/(resume-print|resume-print-single-column|cv-print)\/[^/]+\/?$/.test(
-          new URL(page).pathname,
-        ),
+        !/\/resume-print\/[^/]+\/?$/.test(new URL(page).pathname),
     }), // tailwind({
     react(), //   applyBaseStyles: false,
     // }),

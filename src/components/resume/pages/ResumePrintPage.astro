@@ -1,7 +1,11 @@
 ---
-// One-page Resume Print Page. Rendered for the Default Version at /resume-print
-// and for every other Resume Version at /resume-print/<version>. With
-// `layout="single-column"` it backs /resume-print-single-column(/<version>).
+// Print Page. Rendered for the Default Version at /resume-print and for every
+// other Resume Version at /resume-print/<version>.
+//
+// Every Print Layout is rendered; an on-screen selector shows one and hides
+// the rest (hidden layouts don't print either). The choice lives in
+// `?layout=<name>`, so a layout can be linked directly, e.g.
+// /resume-print?layout=cv. Without JS the default layout shows.
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 import { site } from '@/data/site.config'
 import type { Resume } from '@/lib/resume'
@@ -10,6 +14,7 @@ import type { Resume } from '@/lib/resume'
 import PageLayout from '@/components/resume/layout/PageLayout.astro'
 import Content from '@/components/resume/layout/Content.astro'
 import WebWrapper from '@/components/resume/layout/WebWrapper.astro'
+import PrintPageBreak from '@/components/resume/PrintPageBreak.astro'
 
 // sections
 import PrintHeader from '@/components/resume/sections/print/Header.astro'
@@ -21,14 +26,24 @@ import Interests from '@/components/resume/sections/Interests.astro'
 import Activity from '@/components/resume/sections/Activity.astro'
 
 interface Props {
+  /** Resolved for the `resume_print` Surface (one-page layouts). */
   resume: Resume
+  /** Resolved for the `cv_print` Surface (the CV layout). */
+  cv: Resume
   noindex?: boolean
-  layout?: 'two-column' | 'single-column'
 }
 
-const { resume, noindex = false, layout = 'two-column' } = Astro.props
+const { resume, cv, noindex = false } = Astro.props
 
-const { experiences, projects, educations } = resume
+/** Print Layouts, first is the default. Names are the `?layout=` values. */
+const layouts = [
+  { name: 'resume-two-cols', label: 'Resume · 2 columns' },
+  { name: 'resume-one-col', label: 'Resume · 1 column' },
+  { name: 'cv', label: 'CV · multi-page' },
+] as const
+const defaultLayout = layouts[0].name
+
+const cvPageClass = 'px-12 py-4 font-resumesans'
 ---
 
 <BaseLayoutPrint
@@ -36,43 +51,123 @@ const { experiences, projects, educations } = resume
   description=""
   noindex={noindex}
 >
-  <WebWrapper className="flex min-h-screen flex-col justify-center">
+  <div
+    role="group"
+    aria-label="Print layout"
+    class="border-border mx-auto flex flex-wrap justify-center gap-1 rounded-lg border p-1 text-sm print:hidden"
+  >
     {
-      layout === 'single-column' ? (
-        <PageLayout className="px-12 py-4 font-resumesans">
-          <Content className="mx-auto max-w-[1200px] space-y-1">
-            <div class="mb-2">
-              <PrintHeader header={resume.header} />
-            </div>
+      layouts.map(({ name, label }) => (
+        <button
+          type="button"
+          data-layout-option={name}
+          aria-pressed={name === defaultLayout ? 'true' : 'false'}
+          class="text-foreground/55 hover:text-foreground aria-pressed:bg-muted aria-pressed:text-muted-foreground rounded-md px-3 py-1"
+        >
+          {label}
+        </button>
+      ))
+    }
+  </div>
+
+  <WebWrapper className="flex min-h-screen flex-col justify-center">
+    <div data-layout="resume-two-cols" class="contents">
+      <PageLayout className="px-8 py-4 font-resumesans">
+        <Content className="mx-auto grid max-w-[1200px] grid-cols-7 gap-4">
+          <div class="col-span-7">
+            <PrintHeader header={resume.header} />
+          </div>
+
+          <div class="col-span-2 block space-y-1">
             <Skills data={resume.skills} variant="print" />
-            <Experiences data={experiences} variant="print" />
-            <Projects data={projects} variant="print" />
-            <Education data={educations} variant="print" />
             <Activity data={resume.activities} variant="print" />
             <Interests items={resume.interests} variant="print" />
-          </Content>
-        </PageLayout>
-      ) : (
-        <PageLayout className="px-8 py-4 font-resumesans">
-          <Content className="mx-auto grid max-w-[1200px] grid-cols-1 grid-cols-7 gap-4">
-            <div class="col-span-7">
-              <PrintHeader header={resume.header} />
-            </div>
+          </div>
 
-            <div class="col-span-2 block space-y-1">
-              <Skills data={resume.skills} variant="print" />
-              <Activity data={resume.activities} variant="print" />
-              <Interests items={resume.interests} variant="print" />
-            </div>
+          <div class="col-span-5 block space-y-1">
+            <Experiences data={resume.experiences} variant="print" />
+            <Projects data={resume.projects} variant="print" />
+            <Education data={resume.educations} variant="print" />
+          </div>
+        </Content>
+      </PageLayout>
+    </div>
 
-            <div class="col-span-5 block space-y-1">
-              <Experiences data={experiences} variant="print" />
-              <Projects data={projects} variant="print" />
-              <Education data={educations} variant="print" />
-            </div>
-          </Content>
-        </PageLayout>
-      )
-    }
+    <div data-layout="resume-one-col" class="contents" hidden>
+      <PageLayout className="px-12 py-4 font-resumesans">
+        <Content className="mx-auto max-w-[1200px] space-y-1">
+          <div class="mb-2">
+            <PrintHeader header={resume.header} />
+          </div>
+          <Skills data={resume.skills} variant="print" />
+          <Experiences data={resume.experiences} variant="print" />
+          <Projects data={resume.projects} variant="print" />
+          <Education data={resume.educations} variant="print" />
+          <Activity data={resume.activities} variant="print" />
+          <Interests items={resume.interests} variant="print" />
+        </Content>
+      </PageLayout>
+    </div>
+
+    <div data-layout="cv" class="contents" hidden>
+      <PageLayout className={cvPageClass}>
+        <Content className="mx-auto max-w-[1200px]">
+          <div class="mb-2">
+            <PrintHeader header={cv.header} />
+          </div>
+
+          <div class="space-y-1">
+            <Skills data={cv.skills} variant="print" />
+            <Experiences data={cv.experiences} variant="print" />
+            <Education data={cv.educations} variant="print" />
+            <Projects data={cv.projects} variant="print" />
+          </div>
+        </Content>
+      </PageLayout>
+
+      <PrintPageBreak />
+
+      <PageLayout className={cvPageClass}>
+        <Content className="mx-auto max-w-[1200px]">
+          <div class="space-y-1">
+            <Activity data={cv.activities} variant="print" />
+            <Interests items={cv.interests} variant="print" />
+          </div>
+        </Content>
+      </PageLayout>
+    </div>
   </WebWrapper>
 </BaseLayoutPrint>
+
+<script>
+  const layouts = [...document.querySelectorAll<HTMLElement>('[data-layout]')]
+  const options = [
+    ...document.querySelectorAll<HTMLButtonElement>('[data-layout-option]'),
+  ]
+  const names = layouts.map((el) => el.dataset.layout!)
+  const defaultLayout = names[0]
+
+  function show(name: string) {
+    for (const el of layouts) el.hidden = el.dataset.layout !== name
+    for (const btn of options) {
+      btn.setAttribute(
+        'aria-pressed',
+        String(btn.dataset.layoutOption === name),
+      )
+    }
+  }
+
+  const requested = new URLSearchParams(location.search).get('layout')
+  show(requested && names.includes(requested) ? requested : defaultLayout)
+
+  for (const btn of options) {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.layoutOption!
+      show(name)
+      const url = new URL(location.href)
+      if (name === defaultLayout) url.searchParams.delete('layout')
+      else url.searchParams.set('layout', name)
+      history.replaceState(null, '', url)
+    })
+  }
+</script>
