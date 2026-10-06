@@ -55,7 +55,7 @@ export const PORTFOLIO = {
 
 ## 3. `src/content/resume/` — Resume Content Collections
 
-Structured data for the resume pages (`/resume`, `/resume-print`, `/cv-print`, and the per-version `/resume-print/<version>`, `/cv-print/<version>`). Uses **Astro Content Collections** (JSON files + markdown entries), organised into one folder per **Resume Version**. `index` is the Default Version; see `docs/architecture/resume-system.md` and `docs/content-formats/resume.md`.
+Structured data for the resume pages (`/resume`, `/resume-print`, and the per-version `/resume-print/<version>`). Uses **Astro Content Collections** (JSON files + markdown entries), organised into one folder per **Resume Version**. `index` is the Default Version; see `docs/architecture/resume-system.md` and `docs/content-formats/resume.md`.
 
 ```
 src/content/resume/
@@ -85,8 +85,7 @@ Projects, experiences and educations support a `visibility` field to control whi
 
 **Used by** (all read through `getResume(surface, version)` in `src/lib/resume/index.ts`, which applies the filter):
 - `src/pages/resume.astro` — Default Version; `visibility.web`
-- `src/pages/resume-print/index.astro`, `src/pages/resume-print/[version].astro` — `visibility.resume_print`
-- `src/pages/cv-print/index.astro`, `src/pages/cv-print/[version].astro` — `visibility.cv_print`
+- `src/pages/resume-print/index.astro`, `src/pages/resume-print/[version].astro` — `visibility.resume_print` (Resume layouts) and `visibility.cv_print` (CV layout)
 
 **Rule:** Any content that belongs on the resume (professional history, education, projects) lives here, not in `portfolio.ts`.
 

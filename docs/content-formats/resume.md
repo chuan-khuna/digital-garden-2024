@@ -2,8 +2,8 @@
 
 All resume data lives in `src/content/resume/<version>/`, one folder per **Resume Version** (glossary: `GLOSSARY.md`).
 
-- `src/content/resume/index/` is the **Default Version**. It backs the web resume (`/resume`) and the default print pages (`/resume-print`, `/cv-print`).
-- Any other folder, e.g. `src/content/resume/2026-jul-dev/`, is a Resume Version tailored for a specific job application. It is rendered only at `/resume-print/<version>` and `/cv-print/<version>`.
+- `src/content/resume/index/` is the **Default Version**. It backs the web resume (`/resume`) and the default Print Page (`/resume-print`).
+- Any other folder, e.g. `src/content/resume/2026-jul-dev/`, is a Resume Version tailored for a specific job application. It is rendered only at `/resume-print/<version>`.
 
 Schema definitions: `src/content/collection-definitions/resume.ts` (loaders: `resume-loaders.ts`; resolution rules: `src/lib/resume/resolve.ts`, loaded through `src/lib/resume/index.ts`). Architecture: `docs/architecture/resume-system.md`.
 
@@ -41,9 +41,9 @@ src/content/resume/
        └── project-b.md
    ```
 
-3. Build or run the dev server. The version is rendered at:
-   - `/resume-print/<slug>` (one-page Resume)
-   - `/cv-print/<slug>` (multi-page CV)
+3. Build or run the dev server. The version is rendered at `/resume-print/<slug>`, with a selector for each Print Layout:
+   - `?layout=resume-two-cols` (default) / `?layout=resume-one-col` (one-page Resume)
+   - `?layout=cv` (multi-page CV)
 
 No code or schema changes are needed: the version list is derived from the folders.
 
@@ -66,12 +66,12 @@ To keep an `index` entry in a version that overrides that Section, copy the entr
 
 - Version folder names must be **lowercase kebab-case slugs**: `a-z`, `0-9`, single hyphens (e.g. `2026-jul-dev`, `acme-backend`). Anything else fails the build with an `[resume] Invalid Resume Version folder …` error.
 - `index` is **reserved** for the Default Version. There is no `/resume-print/index` page.
-- `versions` is **reserved**: `/resume-print/versions` and `/cv-print/versions` list every Resume Version (Default Version first) with its header `jobTitle`, linking to each Print Page. Like the version pages, they are noindexed, excluded from the sitemap and not linked from the site.
+- `versions` is **reserved**: `/resume-print/versions` lists every Resume Version (Default Version first) with its header `jobTitle`, linking to each Print Page. Like the version pages, it is noindexed, excluded from the sitemap and not linked from the site.
 - Naming versions `yyyy-mmm-role` (e.g. `2026-jul-dev`) is a **convention only**; it is not enforced.
 
 ### Visibility of version pages
 
-Version pages carry `<meta name="robots" content="noindex">`, are excluded from the sitemap, and are not linked from the site (only from the unlisted `/resume-print/versions` and `/cv-print/versions` pages). Share the URL directly. The page `<title>` is the same as the Default Version's (`<displayName>'s Resume`).
+Version pages carry `<meta name="robots" content="noindex">`, are excluded from the sitemap, and are not linked from the site (only from the unlisted `/resume-print/versions` page). Share the URL directly. The page `<title>` is the same as the Default Version's (`<displayName>'s Resume`).
 
 ---
 
@@ -92,8 +92,8 @@ Default is `true` for all three. Set to `false` to hide the entry on that Surfac
 | Page | Surface (filters on) |
 |---|---|
 | `/resume` | `web` |
-| `/resume-print`, `/resume-print/<version>` | `resume_print` |
-| `/cv-print`, `/cv-print/<version>` | `cv_print` |
+| `/resume-print`, `/resume-print/<version>` — layouts `resume-two-cols`, `resume-one-col` | `resume_print` |
+| `/resume-print`, `/resume-print/<version>` — layout `cv` | `cv_print` |
 
 ---
 

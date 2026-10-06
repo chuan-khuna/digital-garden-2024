@@ -19,9 +19,13 @@ The Resume Version named `index`; the one shown when no version is requested.
 _Avoid_: Main resume, base resume
 
 **Surface**:
-Where a Resume Version is shown — the web resume (`web`), the Resume Print Page (`resume_print`) or the CV Print Page (`cv_print`). An entry's **Visibility** says, per Surface, whether it appears there; the Resume is always resolved for exactly one Surface.
+Where a Resume Version is shown — the web resume (`web`), the Resume Print Layouts (`resume_print`) or the CV Print Layout (`cv_print`). An entry's **Visibility** says, per Surface, whether it appears there; the Resume is always resolved for exactly one Surface.
 _Avoid_: Target, layout, output
 
 **Print Page**:
-A print-to-PDF rendering of a Resume Version — either the **Resume** (one page) or the **CV** (multi-page).
+The print-to-PDF rendering of a Resume Version at `/resume-print`. It offers every Print Layout and prints the one selected.
 _Avoid_: PDF page, export
+
+**Print Layout**:
+One arrangement of the Print Page: the **Resume** (one page) in two columns (`resume-two-cols`) or one (`resume-one-col`), or the **CV** (`cv`, multi-page). Resume layouts use the `resume_print` Surface, the CV uses `cv_print`.
+_Avoid_: Template, variant, theme

@@ -39,7 +39,7 @@ export function assertValidResumeVersion(version: string): void {
   if (RESERVED_RESUME_VERSIONS.includes(version)) {
     throw new Error(
       `[resume] Invalid Resume Version folder "${RESUME_CONTENT_BASE}/${version}/". ` +
-        `"${version}" is reserved: /resume-print/${version} and /cv-print/${version} list every Resume Version.`,
+        `"${version}" is reserved: /resume-print/${version} lists every Resume Version.`,
     )
   }
 }

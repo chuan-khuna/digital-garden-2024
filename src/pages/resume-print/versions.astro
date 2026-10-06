@@ -1,7 +1,70 @@
 ---
-// Lists every Resume Version's Resume Print Page. `versions` is a reserved
-// version name, so this static route never collides with [version].astro.
-import ResumeVersionsPage from '@/components/resume/pages/ResumeVersionsPage.astro'
+// Lists every Resume Version's Print Page. `versions` is a reserved version
+// name, so this static route never collides with [version].astro. Noindexed
+// and not linked from the site, like the version pages themselves.
+import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
+import { site } from '@/data/site.config'
+import {
+  DEFAULT_RESUME_VERSION,
+  getResume,
+  getResumeVersions,
+} from '@/lib/resume'
+
+const basePath = '/resume-print'
+
+const versions = await Promise.all(
+  [DEFAULT_RESUME_VERSION, ...(await getResumeVersions())].map(
+    async (version) => {
+      const { header } = await getResume('resume_print', version)
+      const isDefault = version === DEFAULT_RESUME_VERSION
+      return {
+        version,
+        isDefault,
+        href: isDefault ? basePath : `${basePath}/${version}`,
+        jobTitle: header.jobTitle,
+      }
+    },
+  ),
+)
 ---
 
-<ResumeVersionsPage surface="resume_print" />
+<BaseLayoutPrint
+  title={`${site.displayName}'s Resume Versions`}
+  description=""
+  noindex
+>
+  <div class="mx-auto w-full max-w-2xl space-y-6">
+    <header class="space-y-1">
+      <h1 class="text-foreground font-serif text-3xl">Resume versions</h1>
+      <p class="text-foreground/55 text-sm">
+        {versions.length} Resume Versions. Each link opens the Print Page for that
+        version.
+      </p>
+    </header>
+
+    <ul class="divide-border border-border divide-y border-y">
+      {
+        versions.map(({ version, isDefault, href, jobTitle }) => (
+          <li>
+            <a
+              href={href}
+              class="text-foreground hover:text-primary flex items-baseline justify-between gap-4 py-3"
+            >
+              <span class="font-mono">
+                {version}
+                {isDefault && (
+                  <span class="text-foreground/55 ml-2 text-xs">
+                    Default Version
+                  </span>
+                )}
+              </span>
+              <span class="text-foreground/55 text-right text-sm">
+                {jobTitle}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayoutPrint>
