@@ -1,10 +1,10 @@
 # Deployment
 
-The site is primarily deployed to **Cloudflare Workers**, with secondary configs for Netlify and Vercel.
+The site is deployed to **Cloudflare Workers**.
 
 ---
 
-## Cloudflare Workers (Primary)
+## Cloudflare Workers
 
 - **Adapter:** `@astrojs/cloudflare`
 - **Config:** `wrangler.jsonc` at repo root
@@ -29,17 +29,6 @@ bun run build   # outputs to dist/
 If dev crashes with `ReferenceError: require is not defined` and the stack trace names a file under `node_modules`, add that package to this list (use `a > b` for nested copies) and delete `node_modules/.vite`.
 
 Code that runs per request must not import build-time modules that pull in CommonJS packages, e.g. `src/content/collection-definitions/resume-loaders.ts` (`astro/loaders`, `node:fs`).
-
----
-
-## Other Platforms
-
-| Platform | Config file |
-|---|---|
-| Netlify | `netlify.toml` |
-| Vercel | `vercel.json` |
-
-Both use the same `bun run build` command and `dist/` output directory.
 
 ---
 
