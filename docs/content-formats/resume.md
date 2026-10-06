@@ -1,6 +1,6 @@
 # How to Manage Resume Content
 
-All resume data lives in `src/content/resume/<version>/`, one folder per **Resume Version** (glossary: `CONTEXT.md`).
+All resume data lives in `src/content/resume/<version>/`, one folder per **Resume Version** (glossary: `GLOSSARY.md`).
 
 - `src/content/resume/index/` is the **Default Version**. It backs the web resume (`/resume`) and the default print pages (`/resume-print`, `/cv-print`).
 - Any other folder, e.g. `src/content/resume/2026-jul-dev/`, is a Resume Version tailored for a specific job application. It is rendered only at `/resume-print/<version>` and `/cv-print/<version>`.

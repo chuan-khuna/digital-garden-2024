@@ -17,4 +17,4 @@ Other LLM-generated artifacts go in their own `docs/<category>/` folder (see CLA
 ## Agent → docs map
 
 - **developer** → `architecture/`, `content-formats/`
-- **web-master** → `content-formats/`, plus `CONTEXT.md` for resume work
+- **web-master** → `content-formats/`, plus `GLOSSARY.md` for resume work

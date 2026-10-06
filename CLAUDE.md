@@ -21,7 +21,7 @@ bun run test         # vitest — unit tests for pure modules (src/**/*.test.ts)
 
 ## Where knowledge lives
 
-- `CONTEXT.md` — domain vocabulary (Resume Version, Section, Default Version, Print Page). Name code and docs after it.
+- `GLOSSARY.md` — domain vocabulary (Resume Version, Section, Default Version, Print Page). Name code and docs after it.
 - `docs/adr/` — decisions that constrain the code. Read the ones for the area you touch before changing it.
 - `docs/README.md` — index of the knowledge base: `architecture/` (how the system works, incl. `project-structure.md`) and `content-formats/` (every content format).
 

@@ -2,7 +2,7 @@
 
 The resume is built from **Astro Content Collections** — structured data files that are queried at build time and rendered into an interactive web page and print-optimised PDF pages (**Print Pages**: the one-page Resume and the multi-page CV).
 
-Resume content is organised into **Resume Versions** (glossary: `CONTEXT.md`; decision record: `docs/adr/0001-versioned-resume-collections.md`). The **Default Version** is the folder named `index`; any other folder is a Resume Version tailored for a specific job application, rendered only on its own unlisted, noindexed print URLs.
+Resume content is organised into **Resume Versions** (glossary: `GLOSSARY.md`; decision record: `docs/adr/0001-versioned-resume-collections.md`). The **Default Version** is the folder named `index`; any other folder is a Resume Version tailored for a specific job application, rendered only on its own unlisted, noindexed print URLs.
 
 ---
 
