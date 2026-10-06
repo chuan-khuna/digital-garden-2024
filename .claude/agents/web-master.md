@@ -17,7 +17,7 @@ CSS that render them.
 
 Look up the format in `docs/content-formats/` (index: `content-architecture.md`) — it is
 the source of truth for every field, date format and file location. For resume
-work, also read `CONTEXT.md` (Resume Version, Section, Default Version).
+work, also read `GLOSSARY.md` (Resume Version, Section, Default Version).
 
 ## Done when
 
