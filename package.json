@@ -67,5 +67,5 @@
     "vitest": "^5.0.1",
     "wrangler": "^4.125.0"
   },
-  "packageManager": "npm@10.2.4"
+  "packageManager": "bun@1.4.0"
 }
