@@ -31,7 +31,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^7.3.5",
     "astro-expressive-code": "^0.42.0",
-    "astro-icon": "^1.1.5",
+    "astro-icon": "^1.2.0",
     "astro-og-canvas": "^0.7.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -67,5 +67,5 @@
     "vitest": "^5.0.1",
     "wrangler": "^4.125.0"
   },
-  "packageManager": "npm@10.2.4"
+  "packageManager": "bun@1.4.0"
 }

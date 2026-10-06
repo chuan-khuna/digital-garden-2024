@@ -2,17 +2,7 @@
   {
     "id": "languages",
     "category": "Languages",
-    "details": [
-      "Python",
-      "Haskell",
-      "Elixir",
-      "R",
-      "SQL",
-      "Ruby",
-      "Gleam",
-      "JavaScript",
-      "Go"
-    ]
+    "details": ["Python", "Haskell", "Elixir", "R", "SQL", "Ruby", "JavaScript"]
   },
   {
     "id": "frameworks_and_libraries",
@@ -29,8 +19,6 @@
       "matplotlib",
       "seaborn",
       "Phoenix",
-      "Fiber",
-      "Gin",
       "Astro"
     ]
   },
