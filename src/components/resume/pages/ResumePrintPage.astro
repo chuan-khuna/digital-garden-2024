@@ -3,9 +3,13 @@
 // other Resume Version at /resume-print/<version>.
 //
 // Every Print Layout is rendered; an on-screen selector shows one and hides
-// the rest (hidden layouts don't print either). The choice lives in
-// `?layout=<name>`, so a layout can be linked directly, e.g.
-// /resume-print?layout=cv. Without JS the default layout shows.
+// the rest (hidden layouts don't print either). A second selector hides
+// individual Sections; the header always shows. A layout can hide Sections by
+// default (`data-default-hide`), and switching layout resets the Section
+// toggles to that layout's defaults. Both choices live in the URL —
+// `?layout=<name>&hide=<section>,<section>` — so they can be linked directly,
+// e.g. /resume-print?layout=cv&hide=interests. Without JS the default layout
+// shows with every Section.
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
 import { site } from '@/data/site.config'
 import type { Resume } from '@/lib/resume'
@@ -43,6 +47,21 @@ const layouts = [
 ] as const
 const defaultLayout = layouts[0].name
 
+/** Sections that can be hidden. Names are the `?hide=` values. */
+const sections = [
+  { name: 'skills', label: 'Skills' },
+  { name: 'experiences', label: 'Experience' },
+  { name: 'projects', label: 'Projects' },
+  { name: 'educations', label: 'Education' },
+  { name: 'activities', label: 'Activity' },
+  { name: 'interests', label: 'Interests' },
+] as const
+
+const toggleGroupClass =
+  'border-border mx-auto flex flex-wrap justify-center gap-1 rounded-lg border p-1 text-sm'
+const toggleClass =
+  'text-foreground/55 hover:text-foreground aria-pressed:bg-muted aria-pressed:text-muted-foreground rounded-md px-3 py-1'
+
 const cvPageClass = 'px-12 py-4 font-resumesans'
 ---
 
@@ -51,23 +70,36 @@ const cvPageClass = 'px-12 py-4 font-resumesans'
   description=""
   noindex={noindex}
 >
-  <div
-    role="group"
-    aria-label="Print layout"
-    class="border-border mx-auto flex flex-wrap justify-center gap-1 rounded-lg border p-1 text-sm print:hidden"
-  >
-    {
-      layouts.map(({ name, label }) => (
-        <button
-          type="button"
-          data-layout-option={name}
-          aria-pressed={name === defaultLayout ? 'true' : 'false'}
-          class="text-foreground/55 hover:text-foreground aria-pressed:bg-muted aria-pressed:text-muted-foreground rounded-md px-3 py-1"
-        >
-          {label}
-        </button>
-      ))
-    }
+  <div class="flex flex-col gap-2 print:hidden">
+    <div role="group" aria-label="Print layout" class={toggleGroupClass}>
+      {
+        layouts.map(({ name, label }) => (
+          <button
+            type="button"
+            data-layout-option={name}
+            aria-pressed={name === defaultLayout ? 'true' : 'false'}
+            class={toggleClass}
+          >
+            {label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div role="group" aria-label="Sections shown" class={toggleGroupClass}>
+      {
+        sections.map(({ name, label }) => (
+          <button
+            type="button"
+            data-section-option={name}
+            aria-pressed="true"
+            class={toggleClass}
+          >
+            {label}
+          </button>
+        ))
+      }
+    </div>
   </div>
 
   <WebWrapper className="flex min-h-screen flex-col justify-center">
@@ -79,32 +111,61 @@ const cvPageClass = 'px-12 py-4 font-resumesans'
           </div>
 
           <div class="col-span-2 block space-y-1">
-            <Skills data={resume.skills} variant="print" />
-            <Activity data={resume.activities} variant="print" />
-            <Interests items={resume.interests} variant="print" />
+            <div data-section="skills">
+              <Skills data={resume.skills} variant="print" />
+            </div>
+            <div data-section="activities">
+              <Activity data={resume.activities} variant="print" />
+            </div>
+            <div data-section="interests">
+              <Interests items={resume.interests} variant="print" />
+            </div>
           </div>
 
           <div class="col-span-5 block space-y-1">
-            <Experiences data={resume.experiences} variant="print" />
-            <Projects data={resume.projects} variant="print" />
-            <Education data={resume.educations} variant="print" />
+            <div data-section="experiences">
+              <Experiences data={resume.experiences} variant="print" />
+            </div>
+            <div data-section="projects">
+              <Projects data={resume.projects} variant="print" />
+            </div>
+            <div data-section="educations">
+              <Education data={resume.educations} variant="print" />
+            </div>
           </div>
         </Content>
       </PageLayout>
     </div>
 
-    <div data-layout="resume-one-col" class="contents" hidden>
+    <div
+      data-layout="resume-one-col"
+      data-default-hide="interests"
+      class="contents"
+      hidden
+    >
       <PageLayout className="px-12 py-4 font-resumesans">
         <Content className="mx-auto max-w-[1200px] space-y-1">
           <div class="mb-2">
             <PrintHeader header={resume.header} />
           </div>
-          <Skills data={resume.skills} variant="print" />
-          <Experiences data={resume.experiences} variant="print" />
-          <Projects data={resume.projects} variant="print" />
-          <Education data={resume.educations} variant="print" />
-          <Activity data={resume.activities} variant="print" />
-          <Interests items={resume.interests} variant="print" />
+          <div data-section="skills">
+            <Skills data={resume.skills} variant="print" />
+          </div>
+          <div data-section="experiences">
+            <Experiences data={resume.experiences} variant="print" />
+          </div>
+          <div data-section="projects">
+            <Projects data={resume.projects} variant="print" />
+          </div>
+          <div data-section="educations">
+            <Education data={resume.educations} variant="print" />
+          </div>
+          <div data-section="activities">
+            <Activity data={resume.activities} variant="print" />
+          </div>
+          <div data-section="interests">
+            <Interests items={resume.interests} variant="print" />
+          </div>
         </Content>
       </PageLayout>
     </div>
@@ -117,10 +178,18 @@ const cvPageClass = 'px-12 py-4 font-resumesans'
           </div>
 
           <div class="space-y-1">
-            <Skills data={cv.skills} variant="print" />
-            <Experiences data={cv.experiences} variant="print" />
-            <Education data={cv.educations} variant="print" />
-            <Projects data={cv.projects} variant="print" />
+            <div data-section="skills">
+              <Skills data={cv.skills} variant="print" />
+            </div>
+            <div data-section="experiences">
+              <Experiences data={cv.experiences} variant="print" />
+            </div>
+            <div data-section="educations">
+              <Education data={cv.educations} variant="print" />
+            </div>
+            <div data-section="projects">
+              <Projects data={cv.projects} variant="print" />
+            </div>
           </div>
         </Content>
       </PageLayout>
@@ -130,8 +199,12 @@ const cvPageClass = 'px-12 py-4 font-resumesans'
       <PageLayout className={cvPageClass}>
         <Content className="mx-auto max-w-[1200px]">
           <div class="space-y-1">
-            <Activity data={cv.activities} variant="print" />
-            <Interests items={cv.interests} variant="print" />
+            <div data-section="activities">
+              <Activity data={cv.activities} variant="print" />
+            </div>
+            <div data-section="interests">
+              <Interests items={cv.interests} variant="print" />
+            </div>
           </div>
         </Content>
       </PageLayout>
@@ -141,33 +214,89 @@ const cvPageClass = 'px-12 py-4 font-resumesans'
 
 <script>
   const layouts = [...document.querySelectorAll<HTMLElement>('[data-layout]')]
-  const options = [
+  const layoutOptions = [
     ...document.querySelectorAll<HTMLButtonElement>('[data-layout-option]'),
   ]
-  const names = layouts.map((el) => el.dataset.layout!)
-  const defaultLayout = names[0]
+  const layoutNames = layouts.map((el) => el.dataset.layout!)
+  const defaultLayout = layoutNames[0]
 
-  function show(name: string) {
-    for (const el of layouts) el.hidden = el.dataset.layout !== name
-    for (const btn of options) {
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')]
+  const sectionOptions = [
+    ...document.querySelectorAll<HTMLButtonElement>('[data-section-option]'),
+  ]
+  const sectionNames = sectionOptions.map((btn) => btn.dataset.sectionOption!)
+
+  function parseHide(value: string): Set<string> {
+    return new Set(value.split(',').filter((n) => sectionNames.includes(n)))
+  }
+
+  /** Sections a layout hides until toggled on (`data-default-hide`). */
+  function defaultHidden(name: string): Set<string> {
+    const el = layouts.find((l) => l.dataset.layout === name)
+    return parseHide(el?.dataset.defaultHide ?? '')
+  }
+
+  const params = new URLSearchParams(location.search)
+  const requestedLayout = params.get('layout')
+  let layout =
+    requestedLayout && layoutNames.includes(requestedLayout)
+      ? requestedLayout
+      : defaultLayout
+  // `?hide=` (even empty) overrides the layout's defaults.
+  const requestedHide = params.get('hide')
+  let hidden =
+    requestedHide === null ? defaultHidden(layout) : parseHide(requestedHide)
+
+  function render() {
+    for (const el of layouts) el.hidden = el.dataset.layout !== layout
+    for (const btn of layoutOptions) {
       btn.setAttribute(
         'aria-pressed',
-        String(btn.dataset.layoutOption === name),
+        String(btn.dataset.layoutOption === layout),
+      )
+    }
+    for (const el of sections) el.hidden = hidden.has(el.dataset.section!)
+    for (const btn of sectionOptions) {
+      btn.setAttribute(
+        'aria-pressed',
+        String(!hidden.has(btn.dataset.sectionOption!)),
       )
     }
   }
 
-  const requested = new URLSearchParams(location.search).get('layout')
-  show(requested && names.includes(requested) ? requested : defaultLayout)
+  function saveToUrl() {
+    const url = new URL(location.href)
+    if (layout === defaultLayout) url.searchParams.delete('layout')
+    else url.searchParams.set('layout', layout)
+    // Keep `hide` in Section order so the URL is stable; omit it when it
+    // matches the layout's defaults.
+    const hide = sectionNames.filter((name) => hidden.has(name)).join(',')
+    const defaults = sectionNames
+      .filter((name) => defaultHidden(layout).has(name))
+      .join(',')
+    if (hide === defaults) url.searchParams.delete('hide')
+    else url.searchParams.set('hide', hide)
+    history.replaceState(null, '', url)
+  }
 
-  for (const btn of options) {
+  render()
+
+  for (const btn of layoutOptions) {
     btn.addEventListener('click', () => {
-      const name = btn.dataset.layoutOption!
-      show(name)
-      const url = new URL(location.href)
-      if (name === defaultLayout) url.searchParams.delete('layout')
-      else url.searchParams.set('layout', name)
-      history.replaceState(null, '', url)
+      layout = btn.dataset.layoutOption!
+      hidden = defaultHidden(layout)
+      render()
+      saveToUrl()
+    })
+  }
+
+  for (const btn of sectionOptions) {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.sectionOption!
+      if (hidden.has(name)) hidden.delete(name)
+      else hidden.add(name)
+      render()
+      saveToUrl()
     })
   }
 </script>

@@ -278,11 +278,13 @@ Resume Version pages:
 
 Every page renders all three Print Layouts. An on-screen selector (`print:hidden`) shows one and sets `hidden` on the others, so only the shown layout prints. The choice is kept in the `?layout=` query parameter, so a layout can be linked directly; an unknown or missing value — or no JS — falls back to the default.
 
-| `?layout=` | Surface | Shape |
-|---|---|---|
-| `resume-two-cols` (default) | `resume_print` | one page, two columns |
-| `resume-one-col` | `resume_print` | one page, one column |
-| `cv` | `cv_print` | two pages, one column |
+| `?layout=` | Surface | Shape | Hidden by default |
+|---|---|---|---|
+| `resume-two-cols` (default) | `resume_print` | one page, two columns | — |
+| `resume-one-col` | `resume_print` | one page, one column | `interests` |
+| `cv` | `cv_print` | two pages, one column | — |
+
+A second selector shows or hides individual Sections (`skills`, `experiences`, `projects`, `educations`, `activities`, `interests`); the header always shows. Each Section in the markup is wrapped in `<div data-section="<name>">`, and a layout's defaults come from `data-default-hide` on its `data-layout` wrapper. Switching layout resets the Section toggles to that layout's defaults. Hidden Sections are kept in `?hide=` (comma-separated, e.g. `/resume-print?layout=cv&hide=projects,interests`), which is left out of the URL when it matches the layout's defaults; an explicit `?hide=` — even empty — overrides them.
 
 The page uses `BaseLayoutPrint`, which hides the nav and footer when printing via `print:hidden` Tailwind classes, and removes padding/margins from the container.
 
