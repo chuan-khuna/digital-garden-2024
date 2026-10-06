@@ -1,0 +1,60 @@
+---
+import { ArrowUpRight, Github } from 'lucide-react'
+import { portfolio } from '@/data/portfolio'
+
+// The title link stretches over the whole card (after:inset-0), so clicking the
+// card opens the website; the GitHub link sits above it (z-10) and opens the repo.
+// Nested <a> elements are invalid HTML, hence this pattern.
+---
+
+<section class="m-auto w-full max-w-6xl px-2 pb-8 sm:px-4 md:px-6">
+  <h2 class="mb-3 text-xl font-semibold">Projects</h2>
+  <div
+    class="grid grid-cols-1 gap-2 sm:gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4"
+  >
+    {
+      portfolio.projects.map((project) => {
+        const href = project.url ?? project.github
+        return (
+          <article class="border-darkslate-100 bg-darkslate-500 hover:border-primary-500 group relative flex flex-col rounded-lg border p-6 shadow-sm transition-colors">
+            <div class="flex items-center gap-2">
+              <h3 class="m-0 font-semibold">
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-current"
+                >
+                  {project.name}
+                </a>
+              </h3>
+              <div class="ml-auto flex items-center gap-3">
+                {project.github && project.url && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="View repo"
+                    aria-label={`${project.name} repository on GitHub`}
+                    class="relative z-10 -m-1 rounded p-1 opacity-60 transition hover:scale-110 hover:opacity-100"
+                  >
+                    <Github className="size-5" />
+                  </a>
+                )}
+                {project.url ? (
+                  <ArrowUpRight
+                    className="size-4 opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Github className="size-5 opacity-60" aria-hidden="true" />
+                )}
+              </div>
+            </div>
+            <p class="m-0 mt-2 text-sm opacity-70">{project.description}</p>
+          </article>
+        )
+      })
+    }
+  </div>
+</section>
