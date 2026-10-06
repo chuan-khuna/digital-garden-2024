@@ -45,8 +45,7 @@ src/
 │   │   └── ResumePrintPage.astro        ← body of /resume-print and /resume-print/<version>: every Print Layout + selector
 │   ├── layout/                          ← print layout wrappers
 │   │   ├── WebWrapper.astro
-│   │   ├── PageLayout.astro
-│   │   └── Content.astro
+│   │   └── PageLayout.astro
 │   ├── sections/
 │   │   ├── Experiences.astro            ← unified: accepts data[] + variant prop
 │   │   ├── Projects.astro
@@ -265,7 +264,7 @@ Data fetching happens in `resume.astro` via `getResume()`. Section components re
 | `/resume-print/<version>` | `src/pages/resume-print/[version].astro` | `<version>` |
 | `/resume-print/versions` | `src/pages/resume-print/versions.astro` | all (list) |
 
-The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index`. `versions` is also a reserved folder name, so the static `versions.astro` route never collides with a Resume Version. The page markup lives once in `components/resume/pages/ResumePrintPage.astro`; both the `index` route and the `[version]` route render it with a `resume` prop (`getResume('resume_print', …)`) and a `cv` prop (`getResume('cv_print', …)`).
+The `[version]` pages build one page per entry of `getResumeVersions()`, which excludes `index`, so there is no `/resume-print/index`. `versions` is also a reserved folder name, so the static `versions.astro` route never collides with a Resume Version. The page markup lives once in `components/resume/pages/ResumePrintPage.astro`. Routes pass only the Resume Version (`<ResumePrintPage />` for `index`, `<ResumePrintPage version={version} />` otherwise); the page resolves the Resume for each Print Layout's Surface itself and sets `noindex` whenever the version is not the Default Version.
 
 Resume Version pages:
 
@@ -276,6 +275,8 @@ Resume Version pages:
 
 ### Print Layouts
 
+The Print Layouts and their selection rules live in one pure module, `src/lib/resume/print-layouts.ts` (tested in `print-layouts.test.ts`): each layout's name, label, Surface, Section arrangement and default-hidden Sections, plus `parseSelection` / `writeSelection` / `selectLayout` / `toggleSection` for the URL state. The page markup renders from it, and the page's browser script imports the same functions and only applies the result to the DOM. Add or change a layout there first.
+
 Every page renders all three Print Layouts. An on-screen selector (`print:hidden`) shows one and sets `hidden` on the others, so only the shown layout prints. The choice is kept in the `?layout=` query parameter, so a layout can be linked directly; an unknown or missing value — or no JS — falls back to the default.
 
 | `?layout=` | Surface | Shape | Hidden by default |
@@ -284,7 +285,7 @@ Every page renders all three Print Layouts. An on-screen selector (`print:hidden
 | `resume-one-col` | `resume_print` | one page, one column | `interests` |
 | `cv` | `cv_print` | two pages, one column | — |
 
-A second selector shows or hides individual Sections (`skills`, `experiences`, `projects`, `educations`, `activities`, `interests`); the header always shows. Each Section in the markup is wrapped in `<div data-section="<name>">`, and a layout's defaults come from `data-default-hide` on its `data-layout` wrapper. Switching layout resets the Section toggles to that layout's defaults. Hidden Sections are kept in `?hide=` (comma-separated, e.g. `/resume-print?layout=cv&hide=projects,interests`), which is left out of the URL when it matches the layout's defaults; an explicit `?hide=` — even empty — overrides them.
+A second selector shows or hides individual Sections (`skills`, `experiences`, `projects`, `educations`, `activities`, `interests`); the header always shows. Each Section is rendered by `sections/print/Section.astro`, which wraps it in `<div data-section="<name>">`; a layout's defaults are its `defaultHidden` list in `print-layouts.ts`. Switching layout resets the Section toggles to that layout's defaults. Hidden Sections are kept in `?hide=` (comma-separated, e.g. `/resume-print?layout=cv&hide=projects,interests`), which is left out of the URL when it matches the layout's defaults; an explicit `?hide=` — even empty — overrides them.
 
 The page uses `BaseLayoutPrint`, which hides the nav and footer when printing via `print:hidden` Tailwind classes, and removes padding/margins from the container.
 
@@ -336,7 +337,7 @@ Page 1:                    Page 2:
 |---|---|
 | `WebWrapper` | Outer `div` — centres and sizes content for screen |
 | `PageLayout` | Represents a physical page — sets padding/margins for print bleed |
-| `Content` | Inner grid wrapper |
+| `sections/print/Section` | Renders one hideable Section by name, wrapped in its `data-section` element |
 | `PrintPageBreak` | Shows "PAGE BREAK" label on screen; inserts CSS `page-break-after: always` for PDF |
 
 Font for all print pages: `font-resumesans` (Metric / MetricHPEXS).
@@ -422,23 +423,26 @@ This component exists because Astro's scoped `<style>` cannot reach `<slot>` con
 
 ## How a Section Component Works (Experiences example)
 
-The **route** resolves the Resume Version for its Surface (via `getResume()`, which also filters by visibility). The **page body** and the **section component** only render.
+The **route** names the Resume Version; the **page body** resolves it for each Surface (via `getResume()`, which also filters by visibility). The **section component** only renders.
 
 ```astro
 ---
-// resume-print/[version].astro (route) — resolves the version for a Surface
-const resume = await getResume('resume_print', Astro.params.version)
-const cv = await getResume('cv_print', Astro.params.version)
+// resume-print/[version].astro (route) — names the version
+const { version } = Astro.params
 ---
-<ResumePrintPage resume={resume} cv={cv} noindex />
+<ResumePrintPage version={version} />
 ```
 
 ```astro
 ---
-// components/resume/pages/ResumePrintPage.astro (page body) — already filtered
-const { experiences, projects, educations } = resume
+// components/resume/pages/ResumePrintPage.astro (page body) — resolves per Surface
+const bySurface = {
+  resume_print: await getResume('resume_print', version),
+  cv_print: await getResume('cv_print', version),
+}
 ---
-<Experiences data={experiences} variant="print" />
+{PRINT_LAYOUTS.map(({ surface, arrangement }) => /* … */
+  <PrintSection name="experiences" resume={bySurface[surface]} />)}
 ```
 
 ```astro
@@ -484,7 +488,7 @@ Content files (src/content/resume/<version>/ JSON / .md)
 getResume(surface, version)  ← src/lib/resume/index.ts → resolveResume() in resume/resolve.ts: whole-Section override, fallback to `index`, visibility filter
         ↓
 resume.astro / resume-print/(index|[version]).astro
-        ↓  ResumePrintPage (render only)
+        ↓  ResumePrintPage (resolves each Surface; Print Layouts from lib/resume/print-layouts.ts)
 Section components (sections/*.astro)  ← receive typed data[] + variant as props
         ↓  compose using SectionBlock + Item + UnorderedList / ResumeMarkdownBulletWrapper
         ↓  wrapped in BaseLayout / BaseLayoutPrint

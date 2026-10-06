@@ -1,10 +1,6 @@
 ---
 // Print Page for the Default Version (`index`).
 import ResumePrintPage from '@/components/resume/pages/ResumePrintPage.astro'
-import { getResume } from '@/lib/resume'
-
-const resume = await getResume('resume_print')
-const cv = await getResume('cv_print')
 ---
 
-<ResumePrintPage resume={resume} cv={cv} />
+<ResumePrintPage />

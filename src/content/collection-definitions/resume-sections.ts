@@ -6,8 +6,8 @@
  * import it, and pulling in `astro/loaders` or `node:fs` there breaks dev with
  * "require is not defined".
  *
- * Not wired in yet — a later step derives the resume collections and loader
- * from this registry.
+ * The Print Page's Section names (`@/lib/resume/print-layouts`) are typed
+ * from it. A later step derives the resume collections and loader from it.
  */
 export const RESUME_SECTIONS = {
   header: 'resumeHeader',

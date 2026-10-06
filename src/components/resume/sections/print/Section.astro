@@ -1,0 +1,44 @@
+---
+// One hideable Section on the Print Page, wrapped in the `data-section`
+// element the page's Section selector toggles.
+import type { Resume } from '@/lib/resume'
+import type { PrintSection } from '@/lib/resume/print-layouts'
+import Experiences from '@/components/resume/sections/Experiences.astro'
+import Skills from '@/components/resume/sections/Skills.astro'
+import Projects from '@/components/resume/sections/Projects.astro'
+import Education from '@/components/resume/sections/Education.astro'
+import Interests from '@/components/resume/sections/Interests.astro'
+import Activity from '@/components/resume/sections/Activity.astro'
+
+interface Props {
+  name: PrintSection
+  resume: Resume
+}
+
+const { name, resume } = Astro.props
+---
+
+<div data-section={name}>
+  {name === 'skills' && <Skills data={resume.skills} variant="print" />}
+  {
+    name === 'experiences' && (
+      <Experiences data={resume.experiences} variant="print" />
+    )
+  }
+  {name === 'projects' && <Projects data={resume.projects} variant="print" />}
+  {
+    name === 'educations' && (
+      <Education data={resume.educations} variant="print" />
+    )
+  }
+  {
+    name === 'activities' && (
+      <Activity data={resume.activities} variant="print" />
+    )
+  }
+  {
+    name === 'interests' && (
+      <Interests items={resume.interests} variant="print" />
+    )
+  }
+</div>
