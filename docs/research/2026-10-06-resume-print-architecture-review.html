@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Architecture review for digital-garden-2024 — resume-print</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+    </script>
+    <style>
+      body { background: #F0EEE6; }
+      h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; }
+      .clay { color: #CC785C; } .bg-clay { background: #CC785C; }
+      .seam { stroke-dasharray: 4 4; }
+      .leak { stroke: #dc2626; }
+      .deep { background: linear-gradient(135deg, #1c1917, #292524); }
+      .scatter-dot { width: 10px; height: 10px; border-radius: 9999px; background: #dc2626; display: inline-block; }
+    </style>
+  </head>
+  <body class="text-stone-900 font-sans">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-12">
+      <header class="space-y-4">
+        <p class="text-xs uppercase tracking-wider clay">Architecture review · 2026-10-06 · branch feature/og-post-mermaid · at d211e83</p>
+        <h1 class="text-4xl">digital-garden-2024 — <span class="font-mono text-3xl">src/pages/resume-print/</span></h1>
+        <p class="text-sm text-stone-600 max-w-2xl">Scope: the Print Page routes and the modules behind them —
+          <span class="font-mono">ResumePrintPage.astro</span>, <span class="font-mono">lib/resume</span>,
+          <span class="font-mono">resume-sections.ts</span>, <span class="font-mono">layout/*</span>. Follows
+          <span class="font-mono">docs/research/2026-09-27-garden-architecture-review.html</span>; candidate 1 here
+          subsumes its candidate 5 (Resume Section registry) for the Print Page.</p>
+        <p class="text-sm"><span class="px-2 py-0.5 rounded bg-stone-800 text-white text-xs">Progress</span>
+          No candidate picked yet. Next step: choose one and grill it (interfaces not yet proposed).</p>
+        <div class="flex flex-wrap gap-6 text-xs uppercase tracking-wider text-slate-600">
+          <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 border-2 border-slate-400 bg-white"></span>module</span>
+          <span class="flex items-center gap-2"><svg width="30" height="8"><line x1="0" y1="4" x2="30" y2="4" stroke="#64748b" stroke-width="2" class="seam"/></svg>seam</span>
+          <span class="flex items-center gap-2"><svg width="30" height="8"><line x1="0" y1="4" x2="30" y2="4" stroke-width="2" class="leak"/></svg>leakage</span>
+          <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 deep border-2 border-slate-900"></span>deep module</span>
+        </div>
+      </header>
+
+      <section class="rounded-xl bg-white/70 border border-stone-300 p-5">
+        <table class="w-full text-sm">
+          <thead><tr class="text-left text-xs uppercase tracking-wider text-stone-500"><th class="py-1">#</th><th>Candidate</th><th>Strength</th></tr></thead>
+          <tbody class="divide-y divide-stone-200">
+            <tr><td class="py-2">1</td><td><a class="underline" href="#c1">Deepen the Print Layout module</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td></tr>
+            <tr><td class="py-2">2</td><td><a class="underline" href="#c2">Let the Print Page resolve its own Surfaces</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td></tr>
+            <tr><td class="py-2">3</td><td><a class="underline" href="#c3">Delete the Content pass-through</a></td><td><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="candidates" class="space-y-10">
+
+        <!-- ───────────── Candidate 1 ───────────── -->
+        <article id="c1" class="rounded-xl border border-stone-300 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="font-serif text-2xl mr-2">1 · Deepen the Print Layout module</h2>
+            <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong</span>
+            <span class="rounded-full bg-slate-100 text-slate-700 text-xs px-3 py-1">in-process</span>
+          </div>
+
+          <ul class="font-mono text-sm text-slate-700 space-y-0.5">
+            <li>src/components/resume/pages/ResumePrintPage.astro <span class="text-slate-400">(302 lines: frontmatter, markup ×3, inline script)</span></li>
+            <li>src/content/collection-definitions/resume-sections.ts <span class="text-slate-400">(Section registry, "not wired in yet")</span></li>
+          </ul>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-[#F0EEE6]/50 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-500 mb-3">Before — one concept, five places</p>
+              <div class="space-y-2 text-xs">
+                <div class="border-2 border-slate-300 bg-white p-2 flex justify-between items-center">
+                  <span class="uppercase tracking-wider">frontmatter <span class="font-mono normal-case">layouts[]</span>, <span class="font-mono normal-case">sections[]</span></span>
+                  <span><span class="scatter-dot"></span> <span class="scatter-dot"></span></span>
+                </div>
+                <div class="border-2 border-slate-300 bg-white p-2">
+                  <div class="flex justify-between items-center">
+                    <span class="uppercase tracking-wider">markup · 3 layouts</span>
+                    <span class="font-mono text-red-600">18× data-section</span>
+                  </div>
+                  <div class="mt-2 grid grid-cols-6 gap-1">
+                    <span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span>
+                    <span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span>
+                    <span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span><span class="h-2 bg-red-300"></span>
+                  </div>
+                </div>
+                <div class="border-2 border-slate-300 bg-white p-2 flex justify-between items-center">
+                  <span class="uppercase tracking-wider">attr string <span class="font-mono normal-case">data-default-hide</span></span>
+                  <span class="scatter-dot"></span>
+                </div>
+                <div class="border-2 border-dashed border-red-400 bg-white p-2 flex justify-between items-center">
+                  <span class="uppercase tracking-wider">inline script · ~85 lines</span>
+                  <span class="text-red-600 font-semibold">0 tests</span>
+                </div>
+                <div class="border-2 border-slate-300 bg-white p-2 flex justify-between items-center opacity-60">
+                  <span class="uppercase tracking-wider">Section registry</span>
+                  <span class="text-slate-500">unused</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-lg border border-slate-200 bg-[#F0EEE6]/50 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-500 mb-3">After — one deep module, two thin adapters</p>
+              <div class="relative h-[260px]">
+                <div class="deep absolute left-1/2 -translate-x-1/2 top-0 w-60 rounded border-4 border-slate-900 p-3 text-white">
+                  <p class="text-xs uppercase tracking-wider">Print Layout module</p>
+                  <div class="mt-2 space-y-1 text-[11px] text-slate-300">
+                    <p>· Print Layouts: name, Surface, arrangement</p>
+                    <p>· default-hidden Sections</p>
+                    <p>· selection rules (URL ⇄ state)</p>
+                    <p>· Section names from the registry</p>
+                  </div>
+                </div>
+                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 260" preserveAspectRatio="none">
+                  <line x1="200" y1="130" x2="90" y2="190" stroke="#64748b" stroke-width="2" class="seam"/>
+                  <line x1="200" y1="130" x2="310" y2="190" stroke="#64748b" stroke-width="2" class="seam"/>
+                </svg>
+                <div class="absolute left-0 bottom-6 w-40 border-2 border-slate-400 bg-white p-2 text-xs">
+                  <p class="uppercase tracking-wider">page markup</p><p class="text-slate-500">loops the layouts</p>
+                </div>
+                <div class="absolute right-0 bottom-6 w-40 border-2 border-slate-400 bg-white p-2 text-xs">
+                  <p class="uppercase tracking-wider">browser script</p><p class="text-slate-500">sets hidden / aria-pressed</p>
+                </div>
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 text-xs text-emerald-700 font-semibold">Vitest crosses the same interface</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 text-sm">
+            <p><span class="font-semibold">Problem.</span> The Print Layout concept — names, which Surface, which Sections show by default, how <span class="font-mono">?layout=</span>/<span class="font-mono">?hide=</span> resolve — is spread over frontmatter, 18 hand-repeated <span class="font-mono">data-section</span> wrappers, an attribute string and an untested inline script; a typo in any one silently breaks a toggle.</p>
+            <p><span class="font-semibold">Solution.</span> Hold every Print Layout and the selection rules in one TypeScript module that both the page markup and the browser script import, with Section names taken from the existing Section registry.</p>
+          </div>
+          <ul class="text-sm grid sm:grid-cols-2 gap-x-6 gap-y-1 list-disc pl-5">
+            <li>locality: add a layout in one place</li>
+            <li>leverage: markup and script share one interface</li>
+            <li>selection rules gain Vitest tests</li>
+            <li>Section registry finally earns its keep</li>
+            <li>Surface per layout becomes explicit data</li>
+            <li>script shrinks to a DOM adapter</li>
+          </ul>
+        </article>
+
+        <!-- ───────────── Candidate 2 ───────────── -->
+        <article id="c2" class="rounded-xl border border-stone-300 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="font-serif text-2xl mr-2">2 · Let the Print Page resolve its own Surfaces</h2>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
+            <span class="rounded-full bg-slate-100 text-slate-700 text-xs px-3 py-1">in-process</span>
+          </div>
+
+          <ul class="font-mono text-sm text-slate-700 space-y-0.5">
+            <li>src/pages/resume-print/index.astro</li>
+            <li>src/pages/resume-print/[version].astro</li>
+            <li>src/components/resume/pages/ResumePrintPage.astro <span class="text-slate-400">(props: resume, cv, noindex)</span></li>
+            <li>src/lib/resume/index.ts</li>
+          </ul>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-[#F0EEE6]/50 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Before</p>
+              <pre class="mermaid">
+flowchart TB
+  I[index.astro] -->|resume_print| G[getResume]
+  I -->|cv_print| G
+  V["[version].astro"] -->|resume_print| G
+  V -->|cv_print| G
+  I -->|"resume, cv"| P[ResumePrintPage]
+  V -->|"resume, cv, noindex"| P
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#991b1b;
+  class I,V leak
+              </pre>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-[#F0EEE6]/50 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">After</p>
+              <pre class="mermaid">
+flowchart TB
+  I[index.astro] -->|version| P[Print Page]
+  V["[version].astro"] -->|version| P
+  P --> G[getResume per Surface]
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class P deep
+              </pre>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 text-sm">
+            <p><span class="font-semibold">Problem.</span> Each route must know which Surface feeds which prop (<span class="font-mono">resume_print → resume</span>, <span class="font-mono">cv_print → cv</span>) and that <span class="font-mono">noindex</span> means "not the Default Version"; both routes repeat it, and a swapped prop type-checks fine.</p>
+            <p><span class="font-semibold">Solution.</span> The Print Page takes only a Resume Version and derives both Surfaces and <span class="font-mono">noindex</span> itself; routes shrink to "which version".</p>
+          </div>
+          <ul class="text-sm grid sm:grid-cols-2 gap-x-6 gap-y-1 list-disc pl-5">
+            <li>interface shrinks to one input</li>
+            <li>Surface knowledge stops leaking into routes</li>
+            <li>noindex rule lives in one place</li>
+            <li>pairs naturally with candidate 1</li>
+          </ul>
+        </article>
+
+        <!-- ───────────── Candidate 3 ───────────── -->
+        <article id="c3" class="rounded-xl border border-stone-300 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="font-serif text-2xl mr-2">3 · Delete the Content pass-through</h2>
+            <span class="rounded-full bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1">Speculative</span>
+            <span class="rounded-full bg-slate-100 text-slate-700 text-xs px-3 py-1">in-process</span>
+          </div>
+
+          <ul class="font-mono text-sm text-slate-700 space-y-0.5">
+            <li>src/components/resume/layout/Content.astro <span class="text-slate-400">(11 lines: a div with className)</span></li>
+            <li>src/components/resume/pages/ResumePrintPage.astro <span class="text-slate-400">(4 uses)</span></li>
+          </ul>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-[#F0EEE6]/50 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-500 mb-3">Before — a call passes four bands</p>
+              <div class="space-y-1 text-xs uppercase tracking-wider">
+                <div class="h-10 border-l-4 border-slate-700 bg-white flex items-center px-3 justify-between">WebWrapper <span class="normal-case text-slate-500">fit-to-width, print hint</span></div>
+                <div class="h-10 border-l-4 border-slate-700 bg-white flex items-center px-3 justify-between">PageLayout <span class="normal-case text-slate-500">A4 sheet</span></div>
+                <div class="h-10 border-l-4 border-red-500 bg-red-50 flex items-center px-3 justify-between">Content <span class="normal-case text-red-600">div + className only</span></div>
+                <div class="h-10 border-l-4 border-slate-700 bg-white flex items-center px-3">Sections</div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-[#F0EEE6]/50 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-500 mb-3">After — three bands, each earning its keep</p>
+              <div class="space-y-1 text-xs uppercase tracking-wider">
+                <div class="h-10 border-l-4 border-slate-700 bg-white flex items-center px-3 justify-between">WebWrapper <span class="normal-case text-slate-500">fit-to-width, print hint</span></div>
+                <div class="h-10 border-l-4 border-slate-700 bg-white flex items-center px-3 justify-between">PageLayout <span class="normal-case text-slate-500">A4 sheet</span></div>
+                <div class="h-10 border-l-4 border-slate-700 bg-white flex items-center px-3">Sections <span class="normal-case text-slate-500 ml-auto">plain div for the grid</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 text-sm">
+            <p><span class="font-semibold">Problem.</span> Content's interface (<span class="font-mono">className</span> + slot) is its whole implementation; the deletion test shows complexity vanishes rather than moving.</p>
+            <p><span class="font-semibold">Solution.</span> Replace it with plain divs; keep WebWrapper and PageLayout, which hide real behaviour.</p>
+          </div>
+          <ul class="text-sm grid sm:grid-cols-2 gap-x-6 gap-y-1 list-disc pl-5">
+            <li>one fewer shallow module to read</li>
+            <li>layout grid visible where it's used</li>
+            <li>tiny change; low payoff</li>
+          </ul>
+        </article>
+      </section>
+
+      <section id="top-recommendation" class="rounded-xl deep text-white p-8 space-y-3">
+        <p class="text-xs uppercase tracking-wider clay">Top recommendation</p>
+        <h2 class="text-3xl"><a href="#c1" class="underline decoration-[#CC785C] underline-offset-4">1 · Deepen the Print Layout module</a></h2>
+        <p class="text-stone-300">The Print Page changed three times today and each change touched frontmatter, markup and script together; one module for Print Layouts and selection rules gives that churn one home and the first tests on the page's behaviour.</p>
+      </section>
+    </main>
+  </body>
+</html>
