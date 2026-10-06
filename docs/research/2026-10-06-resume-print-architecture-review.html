@@ -29,8 +29,8 @@
           <span class="font-mono">resume-sections.ts</span>, <span class="font-mono">layout/*</span>. Follows
           <span class="font-mono">docs/research/2026-09-27-garden-architecture-review.html</span>; candidate 1 here
           subsumes its candidate 5 (Resume Section registry) for the Print Page.</p>
-        <p class="text-sm"><span class="px-2 py-0.5 rounded bg-stone-800 text-white text-xs">Progress</span>
-          All three candidates implemented on 2026-10-06: <code>src/lib/resume/print-layouts.ts</code> (+ tests), the page resolves its own Surfaces, <code>Content.astro</code> deleted.</p>
+        <p class="text-sm"><span class="px-2 py-0.5 rounded bg-[#CC785C] text-white text-xs">Complete</span>
+          All three candidates implemented on 2026-10-06 in <span class="font-mono">5e4d2db</span> (pushed to <span class="font-mono">feature/og-post-mermaid</span>). <span class="font-mono">bun run test</span> (42 tests) and <span class="font-mono">bun run build</span> pass; <span class="font-mono">docs/architecture/resume-system.md</span> updated. Each candidate below ends with what landed.</p>
         <div class="flex flex-wrap gap-6 text-xs uppercase tracking-wider text-slate-600">
           <span class="flex items-center gap-2"><span class="inline-block w-5 h-4 border-2 border-slate-400 bg-white"></span>module</span>
           <span class="flex items-center gap-2"><svg width="30" height="8"><line x1="0" y1="4" x2="30" y2="4" stroke="#64748b" stroke-width="2" class="seam"/></svg>seam</span>
@@ -41,11 +41,11 @@
 
       <section class="rounded-xl bg-white/70 border border-stone-300 p-5">
         <table class="w-full text-sm">
-          <thead><tr class="text-left text-xs uppercase tracking-wider text-stone-500"><th class="py-1">#</th><th>Candidate</th><th>Strength</th></tr></thead>
+          <thead><tr class="text-left text-xs uppercase tracking-wider text-stone-500"><th class="py-1">#</th><th>Candidate</th><th>Strength</th><th>Status</th></tr></thead>
           <tbody class="divide-y divide-stone-200">
-            <tr><td class="py-2">1</td><td><a class="underline" href="#c1">Deepen the Print Layout module</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td></tr>
-            <tr><td class="py-2">2</td><td><a class="underline" href="#c2">Let the Print Page resolve its own Surfaces</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td></tr>
-            <tr><td class="py-2">3</td><td><a class="underline" href="#c3">Delete the Content pass-through</a></td><td><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span></td></tr>
+            <tr><td class="py-2">1</td><td><a class="underline" href="#c1">Deepen the Print Layout module</a></td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs">Strong</span></td><td><span class="px-2 py-0.5 rounded bg-[#CC785C] text-white text-xs">Done</span></td></tr>
+            <tr><td class="py-2">2</td><td><a class="underline" href="#c2">Let the Print Page resolve its own Surfaces</a></td><td><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs">Worth exploring</span></td><td><span class="px-2 py-0.5 rounded bg-[#CC785C] text-white text-xs">Done</span></td></tr>
+            <tr><td class="py-2">3</td><td><a class="underline" href="#c3">Delete the Content pass-through</a></td><td><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-xs">Speculative</span></td><td><span class="px-2 py-0.5 rounded bg-[#CC785C] text-white text-xs">Done</span></td></tr>
           </tbody>
         </table>
       </section>
@@ -58,6 +58,7 @@
             <h2 class="font-serif text-2xl mr-2">1 · Deepen the Print Layout module</h2>
             <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong</span>
             <span class="rounded-full bg-slate-100 text-slate-700 text-xs px-3 py-1">in-process</span>
+            <span class="rounded-full bg-[#CC785C] text-white text-xs font-semibold px-3 py-1">Done · 5e4d2db</span>
           </div>
 
           <ul class="font-mono text-sm text-slate-700 space-y-0.5">
@@ -138,6 +139,15 @@
             <li>Surface per layout becomes explicit data</li>
             <li>script shrinks to a DOM adapter</li>
           </ul>
+          <div class="rounded-lg border-l-4 border-[#CC785C] bg-[#F0EEE6] p-4 text-sm space-y-1">
+            <p class="text-xs uppercase tracking-wider clay font-semibold">What landed</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li><span class="font-mono">src/lib/resume/print-layouts.ts</span> — <span class="font-mono">PRINT_LAYOUTS</span> (name, label, Surface, <span class="font-mono">arrangement</span>, <span class="font-mono">defaultHidden</span>), <span class="font-mono">PRINT_SECTIONS</span> typed from the Section registry, and <span class="font-mono">parseSelection</span> / <span class="font-mono">writeSelection</span> / <span class="font-mono">selectLayout</span> / <span class="font-mono">toggleSection</span>.</li>
+              <li><span class="font-mono">print-layouts.test.ts</span> — 15 tests: every layout arranges each Section once, unknown names, empty <span class="font-mono">?hide=</span> override, URL round-trip and stable order.</li>
+              <li>Page markup loops <span class="font-mono">PRINT_LAYOUTS</span>; the 18 hand-written wrappers became <span class="font-mono">sections/print/Section.astro</span>; <span class="font-mono">data-default-hide</span> is gone.</li>
+              <li>Inline script now imports the module and only sets <span class="font-mono">hidden</span> / <span class="font-mono">aria-pressed</span> and the URL.</li>
+            </ul>
+          </div>
         </article>
 
         <!-- ───────────── Candidate 2 ───────────── -->
@@ -146,6 +156,7 @@
             <h2 class="font-serif text-2xl mr-2">2 · Let the Print Page resolve its own Surfaces</h2>
             <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
             <span class="rounded-full bg-slate-100 text-slate-700 text-xs px-3 py-1">in-process</span>
+            <span class="rounded-full bg-[#CC785C] text-white text-xs font-semibold px-3 py-1">Done · 5e4d2db</span>
           </div>
 
           <ul class="font-mono text-sm text-slate-700 space-y-0.5">
@@ -193,6 +204,14 @@ flowchart TB
             <li>noindex rule lives in one place</li>
             <li>pairs naturally with candidate 1</li>
           </ul>
+          <div class="rounded-lg border-l-4 border-[#CC785C] bg-[#F0EEE6] p-4 text-sm space-y-1">
+            <p class="text-xs uppercase tracking-wider clay font-semibold">What landed</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li><span class="font-mono">ResumePrintPage</span> props shrink to <span class="font-mono">version?</span>; it resolves <span class="font-mono">resume_print</span> and <span class="font-mono">cv_print</span> itself and picks each layout's Resume by its Surface.</li>
+              <li><span class="font-mono">noindex</span> is derived in the page: <span class="font-mono">version !== DEFAULT_RESUME_VERSION</span>.</li>
+              <li>Routes are one line: <span class="font-mono">&lt;ResumePrintPage /&gt;</span> and <span class="font-mono">&lt;ResumePrintPage version={version} /&gt;</span>.</li>
+            </ul>
+          </div>
         </article>
 
         <!-- ───────────── Candidate 3 ───────────── -->
@@ -201,6 +220,7 @@ flowchart TB
             <h2 class="font-serif text-2xl mr-2">3 · Delete the Content pass-through</h2>
             <span class="rounded-full bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1">Speculative</span>
             <span class="rounded-full bg-slate-100 text-slate-700 text-xs px-3 py-1">in-process</span>
+            <span class="rounded-full bg-[#CC785C] text-white text-xs font-semibold px-3 py-1">Done · 5e4d2db</span>
           </div>
 
           <ul class="font-mono text-sm text-slate-700 space-y-0.5">
@@ -237,11 +257,17 @@ flowchart TB
             <li>layout grid visible where it's used</li>
             <li>tiny change; low payoff</li>
           </ul>
+          <div class="rounded-lg border-l-4 border-[#CC785C] bg-[#F0EEE6] p-4 text-sm space-y-1">
+            <p class="text-xs uppercase tracking-wider clay font-semibold">What landed</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li><span class="font-mono">src/components/resume/layout/Content.astro</span> deleted; its four uses are plain divs carrying the grid classes.</li>
+            </ul>
+          </div>
         </article>
       </section>
 
       <section id="top-recommendation" class="rounded-xl deep text-white p-8 space-y-3">
-        <p class="text-xs uppercase tracking-wider clay">Top recommendation</p>
+        <p class="text-xs uppercase tracking-wider clay">Top recommendation · done in 5e4d2db</p>
         <h2 class="text-3xl"><a href="#c1" class="underline decoration-[#CC785C] underline-offset-4">1 · Deepen the Print Layout module</a></h2>
         <p class="text-stone-300">The Print Page changed three times today and each change touched frontmatter, markup and script together; one module for Print Layouts and selection rules gives that churn one home and the first tests on the page's behaviour.</p>
       </section>
