@@ -3,7 +3,7 @@
 - **วันที่:** 2026-09-27
 - **ที่มา:** candidate 2 ใน [garden architecture review](2026-09-27-garden-architecture-review.html)
 - **สถานะ:** ทำแล้ว (2026-09-27) ดูการตัดสินใจใน [`docs/handoff/2026-09-27-og-image-plan.md`](../handoff/2026-09-27-og-image-plan.md) ข้อ 3.5 (font path) ไม่ได้ทำ เพราะ `import.meta.url` ชี้ไปที่ไฟล์ที่ bundle แล้วใน `dist/`
-- **เอกสารที่เกี่ยวข้อง:** [`docs/architecture/og-image-generator.md`](../architecture/og-image-generator.md)
+- **เอกสารที่เกี่ยวข้อง:** [`docs/documents/og-image-generator.md`](../documents/og-image-generator.md)
 
 คำศัพท์ด้านสถาปัตยกรรม (module, interface, implementation, seam, adapter, depth, leverage, locality) ใช้ตาม skill `codebase-design` และคงเป็นภาษาอังกฤษไว้ เพื่อให้ตรงกับเอกสารอื่นใน repo
 
@@ -50,7 +50,7 @@ route (.png.ts)
 
 ### 2.1 Route `posts_/` ยังถูก build อยู่ ทำให้รูปโพสต์ถูก render สองรอบ
 
-`src/pages/og/posts_/[...slug].png.ts` เป็น route แบบง่ายที่ `docs/architecture/og-image-generator.md` และโพสต์ `content/posts/opengraph/index.mdx` อธิบายไว้เป็น "Simple Version" เพื่อใช้เป็นตัวอย่างประกอบการสอน
+`src/pages/og/posts_/[...slug].png.ts` เป็น route แบบง่ายที่ `docs/documents/og-image-generator.md` และโพสต์ `content/posts/opengraph/index.mdx` อธิบายไว้เป็น "Simple Version" เพื่อใช้เป็นตัวอย่างประกอบการสอน
 
 ปัญหาคือ Astro จะข้ามเฉพาะไฟล์หรือโฟลเดอร์ที่ชื่อ **ขึ้นต้น** ด้วย `_` เท่านั้น แต่ `posts_` มี `_` อยู่**ท้าย**ชื่อ route นี้จึงเป็น route จริงใน production:
 
@@ -227,7 +227,7 @@ const fontUrl = (file: string) => new URL(`../../assets/fonts/${file}`, import.m
 ### 3.6 ลบ route `posts_/`
 
 - ลบ `src/pages/og/posts_/`
-- ย้ายตัวอย่าง "Simple Version" ไปเป็น code block ใน `docs/architecture/og-image-generator.md` และในโพสต์ `opengraph` แทน เพื่อให้ยังมีตัวอย่างสำหรับอ่าน แต่ไม่ถูก build
+- ย้ายตัวอย่าง "Simple Version" ไปเป็น code block ใน `docs/documents/og-image-generator.md` และในโพสต์ `opengraph` แทน เพื่อให้ยังมีตัวอย่างสำหรับอ่าน แต่ไม่ถูก build
 - แก้ตาราง "Three Implementations" ในเอกสารให้เหลือ 2 route
 
 ขั้นนี้ **ทำแยกได้ทันที** ไม่ต้องรอ refactor
@@ -283,7 +283,7 @@ src/lib/og-image/
 2. **`refactor(og): type og styles end to end`** export `OgStyle`, ทำ `Record<OgStyle, …>` และลบ fallback
 3. **`refactor(og): add og-image module`** สร้าง `ogImageUrl` และ `ogImageResponse` แล้วย้ายหน้าเว็บ 4 หน้าและ route 2 ตัวมาใช้, แก้ font path, ลบ `getFontData`
 4. **`test(og): cover url and title resolution`** เพิ่ม Vitest
-5. อัปเดต `docs/architecture/og-image-generator.md` ให้ตรงกับโครงสร้างใหม่
+5. อัปเดต `docs/documents/og-image-generator.md` ให้ตรงกับโครงสร้างใหม่
 
 ทุกขั้นต้องผ่าน `bun run test` และ `bun run build`
 

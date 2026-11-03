@@ -2,7 +2,7 @@
 
 - **Date:** 2026-09-27
 - **For:** `developer` agent
-- **Status:** **Done (2026-09-27).** Items 1–5 below are implemented, except the font path fix (see Decisions). Current design: [`docs/architecture/og-image-generator.md`](../architecture/og-image-generator.md).
+- **Status:** **Done (2026-09-27).** Items 1–5 below are implemented, except the font path fix (see Decisions). Current design: [`docs/documents/og-image-generator.md`](../documents/og-image-generator.md).
 - **Details:** [`docs/research/2026-09-27-og-image-module.md`](../research/2026-09-27-og-image-module.md) (Thai: full explanation of the problems and the proposed solution)
 - **Source:** candidate 2 in [garden architecture review](../research/2026-09-27-garden-architecture-review.html)
 
@@ -29,12 +29,12 @@ Each item is a separate commit and must pass `bun run test` + `bun run build`.
 
 1. **`fix(og): remove duplicate posts_ route`**
    - Delete `src/pages/og/posts_/`
-   - Update `docs/architecture/og-image-generator.md`: "Three Implementations" → two, and remove "How the Simple Version Works", the Simple column in the Comparison table, the Simple route in Testing Locally, and the Simple entry in Common Issues
+   - Update `docs/documents/og-image-generator.md`: "Three Implementations" → two, and remove "How the Simple Version Works", the Simple column in the Comparison table, the Simple route in Testing Locally, and the Simple entry in Common Issues
    - The post `src/content/posts/opengraph/index.mdx:76-110` describes this route as the "Simple Version" with the URL `/og/posts_/…`. This is content, so hand it to `web-master`, or have the owner decide whether to keep it as an example code block.
 2. **`refactor(og): type og styles end to end`**: export `OgStyle = z.infer<…>`, use `Record<OgStyle, Theme>`, remove the fallback
 3. **`refactor(og): add og-image module`**: `ogImageUrl` checks slugs against `og-images.json` at build time, `ogImageResponse` is used by the routes, font paths are resolved from `import.meta.url`, and `getFontData` is deleted
 4. **`test(og): cover url and title resolution`**: Vitest for the pure files only (do not test satori rendering)
-5. Update `docs/architecture/og-image-generator.md` to match the new structure
+5. Update `docs/documents/og-image-generator.md` to match the new structure
 
 ## Open decisions (for the owner)
 

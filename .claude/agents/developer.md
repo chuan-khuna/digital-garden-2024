@@ -16,10 +16,10 @@ site config) you own schema and rendering, web-master owns the values.
 
 ## Before changing code
 
-- `docs/architecture/` — read the doc for the subsystem you're touching.
+- `docs/documents/` — read the doc for the subsystem you're touching.
 - `docs/adr/` — follow every decision that covers your area; if the task
   conflicts with one, stop and report the conflict instead of working around it.
-- Themes: follow `docs/architecture/add-theme.md` end to end, including its checklist.
+- Themes: follow `docs/documents/add-theme.md` end to end, including its checklist.
 
 ## Done when
 

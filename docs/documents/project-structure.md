@@ -8,6 +8,12 @@ aliases:
 
 # Project Structure
 
+## Toolchain
+
+`mise.toml` at the repo root pins the tool versions: Bun, Node 24 and just. Run `mise install` to get them (see README → Getting Started). `.nvmrc` pins Node for people using nvm/fnm instead. `package.json` → `packageManager` names the Bun version too. If you bump Bun, update both files.
+
+## `src/`
+
 Top-level layout of the `src/` directory.
 
 ```
@@ -44,15 +50,15 @@ src/
 
 ## Key Entry Points
 
-| Path | Purpose |
-|---|---|
-| `src/pages/index.astro` | Homepage (bento grid) |
-| `src/pages/posts/[...slug]/index.astro` | Individual post pages |
-| `src/pages/resume.astro` | Web resume (Default Version) |
+| Path                                                                             | Purpose                                                                                                 |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `src/pages/index.astro`                                                          | Homepage (bento grid)                                                                                   |
+| `src/pages/posts/[...slug]/index.astro`                                          | Individual post pages                                                                                   |
+| `src/pages/resume.astro`                                                         | Web resume (Default Version)                                                                            |
 | `src/pages/resume-print/` (`index.astro` + `[version].astro` + `versions.astro`) | Print Page (every Print Layout, chosen with `?layout=`), plus an unlisted index of every Resume Version |
-| `src/content.config.ts` | All content collection registrations |
-| `src/styles/globals.css` | Root stylesheet — imports all theme presets |
-| `astro.config.mjs` | Astro config — plugins, integrations, adapter |
+| `src/content.config.ts`                                                          | All content collection registrations                                                                    |
+| `src/styles/globals.css`                                                         | Root stylesheet — imports all theme presets                                                             |
+| `astro.config.mjs`                                                               | Astro config — plugins, integrations, adapter                                                           |
 
 ---
 

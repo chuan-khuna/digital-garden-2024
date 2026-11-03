@@ -3,7 +3,7 @@
 **Source file:** `src/content/og-images.json`  
 **Schema definition:** `src/content/collection-definitions/og-images.ts`
 
-OG image configs define — and customise — the Open Graph preview card of each page that is not a content entry (e.g. homepage, resume, uses). Each entry generates `/og/pages/<slug>.png`. Posts and notes do not need an entry; their OG image comes from their own frontmatter. How the images are generated: [`docs/architecture/og-image-generator.md`](../architecture/og-image-generator.md).
+OG image configs define — and customise — the Open Graph preview card of each page that is not a content entry (e.g. homepage, resume, uses). Each entry generates `/og/pages/<slug>.png`. Posts and notes do not need an entry; their OG image comes from their own frontmatter. How the images are generated: [`docs/documents/og-image-generator.md`](../documents/og-image-generator.md).
 
 ---
 
