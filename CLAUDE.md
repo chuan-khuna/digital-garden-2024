@@ -23,7 +23,7 @@ bun run test         # vitest — unit tests for pure modules (src/**/*.test.ts)
 
 - `GLOSSARY.md` — domain vocabulary (Resume Version, Section, Default Version, Print Page). Name code and docs after it.
 - `docs/adr/` — decisions that constrain the code. Read the ones for the area you touch before changing it.
-- `docs/README.md` — index of the knowledge base: `architecture/` (how the system works, incl. `project-structure.md`) and `content-formats/` (every content format).
+- `docs/README.md` — index of the knowledge base: `documents/` (how the system works, incl. `project-structure.md`) and `content-formats/` (every content format).
 
 Two project agents in `.claude/agents/` split the work: **developer** (code, schemas, visual layer) and **web-master** (content and data values).
 
@@ -44,7 +44,7 @@ Two project agents in `.claude/agents/` split the work: **developer** (code, sch
 
 ## LLM-generated artifacts
 
-Save to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`, where `<category>` is a free-form folder directly under `docs/` — e.g. `research`, `handoff`, `design`; add new ones as needed. `architecture/`, `content-formats/` and `adr/` are reserved for maintained reference docs and decision records.
+Save to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`, where `<category>` is a free-form folder directly under `docs/` — e.g. `research`, `handoff`, `design`; add new ones as needed. `documents/`, `content-formats/` and `adr/` are reserved for maintained reference docs and decision records.
 
 HTML artifacts use the Anthropic visual style: ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings.
 

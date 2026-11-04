@@ -12,11 +12,25 @@ An Astro-based digital garden and personal portfolio — Zettelkasten-style know
 
 ## Getting Started
 
+### 1. Install the toolchain
+
+Tool versions are pinned in `mise.toml` (Bun, Node 24, just). With [mise](https://mise.jdx.dev/) installed:
+
+```bash
+mise trust        # first time only — allow this repo's mise.toml
+mise install      # install the pinned tools
+```
+
+> Without mise, install Bun and Node 24 yourself (`.nvmrc` pins Node for nvm/fnm).
+
+### 2. Install and run
+
 ```bash
 bun install       # install dependencies
 bun run dev       # dev server at localhost:4321
+bun run test      # unit tests (vitest)
 bun run build     # production build
-bunx wrangler dev
+bunx wrangler dev # preview the built worker locally in workerd
 ```
 
 > `npm` and `npx` are also supported if `bun` is not available.
@@ -44,8 +58,8 @@ src/
 
 **Key config files:**
 
-- `src/content/portfolio.ts` — personal info, links, skills (bento homepage)
-- `src/content/site.config.ts` — site-wide config (title, display name, GitHub URL)
+- `src/data/portfolio.ts` — personal info, links, skills (bento homepage)
+- `src/data/site.config.ts` — site-wide config (title, display name, GitHub URL)
 
 ## References
 

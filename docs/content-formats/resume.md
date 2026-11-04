@@ -5,7 +5,7 @@ All resume data lives in `src/content/resume/<version>/`, one folder per **Resum
 - `src/content/resume/index/` is the **Default Version**. It backs the web resume (`/resume`) and the default Print Page (`/resume-print`).
 - Any other folder, e.g. `src/content/resume/2026-jul-dev/`, is a Resume Version tailored for a specific job application. It is rendered only at `/resume-print/<version>`.
 
-Schema definitions: `src/content/collection-definitions/resume.ts` (loaders: `resume-loaders.ts`; resolution rules: `src/lib/resume/resolve.ts`, loaded through `src/lib/resume/index.ts`). Architecture: `docs/architecture/resume-system.md`.
+Schema definitions: `src/content/collection-definitions/resume.ts` (loaders: `resume-loaders.ts`; resolution rules: `src/lib/resume/resolve.ts`, loaded through `src/lib/resume/index.ts`). Architecture: `docs/documents/resume-system.md`.
 
 ```
 src/content/resume/

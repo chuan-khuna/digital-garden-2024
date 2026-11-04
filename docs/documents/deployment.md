@@ -32,14 +32,6 @@ Code that runs per request must not import build-time modules that pull in Commo
 
 ---
 
-## Docker (local preview)
-
-```bash
-docker compose -f bun.compose.yml up -d   # serves on port 4322
-```
-
----
-
 ## Related
 
 - [Site Configuration](./site-configuration.md) — `wrangler.jsonc` references the site name from config
