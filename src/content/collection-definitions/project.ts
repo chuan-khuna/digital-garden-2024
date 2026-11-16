@@ -19,6 +19,7 @@ export const projectsCollection = defineCollection({
         coverAlt: z.string().optional(), // alt text for cover
         featured: z.boolean().default(false), // show in the home Projects showcase
         order: z.number().int().optional(), // sort position, ascending
+        stack: z.array(z.string()).optional(), // tech it is built with, main tool first; `tags` holds the kind of work
       })
       .refine((p) => p.url || p.github, {
         message: 'A project needs a url, a github, or both',
