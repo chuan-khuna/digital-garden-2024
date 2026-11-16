@@ -44,9 +44,55 @@ Two project agents in `.claude/agents/` split the work: **developer** (code, sch
 
 ## LLM-generated artifacts
 
-Save to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`, where `<category>` is a free-form folder directly under `docs/` — e.g. `research`, `handoff`, `design`; add new ones as needed. `documents/`, `content-formats/` and `adr/` are reserved for maintained reference docs and decision records.
+Save to `docs/<category>/yyyy-mm-dd-<topic>.<md|html>`, where `<category>` is a free-form folder directly under `docs/` — e.g. `research`, `handoff`, `design`; add new ones as needed. `documents/`, `content-formats/`, `adr/` and `records/` are reserved for maintained reference docs, decision records and discussion records.
 
-HTML artifacts use the Anthropic visual style: ivory `#F0EEE6` background, clay `#CC785C` accent, serif headings.
+HTML artifacts follow the rules in Project docs → HTML documents.
+
+## Project docs
+
+### Documents
+
+Documents about this project, including how it is implemented, live in `docs/documents/<name>.md` (or `.html`). `docs/documents/INDEX.md` is the entry point: it lists every document as one bullet, `- [Title](<name>.md) — one-line summary`.
+
+- Read the index before working on an area, and open the documents relevant to it.
+- When you add, rename or remove a document, update `INDEX.md` in the same change.
+- Keep documents in step with the code they describe: if a change makes a document wrong, fix the document in the same change.
+
+### HTML documents
+
+When a document in `docs/` is generated as HTML:
+
+- **Shared assets:** CSS and JS used across HTML documents live in `docs/shared/` (`globals.css`, `doc.js`). Link them with relative paths instead of inlining or duplicating them per page; add new shared code there. Load `doc.js` in `<head>` without `defer` so the saved theme applies before first paint; see its header comment for the page contract.
+- **Theme:** choose from a dropdown with "Auto (system)" first, then options grouped by Light and Dark.
+  - Light: Rosé Pine Dawn, Catppuccin Latte, Everforest Light, Kanagawa Lotus.
+  - Dark: Rosé Pine Moon, Catppuccin Macchiato, Everforest Dark, Kanagawa Wave.
+  - Auto follows the system setting with Rosé Pine (Dawn or main).
+- **Code blocks:** highlight with Shiki, using the Shiki theme that matches the selected page theme.
+- **Diagrams:** write them in Mermaid and render with Pele (`pele.run/api`). Make them expandable, zoomable and pannable, with expand, close and zoom icon controls.
+- **Styling:** small border radius (about 3–6px), and thin scrollbars styled to match the theme.
+- **Table of contents:** always include one.
+- **Colour:** write every colour in `oklch()` (derive with `color-mix(in oklch, …)`); no hex, `rgb()` or `hsl()`.
+- **Thai body text:** use a looped Thai font (Noto Sans Thai Looped).
+- **Glossary cards:** define each project term once, in a glossary on the page (`<dl class="glossary">` or a table marked `data-glossary`), with `id="term-<slug>"`. Mark the first use of a term in each `h2` section as `<a class="term" href="#term-<slug>">`; `doc.js` shows its meaning in a card on hover, focus or tap. Do not mark a term that has no entry.
+- **Technical manuals** (setup guides, runbooks, how-to, API guides): write in ASD-STE100 at about 60%. Procedures are numbered steps, one action each, starting with a verb; condition before action; active voice; steps of 20 words or fewer; warnings before their step; the glossary term every time, never a synonym. Explanations may read naturally, and the STE dictionary is not required. Thai text follows the same principles.
+
+### Records
+
+Discussion records live at `docs/records/yyyy-mm-dd-<topic>.md`, dated the day the discussion took place. Each record captures one discussion: what was discussed, what was decided, and any open questions.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs live as local markdown files under `.scratch/<feature-slug>/` (no remote tracker). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context — root `GLOSSARY.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 ## Common issues
 
