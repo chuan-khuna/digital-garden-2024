@@ -201,3 +201,9 @@
   --tw-prose-quotes: var(--color-quote);
   --tw-prose-th-borders: #666;
 }
+
+/* Text selection: a soft tint of the theme accent, readable in light and dark presets */
+::selection {
+  background-color: color-mix(in oklch, var(--accent) 35%, var(--background));
+  color: var(--foreground);
+}
