@@ -37,14 +37,23 @@ keyboard sit on the left, and the Solver panel on the right.
   was at that step.
 - **Solver mode** helps with a Wordle played somewhere else: type your guesses
   and click in their colours.
-- **Precompute** plays every strategy, from every opener, against all 2,315
-  answers, and saves how many guesses each one needs. The Rust build writes the
-  same files, byte for byte, as the slower Python version.
+- **Precompute** fills the files the solver reads (see below), with a progress
+  view, a log and a Stop button.
+
+## Encoding and precompute
+
+- **Feedback as one byte:** the five marks (grey 0, yellow 1, green 2) are read
+  as a base-3 number, so each of the 243 possible feedbacks fits in one `uint8`.
+  Every guess against every answer is scored once and saved as a numpy `.npy`
+  matrix (34 MB for the full Guess List).
+- **Guess counts:** every opener plays a full game against all 2,315 answers
+  under each strategy. In Python this was estimated at 9 to 35 hours; in Rust it
+  comes to about 26 minutes, with the same files byte for byte.
 
 ## What the solver found
 
 Played over all 2,315 answers, the best openers need about 3.43–3.47 guesses on
-average. When the solver may guess any word, every strategy wins every game;
+average. When the solver may guess any word, the best openers win every game;
 when it only guesses words that could still be the answer, a handful of games
 take more than six tries.
 
