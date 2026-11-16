@@ -38,7 +38,7 @@ Everything about OG images goes through one module, `src/lib/og-image/`. Pages a
 ```typescript
 // For pages — returns an absolute URL for `og:image`
 pageOgImage(slug: string): Promise<URL>                        // og/pages/<slug>.png
-articleOgImage(collection: 'posts' | 'notes', id: string): URL  // og/<collection>/<id>.png
+articleOgImage(collection: 'posts' | 'notes' | 'projects', id: string): URL  // og/<collection>/<id>.png
 
 // For OG routes
 ogImageResponse({ title, description?, ogStyle }): Promise<Response>  // image/png
@@ -54,7 +54,7 @@ ogImageResponse({ title, description?, ogStyle }): Promise<Response>  // image/p
 
 ### Articles — `src/pages/og/[articleType]/[...slug].png.ts`
 
-- One image per entry in every collection in `OG_ARTICLE_COLLECTIONS` (`posts`, `notes`)
+- One image per entry in every collection in `OG_ARTICLE_COLLECTIONS` (`posts`, `notes`, `projects`)
 - URL: `/og/<collection>/<id>.png`
 - Title, description and style come from the article's frontmatter
 

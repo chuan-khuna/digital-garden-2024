@@ -1,0 +1,17 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { pageOgImage } from '@/lib/og-image'
+import ProjectShowcase from '@/components/bento/portfolio-bento/ProjectShowcase.astro'
+
+const ogImageUrl = await pageOgImage('projects')
+---
+
+<BaseLayout
+  title="Projects"
+  description="Things I have built"
+  ogImage={ogImageUrl}
+>
+  <div class="pt-4 md:pt-6">
+    <ProjectShowcase all />
+  </div>
+</BaseLayout>

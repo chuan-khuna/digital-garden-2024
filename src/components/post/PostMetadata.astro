@@ -1,5 +1,5 @@
 ---
-import AISparkleIcon from './AISparkleIcon.astro';
+import AISparkleIcon from './AISparkleIcon.astro'
 
 const { frontmatter } = Astro.props
 ---
@@ -65,14 +65,21 @@ const { frontmatter } = Astro.props
   </div>
   {
     frontmatter.tags && frontmatter.tags.length > 0 && (
-      <div class="my-2 flex flex-wrap items-center gap-2 text-sm">
+      <ul
+        class="not-prose my-3 flex list-none flex-wrap items-center gap-1.5 p-0"
+        aria-label="Tags"
+      >
         {frontmatter.tags.map((tag: string) => (
-          <button class="border-l-2 border-t-2 border-cactus-accent px-2 py-1 font-mono font-bold transition-all hover:border-2 hover:shadow-[3px_3px_0px_0px_oklch(var(--theme-accent))]">
-            #{tag}
-          </button>
+          <li class="bg-accent/10 text-foreground/80 rounded-[4px] px-2.5 py-1 font-mono text-sm">
+            <span class="text-accent" aria-hidden="true">
+              #
+            </span>
+            {tag}
+          </li>
         ))}
-      </div>
+      </ul>
     )
   }
-  <hr class="my-2 border-dashed border-foreground opacity-30" />
+  <slot />
+  <hr class="border-foreground my-2 border-dashed opacity-30" />
 </header>

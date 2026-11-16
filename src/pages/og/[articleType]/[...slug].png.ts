@@ -25,7 +25,10 @@ export async function getStaticPaths() {
 
 export async function GET({ props }: APIContext) {
   const { article } = props as {
-    article: CollectionEntry<'posts'> | CollectionEntry<'notes'>
+    article:
+      | CollectionEntry<'posts'>
+      | CollectionEntry<'notes'>
+      | CollectionEntry<'projects'>
   }
   return ogImageResponse(article.data)
 }

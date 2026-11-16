@@ -6,7 +6,7 @@
  */
 
 /** Article collections that get an OG image at /og/<collection>/<id>.png. */
-export const OG_ARTICLE_COLLECTIONS = ['posts', 'notes'] as const
+export const OG_ARTICLE_COLLECTIONS = ['posts', 'notes', 'projects'] as const
 export type OgArticleCollection = (typeof OG_ARTICLE_COLLECTIONS)[number]
 
 /** `pages` for entries in src/content/og-images.json, else an article collection. */
