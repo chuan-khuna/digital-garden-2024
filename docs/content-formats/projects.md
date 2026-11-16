@@ -53,19 +53,26 @@ cover: string # optional — image path relative to index.mdx; card thumbnail an
 coverAlt: string # optional — alt text for cover on the page (default: empty, decorative)
 featured: boolean # optional, default: false — show in the home Projects showcase
 order: integer # optional — sort position, ascending; projects without one go last, by title
+stack: [string, ...] # optional — tech it is built with, main tool first; shown as "Built with" on the page
 
 # shared article fields (all optional)
 date: string # created, YYYY-MM-DD
 updated: string # YYYY-MM-DD
 aliases: [string, ...]
-tags: [string, ...]
+tags: [string, ...] # on a project: the kind of work (website, tui, …), not the tech — that is `stack`
 stage: seedling | budding | evergreen
 ogStyle: default | default-dark | particle
 llmAssisted: boolean
 ---
 ```
 
-A project must have a `url`, a `github`, or both; the build fails otherwise.
+**`tags` or `stack`?** `tags` say what kind of thing the project is
+(`website`, `tui`, `cli`, `library`, …); `stack` lists what it is built with
+(`astro`, `tailwind`, `python`, `cloudflare pages`, …). Keep tech out of `tags`.
+
+`url` and `github` are both optional. Leave both out for a private project:
+its card and page then show no link (don't link a private repo, it gives
+visitors a 404).
 A missing `cover` file also fails the build.
 
 ---
@@ -75,10 +82,11 @@ A missing `cover` file also fails the build.
 - **Card:** clicking anywhere opens the project page. The ↗ icon (when `url`
   is set) and the GitHub icon (when `github` is set) open the site and repo in
   a new tab. With a `cover`, the card shows it as a 16:9 thumbnail, cropped from
-  the top.
+  the top. On `/projects` the card also lists its `tags` (as `#tag` chips) and
+  its `stack`; the home showcase leaves them out.
 - **Page:** "All projects" back link, the cover as a 3:1 banner (cropped from
-  the centre), then the header — title, description, dates, tags and the
-  "Visit site" / "GitHub" buttons (the same header as posts) — the MDX body,
+  the centre), then the header — title, description, dates, tags, the
+  "Built with" stack and the "Visit site" / "GitHub" buttons (the same header as posts) — the MDX body,
   and previous/next links in `order`.
 
 **Cover or body image?** `cover` is a banner: it is cropped to 3:1 on the page
@@ -100,7 +108,8 @@ coverAlt: 'Nexus link cards on an indigo background'
 featured: true
 order: 1
 date: '2025-01-01'
-tags: [astro, portfolio]
+tags: [website]
+stack: [astro, tailwind, cloudflare pages]
 stage: seedling
 ---
 

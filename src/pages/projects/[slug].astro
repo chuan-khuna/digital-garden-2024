@@ -63,6 +63,23 @@ const button =
       }
 
       <PostMetadata frontmatter={project}>
+        {
+          /* Stack: the tech the project is built with. Tags (above, from
+             PostMetadata) hold the kind of work: website, tui, … */
+          project.stack && project.stack.length > 0 && (
+            <ul
+              class="not-prose my-3 flex list-none flex-wrap items-center gap-1.5 p-0 text-sm"
+              aria-label="Built with"
+            >
+              <li class="text-cactus-text-muted mr-1">Built with</li>
+              {project.stack.map((tool) => (
+                <li class="text-foreground/80 rounded-[4px] border px-2.5 py-1 font-mono">
+                  {tool}
+                </li>
+              ))}
+            </ul>
+          )
+        }
         <div class="not-prose my-4 flex flex-wrap gap-2">
           {
             project.url && (

@@ -1,0 +1,68 @@
+---
+title: POS Rewrite in Rust
+description:
+  'The point-of-sale app for my family business, rewritten from Rails to a Rust
+  desktop app with gpui: products, stock, customers and orders.'
+order: 7
+date: '2026-10-21'
+updated: '2026-10-28'
+tags: [desktop app]
+stack: [rust, gpui, sqlite]
+llmAssisted: true
+---
+
+## What it is
+
+My family business runs on a POS that used to be a Rails app. This rewrite is a
+Windows desktop app in Rust with [gpui-kit](https://gpui-kit.com), the
+components built on Zed's UI framework. It keeps products, stock, customers and
+orders in a local SQLite database, and the interface is in Thai.
+
+![The products list (สินค้า) beside one product's panel: its weekly stock waterfall chart and its history of sales and stock-ins, from a mock database](./products.png)
+
+_Screenshots use a made-up database._
+
+## The old app
+
+A Rails app (Ruby 2.7, Rails 6.0) built in 2019. It ran the shop for seven
+years, but got no new features after January 2021; since then its git history
+is almost all automatic backups.
+
+| Part     | Old (Rails, 2019)                                 | New (Rust, 2026)                         |
+| -------- | ------------------------------------------------- | ---------------------------------------- |
+| Language | Ruby 2.7.8 (end of life 2023)                     | Rust, edition 2024                       |
+| App      | Rails 6.0.4 (end of life 2023) on Puma, in Docker | A native Windows app                     |
+| UI       | HAML views, jQuery, Semantic UI, Chartkick charts | gpui-kit, its own charts and tables      |
+| Data     | SQLite through ActiveRecord, prices as floats     | SQLite through rusqlite, with migrations |
+
+## What improved
+
+- **Stock stays right.** Deleting an order now puts its stock back, and a
+  customer or product with orders can't be deleted. The old app lost track of
+  stock for most products.
+- **Clean data.** The import fixes duplicates, mixed orders, mistyped dates and
+  float noise in prices, and reports each fix.
+- **Real backups.** Snapshots with a restore command, in place of force-pushing
+  the database to git.
+- **A native app** instead of a Rails server running in development mode.
+
+## Highlights
+
+- **Panels side by side, like Zed.** Open a product, a customer and an order
+  next to each other, drag the split, or zoom one panel over the rest.
+- **Stock at a glance.** Each product shows a waterfall chart of its stock by
+  day, week or month, with sales and stock-ins below.
+
+![A product panel and an order panel side by side: the order's two lines and its total of 360 baht, with tabs for the open panels in the status bar](./product-and-order.png)
+
+- **Quotations as PDF.** Type a buyer and up to 20 lines, and the app saves a
+  one-page ใบเสนอราคา (quotation) PDF.
+
+![The quotation (ใบเสนอราคา) screen: date, buyer and seller cards, a table of lines with quantity, unit and unit price, a note, and Save PDF](./quotation.png)
+
+![The saved quotation PDF: an example shop's details and the buyer's, eight lines of matcha and tea tools with quantity, unit, unit price and amount, a total of 41,986.00 baht, a note, and a signature line, dated in the Thai Buddhist year](./quotation-pdf.png)
+
+- **Made for Thai.** Thai fonts, Thai dates (Buddhist or Western year, Thai
+  month names) and a date field with a Thai calendar.
+
+![Settings (ตั้งค่า): five Thai UI fonts, font sizes 14 to 20, the date format (era, order, month style and separator with an example), and backups: a synced folder such as Google Drive, and the list of the 30 latest snapshots](./settings.png)
