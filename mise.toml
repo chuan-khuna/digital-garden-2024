@@ -1,4 +1,8 @@
 [tools]
 bun = "1.4.4"
 just = "1.59.0"
-node = "24"
+node = "26"
+
+[tasks.skills]
+description = "Install the vendored agent skills"
+run = ["bunx skills add mattpocock/skills#v1.3.1"]
