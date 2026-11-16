@@ -63,3 +63,28 @@ The remark-wiki-link plugin resolves them to `/posts/{slug}`.
 ```mdx
 See also [[monads in haskell]] or [[monads in haskell:this post about monads]].
 ```
+
+---
+
+## Diagrams
+
+Write a Mermaid diagram with the `Mermaid` component (MDX only). It is
+rendered to SVG by [Pele](https://pele.run) at build time, so a broken diagram
+fails the build with Pele's error. Colours follow the colour preset and the
+theme toggle. The toolbar zooms, fits, copies the Mermaid source, downloads SVG
+or PNG and expands the diagram to the full page.
+
+```mdx
+import Mermaid from '@/components/Mermaid.astro'
+
+<Mermaid
+  title="OG image pipeline"
+  code={`flowchart LR
+  post[Post frontmatter] --> png[og/posts/<id>.png]
+  class png accent`}
+/>
+```
+
+`title` (optional) shows in the toolbar and names the downloaded file;
+`height` (optional, default 640) caps the inline height in px.
+`class <node> accent` highlights a node.

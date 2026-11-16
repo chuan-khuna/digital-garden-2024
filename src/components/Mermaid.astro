@@ -1,253 +1,705 @@
 ---
 /**
- * A Mermaid diagram in an MDX post. Rendered in the browser (mermaid is
- * dynamically imported, so pages without a diagram never load it) and
- * re-rendered when the theme toggle switches between light and dark.
+ * A Mermaid diagram in an MDX post, rendered to SVG with Pele at build time:
+ * no diagram library ships to the browser, and the diagram shows without JS.
+ * Colours are CSS variables mapped to the colour preset, so the diagram
+ * follows the theme toggle without being re-rendered. A broken diagram fails
+ * the build with Pele's error.
  *
- * The diagram fills the column and can be panned (drag) and zoomed
- * (Ctrl/⌘ + wheel, pinch, or the buttons); plain wheel still scrolls the page.
- * The expand button opens it over the whole page, fitted to the window
- * (Esc or the button again closes it).
+ * The toolbar, pan/zoom, full-page viewer and export follow the HTML docs in
+ * `docs/shared/` (doc.js, globals.css): zoom out / % / zoom in / fit, copy
+ * the Mermaid source, download SVG or PNG, and expand. Drag pans; Ctrl/⌘ +
+ * wheel or pinch zooms (plain wheel still scrolls the page); double-click fits.
  *
  *   import Mermaid from '@/components/Mermaid.astro'
- *   <Mermaid code={`flowchart LR
+ *   <Mermaid title="Request flow" code={`flowchart LR
  *     A --> B`} />
+ *
+ * Mermaid `class <node> accent` highlights a node.
  */
+import { render } from 'pele'
+import {
+  Copy,
+  FileDown,
+  ImageDown,
+  Maximize2,
+  Scan,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react'
+
 interface Props {
   code: string
+  /** Shown in the toolbar and used as the download file name. */
+  title?: string
+  /** Max height of the inline diagram in px (default 640). */
+  height?: number
 }
 
-const { code } = Astro.props
+const { code, title = '', height = 640 } = Astro.props
+const source = code.replace(/^\n+|\s+$/g, '')
 
-const buttonCss =
-  'flex h-7 w-7 items-center justify-center rounded border border-border bg-card text-sm text-card-foreground hover:bg-background'
+let svg: string
+try {
+  svg = render(source, { fontSize: 14 }).svg
+} catch (err) {
+  throw new Error(
+    `Mermaid diagram${title ? ` "${title}"` : ''} failed to render: ${
+      err instanceof Error ? err.message : err
+    }`,
+  )
+}
 ---
 
 <figure
-  class="mermaid-diagram not-prose border-border bg-card relative my-6 rounded-md border"
+  class="pele-diagram not-prose"
+  data-diagram
+  data-title={title}
+  data-height={height}
 >
-  <div
-    data-mermaid-viewport
-    class="relative flex min-h-64 cursor-grab touch-none select-none items-center justify-center overflow-hidden active:cursor-grabbing"
-  >
-    <div data-mermaid-canvas class="w-full origin-top-left p-4">
-      <pre class="text-sm" data-mermaid-source={code}>{code}</pre>
-    </div>
+  <div class="diagram-bar">
+    <span class="title">{title}</span>
+    <button type="button" class="icon-btn" data-zoom="out" title="Zoom out" aria-label="Zoom out">
+      <ZoomOut aria-hidden="true" />
+    </button>
+    <button type="button" class="zoom-level" data-zoom="reset" title="Reset to 100%" aria-label="Reset to 100%">
+      100%
+    </button>
+    <button type="button" class="icon-btn" data-zoom="in" title="Zoom in" aria-label="Zoom in">
+      <ZoomIn aria-hidden="true" />
+    </button>
+    <button type="button" class="icon-btn" data-zoom="fit" title="Fit" aria-label="Fit">
+      <Scan aria-hidden="true" />
+    </button>
+    <span class="sep"></span>
+    <button type="button" class="icon-btn" data-copy-src title="Copy Mermaid source" aria-label="Copy Mermaid source">
+      <Copy aria-hidden="true" />
+    </button>
+    <button type="button" class="icon-btn" data-dl-svg title="Download SVG" aria-label="Download SVG">
+      <FileDown aria-hidden="true" />
+    </button>
+    <button type="button" class="icon-btn" data-dl-png title="Download PNG" aria-label="Download PNG">
+      <ImageDown aria-hidden="true" />
+    </button>
+    <span class="sep"></span>
+    <button type="button" class="icon-btn" data-expand title="Expand" aria-label="Expand">
+      <Maximize2 aria-hidden="true" />
+    </button>
   </div>
-  <figcaption
-    class="pointer-events-none absolute bottom-2 left-3 text-xs opacity-60"
-  >
-    Drag to pan · Ctrl/⌘ + scroll or pinch to zoom
-  </figcaption>
-  <div class="absolute right-2 top-2 flex gap-1">
-    <button
-      type="button"
-      data-mermaid-zoom="in"
-      title="Zoom in"
-      class={buttonCss}>+</button
-    >
-    <button
-      type="button"
-      data-mermaid-zoom="out"
-      title="Zoom out"
-      class={buttonCss}>−</button
-    >
-    <button
-      type="button"
-      data-mermaid-zoom="reset"
-      title="Reset view"
-      class={buttonCss}>⟲</button
-    >
-    <button
-      type="button"
-      data-mermaid-zoom="expand"
-      title="View full page"
-      aria-pressed="false"
-      class={buttonCss}>⛶</button
-    >
+  <div class="diagram-stage">
+    <div class="inner" set:html={svg} />
+    <span class="diagram-hint" aria-hidden="true">Ctrl + scroll to zoom</span>
   </div>
+  <script type="text/plain" class="mermaid-src" set:text={source} />
 </figure>
 
 <script>
-  const DARK_SYNTAX_THEMES = ['catppuccin-macchiato']
-  const MIN_SCALE = 0.5
-  const MAX_SCALE = 8
-  const STEP = 1.25
+  const MAC = /Mac|iPhone|iPad/.test(navigator.platform)
+  const SVG_NS = 'http://www.w3.org/2000/svg'
+  const ICON = {
+    close:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+    check:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+  }
 
-  /** Drag to pan, Ctrl/⌘ + wheel or pinch to zoom around the pointer. */
-  function enablePanZoom(figure: HTMLElement) {
-    const viewport = figure.querySelector<HTMLElement>(
-      '[data-mermaid-viewport]',
-    )!
-    const canvas = figure.querySelector<HTMLElement>('[data-mermaid-canvas]')!
-    let scale = 1
-    let x = 0
-    let y = 0
+  interface Entry {
+    source: string
+    svg: SVGSVGElement
+    file: string
+  }
 
-    const apply = () => {
-      canvas.style.transform = `translate(${x}px, ${y}px) scale(${scale})`
-    }
-    // Zoom by `factor`, keeping the viewport point (cx, cy) fixed.
-    const zoomAt = (factor: number, vx: number, vy: number) => {
-      // The canvas is centred in the viewport; work in its own coordinates.
-      const cx = vx - canvas.offsetLeft
-      const cy = vy - canvas.offsetTop
-      const next = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * factor))
-      x = cx - ((cx - x) * next) / scale
-      y = cy - ((cy - y) * next) / scale
-      scale = next
-      apply()
-    }
-    const reset = () => {
-      scale = 1
-      x = 0
-      y = 0
-      apply()
-    }
-    const center = () => {
-      const r = viewport.getBoundingClientRect()
-      return [r.width / 2, r.height / 2] as const
-    }
+  // ---------- Pan and zoom for one stage (port of docs/shared/doc.js) ----------
 
-    viewport.addEventListener(
-      'wheel',
-      (e) => {
-        if (!e.ctrlKey && !e.metaKey) return
-        e.preventDefault()
-        const r = viewport.getBoundingClientRect()
-        zoomAt(
-          e.deltaY < 0 ? 1.1 : 1 / 1.1,
-          e.clientX - r.left,
-          e.clientY - r.top,
-        )
-      },
-      { passive: false },
-    )
+  class PanZoom {
+    scale = 1
+    tx = 0
+    ty = 0
+    w = 0
+    h = 0
 
-    const pointers = new Map<number, { x: number; y: number }>()
-    let pinchDistance = 0
-    viewport.addEventListener('pointerdown', (e) => {
-      viewport.setPointerCapture(e.pointerId)
-      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
-    })
-    viewport.addEventListener('pointermove', (e) => {
-      const prev = pointers.get(e.pointerId)
-      if (!prev) return
-      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
-      if (pointers.size === 1) {
-        x += e.clientX - prev.x
-        y += e.clientY - prev.y
-        apply()
-      } else if (pointers.size === 2) {
-        const [a, b] = [...pointers.values()]
-        const distance = Math.hypot(a.x - b.x, a.y - b.y)
-        if (pinchDistance) {
-          const r = viewport.getBoundingClientRect()
-          zoomAt(
-            distance / pinchDistance,
-            (a.x + b.x) / 2 - r.left,
-            (a.y + b.y) / 2 - r.top,
+    constructor(
+      readonly stage: HTMLElement,
+      readonly inner: HTMLElement,
+      readonly label: HTMLElement,
+      wheelNeedsModifier: boolean,
+    ) {
+      stage.addEventListener(
+        'wheel',
+        (e) => {
+          if (wheelNeedsModifier && !(e.ctrlKey || e.metaKey)) return
+          e.preventDefault()
+          const r = stage.getBoundingClientRect()
+          this.zoomAt(
+            Math.exp(-e.deltaY * 0.0015),
+            e.clientX - r.left,
+            e.clientY - r.top,
           )
+        },
+        { passive: false },
+      )
+
+      const pointers = new Map<number, { x: number; y: number }>()
+      let dist = 0
+      let drag: { x: number; y: number } | null = null
+      stage.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return
+        e.preventDefault() // stop the drag from starting a text selection
+        window.getSelection()?.removeAllRanges()
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+        if (pointers.size === 1) {
+          drag = { x: e.clientX - this.tx, y: e.clientY - this.ty }
+          stage.classList.add('dragging')
         }
-        pinchDistance = distance
+        stage.setPointerCapture(e.pointerId)
+      })
+      stage.addEventListener('pointermove', (e) => {
+        if (!pointers.has(e.pointerId)) return
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+        if (pointers.size === 2) {
+          const [a, b] = [...pointers.values()]
+          const r = stage.getBoundingClientRect()
+          const d = Math.hypot(a.x - b.x, a.y - b.y)
+          if (dist)
+            this.zoomAt(
+              d / dist,
+              (a.x + b.x) / 2 - r.left,
+              (a.y + b.y) / 2 - r.top,
+            )
+          dist = d
+        } else if (drag) {
+          this.tx = e.clientX - drag.x
+          this.ty = e.clientY - drag.y
+          this.apply()
+        }
+      })
+      const end = (e: PointerEvent) => {
+        pointers.delete(e.pointerId)
+        dist = 0
+        if (!pointers.size) {
+          drag = null
+          stage.classList.remove('dragging')
+        } else {
+          const p = pointers.values().next().value!
+          drag = { x: p.x - this.tx, y: p.y - this.ty }
+        }
       }
-    })
-    const release = (e: PointerEvent) => {
-      pointers.delete(e.pointerId)
-      pinchDistance = 0
+      stage.addEventListener('pointerup', end)
+      stage.addEventListener('pointercancel', end)
+      stage.addEventListener('dblclick', () => this.fit())
     }
-    viewport.addEventListener('pointerup', release)
-    viewport.addEventListener('pointercancel', release)
 
-    figure
-      .querySelectorAll<HTMLButtonElement>('[data-mermaid-zoom]')
-      .forEach((button) =>
-        button.addEventListener('click', () => {
-          const action = button.dataset.mermaidZoom
-          if (action === 'in') zoomAt(STEP, ...center())
-          else if (action === 'out') zoomAt(1 / STEP, ...center())
-          else if (action === 'reset') reset()
-          else if (action === 'expand')
-            setExpanded(!('expanded' in figure.dataset))
-        }),
+    setContent(svg: SVGSVGElement) {
+      this.inner.replaceChildren(svg)
+      const vb = svg.viewBox.baseVal
+      this.w = vb?.width || svg.getBoundingClientRect().width
+      this.h = vb?.height || svg.getBoundingClientRect().height
+      svg.setAttribute('width', String(this.w))
+      svg.setAttribute('height', String(this.h))
+      svg.style.maxWidth = 'none'
+    }
+    apply() {
+      this.inner.style.transform = `translate(${this.tx}px, ${this.ty}px) scale(${this.scale})`
+      this.label.textContent = `${Math.round(this.scale * 100)}%`
+    }
+    center() {
+      const r = this.stage.getBoundingClientRect()
+      this.tx = (r.width - this.w * this.scale) / 2
+      this.ty = (r.height - this.h * this.scale) / 2
+      this.apply()
+    }
+    fit(maxScale = 4) {
+      const r = this.stage.getBoundingClientRect()
+      if (!this.w || !r.width) return
+      this.scale = Math.min(
+        (r.width - 32) / this.w,
+        (r.height - 32) / this.h,
+        maxScale,
       )
-
-    // Full page is a fixed overlay rather than the Fullscreen API, which
-    // iPhone Safari does not support for non-video elements.
-    const expandButton = figure.querySelector<HTMLButtonElement>(
-      '[data-mermaid-zoom="expand"]',
-    )!
-    const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setExpanded(false)
+      this.center()
     }
-    function setExpanded(expanded: boolean) {
-      figure.toggleAttribute('data-expanded', expanded)
-      document.documentElement.style.overflow = expanded ? 'hidden' : ''
-      expandButton.setAttribute('aria-pressed', String(expanded))
-      expandButton.title = expanded ? 'Close full page' : 'View full page'
-      expandButton.textContent = expanded ? '✕' : '⛶'
-      if (expanded) document.addEventListener('keydown', onKeydown)
-      else document.removeEventListener('keydown', onKeydown)
-      reset()
+    reset() {
+      this.scale = 1
+      this.center()
     }
-    return reset
+    zoomAt(factor: number, cx: number, cy: number) {
+      const next = Math.min(8, Math.max(0.1, this.scale * factor))
+      this.tx = cx - (cx - this.tx) * (next / this.scale)
+      this.ty = cy - (cy - this.ty) * (next / this.scale)
+      this.scale = next
+      this.apply()
+    }
+    zoomCenter(factor: number) {
+      const r = this.stage.getBoundingClientRect()
+      this.zoomAt(factor, r.width / 2, r.height / 2)
+    }
   }
 
-  const resets = new Map<HTMLElement, () => void>()
-
-  async function renderAll() {
-    const sources = document.querySelectorAll<HTMLElement>(
-      '[data-mermaid-source]',
+  function wireZoom(bar: HTMLElement, pz: PanZoom) {
+    bar.querySelectorAll<HTMLElement>('[data-zoom]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const z = b.dataset.zoom
+        if (z === 'in') pz.zoomCenter(1.25)
+        else if (z === 'out') pz.zoomCenter(0.8)
+        else if (z === 'reset') pz.reset()
+        else pz.fit()
+      }),
     )
-    if (sources.length === 0) return
+  }
 
-    const { default: mermaid } = await import('mermaid')
-    const syntaxTheme = document.documentElement.getAttribute('data-theme')
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: DARK_SYNTAX_THEMES.includes(syntaxTheme ?? '')
-        ? 'dark'
-        : 'neutral',
-    })
+  // ---------- Copy and export ----------
 
-    for (const [i, el] of sources.entries()) {
-      const { svg } = await mermaid.render(
-        `mermaid-${i}`,
-        el.dataset.mermaidSource!,
+  let toastTimer = 0
+  function toast(msg: string) {
+    let t = document.querySelector<HTMLElement>('.diagram-toast')
+    if (!t) {
+      t = document.createElement('div')
+      t.className = 'diagram-toast'
+      t.setAttribute('role', 'status')
+      t.setAttribute('aria-live', 'polite')
+      document.body.append(t)
+    }
+    t.textContent = msg
+    t.classList.add('show')
+    clearTimeout(toastTimer)
+    toastTimer = window.setTimeout(() => t.classList.remove('show'), 1600)
+  }
+
+  function flashDone(btn: HTMLElement) {
+    const prev = btn.innerHTML
+    btn.innerHTML = ICON.check
+    btn.classList.add('done')
+    setTimeout(() => {
+      btn.innerHTML = prev
+      btn.classList.remove('done')
+    }, 1200)
+  }
+
+  function download(blob: Blob, filename: string) {
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = filename
+    document.body.append(a)
+    a.click()
+    a.remove()
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+  }
+
+  // Copy computed colours and fonts into a clone, so exported files keep the
+  // current theme's look outside the page.
+  const EXPORT_PROPS = [
+    'fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-dasharray',
+    'stroke-opacity', 'opacity', 'color', 'font-family', 'font-size',
+    'font-weight', 'font-style', 'text-decoration', 'rx', 'ry',
+  ]
+
+  function exportableSvg(live: SVGSVGElement) {
+    const clone = live.cloneNode(true) as SVGSVGElement
+    const src = [live, ...live.querySelectorAll('*')]
+    const dst = [clone, ...clone.querySelectorAll('*')]
+    src.forEach((node, i) => {
+      const cs = getComputedStyle(node)
+      dst[i].setAttribute(
+        'style',
+        EXPORT_PROPS.map((p) => `${p}:${cs.getPropertyValue(p)}`).join(';'),
       )
-      el.innerHTML = svg
-      // Mermaid caps the SVG at its natural width; let it fill the column.
-      const svgEl = el.querySelector('svg')
-      svgEl?.style.removeProperty('max-width')
-      svgEl?.setAttribute('width', '100%')
-      svgEl?.removeAttribute('height')
-
-      const figure = el.closest<HTMLElement>('.mermaid-diagram')!
-      if (!resets.has(figure)) resets.set(figure, enablePanZoom(figure))
-      resets.get(figure)!()
+    })
+    const vb = live.viewBox.baseVal
+    clone.setAttribute('xmlns', SVG_NS)
+    clone.setAttribute('width', String(vb.width))
+    clone.setAttribute('height', String(vb.height))
+    const bg = document.createElementNS(SVG_NS, 'rect')
+    bg.setAttribute('x', String(vb.x))
+    bg.setAttribute('y', String(vb.y))
+    bg.setAttribute('width', String(vb.width))
+    bg.setAttribute('height', String(vb.height))
+    bg.setAttribute('fill', getComputedStyle(document.body).backgroundColor)
+    clone.prepend(bg)
+    return {
+      text: new XMLSerializer().serializeToString(clone),
+      width: vb.width,
+      height: vb.height,
     }
   }
 
-  renderAll()
-  new MutationObserver(renderAll).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  })
+  function downloadPng(
+    { text, width, height }: ReturnType<typeof exportableSvg>,
+    filename: string,
+  ) {
+    const scale = 2
+    const img = new Image()
+    img.onload = () => {
+      const c = document.createElement('canvas')
+      c.width = Math.ceil(width * scale)
+      c.height = Math.ceil(height * scale)
+      const ctx = c.getContext('2d')!
+      ctx.scale(scale, scale)
+      ctx.drawImage(img, 0, 0, width, height)
+      c.toBlob((b) => b && download(b, filename), 'image/png')
+    }
+    img.onerror = () => toast('PNG export failed')
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(text)
+  }
+
+  function wireExport(bar: HTMLElement, getEntry: () => Entry | null) {
+    bar
+      .querySelector<HTMLElement>('[data-copy-src]')!
+      .addEventListener('click', async (e) => {
+        const entry = getEntry()
+        if (!entry) return
+        try {
+          await navigator.clipboard.writeText(entry.source)
+          flashDone(e.currentTarget as HTMLElement)
+          toast('Mermaid source copied')
+        } catch {
+          toast('Copy failed')
+        }
+      })
+    bar.querySelector('[data-dl-svg]')!.addEventListener('click', () => {
+      const entry = getEntry()
+      if (entry)
+        download(
+          new Blob([exportableSvg(entry.svg).text], { type: 'image/svg+xml' }),
+          `${entry.file}.svg`,
+        )
+    })
+    bar.querySelector('[data-dl-png]')!.addEventListener('click', () => {
+      const entry = getEntry()
+      if (entry) downloadPng(exportableSvg(entry.svg), `${entry.file}.png`)
+    })
+  }
+
+  function slugFile(text: string, fallback: string) {
+    const s = text
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, '-')
+      .replace(/^-|-$/g, '')
+    return s || fallback
+  }
+
+  // ---------- Diagrams ----------
+
+  function setupDiagrams() {
+    const figs = [
+      ...document.querySelectorAll<HTMLElement>('figure.pele-diagram'),
+    ]
+    if (!figs.length) return
+
+    // One shared full-page viewer: the inline toolbar with Close for Expand.
+    const viewer = document.createElement('div')
+    viewer.className = 'pele-diagram-viewer'
+    viewer.setAttribute('role', 'dialog')
+    viewer.setAttribute('aria-modal', 'true')
+    viewer.setAttribute('aria-label', 'Diagram')
+    const vBar = figs[0].querySelector('.diagram-bar')!.cloneNode(true) as HTMLElement
+    const vClose = vBar.querySelector<HTMLElement>('[data-expand]')!
+    vClose.removeAttribute('data-expand')
+    vClose.setAttribute('data-close', '')
+    vClose.title = 'Close'
+    vClose.setAttribute('aria-label', 'Close')
+    vClose.innerHTML = ICON.close
+    const vStage = document.createElement('div')
+    vStage.className = 'diagram-stage'
+    vStage.innerHTML = '<div class="inner"></div>'
+    viewer.append(vBar, vStage)
+    document.body.append(viewer)
+
+    const vPz = new PanZoom(
+      vStage,
+      vStage.querySelector('.inner')!,
+      vBar.querySelector('.zoom-level')!,
+      false,
+    )
+    wireZoom(vBar, vPz)
+    let active: Entry | null = null
+    let lastTrigger: HTMLElement | null = null
+    wireExport(vBar, () => active)
+
+    const close = () => {
+      viewer.classList.remove('open')
+      document.documentElement.style.overflow = ''
+      active = null
+      lastTrigger?.focus()
+    }
+    vClose.addEventListener('click', close)
+    document.addEventListener('keydown', (e) => {
+      if (!viewer.classList.contains('open')) return
+      if (e.key === 'Escape') close()
+      else if (e.key === '+' || e.key === '=') vPz.zoomCenter(1.25)
+      else if (e.key === '-') vPz.zoomCenter(0.8)
+      else if (e.key === '0') vPz.fit()
+      else if (e.key === '1') vPz.reset()
+    })
+    window.addEventListener('resize', () => {
+      if (active) vPz.fit()
+    })
+
+    figs.forEach((fig, n) => {
+      const bar = fig.querySelector<HTMLElement>('.diagram-bar')!
+      const stage = fig.querySelector<HTMLElement>('.diagram-stage')!
+      const inner = stage.querySelector<HTMLElement>('.inner')!
+      const svg = inner.querySelector('svg')
+      if (!svg) return
+      const title = fig.dataset.title ?? ''
+      const entry: Entry = {
+        source: fig.querySelector('.mermaid-src')?.textContent ?? '',
+        svg,
+        file: slugFile(title, `diagram-${n + 1}`),
+      }
+      if (MAC)
+        stage.querySelector('.diagram-hint')!.textContent = '⌘ + scroll to zoom'
+
+      const pz = new PanZoom(stage, inner, bar.querySelector('.zoom-level')!, true)
+      pz.setContent(svg)
+      fig.classList.add('ready')
+      wireZoom(bar, pz)
+      wireExport(bar, () => entry)
+
+      // Size the inline stage to the diagram at its fitted width, capped by data-height.
+      const sizeStage = () => {
+        const s = Math.min(1, (stage.clientWidth - 32) / pz.w)
+        const maxH = Number(fig.dataset.height) || 640
+        stage.style.height = `${Math.round(Math.min(maxH, Math.max(160, pz.h * s + 32)))}px`
+        pz.fit(1)
+      }
+      sizeStage()
+      let lastWidth = fig.clientWidth
+      new ResizeObserver(() => {
+        if (fig.clientWidth === lastWidth) return
+        lastWidth = fig.clientWidth
+        sizeStage()
+      }).observe(fig)
+
+      bar
+        .querySelector<HTMLElement>('[data-expand]')!
+        .addEventListener('click', (e) => {
+          active = entry
+          lastTrigger = e.currentTarget as HTMLElement
+          vBar.querySelector('.title')!.textContent = title
+          vPz.setContent(entry.svg.cloneNode(true) as SVGSVGElement)
+          viewer.classList.add('open')
+          document.documentElement.style.overflow = 'hidden'
+          vPz.fit()
+          vClose.focus()
+        })
+    })
+  }
+
+  setupDiagrams()
 </script>
 
-<style>
-  .mermaid-diagram[data-expanded] {
+<style is:global>
+  /* Diagrams: Mermaid rendered by Pele, styled after docs/shared/globals.css
+     with the site's colour-preset variables. */
+
+  .pele-diagram {
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    overflow: hidden;
+  }
+
+  .pele-diagram .diagram-bar,
+  .pele-diagram-viewer .diagram-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 6px 6px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--foreground);
+  }
+  .diagram-bar .title {
+    flex: 1 1 140px;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 13px;
+    color: color-mix(in oklch, var(--foreground) 65%, transparent);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .diagram-bar .sep {
+    width: 1px;
+    height: 18px;
+    margin: 0 4px;
+    background: var(--border);
+  }
+  .diagram-bar .icon-btn,
+  .diagram-bar .zoom-level {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: color-mix(in oklch, var(--foreground) 70%, transparent);
+    cursor: pointer;
+  }
+  .diagram-bar .icon-btn {
+    width: 32px;
+  }
+  .diagram-bar .icon-btn svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .diagram-bar .zoom-level {
+    min-width: 44px;
+    padding: 0 2px;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .diagram-bar .icon-btn:hover,
+  .diagram-bar .zoom-level:hover {
+    background: color-mix(in oklch, var(--foreground) 8%, transparent);
+    color: var(--foreground);
+  }
+  .diagram-bar .icon-btn:focus-visible,
+  .diagram-bar .zoom-level:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+  .diagram-bar .icon-btn.done {
+    color: var(--accent);
+  }
+  /* Without JS the controls do nothing, so hide them. */
+  .pele-diagram:not(.ready) .diagram-bar :is(button, .sep),
+  .pele-diagram:not(.ready) .diagram-hint {
+    display: none;
+  }
+  .pele-diagram:not(.ready) .diagram-bar .title:empty {
+    display: none;
+  }
+  .pele-diagram:not(.ready) .diagram-bar:has(.title:empty) {
+    display: none;
+  }
+
+  .pele-diagram .diagram-stage,
+  .pele-diagram-viewer .diagram-stage {
+    position: relative;
+    overflow: hidden;
+    background: var(--background);
+    /* Panning is a drag; never let it select the diagram's text. */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .pele-diagram.ready .diagram-stage,
+  .pele-diagram-viewer .diagram-stage {
+    cursor: grab;
+  }
+  .pele-diagram.ready .diagram-stage {
+    height: 420px;
+    touch-action: pan-y;
+  }
+  .diagram-stage.dragging {
+    cursor: grabbing;
+  }
+  /* Without JS the SVG sits in the flow at the column width. */
+  .pele-diagram:not(.ready) .diagram-stage .inner {
+    padding: 16px;
+  }
+  .pele-diagram.ready .diagram-stage .inner,
+  .pele-diagram-viewer .diagram-stage .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+  }
+  .pele-diagram.ready .diagram-stage svg,
+  .pele-diagram-viewer .diagram-stage svg {
+    display: block;
+    max-width: none !important;
+  }
+  .diagram-hint {
+    position: absolute;
+    right: 8px;
+    bottom: 6px;
+    font-size: 11px;
+    color: color-mix(in oklch, var(--foreground) 50%, transparent);
+    pointer-events: none;
+  }
+  .mermaid-src {
+    display: none;
+  }
+
+  .pele-diagram-viewer {
     position: fixed;
     inset: 0;
     z-index: 100;
-    margin: 0;
-    border-radius: 0;
+    display: none;
+    flex-direction: column;
+    background: var(--background);
   }
-  /* Fit the whole diagram in the window; the SVG keeps its viewBox aspect. */
-  .mermaid-diagram[data-expanded] [data-mermaid-viewport],
-  .mermaid-diagram[data-expanded] [data-mermaid-canvas],
-  .mermaid-diagram[data-expanded] pre,
-  .mermaid-diagram[data-expanded] pre :global(svg) {
-    height: 100%;
+  .pele-diagram-viewer.open {
+    display: flex;
+  }
+  .pele-diagram-viewer .diagram-bar {
+    background: var(--card);
+  }
+  .pele-diagram-viewer .diagram-stage {
+    flex: 1;
+    touch-action: none;
+  }
+
+  .diagram-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    z-index: 110;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    color: var(--card-foreground);
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 8px);
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+  }
+  .diagram-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  /* Pele colours follow the colour preset (light, dark, nexus). */
+  .pele {
+    --pele-bg: transparent;
+    --pele-fg: var(--foreground);
+    --pele-muted: color-mix(in oklch, var(--foreground) 60%, var(--background));
+    --pele-line: color-mix(in oklch, var(--foreground) 70%, var(--background));
+    --pele-surface: var(--card);
+    --pele-surface-alt: color-mix(in oklch, var(--foreground) 7%, var(--card));
+    --pele-border: color-mix(in oklch, var(--foreground) 45%, var(--background));
+    --pele-accent: var(--accent);
+    --pele-critical: var(--destructive);
+    --pele-error: var(--destructive);
+    --pele-font: var(--font-lato), sans-serif;
+    --pele-font-mono: var(--font-inconsolata), monospace;
+    --pele-radius: 4px;
+    --pele-series-1: var(--primary);
+    --pele-series-2: var(--accent);
+    --pele-series-3: var(--theme-link);
+    --pele-series-4: var(--secondary);
+    --pele-series-5: var(--theme-quote);
+    --pele-series-6: var(--destructive);
+    --pele-series-7: var(--muted);
+    --pele-series-8: var(--ring);
+  }
+
+  /* Mermaid `class <node> accent` marks a highlighted node. */
+  .pele .pele-node.accent > :is(rect, path, polygon, circle, ellipse) {
+    fill: color-mix(in oklch, var(--accent) 18%, var(--card));
+    stroke: var(--accent);
+    stroke-width: 2px;
   }
 </style>
