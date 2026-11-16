@@ -70,7 +70,9 @@ llmAssisted: boolean
 (`website`, `tui`, `cli`, `library`, …); `stack` lists what it is built with
 (`astro`, `tailwind`, `python`, `cloudflare pages`, …). Keep tech out of `tags`.
 
-A project must have a `url`, a `github`, or both; the build fails otherwise.
+`url` and `github` are both optional. Leave both out for a private project:
+its card and page then show no link (don't link a private repo, it gives
+visitors a 404).
 A missing `cover` file also fails the build.
 
 ---

@@ -10,6 +10,8 @@ import { articleSchema } from './common-fields/_article'
 export const projectsCollection = defineCollection({
   loader: glob({ base: 'src/content/projects', pattern: '**/*.mdx' }),
   schema: ({ image }) =>
+    // url and github are both optional: a private project has neither, and its
+    // card and page simply show no link.
     articleSchema
       .extend({
         description: z.string(), // card text and page subtitle
@@ -20,8 +22,5 @@ export const projectsCollection = defineCollection({
         featured: z.boolean().default(false), // show in the home Projects showcase
         order: z.number().int().optional(), // sort position, ascending
         stack: z.array(z.string()).optional(), // tech it is built with, main tool first; `tags` holds the kind of work
-      })
-      .refine((p) => p.url || p.github, {
-        message: 'A project needs a url, a github, or both',
       }),
 })
