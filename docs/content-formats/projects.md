@@ -80,7 +80,8 @@ A missing `cover` file also fails the build.
 - **Card:** clicking anywhere opens the project page. The ↗ icon (when `url`
   is set) and the GitHub icon (when `github` is set) open the site and repo in
   a new tab. With a `cover`, the card shows it as a 16:9 thumbnail, cropped from
-  the top.
+  the top. On `/projects` the card also lists its `tags` (as `#tag` chips) and
+  its `stack`; the home showcase leaves them out.
 - **Page:** "All projects" back link, the cover as a 3:1 banner (cropped from
   the centre), then the header — title, description, dates, tags, the
   "Built with" stack and the "Visit site" / "GitHub" buttons (the same header as posts) — the MDX body,

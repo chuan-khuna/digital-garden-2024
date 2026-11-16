@@ -91,6 +91,31 @@ const iconLink =
               </div>
             </div>
             <p class="m-0 mt-2 text-sm opacity-70">{project.description}</p>
+            {/* /projects only: the kind of work (#tags), then the stack, styled
+                as on the project page. The home showcase stays compact. */}
+            {all && (project.tags?.length || project.stack?.length) && (
+              <div class="mt-4 flex flex-col gap-2 text-xs">
+                {project.tags && project.tags.length > 0 && (
+                  <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0" aria-label="Tags">
+                    {project.tags.map((tag) => (
+                      <li class="bg-accent/10 text-foreground/80 rounded-[4px] px-2 py-0.5 font-mono">
+                        <span class="text-accent" aria-hidden="true">#</span>
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {project.stack && project.stack.length > 0 && (
+                  <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0" aria-label="Built with">
+                    {project.stack.map((tool) => (
+                      <li class="text-foreground/70 rounded-[4px] border px-2 py-0.5 font-mono">
+                        {tool}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
           </div>
         </article>
       ))
