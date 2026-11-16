@@ -1,65 +1,99 @@
 ---
 import { ArrowUpRight, Github } from 'lucide-react'
+import { Image } from 'astro:assets'
 import { getCollection } from 'astro:content'
 
-// Featured projects, in `order` (projects without one go last).
-const projects = (await getCollection('projects', (p) => p.data.featured))
-  .map((p) => p.data)
-  .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+interface Props {
+  // true: every project (the /projects page); false: featured ones only (home)
+  all?: boolean
+}
+const { all = false } = Astro.props
+
+// Sorted by `order`; projects without one go last, by title.
+const projects = (
+  await getCollection('projects', (p) => all || p.data.featured)
+).sort(
+  (a, b) =>
+    (a.data.order ?? Infinity) - (b.data.order ?? Infinity) ||
+    a.data.title.localeCompare(b.data.title),
+)
 
 // The title link stretches over the whole card (after:inset-0), so clicking the
-// card opens the website; the GitHub link sits above it (z-10) and opens the repo.
+// card opens the project page; the website and GitHub links sit above it (z-10).
 // Nested <a> elements are invalid HTML, hence this pattern.
+const iconLink =
+  'relative z-10 -m-1 rounded p-1 opacity-60 transition hover:scale-110 hover:opacity-100'
 ---
 
 <section class="m-auto w-full max-w-6xl px-2 pb-8 sm:px-4 md:px-6">
-  <h2 class="mb-3 text-xl font-semibold">Projects</h2>
+  {
+    all ? (
+      <h1 class="mb-3 text-2xl font-semibold">Projects</h1>
+    ) : (
+      <div class="mb-3 flex items-baseline justify-between">
+        <h2 class="m-0 text-xl font-semibold">Projects</h2>
+        <a href="/projects" class="text-sm opacity-70 hover:opacity-100">
+          All projects →
+        </a>
+      </div>
+    )
+  }
   <div
     class="grid grid-cols-1 gap-2 sm:gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4"
   >
     {
-      projects.map((project) => {
-        const href = project.url ?? project.github
-        return (
-          <article class="border-darkslate-100 bg-darkslate-500 hover:border-primary-500 group relative flex flex-col rounded-lg border p-6 shadow-sm transition-colors">
+      projects.map(({ id, data: project }) => (
+        <article class="border-darkslate-100 bg-darkslate-500 hover:border-primary-500 group relative flex flex-col overflow-hidden rounded-lg border shadow-sm transition-colors">
+          {project.cover && (
+            <Image
+              src={project.cover}
+              alt=""
+              widths={[400, 800]}
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              class="aspect-video w-full border-b object-cover object-top"
+            />
+          )}
+          <div class="flex flex-col p-6">
             <div class="flex items-center gap-2">
               <h3 class="m-0 font-semibold">
                 <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/projects/${id}`}
                   class="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-current"
                 >
                   {project.title}
                 </a>
               </h3>
               <div class="ml-auto flex items-center gap-3">
-                {project.github && project.url && (
+                {project.github && (
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     title="View repo"
                     aria-label={`${project.title} repository on GitHub`}
-                    class="relative z-10 -m-1 rounded p-1 opacity-60 transition hover:scale-110 hover:opacity-100"
+                    class={iconLink}
                   >
                     <Github className="size-5" />
                   </a>
                 )}
-                {project.url ? (
-                  <ArrowUpRight
-                    className="size-4 opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <Github className="size-5 opacity-60" aria-hidden="true" />
+                {project.url && (
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Visit site"
+                    aria-label={`Visit ${project.title}`}
+                    class={iconLink}
+                  >
+                    <ArrowUpRight className="size-5" />
+                  </a>
                 )}
               </div>
             </div>
             <p class="m-0 mt-2 text-sm opacity-70">{project.description}</p>
-          </article>
-        )
-      })
+          </div>
+        </article>
+      ))
     }
   </div>
 </section>

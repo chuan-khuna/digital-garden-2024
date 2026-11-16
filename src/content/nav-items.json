@@ -12,15 +12,21 @@
     "order": 2
   },
   {
+    "id": "projects",
+    "label": "Projects",
+    "link": "/projects",
+    "order": 3
+  },
+  {
     "id": "uses",
     "label": "Uses",
     "link": "/uses",
-    "order": 3
+    "order": 4
   },
   {
     "id": "resume",
     "label": "Resume",
     "link": "/resume",
-    "order": 4
+    "order": 5
   }
 ]

@@ -11,6 +11,11 @@
     "slug": "resume"
   },
   {
+    "title": "Projects",
+    "description": "Things I have built",
+    "slug": "projects"
+  },
+  {
     "title": "Uses",
     "description": "The items/tools I am using",
     "slug": "uses",

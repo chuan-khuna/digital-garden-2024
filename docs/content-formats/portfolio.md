@@ -55,7 +55,7 @@ Card components live in `src/components/bento/portfolio-bento/`. Each component 
 | `IntroCard.astro` | Avatar, name, headline, shortIntros |
 | `AboutMe.astro` | Interests + skills from `PORTFOLIO` |
 | `TimeZoneCard.astro` | Live clock — accepts optional `timezone` prop (defaults to visitor's local time) |
-| `ProjectShowcase.astro` | Projects showcase below the grid (not a bento card) — one link card per featured entry in the `projects` collection |
+| `ProjectShowcase.astro` | Projects showcase below the grid (not a bento card) — one card per featured entry in the `projects` collection (opens its `/projects/<slug>` page), plus an "All projects" link; `<ProjectShowcase all />` lists every project (the `/projects` page) — see [`projects.md`](./projects.md) |
 | `LoremSm.astro` | Smaller placeholder card |
 
 ---

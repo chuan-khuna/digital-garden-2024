@@ -1,0 +1,125 @@
+---
+import { ArrowLeft, ArrowRight, ArrowUpRight, Github } from 'lucide-react'
+import { Image } from 'astro:assets'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PostMetadata from '@/components/post/PostMetadata.astro'
+import { articleOgImage } from '@/lib/og-image'
+
+export async function getStaticPaths() {
+  // Same order as the /projects page, for the previous/next links.
+  const projects = (await getCollection('projects')).sort(
+    (a, b) =>
+      (a.data.order ?? Infinity) - (b.data.order ?? Infinity) ||
+      a.data.title.localeCompare(b.data.title),
+  )
+  return projects.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, prev: projects[i - 1], next: projects[i + 1] },
+  }))
+}
+
+interface Props {
+  entry: CollectionEntry<'projects'>
+  prev?: CollectionEntry<'projects'>
+  next?: CollectionEntry<'projects'>
+}
+const { entry, prev, next } = Astro.props
+const { data: project } = entry
+const { Content } = await render(entry)
+
+const button =
+  'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm no-underline transition-colors hover:border-accent hover:text-accent'
+---
+
+<BaseLayout
+  title={project.title}
+  description={project.description}
+  ogImage={articleOgImage('projects', entry.id)}
+>
+  <div class="overflow-x-hidden px-4">
+    <article
+      class="prose-cactus prose-headings:text-cactus-accent-2 prose mx-auto mt-8 w-full max-w-[80ch] prose-headings:font-semibold prose-a:break-words prose-code:break-words"
+    >
+      <a
+        href="/projects"
+        class="not-prose mb-6 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100"
+      >
+        <ArrowLeft className="size-4" aria-hidden="true" /> All projects
+      </a>
+
+      <PostMetadata frontmatter={project} />
+
+      <div class="not-prose mt-4 flex flex-wrap gap-2">
+        {
+          project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={button}
+            >
+              Visit site <ArrowUpRight className="size-4" aria-hidden="true" />
+            </a>
+          )
+        }
+        {
+          project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={button}
+            >
+              <Github className="size-4" aria-hidden="true" /> GitHub
+            </a>
+          )
+        }
+      </div>
+
+      {
+        project.cover && (
+          <Image
+            src={project.cover}
+            alt={project.coverAlt ?? `${project.title} screenshot`}
+            widths={[800, 1600]}
+            sizes="(min-width: 80ch) 80ch, 100vw"
+            class="mt-8 w-full rounded-lg border"
+          />
+        )
+      }
+
+      <Content />
+
+      <nav
+        aria-label="More projects"
+        class="not-prose mt-12 flex justify-between gap-4 border-t pt-6 text-sm"
+      >
+        {
+          prev ? (
+            <a
+              href={`/projects/${prev.id}`}
+              class="inline-flex items-center gap-1 opacity-70 hover:opacity-100"
+            >
+              <ArrowLeft className="size-4" aria-hidden="true" />
+              {prev.data.title}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a
+              href={`/projects/${next.id}`}
+              class="inline-flex items-center gap-1 opacity-70 hover:opacity-100"
+            >
+              {next.data.title}
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </a>
+          )
+        }
+      </nav>
+    </article>
+  </div>
+</BaseLayout>

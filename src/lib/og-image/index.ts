@@ -39,7 +39,7 @@ export async function pageOgImage(slug: string): Promise<URL> {
   return absolute(ogImagePath('pages', slug))
 }
 
-/** OG image URL of an article (post or note), generated from its frontmatter. */
+/** OG image URL of an article (post, note or project), generated from its frontmatter. */
 export function articleOgImage(
   collection: OgArticleCollection,
   id: string,

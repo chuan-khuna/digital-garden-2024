@@ -30,7 +30,7 @@ src/
     collection-definitions/  Zod schemas + collection configs
     posts/        Digital garden posts (.md, .mdx)
     notes/        Shorter notes (.md, .mdx; folder created on first note)
-    projects/     Portfolio projects (<slug>/index.mdx; featured ones fill the home Projects showcase)
+    projects/     Portfolio projects (<slug>/index.mdx + images; pages at /projects/<slug>, featured ones in the home showcase)
     resume/       Resume data, one folder per Resume Version (<version>/*.json, experiences/, projects/)
   data/           Static site data (site.config.ts, portfolio.ts)
   layouts/        BaseLayout, PostLayout, BaseLayoutPrint
@@ -55,6 +55,7 @@ src/
 | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `src/pages/index.astro`                                                          | Homepage (bento grid)                                                                                   |
 | `src/pages/posts/[...slug]/index.astro`                                          | Individual post pages                                                                                   |
+| `src/pages/projects/` (`index.astro` + `[slug].astro`)                           | Every project, and one page per project (its MDX story)                                                 |
 | `src/pages/resume.astro`                                                         | Web resume (Default Version)                                                                            |
 | `src/pages/resume-print/` (`index.astro` + `[version].astro` + `versions.astro`) | Print Page (every Print Layout, chosen with `?layout=`), plus an unlisted index of every Resume Version |
 | `src/content.config.ts`                                                          | All content collection registrations                                                                    |
