@@ -48,46 +48,49 @@ const button =
         <ArrowLeft className="size-4" aria-hidden="true" /> All projects
       </a>
 
-      <PostMetadata frontmatter={project} />
-
-      <div class="not-prose mt-4 flex flex-wrap gap-2">
-        {
-          project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class={button}
-            >
-              Visit site <ArrowUpRight className="size-4" aria-hidden="true" />
-            </a>
-          )
-        }
-        {
-          project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              class={button}
-            >
-              <Github className="size-4" aria-hidden="true" /> GitHub
-            </a>
-          )
-        }
-      </div>
-
       {
+        /* Cover: a wide banner above the title, cropped to 3:1 from the centre.
+           Screenshots belong in the MDX body instead. */
         project.cover && (
           <Image
             src={project.cover}
-            alt={project.coverAlt ?? `${project.title} screenshot`}
+            alt={project.coverAlt ?? ''}
             widths={[800, 1600]}
             sizes="(min-width: 80ch) 80ch, 100vw"
-            class="mt-8 w-full rounded-lg border"
+            class="not-prose mb-8 aspect-[3/1] w-full rounded-lg object-cover"
           />
         )
       }
+
+      <PostMetadata frontmatter={project}>
+        <div class="not-prose my-4 flex flex-wrap gap-2">
+          {
+            project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={button}
+              >
+                Visit site{' '}
+                <ArrowUpRight className="size-4" aria-hidden="true" />
+              </a>
+            )
+          }
+          {
+            project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={button}
+              >
+                <Github className="size-4" aria-hidden="true" /> GitHub
+              </a>
+            )
+          }
+        </div>
+      </PostMetadata>
 
       <Content />
 

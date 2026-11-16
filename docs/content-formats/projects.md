@@ -3,7 +3,7 @@
 Each project is one MDX file in its own folder, and gets:
 
 - **a project page** at `/projects/<slug>` (`src/pages/projects/[slug].astro`) —
-  the cover, links to the site and repo, and the MDX body as the project story;
+  a cover banner, links to the site and repo, and the MDX body as the project story;
 - **a card** on the `/projects` page (`src/pages/projects/index.astro`);
 - **a card in the home-page Projects showcase**, when `featured: true`;
 - **an OG image** at `/og/projects/<slug>.png`, from its frontmatter.
@@ -49,8 +49,8 @@ title: string # required — card heading and page title
 description: string # required — card text and page subtitle, one or two sentences
 url: string # optional — website: the ↗ icon on the card, "Visit site" on the page
 github: string # optional — repo: the GitHub icon on the card, "GitHub" on the page
-cover: string # optional — image path relative to index.mdx; card thumbnail and page hero
-coverAlt: string # optional — alt text for cover on the page (default: "<title> screenshot")
+cover: string # optional — image path relative to index.mdx; card thumbnail and page banner (a wide image, not a screenshot)
+coverAlt: string # optional — alt text for cover on the page (default: empty, decorative)
 featured: boolean # optional, default: false — show in the home Projects showcase
 order: integer # optional — sort position, ascending; projects without one go last, by title
 
@@ -76,9 +76,14 @@ A missing `cover` file also fails the build.
   is set) and the GitHub icon (when `github` is set) open the site and repo in
   a new tab. With a `cover`, the card shows it as a 16:9 thumbnail, cropped from
   the top.
-- **Page:** "All projects" back link, the title block (title, description,
-  dates, tags — the same header as posts), "Visit site" and "GitHub" buttons,
-  the cover, the MDX body, then previous/next links in `order`.
+- **Page:** "All projects" back link, the cover as a 3:1 banner (cropped from
+  the centre), then the header — title, description, dates, tags and the
+  "Visit site" / "GitHub" buttons (the same header as posts) — the MDX body,
+  and previous/next links in `order`.
+
+**Cover or body image?** `cover` is a banner: it is cropped to 3:1 on the page
+and 16:9 on the card, so use artwork or a wide image that survives cropping. Put
+screenshots and diagrams in the MDX body, where they show uncropped.
 
 ---
 
@@ -90,8 +95,8 @@ title: Nexus
 description: 'A link hub: a profile card and links to everything I build.'
 url: https://nexus.altrf.dev
 github: https://github.com/chuan-khuna/nexus
-cover: ./screenshot.png
-coverAlt: 'Nexus home page: a profile card with live clocks and link cards'
+cover: ./cover.png
+coverAlt: 'Nexus link cards on an indigo background'
 featured: true
 order: 1
 date: '2025-01-01'
@@ -103,15 +108,15 @@ stage: seedling
 
 ...
 
-![The link cards on a phone](./mobile.png)
+![Nexus home page: a profile card and link cards](./screenshot.png)
 ```
 
 Quote a `description` or `coverAlt` that contains `: ` (YAML would otherwise
 read it as a map).
 
 In the body, reference images with Markdown syntax — a relative path
-(`./mobile.png`) or the `@/` alias (`@/assets/…`). Astro optimises both; no
-`import` is needed. Don't repeat the cover in the body; the page already shows it.
+(`./screenshot.png`) or the `@/` alias (`@/assets/…`). Astro optimises both; no
+`import` is needed.
 
 ---
 
