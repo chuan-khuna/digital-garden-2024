@@ -47,7 +47,7 @@
     "remark-wiki-link": "^2.0.1",
     "satori": "^0.18.3",
     "satori-html": "^0.3.2",
-    "sharp": "^0.33.5",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^4.1.11",
     "tailwindcss-animate": "^1.0.7",
