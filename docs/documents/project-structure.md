@@ -30,6 +30,7 @@ src/
     collection-definitions/  Zod schemas + collection configs
     posts/        Digital garden posts (.md, .mdx)
     notes/        Shorter notes (.md, .mdx; folder created on first note)
+    projects/     Portfolio projects (<slug>/index.mdx; featured ones fill the home Projects showcase)
     resume/       Resume data, one folder per Resume Version (<version>/*.json, experiences/, projects/)
   data/           Static site data (site.config.ts, portfolio.ts)
   layouts/        BaseLayout, PostLayout, BaseLayoutPrint

@@ -1,6 +1,6 @@
 # How to Manage the Portfolio Page
 
-The portfolio homepage is a **12-column bento grid** followed by a **Projects showcase**, both built in `src/pages/index.astro`. Personal content is sourced from `src/data/portfolio.ts`; layout is controlled by `colSpan`/`rowSpan` props on each `<Card>`.
+The portfolio homepage is a **12-column bento grid** followed by a **Projects showcase**, both built in `src/pages/index.astro`. Personal content is sourced from `src/data/portfolio.ts` and the showcase from the `projects` collection; layout is controlled by `colSpan`/`rowSpan` props on each `<Card>`.
 
 ---
 
@@ -20,12 +20,6 @@ export const portfolio = {
   shortIntros: string[],    // rotating intro lines (emoji + short phrase each)
   interests: string[],      // interest keywords shown in AboutMe card
   skills: string[],         // skill keywords shown in AboutMe card
-  projects: {               // Projects showcase under the bento grid, in display order
-    name: string,
-    description: string,    // one or two sentences
-    url?: string,           // website — clicking the card opens it (new tab)
-    github?: string,        // repo — shown as a GitHub icon link; the card opens it when there is no url
-  }[],                      // typed as `Project` — give each entry a url, a github, or both
 }
 ```
 
@@ -45,7 +39,7 @@ Edit the `skills` or `interests` arrays in `portfolio.ts`.
 Replace the image file in `public/` and update `avatarUrl` in `portfolio.ts` to the new filename.
 
 ### Add, remove or reorder a project
-Edit the `projects` array in `portfolio.ts`. Cards render in array order. Add `github` to show a repo icon on the card; a project with only `github` (e.g. a CLI/TUI with no website) links the whole card to the repo.
+Projects are MDX files in `src/content/projects/` — see [`projects.md`](./projects.md). The showcase shows entries with `featured: true`, sorted by `order`.
 
 ### Change the timezone shown on the clock card
 Update `timezone` in `portfolio.ts` to a valid IANA string (e.g. `'Europe/London'`).
@@ -61,7 +55,7 @@ Card components live in `src/components/bento/portfolio-bento/`. Each component 
 | `IntroCard.astro` | Avatar, name, headline, shortIntros |
 | `AboutMe.astro` | Interests + skills from `PORTFOLIO` |
 | `TimeZoneCard.astro` | Live clock — accepts optional `timezone` prop (defaults to visitor's local time) |
-| `ProjectShowcase.astro` | Projects showcase below the grid (not a bento card) — one link card per `projects` entry |
+| `ProjectShowcase.astro` | Projects showcase below the grid (not a bento card) — one link card per featured entry in the `projects` collection |
 | `LoremSm.astro` | Smaller placeholder card |
 
 ---

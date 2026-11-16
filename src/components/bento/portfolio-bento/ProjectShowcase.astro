@@ -1,6 +1,11 @@
 ---
 import { ArrowUpRight, Github } from 'lucide-react'
-import { portfolio } from '@/data/portfolio'
+import { getCollection } from 'astro:content'
+
+// Featured projects, in `order` (projects without one go last).
+const projects = (await getCollection('projects', (p) => p.data.featured))
+  .map((p) => p.data)
+  .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
 
 // The title link stretches over the whole card (after:inset-0), so clicking the
 // card opens the website; the GitHub link sits above it (z-10) and opens the repo.
@@ -13,7 +18,7 @@ import { portfolio } from '@/data/portfolio'
     class="grid grid-cols-1 gap-2 sm:gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4"
   >
     {
-      portfolio.projects.map((project) => {
+      projects.map((project) => {
         const href = project.url ?? project.github
         return (
           <article class="border-darkslate-100 bg-darkslate-500 hover:border-primary-500 group relative flex flex-col rounded-lg border p-6 shadow-sm transition-colors">
@@ -25,7 +30,7 @@ import { portfolio } from '@/data/portfolio'
                   rel="noopener noreferrer"
                   class="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-current"
                 >
-                  {project.name}
+                  {project.title}
                 </a>
               </h3>
               <div class="ml-auto flex items-center gap-3">
@@ -35,7 +40,7 @@ import { portfolio } from '@/data/portfolio'
                     target="_blank"
                     rel="noopener noreferrer"
                     title="View repo"
-                    aria-label={`${project.name} repository on GitHub`}
+                    aria-label={`${project.title} repository on GitHub`}
                     class="relative z-10 -m-1 rounded p-1 opacity-60 transition hover:scale-110 hover:opacity-100"
                   >
                     <Github className="size-5" />

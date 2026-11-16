@@ -10,6 +10,7 @@ All content lives in `src/content/`. Collections are defined in `src/content.con
 |------------|--------|-------------|
 | `posts` | `src/content/posts/**/*.{md,mdx}` | Digital garden notes with wiki-style links |
 | `notes` | `src/content/notes/**/*.{md,mdx}` | Shorter notes (same schema as posts) |
+| `projects` | `src/content/projects/**/*.mdx` | Portfolio projects; `featured` ones fill the home-page Projects showcase |
 | `navItems` | `src/content/nav-items.json` | Navigation configuration |
 | `ogImages` | `src/content/og-images.json` | OG image configs |
 | `resumeSkills` | `src/content/resume/*/skills.json` | Resume skills |
@@ -29,7 +30,7 @@ Resume collections span every Resume Version folder (`src/content/resume/<versio
 
 ## Shared article schema
 
-Used by both `posts` and `notes`. Defined in `src/content/collection-definitions/common-fields/_article.ts`.
+Used by `posts` and `notes`, and extended by `projects`. Defined in `src/content/collection-definitions/common-fields/_article.ts`.
 
 ```typescript
 {
@@ -70,6 +71,7 @@ Changing a source below means updating its doc in the same task (see `CLAUDE.md`
 | `src/content/collection-definitions/common-fields/_article.ts`, `_evergreen-stages.ts` | `posts.md` |
 | `src/content/collection-definitions/common-fields/_og-styles.ts` | `posts.md` + `og-images.md` |
 | `src/content/collection-definitions/resume.ts`, `resume-loaders.ts`, `resume-sections.ts` | `resume.md` + `docs/documents/resume-system.md` |
+| `src/content/collection-definitions/project.ts` | `projects.md` + `portfolio.md` |
 | `src/content/collection-definitions/nav.ts` | `nav.md` |
 | `src/content/collection-definitions/og-images.ts` | `og-images.md` |
 | `src/data/portfolio.ts` | `portfolio.md` + `site-config.md` |
