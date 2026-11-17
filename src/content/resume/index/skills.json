@@ -2,22 +2,24 @@
   {
     "id": "languages",
     "category": "Languages",
-    "details": ["Python", "Haskell", "Elixir", "R", "SQL", "Ruby", "JavaScript"]
+    "details": ["Python", "Rust", "Haskell", "Elixir", "R", "SQL", "Ruby", "JavaScript"]
   },
   {
     "id": "frameworks_and_libraries",
-    "category": "Frameworks and Libraries",
+    "category": "Frameworks and libraries",
     "details": [
       "Django",
       "FastAPI",
       "pandas",
-      "numpy",
-      "pythainlp",
-      "gensim",
+      "NumPy",
+      "PyThaiNLP",
+      "Gensim",
       "NLTK",
-      "streamlit",
-      "matplotlib",
+      "Streamlit",
+      "Matplotlib",
       "seaborn",
+      "YOLO",
+      "RF-DETR",
       "Phoenix",
       "Astro"
     ]
@@ -30,17 +32,20 @@
       "Docker",
       "uv",
       "just",
-      "Postgres",
+      "PostgreSQL",
+      "TimescaleDB",
       "MongoDB",
       "Airflow",
       "Kafka",
       "RabbitMQ",
+      "Nginx",
+      "Cloudflare",
       "Bitbucket Pipelines",
       "Ollama",
       "RAG",
       "MCP",
       "Google Looker Studio",
-      "Digital Ocean",
+      "DigitalOcean",
       "AWS",
       "Obsidian"
     ]

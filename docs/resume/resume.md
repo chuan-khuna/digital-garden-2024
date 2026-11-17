@@ -22,6 +22,8 @@ Jul 2022 - Present · visible on web, resume print, and CV print
 
 - **Computer vision systems**: Design and develop end-to-end pipelines for vehicle and accident detection, face-recognition visitor management, event people counting, and product-on-shelf detection, with Kafka, RabbitMQ, and TimescaleDB.
 - **Object detection**: Train and fine-tune custom models with YOLO and RF-DETR.
+- **LLM and RAG**: Built a tool-calling agent on Tau and a document RAG pipeline on Qdrant for a support chatbot.
+- **Agent framework**: Design a multi-client chatbot core on the Tau agent library, released as a versioned Python package, with an extension standard that adds client tools and skills without core changes.
 - **Sales data analysis**: Analyse point-of-sale (POS) data for clients with Recency, Frequency, Monetary (RFM) analysis, cohort analysis, and association rule learning, and visualise the results.
 - **Survey text analysis**: Analyse survey responses with word clouds, n-grams, and Latent Dirichlet Allocation (LDA) topic modelling.
 - **Backend development**: Build and maintain a standardised Django starter template with Docker and PostgreSQL.
@@ -44,12 +46,6 @@ Mar 2026 - Present · Personal project · <https://github.com/chuan-khuna/bazaar
 
 - Build a Windows desktop tracker for The Bazaar in Rust and GPUI that records each run from the game's log file and memory.
 
-### 2. altr: personal Python package
-
-May 2025 · Personal project · <https://github.com/chuan-khuna/altr> · web, resume print, and CV print
-
-- Bundled reusable code snippets into a Python package that installs from GitHub.
-
 ### 3. Wordle in Haskell
 
 Sep 2023 · Personal project · <https://github.com/chuan-khuna/learning-haskell> · web only
@@ -66,11 +62,7 @@ Sep 2023 · Personal project · <https://github.com/chuan-khuna/learning-haskell
 
 Oct 2026 - Present · Personal project · <https://github.com/chuan-khuna/wordle> · web, resume print, and CV print
 
-- Port the solver's precompute from Python to Rust, which cuts an estimated 9 to 35 hours to about 26 minutes with byte-identical output.
-- Simulate full games for every opener against all 2,315 answers. The best opener, TARSE, averages 3.43 guesses and never loses.
-- Rank guesses by expected information or by expected candidates, under eight strategies.
-- Build a native desktop app in Rust and GPUI, with a Solver panel that explains each suggested guess.
-- Write 11 articles in English and Thai on a Next.js and FastAPI website, with interactive widgets that explain the solver.
+- Build a Wordle solver in Python and Rust, with a GPUI desktop app and an interactive Next.js site that visualises its findings.
 
 ### 6. POS Rewrite in Rust
 
