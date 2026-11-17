@@ -114,6 +114,7 @@ Single-item JSON array. The header/contact info shown at the top of the resume.
     "email": "email string",
     "github": "url string",
     "githubName": "string",
+    "website": "url string (optional)",
     "introduction": "string",
     "location": "string"
   }

@@ -117,6 +117,8 @@ export const resumeHeaderCollection = defineCollection({
     email: z.string().email(),
     github: z.string().url(),
     githubName: z.string(),
+    /** Personal website; shown as a contact link when set. */
+    website: z.string().url().optional(),
     introduction: z.string(),
     location: z.string(),
   }),

@@ -27,6 +27,10 @@ const {
   now: nowEntry,
 } = await getResume('web')
 
+const websiteLabel = header.website
+  ?.replace(/^https?:\/\//, '')
+  .replace(/\/$/, '')
+
 const textGrayClasses = 'text-gray-500 dark:text-gray-500'
 
 const ogImageUrl = await pageOgImage('resume')
@@ -61,6 +65,19 @@ const ogImageUrl = await pageOgImage('resume')
               class="mt-4 w-full max-w-[400px] md:mt-0 md:pl-8 md:text-right"
               name="contact-info"
             >
+              {header.website && (
+                <p>
+                  <span class="font-medium">Website</span>:{' '}
+                  <a
+                    href={header.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="underline"
+                  >
+                    {websiteLabel}
+                  </a>
+                </p>
+              )}
               <p>
                 <span class="font-medium">Github</span>:
                 <a
