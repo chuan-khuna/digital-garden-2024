@@ -1,6 +1,6 @@
 ---
 title: 'POS Rewrite in Rust'
-time: 'Oct 2026'
+time: 'Oct 2026 - Present'
 description: 'Personal project'
 url: null
 order: 6
@@ -10,4 +10,4 @@ visibility:
   cv_print: true
 ---
 
-- Rewrote a point-of-sale (POS) app in Rust from its 2019 Rails version, and added quotation PDFs and stock charts.
+- Rewrite a point-of-sale (POS) app in Rust from its 2019 Rails version, and add quotation PDFs and stock charts.
