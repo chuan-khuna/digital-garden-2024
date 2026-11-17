@@ -3,12 +3,34 @@ import type { Resume } from '@/lib/resume'
 
 interface Props {
   header: Resume['header']
+  /**
+   * Put the contact info on one full-width line above the introduction
+   * (one-column and CV layouts) instead of in a column beside it.
+   */
+  stacked?: boolean
 }
 
-const { header } = Astro.props
+const { header, stacked = false } = Astro.props
 const websiteLabel = header.website
   ?.replace(/^https?:\/\//, '')
   .replace(/\/$/, '')
+
+const contacts = [
+  header.website && {
+    label: 'Website',
+    value: websiteLabel,
+    href: header.website,
+  },
+  { label: 'Github', value: header.githubName, href: header.github },
+  { label: 'Email', value: header.email },
+  { label: 'Location', value: header.location },
+].filter(Boolean) as { label: string; value: string; href?: string }[]
+
+// The one-line contact row leads with Email.
+const inlineContacts = [
+  ...contacts.filter((c) => c.label === 'Email'),
+  ...contacts.filter((c) => c.label !== 'Email'),
+]
 ---
 
 <div class="border-b-1 relative border-gray-100 p-2">
@@ -23,48 +45,59 @@ const websiteLabel = header.website
       </p>
     </div>
   </div>
-  <!-- introduction and contact info -->
-  <div class="mt-2 grid grid-cols-3">
-    <div class="col-span-2 block text-sm">
-      <p>
-        {header.introduction}
-      </p>
-    </div>
-    <div class="col-span-1 block text-right text-sm">
-      {
-        header.website && (
-          <p>
-            <span class="font-resumesans font-medium">Website</span>:{' '}
-            <a
-              href={header.website}
-              target="_blank"
-              rel="noreferrer"
-              class="underline"
-            >
-              {websiteLabel}
-            </a>
-          </p>
-        )
-      }
-      <p>
-        <span class="font-resumesans font-medium">Github</span>:{' '}
-        <a
-          href={header.github}
-          target="_blank"
-          rel="noreferrer"
-          class="underline"
-        >
-          {header.githubName}
-        </a>
-      </p>
-      <p>
-        <span class="font-resumesans font-medium">Email</span>: {header.email}
-      </p>
-      <p>
-        <span class="font-resumesans font-medium">Location</span>: {
-          header.location
-        }
-      </p>
-    </div>
-  </div>
+  {
+    stacked ? (
+      <div class="mt-1 text-sm">
+        <!-- contact info on one line, then the introduction -->
+        <p class="flex flex-wrap items-baseline gap-x-5 gap-y-0.5">
+          {inlineContacts.map((c) => (
+            <>
+              <span class="whitespace-nowrap">
+                <span class="font-resumesans font-medium">{c.label}</span>:{' '}
+                {c.href ? (
+                  <a
+                    href={c.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="underline"
+                  >
+                    {c.value}
+                  </a>
+                ) : (
+                  c.value
+                )}
+              </span>
+            </>
+          ))}
+        </p>
+        <p class="mt-2 leading-relaxed">{header.introduction}</p>
+      </div>
+    ) : (
+      <div class="mt-2 grid grid-cols-3">
+        <!-- introduction and contact info side by side -->
+        <div class="col-span-2 block text-sm">
+          <p>{header.introduction}</p>
+        </div>
+        <div class="col-span-1 block text-right text-sm">
+          {contacts.map((c) => (
+            <p>
+              <span class="font-resumesans font-medium">{c.label}</span>:{' '}
+              {c.href ? (
+                <a
+                  href={c.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="underline"
+                >
+                  {c.value}
+                </a>
+              ) : (
+                c.value
+              )}
+            </p>
+          ))}
+        </div>
+      </div>
+    )
+  }
 </div>
