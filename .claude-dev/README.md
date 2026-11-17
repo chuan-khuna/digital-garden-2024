@@ -8,6 +8,7 @@ A local Claude Code plugin and marketplace. It holds skills that are not part of
 │   ├── plugin.json        # the plugin: writing-tools
 │   └── marketplace.json   # the marketplace garden-local, which lists the plugin
 └── skills/
+    ├── resume/SKILL.md
     ├── technical-writing/SKILL.md
     └── unslop/SKILL.md
 ```
@@ -50,7 +51,7 @@ The CLI saves the marketplace `path` in `.claude/settings.json` as an absolute p
 "path": "./.claude-dev"
 ```
 
-Skills then run with the plugin name in front: `/writing-tools:unslop`, `/writing-tools:technical-writing`.
+Skills then run with the plugin name in front: `/writing-tools:unslop`, `/writing-tools:technical-writing`, `/writing-tools:resume`.
 
 To try the plugin for one session without installing it:
 
@@ -91,7 +92,8 @@ Or copy by hand: `cp -r .claude-dev/skills/<name> .claude/skills/`.
 
 ## Skills
 
-Both skills set `disable-model-invocation: true`, so they run only when you call them by name.
+All skills set `disable-model-invocation: true`, so they run only when you call them by name.
 
 - `unslop`: [cursor/plugins `pstack/skills/unslop`](https://github.com/cursor/plugins/tree/e1cc03121a0e71129a4fb730d7c5528a0a3e43c8/pstack/skills/unslop) (`e1cc03121a0e71129a4fb730d7c5528a0a3e43c8`)
+- `resume`: written for this repo. It writes and proofreads resume text you give it, in British English, by the rules of [Harvard FAS Career Services](https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/) and [the Guardian](https://www.theguardian.com/careers/careers-blog/grammar-rules-cv-top-tips), with the `technical-writing` and `unslop` skills.
 - `technical-writing`: [cursor/plugins `pstack/skills/technical-writing`](https://github.com/cursor/plugins/tree/e1cc03121a0e71129a4fb730d7c5528a0a3e43c8/pstack/skills/technical-writing) (`e1cc03121a0e71129a4fb730d7c5528a0a3e43c8`)
