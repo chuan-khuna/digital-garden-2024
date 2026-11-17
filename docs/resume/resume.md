@@ -33,8 +33,8 @@ Jul 2022 - Present · visible on web, resume print, and CV print
 ## Skills
 
 - **Languages:** Python, Rust, Haskell, Elixir, R, SQL, Ruby, and JavaScript
-- **Frameworks and libraries:** Django, FastAPI, pandas, NumPy, PyThaiNLP, Gensim, NLTK, Streamlit, Matplotlib, seaborn, YOLO, RF-DETR, Phoenix, and Astro
-- **Tools:** Git, Docker, uv, just, PostgreSQL, TimescaleDB, MongoDB, Airflow, Kafka, RabbitMQ, Nginx, Cloudflare, Bitbucket Pipelines, Ollama, RAG, MCP, Google Looker Studio, DigitalOcean, AWS, and Obsidian
+- **Frameworks and libraries:** Django, FastAPI, pandas, NumPy, PyThaiNLP, Gensim, NLTK, Streamlit, Matplotlib, seaborn, and Astro
+- **Tools:** Git, Docker, uv, just, mise, PostgreSQL, TimescaleDB, MongoDB, Airflow, Kafka, RabbitMQ, Nginx, Cloudflare, Bitbucket Pipelines, Ollama, RAG, MCP, Google Looker Studio, DigitalOcean, AWS, and Obsidian
 
 ## Projects
 
