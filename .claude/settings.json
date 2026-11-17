@@ -1,4 +1,7 @@
 {
+  "enabledPlugins": {
+    "writing-tools@garden-local": true
+  },
   "extraKnownMarketplaces": {
     "garden-local": {
       "source": {
@@ -6,8 +9,5 @@
         "path": "./.claude-dev"
       }
     }
-  },
-  "enabledPlugins": {
-    "writing-tools@garden-local": true
   }
 }
