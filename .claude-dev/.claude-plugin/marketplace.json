@@ -1,0 +1,13 @@
+{
+  "name": "garden-local",
+  "description": "Local plugins for digital-garden-2024.",
+  "owner": { "name": "ALTR" },
+  "plugins": [
+    {
+      "name": "writing-tools",
+      "source": "./",
+      "description": "Writing skills for this repo: unslop and technical-writing.",
+      "version": "0.1.0"
+    }
+  ]
+}

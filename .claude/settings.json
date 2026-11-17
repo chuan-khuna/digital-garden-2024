@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "garden-local": {
+      "source": {
+        "source": "directory",
+        "path": "./.claude-dev"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "writing-tools@garden-local": true
+  }
+}
