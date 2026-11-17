@@ -8,7 +8,12 @@ visibility:
   cv_print: true
 ---
 
-- **Data Analysis & Visualisation**: Deliver data analysis and visualisations on request across RFM, cohort, and association rule learning on POS data; analyse survey responses using word cloud, n-gram, and LDA topic modelling.
-- **Computer Vision Systems**: Design and develop end-to-end computer vision pipelines including vehicle/accident detection, face recognition-based visitor management, event people counting, and product-on-shelf detection using YOLO, RF-DETR, Kafka, RabbitMQ, and TimescaleDB; train and fine-tune custom object detection models.
-- **Backend Development**: Build and maintain a standardised Django starter template with Docker, Postgres.
-- **Infrastructure & DevOps**: Configure Cloudflare Tunnel with multiple domain mapping, manage Nginx and cloud environments, automate deployments via Bitbucket Pipelines, and standardise deployment commands using Justfile.
+- **Computer vision systems**: Design and develop end-to-end pipelines for vehicle and accident detection, face-recognition visitor management, event people counting, and product-on-shelf detection, with Kafka, RabbitMQ, and TimescaleDB.
+- **Object detection**: Train and fine-tune custom models with YOLO and RF-DETR.
+- **LLM and RAG**: Build a tool-calling agent on Tau and a document RAG pipeline on Qdrant for a customer support chatbot.
+- **Agent framework**: Design a multi-client chatbot core on the Tau agent library, released as a versioned Python package, with an extension standard that adds client tools and skills without core changes.
+- **Sales data analysis**: Analyse point-of-sale (POS) data for clients with Recency, Frequency, Monetary (RFM) analysis, cohort analysis, and association rule learning, and visualise the results.
+- **Survey text analysis**: Analyse survey responses with word clouds, n-grams, and Latent Dirichlet Allocation (LDA) topic modelling.
+- **Backend development**: Build and maintain a standardised Django starter template with Docker and PostgreSQL.
+- **DevOps**: Automate deployments with Bitbucket Pipelines and standardise deployment commands in a Justfile.
+- **Infrastructure**: Configure Cloudflare Tunnel to route multiple domains, and manage Nginx on AWS and DigitalOcean.

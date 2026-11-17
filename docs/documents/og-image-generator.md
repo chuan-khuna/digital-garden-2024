@@ -3,6 +3,7 @@
 The OG image system generates social media preview images (1200×630 PNG) for posts and pages at build time. When you share a link on LINE, X, Discord or Slack, these appear as the preview card.
 
 **Technology stack:**
+
 - **Satori** — converts React components to SVG
 - **Sharp** — converts SVG to optimised PNG
 - **Astro API routes** — prerendered endpoints that emit the PNGs
@@ -22,16 +23,20 @@ Everything about OG images goes through one module, `src/lib/og-image/`. Pages a
     index.ts    adapter: reads the ogImages collection + site URL
     resolve.ts  pure rules: URL shape, page slug check, {{siteTitle}}   (tested)
     render.ts   fonts → OgImageTemplate → satori → sharp
+    color.ts    oklch() → rgba() for Satori                      (tested)
 ```
 
-| File | Role |
-|---|---|
-| `src/lib/og-image/index.ts` | Astro adapter. Interface: `pageOgImage`, `articleOgImage`, `ogImageResponse`, `OG_ARTICLE_COLLECTIONS` |
-| `src/lib/og-image/resolve.ts` | Pure rules, no `astro:content`. Tested in `resolve.test.ts` |
-| `src/lib/og-image/render.ts` | `renderOgImage(title, description, style)` → PNG `Buffer` |
-| `src/components/og/og-template.tsx` | Picks the theme for an `OgStyle` |
-| `src/components/og/_components/` | Theme components and text helpers |
-| `src/content/collection-definitions/common-fields/_og-styles.ts` | `ogStyles` enum and `OgStyle` type |
+| File                                                             | Role                                                                                                              |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `src/lib/og-image/index.ts`                                      | Astro adapter. Interface: `pageOgImage`, `articleOgImage`, `ogImageResponse`, `OG_ARTICLE_COLLECTIONS`            |
+| `src/lib/og-image/resolve.ts`                                    | Pure rules, no `astro:content`. Tested in `resolve.test.ts`                                                       |
+| `src/lib/og-image/render.ts`                                     | `renderOgImage({ title, description, style, label, siteHost, siteTitle })` → PNG `Buffer`                         |
+| `src/lib/og-image/color.ts`                                      | `oklch(l, c, h, alpha?)` → `rgba(…)`. Satori reads neither CSS variables nor `oklch()`. Tested in `color.test.ts` |
+| `src/components/og/og-template.tsx`                              | Picks the theme for an `OgStyle`                                                                                  |
+| `src/components/og/_components/og-card.tsx`                      | The shared card layout every theme renders                                                                        |
+| `src/components/og/_components/og-palettes.ts`                   | Light and dark palettes, in oklch, copied from `src/styles/presets/`                                              |
+| `src/components/og/_components/`                                 | Theme wrappers, the logo, the particle network and text helpers                                                   |
+| `src/content/collection-definitions/common-fields/_og-styles.ts` | `ogStyles` enum and `OgStyle` type                                                                                |
 
 ### Interface
 
@@ -41,11 +46,11 @@ pageOgImage(slug: string): Promise<URL>                        // og/pages/<slug
 articleOgImage(collection: 'posts' | 'notes' | 'projects', id: string): URL  // og/<collection>/<id>.png
 
 // For OG routes
-ogImageResponse({ title, description?, ogStyle }): Promise<Response>  // image/png
+ogImageResponse(kind: 'pages' | collection, { title, description?, ogStyle }): Promise<Response>  // image/png
 ```
 
 - `pageOgImage` **fails the build** if `slug` has no entry in `src/content/og-images.json`, so a page can never point `og:image` at an image that isn't generated.
-- `ogImageResponse` fills `{{siteTitle}}` in the title, defaults a missing description to `''`, renders, and wraps the PNG in a `Response`.
+- `ogImageResponse` fills `{{siteTitle}}` in the title, defaults a missing description to `''`, sets the kicker from `kind` (`ogLabel`: Page, Post, Note, Project) and the footer host from the site URL (`ogSiteHost`), renders, and wraps the PNG in a `Response`.
 - The site origin comes from `import.meta.env.SITE` (`site` in `astro.config.mjs`).
 
 ---
@@ -60,7 +65,7 @@ ogImageResponse({ title, description?, ogStyle }): Promise<Response>  // image/p
 
 ```typescript
 export async function GET({ props }: APIContext) {
-  return ogImageResponse(props.article.data)
+  return ogImageResponse(props.article.collection, props.article.data)
 }
 ```
 
@@ -82,7 +87,8 @@ Both routes use `export const prerender = true`, so images are generated at buil
 import { pageOgImage } from '@/lib/og-image'
 const ogImageUrl = await pageOgImage('resume')
 ---
-<BaseLayout title="…" ogImage={ogImageUrl}>
+
+<BaseLayout title="…" ogImage={ogImageUrl} />
 ```
 
 ```astro
@@ -110,7 +116,7 @@ Add it to `OG_ARTICLE_COLLECTIONS` in `src/lib/og-image/resolve.ts`. The collect
 
 `renderOgImage(title, description, style)` in `src/lib/og-image/render.ts`:
 
-1. Load three VictorMono weights (Regular 400, Light 300, Bold 700) from `src/assets/fonts/` — once, at module load via top-level `await`. Paths are relative to the project root, so `astro build` must run from there.
+1. Load the fonts from `src/assets/fonts/` once, at module load via top-level `await`: DM Serif Text 400 (title), Lato 400/700 (description) and VictorMono 400/700 (kicker and footer). Paths are relative to the project root, so `astro build` must run from there. The OFL licence for each font sits next to it.
 2. Render `OgImageTemplate` → SVG via Satori
 3. Convert SVG → PNG via Sharp (compression level 9, adaptive filtering, palette mode)
 4. Return the PNG `Buffer`
@@ -127,7 +133,23 @@ const themeComponents: Record<OgStyle, typeof OgDefaultTheme> = {
 }
 ```
 
-`OgStyle` is inferred from the `ogStyles` Zod enum, so adding a style to the enum without a theme here **fails typecheck**, and a mistyped `ogStyle` in content fails schema validation. There is no silent fallback. Theme components must use **inline styles only** (Satori limitation — no CSS classes). To add one: add the value to `ogStyles`, then a theme component in `src/components/og/_components/` and its entry in `themeComponents`.
+### The card
+
+Every style renders the same card (`og-card.tsx`), designed to stay readable at thumbnail size (Discord, LINE and Slack show it about 400px wide, under text that already repeats the title and description):
+
+- **Header:** an accent bar and the kicker (`POST`, `NOTE`, `PROJECT`, `PAGE`) on the left; the site title on the right, hidden when it equals the card title (the home page).
+- **Body:** the title in DM Serif Text, from 92px for short titles down to 54px for long ones, truncated at 110 characters on a word boundary. The description is in Lato at 30px, truncated at 140 characters (about two lines).
+- **Footer:** an accent rule and the site host on the left, the logo on the right.
+
+| Style          | Palette                                                     | Background                                                  |
+| -------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| `default`      | light (`nzk` preset): cream, navy title, orange accent      | plain                                                       |
+| `default-dark` | dark (`dark` preset): near-black, white title, green accent | plain                                                       |
+| `particle`     | light                                                       | seeded particle network, faded towards the text on the left |
+
+To change colours, edit `og-palettes.ts` (keep the values in step with `src/styles/presets/`).
+
+`OgStyle` is inferred from the `ogStyles` Zod enum, so adding a style to the enum without a theme here **fails typecheck**, and a mistyped `ogStyle` in content fails schema validation. There is no silent fallback. Theme components must use **inline styles only** (Satori limitation — no CSS classes). To add one: add the value to `ogStyles`, then a theme component in `src/components/og/_components/` (usually an `OgCard` with a palette and an optional `background`) and its entry in `themeComponents`.
 
 ### Frontmatter
 
@@ -135,7 +157,7 @@ const themeComponents: Record<OgStyle, typeof OgDefaultTheme> = {
 ---
 title: My Post
 description: Short description for social media
-ogStyle: 'particle'   # 'default' | 'default-dark' | 'particle'; default: 'default'
+ogStyle: 'particle' # 'default' | 'default-dark' | 'particle'; default: 'default'
 ---
 ```
 
@@ -143,7 +165,7 @@ ogStyle: 'particle'   # 'default' | 'default-dark' | 'particle'; default: 'defau
 
 ## Testing
 
-- `bun run test` — `src/lib/og-image/resolve.test.ts` covers URL shape, the page slug check and `{{siteTitle}}`. Rendering is not unit-tested (slow, needs image snapshots).
+- `bun run test` — `src/lib/og-image/resolve.test.ts` covers URL shape, the page slug check, `{{siteTitle}}`, the kicker and the footer host; `color.test.ts` covers the oklch conversion. Rendering is not unit-tested (slow, needs image snapshots).
 - `bun run build` — renders every image; a missing page entry or bad `ogStyle` fails here.
 - Locally:
 
@@ -154,6 +176,7 @@ bun run dev
 ```
 
 **Social media validators:**
+
 - Facebook: https://developers.facebook.com/tools/debug/
 - LinkedIn: https://www.linkedin.com/post-inspector/
 
@@ -168,9 +191,10 @@ bun run dev
 > Check the collection is in `OG_ARTICLE_COLLECTIONS` and the URL is `/og/<collection>/<id>.png`.
 
 > **Build errors in rendering**
-> - *Font loading fails* → verify the three `.ttf` files exist in `src/assets/fonts/` and the build runs from the project root
-> - *Satori errors* → ensure only inline styles are used in theme components
-> - *Sharp errors* → check image dimensions are valid (must be 1200×630)
+>
+> - _Font loading fails_ → verify the `.ttf` files listed in `render.ts` exist in `src/assets/fonts/` and the build runs from the project root
+> - _Satori errors_ → ensure only inline styles are used in theme components
+> - _Sharp errors_ → check image dimensions are valid (must be 1200×630)
 
 ---
 

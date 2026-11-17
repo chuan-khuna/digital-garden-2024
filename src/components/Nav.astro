@@ -1,102 +1,96 @@
 ---
 import ThemeToggle from '@/components/ThemeToggle.astro'
-import { Button } from '@/components/ui/button'
 import { Menu, X as Close } from 'lucide-react'
 import { getCollection } from 'astro:content'
+import { site } from '@/data/site.config'
 
-const navItems = await getCollection('navItems')
-const sortedNavItems = navItems.sort((a, b) => a.data.order - b.data.order)
+const navItems = (await getCollection('navItems'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((item) => item.data)
 
 const currentPath = Astro.url.pathname
+const isActive = (link: string) =>
+  link === '/' ? currentPath === '/' : currentPath.startsWith(link)
 ---
 
-<header class="sticky top-0 z-50 w-full print:hidden">
-  <!-- Financial Times inspired: slim single-row nav, uppercase links -->
-  <div class="border-border bg-background border-b">
-    <div
-      class="mx-auto flex h-11 max-w-[1440px] items-stretch justify-end px-4 md:px-6"
+<header
+  class="border-border bg-background sticky top-0 z-50 w-full border-b print:hidden"
+>
+  <div
+    class="mx-auto flex h-12 max-w-[1440px] items-stretch justify-between px-4 md:px-6"
+  >
+    <a
+      href="/"
+      class="text-foreground flex items-center font-serif text-lg leading-none"
     >
-      <!-- Desktop nav: slim uppercase links, active gets a short underline -->
-      <nav id="desktop-nav" class="hidden items-stretch gap-x-5 md:flex">
+      {site.displayName}
+    </a>
+
+    <div class="flex items-stretch">
+      <nav aria-label="Main" class="hidden items-stretch gap-x-6 md:flex">
         {
-          sortedNavItems.map((item) => {
-            const isActive =
-              item.data.link === '/'
-                ? currentPath === '/'
-                : currentPath.startsWith(item.data.link)
-            return (
-              <a
-                href={item.data.link}
-                class={[
-                  'flex h-11 items-center border-b-2 font-resumesans text-[13px] font-normal uppercase tracking-[0.08em] transition-colors',
-                  isActive
-                    ? 'border-primary text-foreground'
-                    : 'text-foreground/55 hover:text-foreground border-transparent',
-                ].join(' ')}
-              >
-                {item.data.label}
-              </a>
-            )
-          })
+          navItems.map((item) => (
+            <a
+              href={item.link}
+              aria-current={isActive(item.link) ? 'page' : undefined}
+              class="text-foreground/70 hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:border-primary -mb-px flex items-center border-b-2 border-transparent text-sm transition-colors"
+            >
+              {item.label}
+            </a>
+          ))
         }
       </nav>
 
-      <!-- Right controls -->
-      <div class="flex shrink-0 items-center">
-        <div class="bg-border mx-3 hidden h-5 w-px md:block"></div>
+      <div class="flex items-center gap-1 md:ml-5">
         <ThemeToggle />
-        <div id="mobile-nav-buttons" class="flex md:hidden">
-          <Button variant="ghost" size="icon" id="mobile-nav">
-            <Menu className="h-[1.2rem] w-[1.2rem]" id="nav-hamburger" />
-            <Close className="hidden h-[1.2rem] w-[1.2rem]" id="nav-close" />
-          </Button>
-        </div>
+        <button
+          id="mobile-nav-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          class="text-foreground/70 hover:text-foreground hover:bg-border focus-visible:ring-ring flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 md:hidden"
+        >
+          <Menu className="h-4 w-4" data-icon="open" />
+          <Close className="hidden h-4 w-4" data-icon="close" />
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Mobile nav -->
-  <div
-    id="mobile-nav-container"
-    class="border-border bg-background hidden w-full border-b"
+  <nav
+    id="mobile-nav"
+    aria-label="Main"
+    class="border-border hidden border-t md:hidden"
   >
-    <div class="flex flex-col md:hidden">
-      {
-        sortedNavItems.map((item) => {
-          const isActive =
-            item.data.link === '/'
-              ? currentPath === '/'
-              : currentPath.startsWith(item.data.link)
-          return (
-            <a
-              href={item.data.link}
-              class={[
-                'border-border border-b px-4 py-3 font-resumesans text-[13px] font-normal uppercase tracking-[0.08em] last:border-b-0',
-                isActive
-                  ? 'text-primary'
-                  : 'text-foreground/55 hover:text-foreground',
-              ].join(' ')}
-            >
-              {item.data.label}
-            </a>
-          )
-        })
-      }
-    </div>
-  </div>
+    {
+      navItems.map((item) => (
+        <a
+          href={item.link}
+          aria-current={isActive(item.link) ? 'page' : undefined}
+          class="text-foreground/70 hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:border-primary block border-l-2 border-transparent px-4 py-3 text-sm"
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
 </header>
 
 <script>
-  const mobileNavContainer = document.getElementById('mobile-nav-container')
-  const navButton = document.getElementById('mobile-nav')
-  const hamburgerIcon = document.getElementById('nav-hamburger')
-  const closeIcon = document.getElementById('nav-close')
+  const toggle = document.getElementById('mobile-nav-toggle')
+  const menu = document.getElementById('mobile-nav')
 
-  const handleNavClick = () => {
-    hamburgerIcon.classList.toggle('hidden')
-    closeIcon.classList.toggle('hidden')
-    mobileNavContainer.classList.toggle('hidden')
-  }
-
-  navButton.addEventListener('click', handleNavClick)
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true'
+    toggle.setAttribute('aria-expanded', String(open))
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
+    menu?.classList.toggle('hidden', !open)
+    toggle
+      .querySelector('[data-icon="open"]')
+      ?.classList.toggle('hidden', open)
+    toggle
+      .querySelector('[data-icon="close"]')
+      ?.classList.toggle('hidden', !open)
+  })
 </script>

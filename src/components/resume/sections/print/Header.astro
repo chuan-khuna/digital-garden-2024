@@ -6,6 +6,9 @@ interface Props {
 }
 
 const { header } = Astro.props
+const websiteLabel = header.website
+  ?.replace(/^https?:\/\//, '')
+  .replace(/\/$/, '')
 ---
 
 <div class="border-b-1 relative border-gray-100 p-2">
@@ -28,6 +31,21 @@ const { header } = Astro.props
       </p>
     </div>
     <div class="col-span-1 block text-right text-sm">
+      {
+        header.website && (
+          <p>
+            <span class="font-resumesans font-medium">Website</span>:{' '}
+            <a
+              href={header.website}
+              target="_blank"
+              rel="noreferrer"
+              class="underline"
+            >
+              {websiteLabel}
+            </a>
+          </p>
+        )
+      }
       <p>
         <span class="font-resumesans font-medium">Github</span>:{' '}
         <a

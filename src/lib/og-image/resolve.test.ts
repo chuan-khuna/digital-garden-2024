@@ -2,8 +2,29 @@ import { describe, expect, it } from 'vitest'
 import {
   assertPageOgImage,
   ogImagePath,
+  ogLabel,
+  ogSiteHost,
   resolvePageTitle,
 } from '@/lib/og-image/resolve'
+
+describe('ogLabel', () => {
+  it('names each kind in the singular', () => {
+    expect(ogLabel('posts')).toBe('Post')
+    expect(ogLabel('notes')).toBe('Note')
+    expect(ogLabel('projects')).toBe('Project')
+    expect(ogLabel('pages')).toBe('Page')
+  })
+})
+
+describe('ogSiteHost', () => {
+  it('drops the scheme and trailing slash', () => {
+    expect(ogSiteHost('https://altrf.dev/')).toBe('altrf.dev')
+  })
+
+  it('keeps a port', () => {
+    expect(ogSiteHost('http://localhost:4321')).toBe('localhost:4321')
+  })
+})
 
 describe('ogImagePath', () => {
   it('puts page images under og/pages/', () => {

@@ -2,11 +2,11 @@
   {
     "id": "now",
     "lastUpdated": "2024-04-14",
-    "intro": "Welcome to my resume! I want to use this section to tell you about what I am doing now.",
+    "intro": "Welcome to my resume! This section tells you what I am doing now.",
     "paragraphs": [
-      "I am currently interested in Functional Programming and Monad. I enjoy drinking Earlgrey tea and specialty cofee.",
-      "I am also suffering from Gastritis, Conjunctivitis, Dry Eye, De Quervain's tenosynovitis.",
-      "I have tried many note-taking apps such as Roam Research, Craft, Logseq, Obsidian, Tana, Heptabase. I am practising taking notes with the Zettelkasten/Evergreen notes method but I am still struggling with it."
+      "I am interested in functional programming, especially monads. I enjoy Earl Grey tea and speciality coffee.",
+      "I am also suffering from gastritis, conjunctivitis, dry eye, and De Quervain's tenosynovitis.",
+      "I have tried many note-taking apps, including Roam Research, Craft, Logseq, Obsidian, Tana, and Heptabase. I am practising the Zettelkasten and evergreen notes methods, but I still find them hard."
     ]
   }
 ]

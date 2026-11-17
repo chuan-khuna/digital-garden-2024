@@ -1,25 +1,26 @@
-// Text utility constants
-export const TITLE_FONT_THRESHOLD = 100
-export const TITLE_TRUNCATION_LENGTH = 150
-export const DESCRIPTION_TRUNCATION_LENGTH = 200
+// OG cards are often shown ~400px wide (Discord, LINE, Slack), so the title is
+// sized to stay readable as a thumbnail and the description is kept to two lines.
+export const TITLE_TRUNCATION_LENGTH = 110
+export const DESCRIPTION_TRUNCATION_LENGTH = 140
 
-// Text utility functions
-export function getTitleFontSizePx(title: string): number {
-  return title.length > TITLE_FONT_THRESHOLD ? 40 : 54
+function truncate(text: string, max: number): string {
+  if (text.length <= max) return text
+  const cut = text.slice(0, max)
+  const lastSpace = cut.lastIndexOf(' ')
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd() + '…'
 }
 
 export function truncateTitle(title: string): string {
-  return title.length > TITLE_TRUNCATION_LENGTH
-    ? title.slice(0, TITLE_TRUNCATION_LENGTH) + '...'
-    : title
+  return truncate(title, TITLE_TRUNCATION_LENGTH)
 }
 
 export function truncateDescription(description: string): string {
-  return description.length > DESCRIPTION_TRUNCATION_LENGTH
-    ? description.slice(0, DESCRIPTION_TRUNCATION_LENGTH) + '...'
-    : description
+  return truncate(description, DESCRIPTION_TRUNCATION_LENGTH)
 }
 
-export function getDescriptionFontSizePx(titleSizePx: number): number {
-  return titleSizePx / 1.618
+export function getTitleFontSizePx(title: string): number {
+  if (title.length <= 28) return 92
+  if (title.length <= 56) return 76
+  if (title.length <= 84) return 64
+  return 54
 }

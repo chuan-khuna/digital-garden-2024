@@ -2,11 +2,12 @@
   {
     "id": "header",
     "name": "Phattharanat Khunakornophat",
-    "jobTitle": "Data Scientist/Developer",
+    "jobTitle": "Data Scientist and Developer",
     "email": "k.phattharanat@gmail.com",
     "github": "https://github.com/chuan-khuna",
     "githubName": "chuan-khuna",
-    "introduction": "Data Scientist and Developer with four years of experience in data analysis, computer vision, and backend development. I've worked across the ML workflow, from training models to getting them running in production, and on the backend services and cloud setup around them.",
+    "website": "https://altrf.dev/",
+    "introduction": "I am a data scientist and developer with four years' experience in data analysis, computer vision, and backend development. I train machine learning models and deploy them to production. I also build the backend services and cloud infrastructure that run them.",
     "location": "Bangkok, Thailand"
   }
 ]

@@ -1,5 +1,5 @@
 ---
-title: 'Wordle game by Haskell'
+title: 'Wordle in Haskell'
 time: 'Sep 2023'
 description: 'Personal project'
 url: 'https://github.com/chuan-khuna/learning-haskell'
@@ -10,4 +10,4 @@ visibility:
   cv_print: false
 ---
 
-- Implement the Wordle puzzle in Haskell language to explore functional programming style
+- Implemented Wordle in Haskell to learn the functional programming style.

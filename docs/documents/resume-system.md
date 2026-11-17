@@ -82,7 +82,7 @@ File paths are relative to `src/content/resume/<version>/`.
 
 | Collection | Loader | File | Key fields |
 |---|---|---|---|
-| `resumeHeader` | `versionedResumeJson()` | `header.json` | `name`, `jobTitle`, `email`, `github`, `githubName`, `introduction`, `location` |
+| `resumeHeader` | `versionedResumeJson()` | `header.json` | `name`, `jobTitle`, `email`, `github`, `githubName`, `website` (optional), `introduction`, `location` |
 | `resumeExperiences` | `versionedResumeGlob()` | `experiences/*.md` | `jobTitle`, `company`, `time`, `visibility` — bullets in MD body |
 | `resumeProjects` | `versionedResumeGlob()` | `projects/*.md` | `title`, `time`, `description`, `url`, `order`, `visibility` — bullets in MD body |
 | `resumeSkills` | `versionedResumeJson()` | `skills.json` | `category`, `details[]` |
@@ -159,6 +159,7 @@ Edit `src/content/resume/index/header.json`:
     "email": "you@email.com",
     "github": "https://github.com/handle",
     "githubName": "handle",
+    "website": "https://example.com/",
     "introduction": "A short bio...",
     "location": "City, Country"
   }

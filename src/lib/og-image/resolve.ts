@@ -30,6 +30,23 @@ export function assertPageOgImage(slug: string, pageSlugs: string[]): void {
   }
 }
 
+const OG_LABELS: Record<OgImageKind, string> = {
+  pages: 'Page',
+  posts: 'Post',
+  notes: 'Note',
+  projects: 'Project',
+}
+
+/** Kicker shown above the title on the card, e.g. `Post`. */
+export function ogLabel(kind: OgImageKind): string {
+  return OG_LABELS[kind]
+}
+
+/** Footer text: the site's host, e.g. `altrf.dev` for `https://altrf.dev/`. */
+export function ogSiteHost(siteUrl: string | URL): string {
+  return new URL(siteUrl).host
+}
+
 /** Fills the `{{siteTitle}}` placeholder in an og-images.json title. */
 export function resolvePageTitle(title: string, siteTitle: string): string {
   return title.replaceAll('{{siteTitle}}', siteTitle)
