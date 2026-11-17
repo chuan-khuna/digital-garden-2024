@@ -12,8 +12,11 @@ import { renderOgImage } from '@/lib/og-image/render'
 import {
   assertPageOgImage,
   ogImagePath,
+  ogLabel,
+  ogSiteHost,
   resolvePageTitle,
   type OgArticleCollection,
+  type OgImageKind,
 } from '@/lib/og-image/resolve'
 
 export {
@@ -53,17 +56,22 @@ export interface OgImageMeta {
   ogStyle: OgStyle
 }
 
-/** PNG response for an OG route. Page titles may use `{{siteTitle}}`. */
-export async function ogImageResponse({
-  title,
-  description = '',
-  ogStyle,
-}: OgImageMeta): Promise<Response> {
-  const png = await renderOgImage(
-    resolvePageTitle(title, site.siteTitle),
+/**
+ * PNG response for an OG route. `kind` sets the card's kicker (Post, Note, …).
+ * Page titles may use `{{siteTitle}}`.
+ */
+export async function ogImageResponse(
+  kind: OgImageKind,
+  { title, description = '', ogStyle }: OgImageMeta,
+): Promise<Response> {
+  const png = await renderOgImage({
+    title: resolvePageTitle(title, site.siteTitle),
     description,
-    ogStyle,
-  )
+    style: ogStyle,
+    label: ogLabel(kind),
+    siteHost: ogSiteHost(import.meta.env.SITE),
+    siteTitle: site.siteTitle,
+  })
   return new Response(png, {
     status: 200,
     headers: { 'Content-Type': 'image/png' },

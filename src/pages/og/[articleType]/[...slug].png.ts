@@ -30,5 +30,5 @@ export async function GET({ props }: APIContext) {
       | CollectionEntry<'notes'>
       | CollectionEntry<'projects'>
   }
-  return ogImageResponse(article.data)
+  return ogImageResponse(article.collection, article.data)
 }

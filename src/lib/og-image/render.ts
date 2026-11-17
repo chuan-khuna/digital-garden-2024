@@ -3,46 +3,42 @@
  * Runs at build time only (the OG routes are prerendered).
  */
 import { OgImageTemplate } from '@/components/og/og-template'
+import type { OgThemeProps } from '@/components/og/_components/og-card'
 import type { OgStyle } from '@/content/collection-definitions/common-fields/_og-styles'
 import satori, { type SatoriOptions } from 'satori'
 import sharp from 'sharp'
 import fs from 'fs/promises'
 
 // Paths are relative to the project root: `astro build` must run from there.
-const [VictorMono, VictorMonoLight, VictorMonoBold] = await Promise.all([
-  fs.readFile('./src/assets/fonts/VictorMono-Regular.ttf'),
-  fs.readFile('./src/assets/fonts/VictorMono-Light.ttf'),
-  fs.readFile('./src/assets/fonts/VictorMono-Bold.ttf'),
-])
+// Serif title (DM Serif Text), sans description (Lato), mono kicker/footer (VictorMono).
+const FONT_DIR = './src/assets/fonts'
+const FONT_FILES: Array<{ name: string; file: string; weight: 400 | 700 }> = [
+  { name: 'DM Serif Text', file: 'DMSerifText-Regular.ttf', weight: 400 },
+  { name: 'Lato', file: 'Lato-Regular.ttf', weight: 400 },
+  { name: 'Lato', file: 'Lato-Bold.ttf', weight: 700 },
+  { name: 'VictorMono', file: 'VictorMono-Regular.ttf', weight: 400 },
+  { name: 'VictorMono', file: 'VictorMono-Bold.ttf', weight: 700 },
+]
+
+const fonts: SatoriOptions['fonts'] = await Promise.all(
+  FONT_FILES.map(async ({ name, file, weight }) => ({
+    name,
+    weight,
+    style: 'normal' as const,
+    data: await fs.readFile(`${FONT_DIR}/${file}`),
+  })),
+)
+
+export interface RenderOgImageInput extends OgThemeProps {
+  style: OgStyle
+}
 
 export async function renderOgImage(
-  title: string,
-  description: string,
-  style: OgStyle,
+  input: RenderOgImageInput,
 ): Promise<Buffer> {
-  const satoriOption: SatoriOptions = {
-    width: 1200,
-    height: 630,
-    fonts: [
-      {
-        name: 'VictorMono',
-        data: VictorMono,
-        weight: 400,
-      },
-      {
-        name: 'VictorMono',
-        data: VictorMonoLight,
-        weight: 300,
-      },
-      {
-        name: 'VictorMono',
-        data: VictorMonoBold,
-        weight: 700,
-      },
-    ],
-  }
+  const satoriOption: SatoriOptions = { width: 1200, height: 630, fonts }
 
-  const component = OgImageTemplate({ title, description, style })
+  const component = OgImageTemplate(input)
 
   const svg = await satori(component, satoriOption)
 

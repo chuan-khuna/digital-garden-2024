@@ -1,43 +1,41 @@
 import React from 'react'
-import OGImageLogo from '@/components/og/_components/og-logo'
 import OGParticle from '@/components/og/_components/og-particle'
-import {
-  truncateTitle,
-  truncateDescription,
-  getTitleFontSizePx,
-  getDescriptionFontSizePx,
-} from './utils'
+import { oklch } from '@/lib/og-image/color'
+import { OgCard, type OgThemeProps } from './og-card'
+import { lightPalette } from './og-palettes'
 
-interface OgParticleThemeProps {
-  title: string
-  description: string
-}
+// lightPalette.background at varying alpha, for the fade over the particles
+const fade = (alpha: number) => oklch(0.977, 0.0085, 84.57, alpha)
 
-export function OgParticleTheme({ title, description }: OgParticleThemeProps) {
-  const fontFamily = 'VictorMono, monospace'
-
-  const formattedTitle = truncateTitle(title)
-  const titleSize = getTitleFontSizePx(formattedTitle)
-
-  const formattedDescription = truncateDescription(description)
-  const descriptionSize = getDescriptionFontSizePx(titleSize)
-
-  // Generate a seed from the title for consistent particle patterns per page
-  const seed = title
+/**
+ * `particle`: the light card over a seeded particle network that fades out
+ * towards the text on the left, so the title stays readable.
+ */
+export function OgParticleTheme(props: OgThemeProps) {
+  // Same title → same pattern
+  const seed = props.title
     .split('')
     .reduce((acc, char) => acc + char.charCodeAt(0), 0)
 
-  return (
+  const background = (
     <div
       style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
         width: '100%',
         height: '100%',
         display: 'flex',
-        position: 'relative',
-        overflow: 'hidden',
       }}
     >
-      {/* Particle network background - absolutely positioned */}
+      <OGParticle
+        particleColor={lightPalette.accent}
+        lineColor={lightPalette.title}
+        particleCount={90}
+        width={1200}
+        height={630}
+        seed={seed}
+      />
       <div
         style={{
           position: 'absolute',
@@ -46,83 +44,11 @@ export function OgParticleTheme({ title, description }: OgParticleThemeProps) {
           width: '100%',
           height: '100%',
           display: 'flex',
+          backgroundImage: `linear-gradient(90deg, ${fade(1)} 0%, ${fade(0.92)} 45%, ${fade(0.55)} 75%, ${fade(0.25)} 100%)`,
         }}
-      >
-        <OGParticle
-          particleColor="#383838"
-          lineColor="#383838"
-          particleCount={80}
-          width={1200}
-          height={630}
-          seed={seed}
-        />
-      </div>
-
-      {/* Content container with semi-transparent background */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '80px',
-          backgroundColor: '#f7f8f9c0',
-          width: '100%',
-          height: '100%',
-          fontFamily: fontFamily,
-          color: '#383838',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <h1
-            style={{
-              fontSize: `${titleSize}px`,
-              fontWeight: 600,
-              lineHeight: 1.2,
-              marginBottom: '16px',
-            }}
-          >
-            {formattedTitle}
-          </h1>
-
-          <div
-            style={{
-              height: '4px',
-              backgroundColor: '#383838',
-              margin: '16px 0',
-              width: '100%',
-              display: 'flex',
-            }}
-          />
-
-          <h2
-            style={{
-              fontSize: `${descriptionSize}px`,
-              fontWeight: 400,
-              lineHeight: 1.2,
-            }}
-          >
-            {formattedDescription}
-          </h2>
-        </div>
-
-        {/* Logo */}
-        <div
-          style={{
-            padding: '0px',
-            display: 'flex',
-            position: 'absolute',
-            bottom: '80px',
-            right: '80px',
-          }}
-        >
-          <OGImageLogo fillColor="#383838" opacity={60} width={240} />
-        </div>
-      </div>
+      />
     </div>
   )
+
+  return <OgCard {...props} palette={lightPalette} background={background} />
 }
