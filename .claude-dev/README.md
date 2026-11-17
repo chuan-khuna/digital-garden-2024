@@ -8,6 +8,7 @@ A local Claude Code plugin and marketplace. It holds skills that are not part of
 │   ├── plugin.json        # the plugin: writing-tools
 │   └── marketplace.json   # the marketplace garden-local, which lists the plugin
 └── skills/
+    ├── polish-writing/SKILL.md
     ├── resume/SKILL.md
     ├── technical-writing/SKILL.md
     └── unslop/SKILL.md
@@ -51,7 +52,7 @@ The CLI saves the marketplace `path` in `.claude/settings.json` as an absolute p
 "path": "./.claude-dev"
 ```
 
-Skills then run with the plugin name in front: `/writing-tools:unslop`, `/writing-tools:technical-writing`, `/writing-tools:resume`.
+Skills then run with the plugin name in front: `/writing-tools:unslop`, `/writing-tools:technical-writing`, `/writing-tools:resume`, `/writing-tools:polish-writing`.
 
 To try the plugin for one session without installing it:
 
@@ -96,4 +97,5 @@ All skills set `disable-model-invocation: true`, so they run only when you call 
 
 - `unslop`: [cursor/plugins `pstack/skills/unslop`](https://github.com/cursor/plugins/tree/e1cc03121a0e71129a4fb730d7c5528a0a3e43c8/pstack/skills/unslop) (`e1cc03121a0e71129a4fb730d7c5528a0a3e43c8`)
 - `resume`: written for this repo. It writes and proofreads resume text you give it, in British English, by the rules of [Harvard FAS Career Services](https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/) and [the Guardian](https://www.theguardian.com/careers/careers-blog/grammar-rules-cv-top-tips), with the `technical-writing` and `unslop` skills.
+- `polish-writing`: written for this repo. It proofreads and polishes an article you give it, in British English, by the grammar of Craig Shrives' _Smashing Grammar_ and the prose habits of Gary Provost's _100 Ways to Improve Your Writing_, with the `technical-writing` and `unslop` skills.
 - `technical-writing`: [cursor/plugins `pstack/skills/technical-writing`](https://github.com/cursor/plugins/tree/e1cc03121a0e71129a4fb730d7c5528a0a3e43c8/pstack/skills/technical-writing) (`e1cc03121a0e71129a4fb730d7c5528a0a3e43c8`)
