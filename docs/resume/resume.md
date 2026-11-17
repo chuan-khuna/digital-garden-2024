@@ -66,12 +66,9 @@ Oct 2026 - Present · Personal project · <https://github.com/chuan-khuna/wordle
 
 ### 6. POS Rewrite in Rust
 
-Oct 2026 · Personal project · no public repo · web only (to confirm)
+Oct 2026 · Personal project · no public repo · web, resume print, and CV print
 
-- Rewrote a family business's point-of-sale (POS) app from Rails to a native Windows app in Rust, gpui-kit, and SQLite.
-- Fixed stock tracking, which the old app had lost for most products, by restoring stock when an order is deleted and blocking deletion of records with orders.
-- Built an import that cleans duplicates, mixed orders, mistyped dates, and float noise in prices from the old database, and reports each fix.
-- Replaced force-pushes of the database to git with snapshot backups and a restore command.
+- Rewrote a point-of-sale (POS) app in Rust from its 2019 Rails version, and added quotation PDFs and stock charts.
 
 ### 7. Bias Correction of Multi-Dimensional Climate Data and Visualisation
 

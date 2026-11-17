@@ -6,11 +6,8 @@ url: null
 order: 6
 visibility:
   web: true
-  resume_print: false
-  cv_print: false
+  resume_print: true
+  cv_print: true
 ---
 
-- Rewrote a family business's point-of-sale (POS) app from Rails to a native Windows app in Rust, gpui-kit, and SQLite.
-- Fixed stock tracking, which the old app had lost for most products, by restoring stock when an order is deleted and blocking deletion of records with orders.
-- Built an import that cleans duplicates, mixed orders, mistyped dates, and float noise in prices from the old database, and reports each fix.
-- Replaced force-pushes of the database to git with snapshot backups and a restore command.
+- Rewrote a point-of-sale (POS) app in Rust from its 2019 Rails version, and added quotation PDFs and stock charts.
