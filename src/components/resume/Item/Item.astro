@@ -11,17 +11,31 @@ interface Props {
   titleFontSize?: string
 }
 
-const { title, timeDescription, description, url, variant = 'web', inline, titleFontSize } =
-  Astro.props
+const {
+  title,
+  timeDescription,
+  description,
+  url,
+  variant = 'web',
+  inline,
+  titleFontSize,
+} = Astro.props
 
 // print-variant computed values
 const totalLength =
-  (title?.length || 0) + (timeDescription?.length || 0) + (description?.length || 0)
+  (title?.length || 0) +
+  (timeDescription?.length || 0) +
+  (description?.length || 0)
 const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
 const titleClass = titleFontSize
   ? `text-${titleFontSize} font-resumesans font-medium`
   : 'text-md font-resumesans font-medium'
 const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
+// The print URL sits on its own small line tight under the title,
+// without the protocol or trailing slash.
+const urlLabel = url?.replace(/^https?:\/\//, '').replace(/\/$/, '')
+const urlClass =
+  'block -mt-1 text-xs leading-tight font-normal text-gray-500 no-underline'
 ---
 
 {
@@ -51,19 +65,28 @@ const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
       )}
     </div>
   ) : useInline ? (
-    <div class="flex items-center">
-      <div class={`flex-shrink-0 ${titleClass}`}>{title}</div>
-      {(timeDescription || description || url) && (
-        <div>
-          <div class="ml-2 flex-shrink-0 text-right text-sm">
-            {description && <span class={descriptionAndTimeClass}>{description}</span>}
-            {timeDescription && (
-              <span class={descriptionAndTimeClass}>{timeDescription}</span>
-            )}
+    <div>
+      <div class="flex items-center">
+        <div class={`flex-shrink-0 ${titleClass}`}>{title}</div>
+        {(timeDescription || description) && (
+          <div>
+            <div class="ml-2 flex-shrink-0 text-right text-sm">
+              {description && (
+                <span class={descriptionAndTimeClass}>{description}</span>
+              )}
+              {timeDescription && (
+                <span class={descriptionAndTimeClass}>{timeDescription}</span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+        <ItemSeparator />
+      </div>
+      {url && (
+        <a href={url} target="_blank" rel="noreferrer" class={urlClass}>
+          {urlLabel}
+        </a>
       )}
-      <ItemSeparator />
     </div>
   ) : (
     <div class="mb-2">
@@ -71,7 +94,12 @@ const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
         <div class={titleClass}>{title}</div>
         <ItemSeparator />
       </div>
-      {(description || timeDescription || url) && (
+      {url && (
+        <a href={url} target="_blank" rel="noreferrer" class={urlClass}>
+          {urlLabel}
+        </a>
+      )}
+      {(description || timeDescription) && (
         <div class="mt-0 flex flex-row gap-2 text-sm text-gray-600">
           {description && <span>{description}</span>}
           {timeDescription && <span class="pl-2">{timeDescription}</span>}
