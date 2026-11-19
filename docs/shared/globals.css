@@ -914,6 +914,16 @@ figure.diagram > figcaption {
   --pele-series-8: var(--hl-high);
 }
 
+/* Edge labels sit on a soft, blurred pad of the stage background, so the
+   line they label fades out behind the text instead of striking through it.
+   (Pele fills the pad with --pele-bg, which is transparent above.) */
+.pele .pele-edge-label rect {
+  fill: color-mix(in oklch, var(--base) 85%, transparent);
+  stroke: color-mix(in oklch, var(--base) 85%, transparent);
+  stroke-width: 6px;
+  filter: blur(2.5px);
+}
+
 /* Mermaid `class <node> accent` marks a highlighted node. */
 .pele .pele-node.accent > :is(rect, path, polygon, circle, ellipse) {
   fill: var(--accent-soft);
