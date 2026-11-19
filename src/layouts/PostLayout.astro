@@ -3,10 +3,17 @@ import '@/styles/globals.css'
 
 import BaseLayout from './BaseLayout.astro'
 import PostMetadata from '@/components/post/PostMetadata.astro'
+import TableOfContents from '@/components/post/TableOfContents.astro'
 import { BackReferenceSection } from '@/components/post/back-reference.tsx'
 
-const { frontmatter, incomingNotes, outgoingNotes, rootURL, ogImage } =
-  Astro.props
+const {
+  frontmatter,
+  incomingNotes,
+  outgoingNotes,
+  rootURL,
+  ogImage,
+  headings = [],
+} = Astro.props
 // console.log("incomingNotes:", incomingNotes);
 // console.log("outgoingNotes:", outgoingNotes);
 
@@ -17,15 +24,26 @@ const { frontmatter, incomingNotes, outgoingNotes, rootURL, ogImage } =
 
 <BaseLayout title={frontmatter.title} ogImage={ogImage}>
   <!-- content container -->
-  <div id="prose-container" class="overflow-x-hidden">
+  <!-- overflow-x-clip (not hidden) keeps the sidebar TOC sticky to the viewport -->
+  <div id="prose-container" class="overflow-x-clip">
+    <!-- xl: prose in the centre column, TOC in the right gutter -->
+    <div
+      class="xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,80ch)_minmax(0,1fr)] xl:gap-10"
+    >
+    <div class="hidden xl:block"></div>
     <div
       id="prose-content-wrapper"
       class="prose-cactus prose mx-auto mt-12 w-full max-w-[80ch] prose-headings:font-semibold prose-headings:text-cactus-accent-2 prose-headings:before:absolute prose-headings:before:-ms-6 prose-headings:before:text-foreground prose-headings:before:opacity-25 prose-headings:before:content-['#'] prose-headings:hover:before:text-accent prose-headings:hover:before:opacity-80 prose-a:break-words prose-code:break-words prose-th:before:content-none"
     >
       <!-- Post metadata header -->
       <PostMetadata frontmatter={frontmatter} />
+      <TableOfContents headings={headings} variant="inline" />
 
       <slot />
+    </div>
+    <aside class="hidden xl:block">
+      <TableOfContents headings={headings} variant="sidebar" />
+    </aside>
     </div>
     <BackReferenceSection
       incomingReferences={incomingNotes}
@@ -36,6 +54,11 @@ const { frontmatter, incomingNotes, outgoingNotes, rootURL, ogImage } =
 </BaseLayout>
 
 <style is:global>
+  /* Keep anchored headings clear of the sticky nav */
+  #prose-content-wrapper :is(h2, h3, h4) {
+    scroll-margin-top: 4.5rem;
+  }
+
   /* Table responsive wrapper */
   #prose-content-wrapper table {
     display: block;

@@ -66,6 +66,16 @@ See also [[monads in haskell]] or [[monads in haskell:this post about monads]].
 
 ---
 
+## Table of contents
+
+Every post gets a table of contents built from its `##` and `###` headings
+(`TableOfContents.astro`, fed by the `headings` from `render(entry)`). At `xl`
+and wider it is a sticky list in the right gutter that highlights the section
+in view; below that it is a collapsible "Contents" block under the post header.
+A post with fewer than two such headings shows none.
+
+---
+
 ## Diagrams
 
 Write a Mermaid diagram with the `Mermaid` component (MDX only). It is
