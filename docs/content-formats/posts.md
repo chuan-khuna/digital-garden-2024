@@ -98,3 +98,18 @@ import Mermaid from '@/components/Mermaid.astro'
 `title` (optional) shows in the toolbar and names the downloaded file;
 `height` (optional, default 640) caps the inline height in px.
 `class <node> accent` highlights a node.
+
+---
+
+## Keyboard shortcuts
+
+Write a key combination with the `Kbd` component (MDX only). Each key renders
+as a `<kbd>` styled with the theme colours, joined by ` + `.
+
+```mdx
+import Kbd from '@/components/Kbd.astro'
+
+Press <Kbd keys={['Ctrl', 'P']} /> (<Kbd keys={['⌘', 'P']} /> on the Mac).
+```
+
+Keep shortcuts out of `title` and headings: those are plain text.

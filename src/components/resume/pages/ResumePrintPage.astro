@@ -10,6 +10,7 @@
 // applies them to the DOM. Without JS the default layout shows with every
 // Section.
 import BaseLayoutPrint from '@/layouts/BaseLayoutPrint.astro'
+import '@/styles/resume-print.css'
 import { site } from '@/data/site.config'
 import { DEFAULT_RESUME_VERSION, getResume } from '@/lib/resume'
 import {
@@ -86,7 +87,9 @@ const toggleClass =
     </div>
   </div>
 
-  <WebWrapper className="flex min-h-screen flex-col justify-center">
+  <WebWrapper
+    className="flex min-h-screen flex-col justify-center print:justify-start"
+  >
     {
       PRINT_LAYOUTS.map(({ name, surface, arrangement }) => {
         const resume = bySurface[surface]
@@ -97,16 +100,13 @@ const toggleClass =
             hidden={name !== DEFAULT_PRINT_LAYOUT}
           >
             {name === 'resume-two-cols' && (
-              <PageLayout className="px-8 py-4 font-resumesans">
-                <div class="mx-auto grid max-w-[1200px] grid-cols-7 gap-4">
-                  <div class="col-span-7">
-                    <PrintHeader header={resume.header} />
-                  </div>
+              <PageLayout className="rp-sheet rp-page">
+                <PrintHeader header={resume.header} />
+                <div class="grid grid-cols-7 gap-x-[7mm]">
                   {arrangement.map((column, i) => (
                     <div
                       class:list={[
-                        'block space-y-1',
-                        i === 0 ? 'col-span-2' : 'col-span-5',
+                        i === 0 ? 'rp-narrow col-span-2' : 'col-span-5',
                       ]}
                     >
                       {column.map((section) => (
@@ -119,15 +119,11 @@ const toggleClass =
             )}
 
             {name === 'resume-one-col' && (
-              <PageLayout className="px-8 py-4 font-resumesans">
-                <div class="mx-auto max-w-[1200px] space-y-1 [&>[data-section]>div]:py-0">
-                  <div class="mb-2">
-                    <PrintHeader header={resume.header} stacked />
-                  </div>
-                  {arrangement[0].map((section) => (
-                    <PrintSection name={section} resume={resume} />
-                  ))}
-                </div>
+              <PageLayout className="rp-sheet rp-page">
+                <PrintHeader header={resume.header} stacked />
+                {arrangement[0].map((section) => (
+                  <PrintSection name={section} resume={resume} />
+                ))}
               </PageLayout>
             )}
 
@@ -135,19 +131,11 @@ const toggleClass =
               arrangement.map((page, i) => (
                 <>
                   {i > 0 && <PrintPageBreak />}
-                  <PageLayout className="px-12 py-4 font-resumesans">
-                    <div class="mx-auto max-w-[1200px]">
-                      {i === 0 && (
-                        <div class="mb-2">
-                          <PrintHeader header={resume.header} stacked />
-                        </div>
-                      )}
-                      <div class="space-y-1">
-                        {page.map((section) => (
-                          <PrintSection name={section} resume={resume} />
-                        ))}
-                      </div>
-                    </div>
+                  <PageLayout className="rp-sheet rp-page">
+                    {i === 0 && <PrintHeader header={resume.header} stacked />}
+                    {page.map((section) => (
+                      <PrintSection name={section} resume={resume} />
+                    ))}
                   </PageLayout>
                 </>
               ))}

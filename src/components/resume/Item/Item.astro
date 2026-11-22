@@ -1,5 +1,9 @@
 ---
-import ItemSeparator from './ItemSeparator.astro'
+// One entry's heading: a job, project, degree or activity.
+//
+// web:   title, then description and time, then the URL.
+// print: title and short URL left, time right on one baseline; description
+//        below. Styled by `rp-*` classes in `@/styles/resume-print.css`.
 
 interface Props {
   title: string
@@ -7,21 +11,20 @@ interface Props {
   description?: string
   url?: string
   variant?: 'web' | 'print'
-  inline?: boolean
-  titleFontSize?: string
 }
 
-const { title, timeDescription, description, url, variant = 'web', inline, titleFontSize } =
-  Astro.props
+const {
+  title,
+  timeDescription,
+  description,
+  url,
+  variant = 'web',
+} = Astro.props
 
-// print-variant computed values
-const totalLength =
-  (title?.length || 0) + (timeDescription?.length || 0) + (description?.length || 0)
-const useInline = typeof inline === 'boolean' ? inline : totalLength <= 64
-const titleClass = titleFontSize
-  ? `text-${titleFontSize} font-resumesans font-medium`
-  : 'text-md font-resumesans font-medium'
-const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
+// "https://github.com/x/" -> "github.com/x"
+const urlLabel = url?.replace(/^https?:\/\//, '').replace(/\/$/, '')
+// "Jul 2022 - Present" -> "Jul 2022 – Present"
+const printTime = timeDescription?.replace(' - ', ' – ')
 ---
 
 {
@@ -50,33 +53,18 @@ const descriptionAndTimeClass = 'ml-2 border-gray-300 pl-2 text-gray-600'
         </div>
       )}
     </div>
-  ) : useInline ? (
-    <div class="flex items-center">
-      <div class={`flex-shrink-0 ${titleClass}`}>{title}</div>
-      {(timeDescription || description || url) && (
-        <div>
-          <div class="ml-2 flex-shrink-0 text-right text-sm">
-            {description && <span class={descriptionAndTimeClass}>{description}</span>}
-            {timeDescription && (
-              <span class={descriptionAndTimeClass}>{timeDescription}</span>
-            )}
-          </div>
-        </div>
-      )}
-      <ItemSeparator />
-    </div>
   ) : (
-    <div class="mb-2">
-      <div class="flex items-center">
-        <div class={titleClass}>{title}</div>
-        <ItemSeparator />
+    <div>
+      <div class="rp-entry-head">
+        <span class="rp-entry-title">{title}</span>
+        {url && (
+          <a href={url} target="_blank" rel="noreferrer" class="rp-entry-url">
+            {urlLabel}
+          </a>
+        )}
+        {printTime && <span class="rp-entry-time">{printTime}</span>}
       </div>
-      {(description || timeDescription || url) && (
-        <div class="mt-0 flex flex-row gap-2 text-sm text-gray-600">
-          {description && <span>{description}</span>}
-          {timeDescription && <span class="pl-2">{timeDescription}</span>}
-        </div>
-      )}
+      {description && <div class="rp-entry-description">{description}</div>}
     </div>
   )
 }
