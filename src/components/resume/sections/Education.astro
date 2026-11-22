@@ -15,7 +15,9 @@ const { data, variant = 'web' } = Astro.props
 <SectionBlock title="Education" variant={variant}>
   {
     data.map((edu) => (
-      <div class="print:break-inside-avoid">
+      <div
+        class={variant === 'print' ? 'rp-entry' : 'print:break-inside-avoid'}
+      >
         <Item
           title={edu.data.degree}
           timeDescription={edu.data.time}

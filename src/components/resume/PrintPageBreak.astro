@@ -1,17 +1,14 @@
 ---
 // Page break between CV sheets.
 //
-// In PRINT this forces the page break exactly as before: the `page-break-after`
-// div and the following `mt-4` spacer are unchanged. (The old on-screen
-// "PAGE BREAK" label was already `print:hidden`, so removing it leaves print
-// output identical.)
+// In PRINT this forces a page break; the next sheet's own padding supplies
+// the top margin.
 //
-// On SCREEN the sheets are already separated by the canvas gap, so both spacers
-// are hidden — no break chrome is shown.
+// On SCREEN the sheets are already separated by the canvas gap, so the break
+// element is hidden — no break chrome is shown.
 ---
 
 <div style="page-break-after: always;" class="resume-pagebreak"></div>
-<div class="mt-4 resume-pagebreak"></div>
 
 <style>
   @media screen {

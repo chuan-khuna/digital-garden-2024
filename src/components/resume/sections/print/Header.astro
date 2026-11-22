@@ -1,94 +1,67 @@
 ---
+// Print Page header: name, job title, contact info and introduction.
+// Styled by `rp-*` classes in `@/styles/resume-print.css`.
 import type { Resume } from '@/lib/resume'
 
 interface Props {
   header: Resume['header']
   /**
-   * Put the contact info on one full-width line above the introduction
-   * (one-column and CV layouts) instead of in a column beside it.
+   * Put the contact info on one line above the introduction (one-column and
+   * CV layouts) instead of in a column beside it (two-column layout).
    */
   stacked?: boolean
 }
 
 const { header, stacked = false } = Astro.props
-const websiteLabel = header.website
-  ?.replace(/^https?:\/\//, '')
-  .replace(/\/$/, '')
 
-const contacts = [
-  header.website && {
-    label: 'Website',
-    value: websiteLabel,
-    href: header.website,
-  },
-  { label: 'Github', value: header.githubName, href: header.github },
-  { label: 'Email', value: header.email },
-  { label: 'Location', value: header.location },
-].filter(Boolean) as { label: string; value: string; href?: string }[]
+// "https://altrf.dev/" -> "altrf.dev"
+const shortUrl = (url: string) =>
+  url.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
-// The one-line contact row leads with Email.
-const inlineContacts = [
-  ...contacts.filter((c) => c.label === 'Email'),
-  ...contacts.filter((c) => c.label !== 'Email'),
+const contacts: { value: string; href?: string }[] = [
+  { value: header.location },
+  { value: header.email, href: `mailto:${header.email}` },
+  { value: shortUrl(header.github), href: header.github },
+  ...(header.website
+    ? [{ value: shortUrl(header.website), href: header.website }]
+    : []),
 ]
 ---
 
-<div class="border-b-1 relative border-gray-100 p-2">
-  <!-- name and job title -->
-  <div class="md:flex">
-    <div>
-      <h1 class="font-resumeserif font-serif text-4xl font-bold">
-        {header.name}
-      </h1>
-      <p class=`text-lg font-resumesans font-bold text-gray-500`>
-        {header.jobTitle}
-      </p>
-    </div>
-  </div>
+<header>
+  <h1 class="rp-name">{header.name}</h1>
+  <p class="rp-job-title">{header.jobTitle}</p>
   {
     stacked ? (
-      <div class="mt-1 text-sm">
-        <!-- contact info on one line, then the introduction -->
-        <p class="flex flex-wrap items-baseline gap-x-5 gap-y-0.5">
-          {inlineContacts.map((c) => (
+      <>
+        <p class="rp-contacts">
+          {contacts.map((c, i) => (
             <>
-              <span class="whitespace-nowrap">
-                <span class="font-resumesans font-medium">{c.label}</span>:{' '}
-                {c.href ? (
-                  <a
-                    href={c.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="underline"
-                  >
-                    {c.value}
-                  </a>
-                ) : (
-                  c.value
-                )}
-              </span>
+              {i > 0 && (
+                <span class="rp-contacts-sep" aria-hidden="true">
+                  |
+                </span>
+              )}
+              {c.href ? (
+                <a href={c.href} target="_blank" rel="noreferrer">
+                  {c.value}
+                </a>
+              ) : (
+                <span>{c.value}</span>
+              )}
             </>
           ))}
         </p>
-        <p class="mt-2 max-w-[75ch] leading-relaxed">{header.introduction}</p>
-      </div>
+        <p class="rp-summary">{header.introduction}</p>
+      </>
     ) : (
-      <div class="mt-2 grid grid-cols-3">
-        <!-- introduction and contact info side by side -->
-        <div class="col-span-2 block text-sm">
-          <p>{header.introduction}</p>
-        </div>
-        <div class="col-span-1 block text-right text-sm">
+      <div class="rp-header-split">
+        <p class="rp-summary">{header.introduction}</p>
+        <div class="rp-contacts-stacked">
           {contacts.map((c) => (
             <p>
-              <span class="font-resumesans font-medium">{c.label}</span>:{' '}
               {c.href ? (
-                <a
-                  href={c.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="underline"
-                >
+                <a href={c.href} target="_blank" rel="noreferrer">
                   {c.value}
                 </a>
               ) : (
@@ -100,4 +73,4 @@ const inlineContacts = [
       </div>
     )
   }
-</div>
+</header>

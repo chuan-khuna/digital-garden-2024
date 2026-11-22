@@ -1,0 +1,87 @@
+---
+title: 'From Ctrl + P to Typst: A Resume Without a Word Processor'
+description: How my resume went from a print stylesheet on this site to JSON data typeset with Typst, set up with mise and styled with the Kami skill.
+date: '2026-11-22'
+tags: ['resume', 'typst', 'mise', 'astro']
+stage: 'seedling'
+llmAssisted: true
+---
+
+import Kbd from '@/components/Kbd.astro'
+
+## The idea
+
+I wanted a resume that I didn't have to make in a word processor like Microsoft Word or Google Docs. I wanted the content stored as plain data and the layout written as code, so I could change one without touching the other.
+
+One extra constraint: I work on two machines, a MacBook Pro (Apple silicon) and a Windows PC. Whatever I picked had to build the same resume on both.
+
+That already ruled out the usual tools. Microsoft Office is hard to install on the Mac, and I don't like how Google Docs formats a document. So I had to build the resume some other way.
+
+## First try: LaTeX
+
+LaTeX was the first idea. It's the classic answer to "typeset a document from code", and plenty of good resume templates use it.
+
+The problem was the setup. A TeX distribution is big, and getting the same packages and fonts to work on both macOS and Windows was more trouble than I wanted for a single document. I dropped it.
+
+## Second try: Ctrl + P on this website
+
+This site already had my resume data, so I asked a different question: what if the browser was the typesetter? I already write the site's layout in CSS and Tailwind, so I could style a resume the same way.
+
+In April 2024 I added a print layout, and in July 2025 a dedicated `/resume-print` page. The page reads the resume collections, lays them out for A4, and hides everything that only makes sense on screen (navigation, theme toggle and so on). To get a PDF, open the page and press <Kbd keys={['Ctrl', 'P']} /> (<Kbd keys={['⌘', 'P']} /> on the Mac) → _Save as PDF_.
+
+It works! Both machines have a browser, so there was nothing to install. Later I added resume versions, so each job application gets its own page at `/resume-print/<version>`.
+
+The weak spot is that the browser is in charge. Page breaks, margins and font rendering depend on the browser's print engine, and I spent a lot of commits nudging items so a section didn't split badly across pages.
+
+## Third try: mise + Typst + Kami
+
+Then I found [mise](https://mise.jdx.dev), a tool that pins tool versions per project. That removed the reason I gave up on a typesetter: one `mise.toml` and both machines get the same versions.
+
+```toml
+# mise.toml
+[tools]
+typst = "0.15.1"
+bun = "1.4.4"
+
+[env]
+# Fonts come only from fonts/, so the PDF looks the same on any machine.
+TYPST_FONT_PATHS = "fonts"
+TYPST_IGNORE_SYSTEM_FONTS = "true"
+```
+
+For the typesetter I picked [Typst](https://typst.app) instead of LaTeX. It's a single binary, it compiles in milliseconds, and its scripting language can read JSON directly.
+
+```
+resume.json → Typst template → resume.pdf
+```
+
+The resume content lives in `data/resume.json`, validated by a JSON schema.
+
+### Kami
+
+For the design I used the [Kami](https://github.com/tw93/kami) agent skill. Kami is a document design system: warm neutral colours with a single ink-blue accent, only regular and medium weights, and type size and spacing (not boxes and bold) to carry the hierarchy. With the skill loaded, the agent wrote the Typst templates following those rules.
+
+The output is honestly the best-looking resume I've had. The spacing is generous and even, and the type is crisp and easy to read. Most of the credit goes to Kami's rules: they made the decisions I would otherwise have fiddled with for hours.
+
+## Back to the website
+
+I liked the result so much that I decided to give my web resume the Kami design too. I used Kami again to update the layout of the `/resume-print` page. It now has the same fonts, sizes, spacing, margins and ink-blue accent, so the print-to-PDF resume looks like the Typst one.
+
+Both still exist, for different jobs:
+
+|                   | <Kbd keys={['Ctrl', 'P']} /> on the website | mise + Typst                       |
+| ----------------- | ------------------------------------------- | ---------------------------------- |
+| Setup             | None, just a browser                        | `mise install`                     |
+| Layout control    | Browser print engine                        | Exact, the same on every machine   |
+| Page-length check | By eye                                      | The build fails when it's too long |
+| Best for          | A quick PDF of what's on the site           | Tailored versions for applications |
+
+## Conclusion
+
+If you want a resume PDF made from code, without Google Docs or Microsoft Word, **Typst + Kami + mise** is the smallest setup I've found:
+
+- **Typst** turns JSON data into a PDF with one small binary.
+- **Kami** gives the design rules, so the agent makes a good-looking layout without me tuning it by hand.
+- **mise** pins the tools and fonts, so the same command gives the same PDF on macOS and Windows.
+
+Three tools, one data file, one command.

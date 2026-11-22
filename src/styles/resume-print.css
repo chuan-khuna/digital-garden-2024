@@ -1,0 +1,235 @@
+/*
+  Print Page typography — one place for the printed resume's look.
+
+  Ported from the Typst resume (github.com/chuan-khuna/latex-resume,
+  lib/style.typ + resume.typ): Metric body, Canela name and Section headings,
+  weights 400/500 only, warm neutrals plus one ink-blue accent, hairlines only
+  between regions. Sizes are in pt so the A4 sheet matches the Typst PDF.
+
+  Imported only by ResumePrintPage.astro. Markup uses the `rp-*` classes
+  below; the shared Section components emit them for `variant="print"`.
+
+  Colour: in print the palette is fixed (ink on white paper). On screen it is
+  derived from the site theme so the preview stays readable in dark themes.
+*/
+
+.rp-sheet {
+  --rp-ink: var(--foreground);
+  --rp-dark-warm: color-mix(in oklch, var(--foreground) 85%, var(--background));
+  --rp-olive: color-mix(in oklch, var(--foreground) 75%, var(--background));
+  --rp-stone: color-mix(in oklch, var(--foreground) 60%, var(--background));
+  --rp-rule: color-mix(in oklch, var(--foreground) 14%, var(--background));
+  --rp-accent: color-mix(in oklch, var(--foreground) 55%, oklch(0.55 0.13 255));
+
+  font-family: 'Metric', 'MetricHPEXS', ui-sans-serif, system-ui, sans-serif;
+  font-size: 9.8pt;
+  line-height: 1.28;
+  color: var(--rp-ink);
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+  hyphens: none;
+}
+
+@media print {
+  html,
+  body {
+    background: oklch(1 0 0) !important;
+  }
+
+  .rp-sheet {
+    --rp-ink: oklch(0.19 0.002 106);
+    --rp-dark-warm: oklch(0.37 0.005 106);
+    --rp-olive: oklch(0.44 0.008 85);
+    --rp-stone: oklch(0.53 0.009 100);
+    --rp-rule: oklch(0.92 0.014 95);
+    --rp-accent: oklch(0.33 0.07 255);
+  }
+}
+
+/* Typst page margins: 15mm left/right, 13mm top/bottom. */
+.rp-page {
+  padding: 13mm 15mm;
+}
+
+.rp-sheet a {
+  color: var(--rp-accent);
+  text-decoration: none;
+}
+
+.rp-sheet strong {
+  font-weight: 500;
+}
+
+/* ---------- Header ---------- */
+
+.rp-name {
+  font-family: 'Canela', 'DM Serif Text', ui-serif, serif;
+  font-size: 26pt;
+  font-weight: 400;
+  letter-spacing: -0.2pt;
+  line-height: 1;
+  margin: 0;
+}
+
+.rp-job-title {
+  margin: 5pt 0 0;
+  font-size: 11pt;
+  font-weight: 500;
+  color: var(--rp-accent);
+  line-height: 1.2;
+}
+
+.rp-contacts {
+  margin: 3pt 0 0;
+  font-size: 9pt;
+  color: var(--rp-dark-warm);
+}
+
+.rp-contacts-sep {
+  margin: 0 0.6em;
+  color: color-mix(in oklch, var(--rp-stone) 65%, transparent);
+}
+
+.rp-summary {
+  margin: 9pt 0 0;
+}
+
+/* Two-column header: introduction left, contacts stacked on the right. */
+.rp-header-split {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 2.5em;
+  margin-top: 9pt;
+}
+
+.rp-header-split .rp-summary {
+  margin: 0;
+}
+
+.rp-contacts-stacked {
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--rp-dark-warm);
+  text-align: right;
+}
+
+.rp-contacts-stacked p {
+  margin: 0;
+}
+
+/* ---------- Sections ---------- */
+
+.rp-section-title {
+  font-family: 'Canela', 'DM Serif Text', ui-serif, serif;
+  font-size: 14.5pt;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 14pt 0 7pt;
+  padding-bottom: 3pt;
+  border-bottom: 0.5pt solid var(--rp-rule);
+  break-after: avoid;
+}
+
+/* A sheet that starts with a Section (CV page 2+) starts at the margin. */
+.rp-page > [data-section]:first-child .rp-section-title {
+  margin-top: 0;
+}
+
+/* ---------- Entries (job, project, degree, activity) ---------- */
+
+.rp-entry {
+  break-inside: avoid;
+}
+
+.rp-entry + .rp-entry {
+  margin-top: 4.5pt;
+}
+
+.rp-entry-head {
+  display: flex;
+  line-height: 1.12;
+  align-items: baseline;
+  gap: 0 0.55em;
+}
+
+.rp-entry-title {
+  font-size: 10.3pt;
+  font-weight: 500;
+}
+
+.rp-entry-url {
+  font-size: 8.6pt;
+}
+
+.rp-entry-time {
+  margin-left: auto;
+  padding-left: 1em;
+  flex-shrink: 0;
+  font-size: 9pt;
+  color: var(--rp-stone);
+  white-space: nowrap;
+}
+
+.rp-entry-description {
+  font-size: 9.4pt;
+  line-height: 1.2;
+  color: var(--rp-olive);
+}
+
+/* ---------- Bullet lists (plain and markdown-rendered) ---------- */
+
+.rp-list ul,
+ul.rp-list {
+  list-style: none;
+  margin: 1.5pt 0 0;
+  padding: 0;
+}
+
+.rp-list li {
+  position: relative;
+  margin: 0;
+  padding-left: 1.05em;
+}
+
+.rp-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0.1em;
+  color: var(--rp-stone);
+}
+
+.rp-list li p {
+  display: inline;
+  margin: 0;
+}
+
+/* ---------- Skills ---------- */
+
+.rp-skills {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2.5pt 1.4em;
+}
+
+.rp-skill-category {
+  font-weight: 500;
+  color: var(--rp-dark-warm);
+}
+
+/* Narrow column (two-column layout): category above its list. */
+.rp-narrow .rp-skills {
+  display: block;
+}
+
+.rp-narrow .rp-skill-items {
+  margin-bottom: 4pt;
+}
+
+.rp-narrow .rp-entry-head {
+  flex-wrap: wrap;
+}
+
+.rp-narrow .rp-entry-time {
+  margin-left: 0;
+  padding-left: 0;
+}

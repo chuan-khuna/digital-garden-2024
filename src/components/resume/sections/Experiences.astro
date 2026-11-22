@@ -22,7 +22,9 @@ const rendered = await Promise.all(
 <SectionBlock title="Experience" variant={variant}>
   {
     rendered.map(({ exp, Content }) => (
-      <div class="print:break-inside-avoid">
+      <div
+        class={variant === 'print' ? 'rp-entry' : 'print:break-inside-avoid'}
+      >
         <Item
           title={exp.data.jobTitle}
           timeDescription={exp.data.time}

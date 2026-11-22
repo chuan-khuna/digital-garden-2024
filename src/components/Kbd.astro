@@ -1,0 +1,37 @@
+---
+// A keyboard shortcut for MDX: <Kbd keys={['Ctrl', 'P']} /> → [Ctrl] + [P]
+interface Props {
+  keys: string[]
+}
+
+const { keys } = Astro.props
+---
+
+<span class="kbd-combo">
+  {
+    keys.map((key, i) => (
+      <>
+        {i > 0 && ' + '}
+        <kbd>{key}</kbd>
+      </>
+    ))
+  }
+</span>
+
+<style>
+  .kbd-combo {
+    white-space: nowrap;
+  }
+
+  kbd {
+    font-family: var(--font-inconsolata, ui-monospace), monospace;
+    font-size: 0.85em;
+    line-height: 1;
+    padding: 0.15em 0.4em;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+    background: color-mix(in oklch, var(--foreground) 8%, transparent);
+    box-shadow: none;
+    color: inherit;
+  }
+</style>
