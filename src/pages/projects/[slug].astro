@@ -4,6 +4,7 @@ import { Image } from 'astro:assets'
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import PostMetadata from '@/components/post/PostMetadata.astro'
+import TableOfContents from '@/components/post/TableOfContents.astro'
 import { articleOgImage } from '@/lib/og-image'
 
 export async function getStaticPaths() {
@@ -26,7 +27,7 @@ interface Props {
 }
 const { entry, prev, next } = Astro.props
 const { data: project } = entry
-const { Content } = await render(entry)
+const { Content, headings } = await render(entry)
 
 const button =
   'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm no-underline transition-colors hover:border-accent hover:text-accent'
@@ -37,8 +38,14 @@ const button =
   description={project.description}
   ogImage={articleOgImage('projects', entry.id)}
 >
-  <div class="overflow-x-hidden px-4">
+  <!-- overflow-x-clip (not hidden) keeps the sidebar TOC sticky to the viewport;
+       xl: article in the centre column, TOC in the right gutter -->
+  <div
+    class="overflow-x-clip px-4 xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(0,80ch)_minmax(0,1fr)] xl:gap-10"
+  >
+    <div class="hidden xl:block"></div>
     <article
+      id="project-content"
       class="prose-cactus prose-headings:text-cactus-accent-2 prose mx-auto mt-8 w-full max-w-[80ch] prose-headings:font-semibold prose-a:break-words prose-code:break-words"
     >
       <a
@@ -108,6 +115,7 @@ const button =
           }
         </div>
       </PostMetadata>
+      <TableOfContents headings={headings} variant="inline" />
 
       <Content />
 
@@ -141,5 +149,15 @@ const button =
         }
       </nav>
     </article>
+    <aside class="hidden xl:block">
+      <TableOfContents headings={headings} variant="sidebar" />
+    </aside>
   </div>
 </BaseLayout>
+
+<style is:global>
+  /* Keep anchored headings clear of the sticky nav */
+  #project-content :is(h2, h3, h4) {
+    scroll-margin-top: 4.5rem;
+  }
+</style>

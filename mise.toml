@@ -5,7 +5,10 @@ node = "26"
 
 [tasks.skills]
 description = "Install the vendored agent skills"
-run = ["bunx skills add mattpocock/skills#v1.3.1"]
+run = [
+  "bunx skills add mattpocock/skills#v1.3.2",
+  "bunx skills add thananon/9arm-skills",
+]
 
 [tasks.plugins]
 description = "Install the local writing-tools plugin (garden-local marketplace)"

@@ -200,6 +200,10 @@ try {
     }
     apply() {
       this.inner.style.transform = `translate(${this.tx}px, ${this.ty}px) scale(${this.scale})`
+      const grid = 24 * this.scale
+      this.stage.style.setProperty('--grid-size', `${grid}px`)
+      this.stage.style.setProperty('--grid-x', `${this.tx % grid}px`)
+      this.stage.style.setProperty('--grid-y', `${this.ty % grid}px`)
       this.label.textContent = `${Math.round(this.scale * 100)}%`
     }
     center() {
@@ -290,7 +294,7 @@ try {
   const EXPORT_PROPS = [
     'fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-dasharray',
     'stroke-opacity', 'opacity', 'color', 'font-family', 'font-size',
-    'font-weight', 'font-style', 'text-decoration', 'rx', 'ry',
+    'font-weight', 'font-style', 'text-decoration', 'rx', 'ry', 'filter',
   ]
 
   function exportableSvg(live: SVGSVGElement) {
@@ -584,7 +588,18 @@ try {
   .pele-diagram-viewer .diagram-stage {
     position: relative;
     overflow: hidden;
-    background: var(--background);
+    /* Grid paper behind the diagram; PanZoom moves and scales it with the
+       diagram through --grid-x / --grid-y / --grid-size. */
+    --grid-size: 24px;
+    --grid-x: 0px;
+    --grid-y: 0px;
+    --grid-line: color-mix(in oklch, var(--foreground) 7%, transparent);
+    background-color: var(--background);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    background-position: var(--grid-x) var(--grid-y);
     /* Panning is a drag; never let it select the diagram's text. */
     user-select: none;
     -webkit-user-select: none;
@@ -694,6 +709,16 @@ try {
     --pele-series-6: var(--destructive);
     --pele-series-7: var(--muted);
     --pele-series-8: var(--ring);
+  }
+
+  /* Edge labels sit on a soft, blurred pad of the stage background, so the
+     line they label fades out behind the text instead of striking through it.
+     (Pele fills the pad with --pele-bg, which is transparent above.) */
+  .pele .pele-edge-label rect {
+    fill: color-mix(in oklch, var(--background) 85%, transparent);
+    stroke: color-mix(in oklch, var(--background) 85%, transparent);
+    stroke-width: 6px;
+    filter: blur(2.5px);
   }
 
   /* Mermaid `class <node> accent` marks a highlighted node. */

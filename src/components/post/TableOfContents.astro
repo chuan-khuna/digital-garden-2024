@@ -1,0 +1,162 @@
+---
+/**
+ * Table of contents for a post, built from the `headings` that Astro's
+ * `render(entry)` returns. Lists h2 and h3; renders nothing when a post has
+ * fewer than two of them.
+ *
+ *   variant="inline"  — a collapsible block under the post header (below xl)
+ *   variant="sidebar" — a sticky list in the right gutter (xl and up), with
+ *                       the heading in view highlighted
+ */
+import type { MarkdownHeading } from 'astro'
+
+interface Props {
+  headings: MarkdownHeading[]
+  variant: 'inline' | 'sidebar'
+}
+
+const { headings, variant } = Astro.props
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3)
+const show = items.length >= 2
+---
+
+{
+  show && variant === 'inline' && (
+    <details class="post-toc post-toc-inline not-prose xl:hidden">
+      <summary>Contents</summary>
+      <ol>
+        {items.map((h) => (
+          <li data-depth={h.depth}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ol>
+    </details>
+  )
+}
+
+{
+  show && variant === 'sidebar' && (
+    <nav class="post-toc post-toc-sidebar" aria-label="Table of contents">
+      <p class="post-toc-title">On this page</p>
+      <ol>
+        {items.map((h) => (
+          <li data-depth={h.depth}>
+            <a href={`#${h.slug}`} data-toc-link>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<script>
+  // Highlight the sidebar link for the last heading scrolled past.
+  const links = [
+    ...document.querySelectorAll<HTMLAnchorElement>(
+      '.post-toc-sidebar [data-toc-link]',
+    ),
+  ]
+  const targets = links
+    .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+    .filter((el): el is HTMLElement => el !== null)
+
+  if (targets.length) {
+    const OFFSET = 96 // below the sticky nav
+    let frame = 0
+    const update = () => {
+      frame = 0
+      let current = 0
+      targets.forEach((t, i) => {
+        if (t.getBoundingClientRect().top - OFFSET <= 0) current = i
+      })
+      links.forEach((a, i) => {
+        if (i === current) a.setAttribute('aria-current', 'true')
+        else a.removeAttribute('aria-current')
+      })
+    }
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!frame) frame = requestAnimationFrame(update)
+      },
+      { passive: true },
+    )
+    update()
+  }
+</script>
+
+<style is:global>
+  .post-toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .post-toc li[data-depth='3'] {
+    padding-left: 0.875rem;
+  }
+  .post-toc a {
+    display: block;
+    color: color-mix(in oklch, var(--foreground) 65%, transparent);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .post-toc a:hover,
+  .post-toc a[aria-current] {
+    color: var(--accent);
+  }
+
+  .post-toc-inline {
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    font-size: 0.9rem;
+  }
+  .post-toc-inline summary {
+    padding: 0.6rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .post-toc-inline ol {
+    padding: 0 0.9rem 0.75rem;
+  }
+  .post-toc-inline a {
+    padding: 0.2rem 0;
+  }
+
+  .post-toc-sidebar {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 6rem);
+    margin-top: 3rem;
+    overflow-y: auto;
+    border-left: 1px solid var(--border);
+    font-size: 0.85rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .post-toc-title {
+    margin: 0 0 0.5rem;
+    padding-left: 0.875rem;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  .post-toc-sidebar a {
+    margin-left: -1px;
+    padding: 0.25rem 0 0.25rem 0.875rem;
+    border-left: 2px solid transparent;
+  }
+  .post-toc-sidebar li[data-depth='3'] {
+    padding-left: 0;
+  }
+  .post-toc-sidebar li[data-depth='3'] a {
+    padding-left: 1.75rem;
+  }
+  .post-toc-sidebar a[aria-current] {
+    border-left-color: var(--accent);
+  }
+</style>

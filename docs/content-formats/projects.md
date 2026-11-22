@@ -88,6 +88,10 @@ A missing `cover` file also fails the build.
   the centre), then the header — title, description, dates, tags, the
   "Built with" stack and the "Visit site" / "GitHub" buttons (the same header as posts) — the MDX body,
   and previous/next links in `order`.
+- **Table of contents:** built from the body's `##` and `###` headings, the
+  same as posts (see [posts.md](posts.md#table-of-contents)): a sticky sidebar
+  at `xl` and wider, a collapsible "Contents" block under the header below
+  that, and none when there are fewer than two such headings.
 
 **Cover or body image?** `cover` is a banner: it is cropped to 3:1 on the page
 and 16:9 on the card, so use artwork or a wide image that survives cropping. Put
