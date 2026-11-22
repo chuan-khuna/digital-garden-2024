@@ -57,17 +57,19 @@ src/
 │   │   └── print/
 │   │       └── Header.astro             ← print-only resume header (receives `header` prop)
 │   ├── Item/
-│   │   ├── Item.astro                   ← unified: web stacked / print inline-auto
-│   │   └── ItemSeparator.astro          ← dashed line separator (used in print)
+│   │   └── Item.astro                   ← unified entry heading: web stacked / print title-left, date-right
 │   ├── SectionBlock.astro               ← unified section wrapper (variant prop)
 │   ├── UnorderedList.astro              ← unified bullet list (variant prop)
 │   ├── ResumeMarkdownBulletWrapper.astro ← bullet wrapper for markdown-rendered content
 │   ├── ListItem.astro                   ← single web list item
 │   ├── Divider.astro
-│   └── PrintPageBreak.astro             ← visible divider + CSS page-break
+│   └── PrintPageBreak.astro             ← CSS page-break between CV sheets
 │
-└── layouts/
-    └── BaseLayoutPrint.astro            ← print layout (hides nav/footer on print; `noindex` prop)
+├── layouts/
+│   └── BaseLayoutPrint.astro            ← print layout (hides nav/footer on print; `noindex` prop)
+│
+└── styles/
+    └── resume-print.css                 ← Print Page typography (`rp-*` classes), imported by ResumePrintPage only
 ```
 
 ---
@@ -339,9 +341,17 @@ Page 1:                    Page 2:
 | `WebWrapper` | Outer `div` — centres and sizes content for screen |
 | `PageLayout` | Represents a physical page — sets padding/margins for print bleed |
 | `sections/print/Section` | Renders one hideable Section by name, wrapped in its `data-section` element |
-| `PrintPageBreak` | Shows "PAGE BREAK" label on screen; inserts CSS `page-break-after: always` for PDF |
+| `PrintPageBreak` | Inserts CSS `page-break-after: always` between CV sheets; hidden on screen |
 
-Font for all print pages: `font-resumesans` (Metric / MetricHPEXS).
+### Print Typography (`src/styles/resume-print.css`)
+
+The printed look is ported from the Typst resume (`latex-resume`: `lib/style.typ`, `resume.typ`) and lives in one stylesheet that `ResumePrintPage.astro` imports. Components emit `rp-*` classes for `variant="print"`; no print styling is in Tailwind classes.
+
+- **Fonts:** body Metric (`Metric`, `MetricHPEXS`); name and Section headings Canela, weight 400. Only weights 400 and 500 are used (`strong` is 500). Both are local fonts, not web fonts, so the PDF needs them installed on the printing machine.
+- **Sizes (pt, so the A4 sheet matches the Typst PDF):** body 9.8, line-height 1.28; name 26; job title 11; contacts 9; Section heading 14.5 over a 0.5pt hairline; entry title 10.3, URL 8.6, date 9, organisation 9.4.
+- **Page:** `.rp-page` pads each sheet 13mm top/bottom, 15mm left/right (the `@page` margin stays 0). Entries avoid page breaks; a heading sticks to the entry below it.
+- **Colour:** in print a fixed palette (near-black ink, warm greys, one ink-blue accent for the job title and links) on white paper. On screen the same variables are derived from the theme with `color-mix`, so the preview stays readable in dark themes.
+- **Two columns:** the narrow column (`.rp-narrow`) stacks each skill category above its list and lets entry dates wrap under the title.
 
 ---
 
@@ -353,25 +363,20 @@ Font for all print pages: `font-resumesans` (Metric / MetricHPEXS).
 
 | | `variant="web"` | `variant="print"` |
 |---|---|---|
-| Border | visible | none |
-| Padding | `p-4` | `p-1` |
-| Heading size | `text-2xl` | `text-lg` |
-| Heading font | default | `font-resumeserif` |
+| Element | `div` with `prose`, border, `p-4` | `<section class="rp-section">` |
+| Heading | `h1`, `text-2xl` | `h2.rp-section-title` (Canela over a hairline) |
 
 ### Item Rows
 
 **`Item`** accepts a `variant` prop:
 
 - `variant="web"` — stacked layout: title on one line, company + time below
-- `variant="print"` — auto-detects inline vs stacked based on total character length (`≤ 64` chars = inline):
+- `variant="print"` — title and short URL left, date right on one baseline; organisation below. Date ranges get an en dash (`Jul 2022 – Present`); URLs drop the protocol and trailing slash:
 
 ```
-// Inline (short):   Job Title | Company | Jul 2022 ----
-// Stacked (long):   Long Job Title --------------------
-//                   Company Name  Jul 2022 - Present
+// Astro Digital Garden  github.com/x/repo           2025 – Present
+// Personal project
 ```
-
-Print variant also accepts `inline` (force bool) and `titleFontSize` override props.
 
 ### Bullet Lists
 
@@ -402,20 +407,11 @@ const { Content } = await render(exp)
 
 **File:** `src/components/resume/ResumeMarkdownBulletWrapper.astro`
 
-This component exists because Astro's scoped `<style>` cannot reach `<slot>` content — so it uses `<style is:global>` with namespaced class names to style the rendered markdown output.
+This component exists because Astro's scoped `<style>` cannot reach `<slot>` content — so it styles the rendered markdown through a class on a wrapper `div`.
 
 **Props:** `variant?: 'web' | 'print'` (defaults to `'web'`)
 
-**Key CSS rules applied:**
-
-| Rule | Web | Print |
-|---|---|---|
-| `ul` margin | `0.5rem` top/bottom | `0.25rem` top/bottom |
-| `ul` style | `list-disc`, `pl-5` | `list-disc`, `pl-5` |
-| `li::marker` color | `rgb(209 213 219)` (gray-300) | `rgb(209 213 219)` (gray-300) |
-| `li` spacing | — | `mb-0 mt-0`, `line-height: 1.25rem` |
-| `li p` | `margin: 0; display: inline` | `margin: 0; display: inline` |
-| `strong` | `font-weight: 700` | `font-weight: 700` |
+**Web** applies Tailwind arbitrary variants to the slotted markdown (`[&_ul]:list-disc`, `[&_li_p]:inline`, `[&_strong]:font-bold`, …). **Print** adds the `rp-list` class, styled in `resume-print.css` (a grey `•` bullet, `li p` inline, `strong` at weight 500); `UnorderedList` uses the same class for string-array bullets.
 
 > **Note — Why `li p` rule?**
 > Astro's markdown renderer may wrap `<li>` content in `<p>` tags. Without zeroing their margins, each bullet gets extra vertical spacing making the list look loose. Setting `display: inline` eliminates this gap.
@@ -501,4 +497,4 @@ Browser → Ctrl+P → PDF
 ## Related
 
 - [OG Image Generator](./og-image-generator.md) — resume page has its own OG image via `og-images.json`
-- [Adding a Theme](./add-theme.md) — `font-resumesans` and `font-resumeserif` are custom font utilities defined in `tailwind.config.ts`
+- [Adding a Theme](./add-theme.md) — theme colour variables; the Print Page derives its on-screen palette from them

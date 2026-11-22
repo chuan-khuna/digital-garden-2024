@@ -12,13 +12,13 @@ const { items, ulClass = '', variant = 'web' } = Astro.props
 
 {
   variant === 'print' ? (
-    <div>
-      <ul class={`mb-1 mt-1 pl-3 text-sm ${ulClass} marker:text-gray-500`}>
+    items.length > 0 && (
+      <ul class="rp-list">
         {items.map((item) => (
-          <li class="mb-0 mt-0 font-resumesans text-sm">{item}</li>
+          <li>{item}</li>
         ))}
       </ul>
-    </div>
+    )
   ) : (
     <div>
       <ul class={`${ulClass} my-2`}>
