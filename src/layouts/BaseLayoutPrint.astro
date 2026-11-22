@@ -6,6 +6,7 @@ import OpenGraph from '@/components/seo/OpenGraph.astro'
 import HeadSEO from '@/components/seo/HeadSEO.astro'
 import Footer from '@/components/Footer.astro'
 import Nav from '@/components/Nav.astro'
+import FontLoader from '@/components/FontLoader.astro'
 
 interface Props {
   title?: string | undefined
@@ -23,6 +24,7 @@ const { title, description, ogImage, noindex = false } = Astro.props
 
 <html lang="en">
   <head>
+    <FontLoader />
     <HeadSEO title={title} description={description} noindex={noindex} />
 
     <OpenGraph
